@@ -1,0 +1,38 @@
+const colors = {
+  primary900: '#1C7B34',
+  primary500: '#4AD66D',
+  primary300: '#A2EBB4',
+  primary100: '#EBFBEF',
+  white: '#FFFFFF',
+  neutral50: '#F5F5F5',
+  neutral100: '#EEEEEE',
+  neutral200: '#E2E2E2',
+  neutral300: '#D2D2D2',
+  neutral400: '#C3C3C3',
+  neutral500: '#B1B1B1',
+  neutral600: '#9F9F9F',
+  neutral700: '#878787',
+  neutral800: '#6B6B6B',
+  neutral900: '#494949',
+  black: '#0C0A09',
+  success900: '#30855C',
+  success500: '#51AB80',
+  success300: '#84C8A7',
+  success100: '#F3FFF9',
+  warning900: '#C39022',
+  warning500: '#F6C55A',
+  warning300: '#F3D38C',
+  warning100: '#FFFCF3',
+  error900: '#DC2626',
+  error500: '#EF4444',
+  error300: '#F57E7E',
+  error100: '#FFF8F8',
+  info900: '#1E5EA1',
+  info500: '#3080D3',
+  info300: '#62A9F1',
+  info100: '#F4F9FF',
+};
+
+export default colors;
+
+export type ColorName = keyof typeof colors;

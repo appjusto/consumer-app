@@ -1,0 +1,61 @@
+{
+  "cli": {
+    "version": ">= 5.2.0"
+  },
+  "build": {
+    "v13-devclient": {
+      "channel": "v13",
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "buildConfiguration": "Debug"
+      }
+    },
+    "v13-debug": {
+      "channel": "v13",
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "v13-adhoc": {
+      "channel": "v13",
+      "distribution": "internal"
+    },
+    "v13-testflight": {
+      "channel": "v13",
+      "distribution": "store"
+    },
+    "v13-internal": {
+      "channel": "v13-internal",
+      "distribution": "store",
+      "env": {
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1",
+        "EAS_BUILD_DISABLE_COCOAPODS_CACHE": "1"
+      }
+    },
+    "v13-closed": {
+      "channel": "v13-closed",
+      "distribution": "store",
+      "env": {
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1",
+        "EAS_BUILD_DISABLE_COCOAPODS_CACHE": "1"
+      }
+    },
+    "v13-production": {
+      "channel": "v13-production",
+      "distribution": "store",
+      "env": {
+        "EAS_BUILD_DISABLE_NPM_CACHE": "1",
+        "EAS_BUILD_DISABLE_COCOAPODS_CACHE": "1"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
