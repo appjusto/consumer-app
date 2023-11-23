@@ -5,8 +5,7 @@ import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { Loading } from '@/common/components/views/Loading';
-import { DeliveryList } from '@/common/screens/deliveries/delivery-list';
-import { AccountSummary } from '@/common/screens/deliveries/history/account/account-summary';
+import { OrderList } from '@/common/screens/orders/list/order-list';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -27,8 +26,7 @@ export default function DeliveriesIndex() {
   return (
     <DefaultScrollView style={{ ...screens.default }}>
       <DefaultView style={{ ...screens.headless, padding: paddings.lg }}>
-        <AccountSummary />
-        <DeliveryList
+        <OrderList
           style={{ marginTop: paddings.lg, ...borders.default, borderColor: colors.neutral100 }}
           title="Corridas nas últimas 24h"
           emptyText="Não encontramos nenhuma corrida neste período."
@@ -56,7 +54,7 @@ export default function DeliveriesIndex() {
             Ver todos os ganhos
           </LinkButton>
           {/* </LedgerEntriesList> */}
-        </DeliveryList>
+        </OrderList>
       </DefaultView>
     </DefaultScrollView>
   );

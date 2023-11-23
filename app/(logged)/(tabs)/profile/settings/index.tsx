@@ -1,7 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { DefaultListItem } from '@/common/components/lists/DefaultListItem';
 import { ConfirmModal } from '@/common/components/modals/confirm-modal';
-import { HelmetIcon } from '@/common/icons/helmet';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -35,7 +34,6 @@ export default function ProfileSettings() {
         <DefaultListItem
           title="Escolha sua frota"
           subtitles={['Na frota é onde as condições de participação são definidas']}
-          leftView={<HelmetIcon />}
           rightView={<ChevronRight size={16} color={colors.neutral800} />}
           onPress={() => router.push('/fleets/')}
         />

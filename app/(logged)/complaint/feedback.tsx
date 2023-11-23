@@ -3,8 +3,8 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
+import { FeedbackHeader } from '@/common/components/views/feedback-header';
 import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportURL';
-import { FeedbackHeader } from '@/common/screens/profile/situation-header';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router } from 'expo-router';

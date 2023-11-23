@@ -1,4 +1,3 @@
-import { HelmetIcon } from '@/common/icons/helmet';
 import colors from '@/common/styles/colors';
 import {
   AlertOctagon,
@@ -98,9 +97,6 @@ const getIcon = (name: IconName, variant?: Variant) => {
   }
   if (name === 'package') {
     return <Package size={iconSize} color={color} />;
-  }
-  if (name === 'helmet') {
-    return <HelmetIcon />;
   }
   return null;
 };

@@ -5,9 +5,8 @@ import { DefaultScrollView } from '@/common/components/containers/DefaultScrollV
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { Loading } from '@/common/components/views/Loading';
 import { getEndOfDay, getStartOfDay } from '@/common/date';
-import { DeliveryList } from '@/common/screens/deliveries/delivery-list';
-import { PeriodControl } from '@/common/screens/deliveries/history/period-control';
-import { ActivitySummary } from '@/common/screens/home/activity/activity-summary';
+import { OrderList } from '@/common/screens/orders/list/order-list';
+import { PeriodControl } from '@/common/screens/orders/period-control/period-control';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { isEqual } from 'lodash';
@@ -42,13 +41,7 @@ export default function DeliveriesHistory() {
     <DefaultScrollView style={{ ...screens.default }}>
       <DefaultView style={{ padding: paddings.lg }}>
         <PeriodControl onChange={changeHandler} />
-        <ActivitySummary
-          style={{ marginTop: paddings.lg }}
-          title="Resumo de corridas"
-          // entriesSummary={entriesSummary}
-          ordersSummary={ordersSummary}
-        />
-        <DeliveryList
+        <OrderList
           style={{ marginTop: paddings.lg }}
           emptyText="Não encontramos nenhuma corrida neste período."
           orders={orders}
