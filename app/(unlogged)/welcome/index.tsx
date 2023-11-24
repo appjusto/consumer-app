@@ -3,9 +3,6 @@ import { ArrowRightIconButton } from '@/common/components/buttons/icon/ArrowRigh
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { BulletsSteps } from '@/common/screens/unlogged/welcome/BulletsSteps';
 import { WelcomeStep1Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep1Image';
-import { WelcomeStep2Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep2Image';
-import { WelcomeStep3Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep3Image';
-import { WelcomeStep4Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep4Image';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -20,7 +17,7 @@ export default function Welcome() {
   const pagerViewRef = useRef<PagerView>(null);
   // state
   const [step, setStep] = useState(0);
-  const steps = 4;
+  const steps = 1;
   // track
   useTrackScreenView('Boas vindas');
   // UI
@@ -56,7 +53,7 @@ export default function Welcome() {
           ]}
           key="1"
         />
-        <WelcomeStep
+        {/* <WelcomeStep
           icon={<WelcomeStep2Image />}
           header={['Grana no bolso rapidinho']}
           text={[
@@ -79,7 +76,7 @@ export default function Welcome() {
             'Pra entrar no appjusto, você precisa ser um MEI. Ter o cadastro e pagar seus impostos em dia garantem direitos como auxílio financeiro em caso de afastamento, aposentadoria e possibilidade de empréstimos especiais.',
           ]}
           key="4"
-        />
+        /> */}
       </PagerView>
       <View style={{ padding: paddings.lg, marginBottom: 0 }}>
         <View
@@ -91,14 +88,14 @@ export default function Welcome() {
         >
           <View style={{ flexDirection: 'row' }}>
             <DefaultText size="xs">{`Passo ${step + 1} de ${steps}`}</DefaultText>
-            <BulletsSteps size={4} index={step} style={{ marginLeft: paddings.lg }} />
+            <BulletsSteps size={steps} index={step} style={{ marginLeft: paddings.lg }} />
           </View>
           <ArrowRightIconButton
             onPress={() => {
               if (step + 1 < steps) {
                 pagerViewRef?.current?.setPage(step + 1);
               } else {
-                router.replace('/sign-in');
+                router.replace('/home');
               }
             }}
           />

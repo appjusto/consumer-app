@@ -1,28 +1,41 @@
-import { useContextLocation } from '@/api/location/context/LocationContext';
+import colors, { ColorName } from '@/common/styles/colors';
 import { LatLng } from '@appjusto/types';
 import { RefObject, forwardRef, useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 import MapView, { MapViewProps, Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import { decodeRoutePolyline } from './decodeRoutePolyline';
-import { CourierMarker } from './markers/courier-marker';
 import { DestinationMarker } from './markers/destination-marker';
+import { LocationMarker } from './markers/location-marker';
 import { PackageMarker } from './markers/package-marker';
 import { NavigationIcons } from './navigation-icons/navigation-icons';
 
 interface Props extends MapViewProps {
+  location?: LatLng | null;
+  locationColor?: ColorName;
   origin?: LatLng | null;
   destination?: LatLng | null;
   polyline?: string;
   navigationTo?: LatLng | null;
+  onLocationUpdate?: (location: LatLng) => void;
 }
 
 export const DefaultMap = forwardRef(
   (
-    { origin, destination, polyline, navigationTo, style, children, ...props }: Props,
+    {
+      location,
+      locationColor,
+      origin,
+      destination,
+      polyline,
+      navigationTo,
+      style,
+      onLocationUpdate,
+      children,
+      ...props
+    }: Props,
     externalRef
   ) => {
     // context
-    const location = useContextLocation();
     // refs
     const internalRef = useRef<MapView>(null);
     const ref = (externalRef as RefObject<MapView>) || internalRef;
@@ -72,8 +85,16 @@ export const DefaultMap = forwardRef(
           {children}
           {/* https://github.com/react-native-maps/react-native-maps/issues/3823 */}
           {location ? (
-            <Marker key="location" coordinate={location} tracksViewChanges={false}>
-              <CourierMarker />
+            <Marker
+              key="location"
+              coordinate={location}
+              tracksViewChanges={false}
+              draggable
+              onDragEnd={(ev) => {
+                if (onLocationUpdate) onLocationUpdate(ev.nativeEvent.coordinate);
+              }}
+            >
+              <LocationMarker color={locationColor ? colors[locationColor] : colors.black} />
             </Marker>
           ) : null}
           {origin ? (

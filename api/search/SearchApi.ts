@@ -1,4 +1,4 @@
-import { AlgoliaConfig, Environment, Fleet, LatLng } from '@appjusto/types';
+import { AlgoliaConfig, Environment, LatLng } from '@appjusto/types';
 import algoliasearch, { SearchClient, SearchIndex } from 'algoliasearch/lite';
 import { SearchFilter, SearchKind, SearchOrder } from './types';
 
@@ -13,7 +13,6 @@ export default class SearchApi {
   private products: SearchIndex;
   private productsByPrice: SearchIndex;
   private productsByTotalSold: SearchIndex;
-  private fleets: SearchIndex;
 
   constructor(config: AlgoliaConfig, env: Environment) {
     this.client = algoliasearch(config.appId, config.apiKey);
@@ -32,7 +31,6 @@ export default class SearchApi {
     this.products = this.client.initIndex(`${env}_products`);
     this.productsByPrice = this.client.initIndex(`${env}_products_price_asc`);
     this.productsByTotalSold = this.client.initIndex(`${env}_products_totalSold_desc`);
-    this.fleets = this.client.initIndex(`${env}_fleets`);
   }
 
   private createFilters(kind: SearchKind, filters?: SearchFilter[]) {
@@ -93,14 +91,6 @@ export default class SearchApi {
       hitsPerPage,
     });
     return result;
-  }
-
-  searchFleets(query: string = '', page?: number, hitsPerPage: number = 10) {
-    return this.fleets.search<Fleet>(query, {
-      page,
-      filters: 'type:public',
-      hitsPerPage,
-    });
   }
 
   clearCache() {

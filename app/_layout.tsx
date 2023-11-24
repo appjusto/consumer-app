@@ -1,6 +1,5 @@
 import { ApiProvider } from '@/api/ApiContext';
 import { AnalyticsProvider } from '@/api/analytics/context/AnalyticsContext';
-import { LocationProvider } from '@/api/location/context/LocationContext';
 import { PlatformProvider } from '@/api/platform/context/PlatformContext';
 import { PreferencesProvider } from '@/api/preferences/context/PreferencesContext';
 import { AuthProvider } from '@/common/auth/AuthContext';
@@ -85,9 +84,7 @@ export default function RootLayout() {
                   <RoutesProvider>
                     <AnalyticsProvider>
                       <PreferencesProvider>
-                        <LocationProvider>
-                          <Slot />
-                        </LocationProvider>
+                        <Slot />
                       </PreferencesProvider>
                     </AnalyticsProvider>
                   </RoutesProvider>

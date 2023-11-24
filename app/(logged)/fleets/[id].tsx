@@ -3,7 +3,6 @@ import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { shareFleet } from '@/api/fleets/shareFleet';
 import { useObserveFleet } from '@/api/fleets/useObserveFleet';
-import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -23,7 +22,6 @@ export default function FleetDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   // context
   const api = useContextApi();
-  const profile = useContextProfile();
   const showToast = useShowToast();
   // state
   const fleet = useObserveFleet(params.id);
@@ -43,7 +41,7 @@ export default function FleetDetailScreen() {
   };
   // UI
   if (!fleet) return <Loading />;
-  const usingFleet = profile?.fleetsIds.includes(fleet.id);
+  const usingFleet = false;
 
   return (
     <DefaultScrollView style={{ ...screens.default }}>

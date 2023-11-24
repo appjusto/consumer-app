@@ -13,6 +13,8 @@ export type DefaultInputProps = TextInput['props'] &
     subtitle?: string;
     size?: keyof typeof typography;
     limit?: number;
+    leftView?: React.ReactNode;
+    rightView?: React.ReactNode;
     containerStyle?: StyleProp<ViewStyle> | undefined;
     inputStyle?: StyleProp<TextStyle> | undefined;
     titleStyle?: StyleProp<TextStyle> | undefined;
@@ -29,6 +31,8 @@ export const DefaultInput = forwardRef(
       editable,
       size,
       limit,
+      leftView,
+      rightView,
       style,
       containerStyle,
       inputStyle,
@@ -77,6 +81,8 @@ export const DefaultInput = forwardRef(
           <View
             style={[
               {
+                flexDirection: 'row',
+                alignItems: 'center',
                 marginTop: paddings.xs,
                 ...borders.default,
                 padding: paddings.md,
@@ -86,10 +92,12 @@ export const DefaultInput = forwardRef(
               containerStyle,
             ]}
           >
+            {leftView}
             <TextInput
               ref={ref}
               style={[
                 {
+                  flex: 1,
                   ...typography[size ?? 'md'],
                   color: editable ? colors.black : colors.neutral700,
                 },
@@ -111,6 +119,7 @@ export const DefaultInput = forwardRef(
               value={value}
               {...props}
             />
+            {rightView}
           </View>
         </Pressable>
         {limit ? (

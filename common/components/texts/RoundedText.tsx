@@ -5,16 +5,17 @@ import { Text, View } from 'react-native';
 import { DefaultTextProps } from './DefaultText';
 
 interface Options extends DefaultTextProps {
-  icon?: React.ReactNode;
+  leftView?: React.ReactNode;
 }
 
-export function RoundedText({ icon, style, color, size, bold, ...props }: Options) {
+export function RoundedText({ leftView, style, color, size, bold, ...props }: Options) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <View
         style={[
           {
             flexDirection: 'row',
+            alignItems: 'center',
             paddingVertical: paddings.xs,
             paddingHorizontal: paddings.sm,
             borderRadius: 100,
@@ -22,7 +23,7 @@ export function RoundedText({ icon, style, color, size, bold, ...props }: Option
           style,
         ]}
       >
-        {icon}
+        {leftView}
         <Text
           style={[
             {

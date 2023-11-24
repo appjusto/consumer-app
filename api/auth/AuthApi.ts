@@ -15,6 +15,10 @@ export default class AuthApi {
     return auth().onAuthStateChanged(handler);
   }
 
+  signInAnonymously() {
+    return auth().signInAnonymously();
+  }
+
   // login with phone
   async signInWithPhoneNumber(number: string, countryCode = '55') {
     const phone = `+${countryCode}${number}`;

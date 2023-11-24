@@ -36,21 +36,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY,
     },
     associatedDomains: [`applinks:${domain}`, 'appjusto.ngrok.io'],
-    infoPlist: {
-      UIBackgroundModes: ['remote-notification', 'location', 'audio', 'fetch', 'processing'],
-      BGTaskSchedulerPermittedIdentifiers: [
-        'com.transistorsoft.fetch',
-        'com.transistorsoft.customtask',
-      ],
-      NSUserTrackingUsageDescription:
-        'Precisamos da sua localização para enviar corridas próximas e monitorar a entrega.',
-      NSLocationWhenInUseUsageDescription:
-        'Precisamos da sua localização para enviar corridas próximas e monitorar a entrega.',
-      NSLocationAlwaysAndWhenInUseUsageDescription:
-        'Precisamos da sua localização para enviar corridas próximas e monitorar a entrega.',
-      NSMotionUsageDescription:
-        'Usamos detecção de movimentos para diminuir o uso de bateria e enviar sua localização apenas quando em movimento.',
-    },
   },
   android: {
     package: appBundlePackage(),
@@ -98,6 +83,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         icon: './assets/images/notification-icon.png',
         // sounds: ['./assets/sounds/order_request.wav'],
+      },
+    ],
+    [
+      'expo-location',
+      {
+        locationWhenInUsePermission:
+          'Utilizamos sua localização para exibir restaurantes próximos à você.',
       },
     ],
     [

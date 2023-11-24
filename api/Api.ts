@@ -12,6 +12,7 @@ import { getManifestExtra } from '../extra';
 import AuthApi from './auth/AuthApi';
 import ChatsApi from './chats/ChatsApi';
 import ComplaintsApi from './complaints/ComplaintsApi';
+import ConsumersApi from './consumer/ConsumersApi';
 import FleetsApi from './fleets/FleetsApi';
 import IncidentsApi from './incidents/IncidentsApi';
 import LedgerApi from './ledger/LedgerApi';
@@ -27,6 +28,7 @@ export default class Api {
   private _auth: AuthApi;
   private _platform: PlatformApi;
   private _profile: ProfileApi;
+  private _consumers: ConsumersApi;
   private _fleets: FleetsApi;
   private _search: SearchApi;
   private _orders: OrdersApi;
@@ -67,6 +69,7 @@ export default class Api {
     this._auth = new AuthApi();
     this._platform = new PlatformApi(this._auth);
     this._profile = new ProfileApi(this._auth);
+    this._consumers = new ConsumersApi(this._auth);
     this._fleets = new FleetsApi(this._profile);
     this._orders = new OrdersApi(this._auth);
     this._ledger = new LedgerApi(this._auth);
@@ -87,6 +90,10 @@ export default class Api {
 
   profile() {
     return this._profile;
+  }
+
+  consumers() {
+    return this._consumers;
   }
 
   fleets() {

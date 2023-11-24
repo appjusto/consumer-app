@@ -39,6 +39,7 @@ export default class ProfileApi {
   observeProfile(id: string, resultHandler: (profile: WithId<ConsumerProfile> | null) => void) {
     console.log('observeProfile', id);
     return profileRef(id).onSnapshot(async (snapshot) => {
+      if (!snapshot) return; // happens when profile is deleted
       console.log('profile.exists', snapshot.exists);
       if (!snapshot.exists) {
         await this.createProfile(id);

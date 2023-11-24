@@ -1,44 +1,46 @@
-import { useContextProfile } from '@/common/auth/AuthContext';
-import React, { useContext, useEffect, useState } from 'react';
+import { useFetchLastPlace } from '@/api/consumer/places/useFetchLastPlace';
+import { useTemporaryPlace } from '@/api/consumer/places/useTemporaryPlace';
+import { Place, WithId } from '@appjusto/types';
+import React from 'react';
 interface Props {
   children: React.ReactNode;
 }
 
 interface Value {
-  availabilityModalShown: boolean;
-  setAvailabilityModalShown: (value: boolean) => void;
+  currentPlace: WithId<Place> | Partial<Place> | null | undefined;
+  temporaryPlace: Partial<Place> | null | undefined;
+  updateTemporaryPlace: (place: Partial<Place>) => void;
 }
 
-const PreferencesContext = React.createContext<Value>({
-  availabilityModalShown: false,
-  setAvailabilityModalShown: (value) => {},
-});
+const PreferencesContext = React.createContext<Value | undefined>(undefined);
 
 export const PreferencesProvider = (props: Props) => {
-  // context
-  const profile = useContextProfile();
-  const [status, setStatus] = useState(profile?.status);
   // state
-  const [availabilityModalShown, setAvailabilityModalShown] = useState(false);
-  // side effects
-  useEffect(() => {
-    if (profile?.status !== status) {
-      if (status === 'unavailable' && profile?.status === 'available') {
-        setAvailabilityModalShown(true);
-      }
-      setStatus(profile?.status);
-    }
-  }, [status, profile]);
+  const lastPlace = useFetchLastPlace();
+  const { temporaryPlace, updateTemporaryPlace } = useTemporaryPlace(!lastPlace);
+  const currentPlace = lastPlace || temporaryPlace;
   // result
   return (
-    <PreferencesContext.Provider value={{ availabilityModalShown, setAvailabilityModalShown }}>
+    <PreferencesContext.Provider value={{ currentPlace, temporaryPlace, updateTemporaryPlace }}>
       {props.children}
     </PreferencesContext.Provider>
   );
 };
 
-export const useContextAvailabilityModal = () => {
-  const value = useContext(PreferencesContext);
+export const useContextCurrentPlace = () => {
+  const value = React.useContext(PreferencesContext);
   if (!value) throw new Error('Api fora de contexto.');
-  return value;
+  return value.currentPlace;
+};
+
+export const useContextTemporaryPlace = () => {
+  const value = React.useContext(PreferencesContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.temporaryPlace;
+};
+
+export const useContextUpdateTemporaryPlace = () => {
+  const value = React.useContext(PreferencesContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.updateTemporaryPlace;
 };
