@@ -26,17 +26,13 @@ const store = async (place: Partial<Place>) => {
   }
 };
 
-export const useTemporaryPlace = (enabled: boolean) => {
+export const useTemporaryPlace = () => {
   // handlers
   const [temporaryPlace, setTemporaryPlace] = useState<Partial<Place> | null>();
   // side effects
   useEffect(() => {
-    if (!enabled) {
-      setTemporaryPlace(null);
-      return;
-    }
     retrieve().then(setTemporaryPlace);
-  }, [enabled]);
+  }, []);
   // result
   const updateTemporaryPlace = useCallback((place: Partial<Place>) => {
     store(place);

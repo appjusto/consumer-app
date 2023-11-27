@@ -1,52 +1,70 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import {
-  useContextTemporaryPlace,
-  useContextUpdateTemporaryPlace,
-} from '@/api/preferences/context/PreferencesContext';
+import { useContextUpdateTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultMap } from '@/common/components/map/DefaultMap';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { LatLng } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
+type Params = {
+  main: string;
+  secondary: string;
+  description: string;
+  googlePlaceId?: string;
+};
+
 export default function ConfirmNewPlaceScreen() {
+  // params
+  const params = useLocalSearchParams<Params>();
   // context
   const api = useContextApi();
-  const temporaryPlace = useContextTemporaryPlace();
+  const showToast = useShowToast();
   const updateTemporaryPlace = useContextUpdateTemporaryPlace();
   // state
+  const [description, setDescription] = useState(params.description);
+  const [main, setMain] = useState(params.main);
+  const [secondary, setSecondary] = useState(params.secondary);
+  const [googlePlaceId, setGooglePlaceId] = useState(params.googlePlaceId);
   const [location, setLocation] = useState<LatLng | null>();
   // tracking
   useTrackScreenView('Novo endereço: confirmar');
   // side effects
   useEffect(() => {
-    if (!temporaryPlace?.address) return;
-    if (location) return;
-    api
-      .maps()
-      .googleGeocode(temporaryPlace.address.description)
-      .then(setLocation)
-      .catch((error) => {
-        console.info(error);
-        setLocation(null);
-      });
-  }, [api, temporaryPlace, location]);
+    if (!description) {
+      showToast('Não foi possível validar seu endereço. Tente novamente.', 'error');
+      router.back();
+    } else {
+      api
+        .maps()
+        .googleGeocode(description)
+        .then(setLocation)
+        .catch((error) => {
+          console.info(error);
+          showToast('Não foi possível validar seu endereço. Tente novamente.', 'error');
+          setLocation(null);
+          router.back();
+        });
+    }
+  }, [api, showToast, description]);
   // handlers
   const googleReverseGeocode = (value: LatLng) => {
-    if (!temporaryPlace) return;
     setLocation(null);
     api
       .maps()
       .googleReverseGeocode(value)
       .then((address) => {
         if (address) {
-          updateTemporaryPlace({ ...temporaryPlace, address });
+          setDescription(address.description);
+          setMain(address.main);
+          setSecondary(address.secondary);
+          setGooglePlaceId(address.googlePlaceId);
         }
       })
       .catch((error) => {
@@ -55,11 +73,12 @@ export default function ConfirmNewPlaceScreen() {
   };
   const confirmHandler = () => {
     if (!location) return;
-    updateTemporaryPlace({ ...temporaryPlace, location });
+    updateTemporaryPlace({ address: { description, main, secondary, googlePlaceId }, location });
     router.push('/places/complement');
   };
+  console.log('location', location);
   // UI
-  if (!temporaryPlace?.address) return null;
+
   if (location === undefined) return null;
   if (location === null) return null; // TODO: handle it
   return (
@@ -84,10 +103,10 @@ export default function ConfirmNewPlaceScreen() {
       <Stack.Screen options={{ title: 'Confirmar endereço' }} />
       <View style={{ padding: paddings.lg, alignItems: 'center' }}>
         <DefaultText size="md" color="black">
-          {temporaryPlace.address.main}
+          {main}
         </DefaultText>
         <DefaultText style={{ marginTop: paddings.xs }} size="sm" color="neutral700">
-          {temporaryPlace.address.secondary}
+          {secondary}
         </DefaultText>
       </View>
       <DefaultMap

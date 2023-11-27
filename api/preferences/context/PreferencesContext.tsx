@@ -17,8 +17,8 @@ const PreferencesContext = React.createContext<Value | undefined>(undefined);
 export const PreferencesProvider = (props: Props) => {
   // state
   const lastPlace = useFetchLastPlace();
-  const { temporaryPlace, updateTemporaryPlace } = useTemporaryPlace(!lastPlace);
-  const currentPlace = lastPlace || temporaryPlace;
+  const { temporaryPlace, updateTemporaryPlace } = useTemporaryPlace();
+  const currentPlace = lastPlace ?? temporaryPlace;
   // result
   return (
     <PreferencesContext.Provider value={{ currentPlace, temporaryPlace, updateTemporaryPlace }}>

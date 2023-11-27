@@ -1,7 +1,9 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { isPlaceValid } from '@/api/consumer/places/isPlaceValid';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
+import { useInitialState } from '@/common/react/useInitialState';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -11,19 +13,16 @@ import { View } from 'react-native';
 
 export default function HomeScreen() {
   // context
-  const currentPlace = useContextCurrentPlace();
+  const currentPlace = useInitialState(useContextCurrentPlace());
   // state
   // tracking
   useTrackScreenView('Início');
   // side effects
   useEffect(() => {
-    if (currentPlace === null) {
+    if (!currentPlace || !isPlaceValid(currentPlace)) {
       router.push('/places/new');
-    } else if (currentPlace && !currentPlace.location) {
-      router.push('/places/confirm');
     }
   }, [currentPlace]);
-  console.log('currentPlace', currentPlace);
   // handlers
   // UI
   return (
