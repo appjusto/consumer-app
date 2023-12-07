@@ -1,30 +1,29 @@
+import { getBusinessLogoStoragePath } from '@/api/business/BusinessApi';
 import { useImageURL } from '@/api/storage/useImageURL';
 import colors from '@/common/styles/colors';
-import { Cuisine, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
 import { Skeleton } from 'moti/skeleton';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
-  item: WithId<Cuisine> | null;
+  businessId: string;
+  size?: number;
   recyclingKey?: string;
 }
 
-const SIZE = 96;
-
-export const CuisineListItem = ({ style, item, recyclingKey, ...props }: Props) => {
+export const BusinessLogo = ({ businessId, size = 60, recyclingKey, style, ...props }: Props) => {
   // state
-  const url = useImageURL(item?.imagePath);
+  const url = useImageURL(getBusinessLogoStoragePath(businessId));
   // UI
   return (
-    <View style={{ height: SIZE, width: SIZE, borderRadius: 8, overflow: 'hidden' }}>
+    <View style={[{ borderRadius: 8, overflow: 'hidden' }, style]}>
       <Skeleton.Group show={!url}>
-        <Skeleton colors={[colors.neutral50, colors.neutral100]} width={SIZE} height={SIZE}>
+        <Skeleton colors={[colors.neutral50, colors.neutral100]} width={size} height={size}>
           <View>
             {url ? (
               <Image
                 recyclingKey={recyclingKey}
-                style={{ width: SIZE, height: SIZE }}
+                style={{ width: size, height: size }}
                 contentFit="cover"
                 source={{ uri: url }}
               />

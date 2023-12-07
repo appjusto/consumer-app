@@ -1,10 +1,9 @@
 import { getBannerStoragePath } from '@/api/banners/BannerApi';
-import { getDownloadURL } from '@/api/storage/getDownloadURL';
+import { useImageURL } from '@/api/storage/useImageURL';
 import colors from '@/common/styles/colors';
 import { Banner, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
 import { Skeleton } from 'moti/skeleton';
-import { useCallback, useEffect, useState } from 'react';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -19,26 +18,7 @@ export const BANNER_ITEM_HEIGHT = 100;
 
 export const BannerListItem = ({ style, item, recyclingKey, ...props }: Props) => {
   // state
-  const [url, setURL] = useState<string | null>();
-  // helpers
-  const fetchDownloadURL = useCallback(async () => {
-    if (!item) return;
-    try {
-      return await getDownloadURL(getBannerStoragePath(item, '_320x100'));
-    } catch (error: any) {
-      console.log(error);
-      return null;
-    }
-  }, [item]);
-  // side effects
-  useEffect(() => {
-    fetchDownloadURL()
-      .then(setURL)
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [fetchDownloadURL]);
-
+  const url = useImageURL(item ? getBannerStoragePath(item, '_320x100') : undefined);
   // UI
   return (
     <View
