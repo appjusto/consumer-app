@@ -6,6 +6,7 @@ import { DefaultView } from '@/common/components/containers/DefaultView';
 import { useInitialState } from '@/common/react/useInitialState';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
 import { BannerList } from '@/common/screens/home/banners/banner-list';
+import { BusinessList } from '@/common/screens/home/businesses/business-list';
 import { CuisineList } from '@/common/screens/home/cuisine/cuisine-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -34,6 +35,7 @@ export default function HomeScreen() {
         <DefaultScrollView>
           <CuisineList style={{ marginVertical: paddings.xl, marginLeft: paddings.lg }} />
           <BannerList style={{ marginBottom: paddings.lg, marginLeft: paddings.lg }} />
+          <BusinessList renderItem={undefined} data={undefined} />
         </DefaultScrollView>
       </DefaultView>
     </View>

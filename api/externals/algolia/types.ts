@@ -1,5 +1,4 @@
 export type SearchKind = 'restaurant' | 'product';
-
 export type SearchOrder =
   | 'distance'
   | 'price'
@@ -7,8 +6,7 @@ export type SearchOrder =
   | 'popularity'
   | 'average-discount'
   | 'reviews';
-
 export type SearchFilter = {
-  type: 'cuisine' | 'classification' | 'appjusto-only';
+  type: 'cuisine' | 'classification' | 'tag' | 'paymentMethod';
   value: string;
 };

@@ -1,6 +1,11 @@
 import { useEffect, useRef } from 'react';
 
-export const useDebounce = <T>(value: T, callback: (value: T) => void, delay = 500) => {
+export const useDebounce = <T>(
+  value: T,
+  callback: (value: T) => void,
+  enabled = true,
+  delay = 500
+) => {
   // refs
   const timeoutRef = useRef<NodeJS.Timeout>();
   const callbackRef = useRef(callback);
@@ -10,6 +15,7 @@ export const useDebounce = <T>(value: T, callback: (value: T) => void, delay = 5
   };
   // side effects
   useEffect(() => {
+    if (!enabled) return;
     let isMounted = true;
     cancel();
     const timeout = setTimeout(() => {
@@ -19,7 +25,7 @@ export const useDebounce = <T>(value: T, callback: (value: T) => void, delay = 5
       isMounted = false;
       clearTimeout(timeout);
     };
-  }, [value, delay, callback]);
+  }, [enabled, value, delay, callback]);
   // result
   return cancel;
 };

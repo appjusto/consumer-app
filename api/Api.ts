@@ -15,6 +15,7 @@ import BusinessApi from './business/BusinessApi';
 import ChatsApi from './chats/ChatsApi';
 import ComplaintsApi from './complaints/ComplaintsApi';
 import ConsumersApi from './consumer/ConsumersApi';
+import AlgoliaApi from './externals/algolia/AlgoliaApi';
 import FleetsApi from './fleets/FleetsApi';
 import IncidentsApi from './incidents/IncidentsApi';
 import LedgerApi from './ledger/LedgerApi';
@@ -22,7 +23,6 @@ import MapsApi from './maps/MapsApi';
 import OrdersApi from './orders/OrdersApi';
 import PlatformApi from './platform/PlatformApi';
 import ProfileApi from './profile/ProfileApi';
-import SearchApi from './search/SearchApi';
 
 const extra = getManifestExtra();
 
@@ -34,7 +34,7 @@ export default class Api {
   private _business: BusinessApi;
   private _banner: BannerApi;
   private _fleets: FleetsApi;
-  private _search: SearchApi;
+  private _algolia: AlgoliaApi;
   private _orders: OrdersApi;
   private _ledger: LedgerApi;
   private _maps: MapsApi;
@@ -80,7 +80,7 @@ export default class Api {
     this._orders = new OrdersApi(this._auth);
     this._ledger = new LedgerApi(this._auth);
     this._maps = new MapsApi();
-    this._search = new SearchApi(extra.algolia, extra.env);
+    this._algolia = new AlgoliaApi();
     this._chat = new ChatsApi(this._auth);
     this._incidents = new IncidentsApi(this._auth);
     this._complaints = new ComplaintsApi();
@@ -138,8 +138,8 @@ export default class Api {
     return this._complaints;
   }
 
-  search() {
-    return this._search;
+  algolia() {
+    return this._algolia;
   }
 }
 

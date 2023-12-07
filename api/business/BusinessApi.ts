@@ -1,19 +1,20 @@
 import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import {
-  Business,
   BusinessMenuMessage,
   Category,
   Complement,
   ComplementGroup,
   Ordering,
   Product,
+  PublicBusiness,
   WithId,
 } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 
 // firestore
-const businessesRef = () => firestore().collection('businesses');
+const businessesRef = () =>
+  firestore().collection('public').doc('subcollections').collection('businesses');
 const businessRef = (businessId: string) => businessesRef().doc(businessId);
 const businessCategoriesRef = (businessId: string) =>
   businessRef(businessId).collection('categories');
@@ -51,13 +52,13 @@ export default class BusinessApi {
     const query = businessesRef().where(fieldPath, '==', value).limit(1);
     const snapshot = await query.get();
     if (snapshot.empty) return null;
-    return documentAs<Business>(snapshot.docs[0]);
+    return documentAs<PublicBusiness>(snapshot.docs[0]);
   }
 
-  observeBusiness(businessId: string, resultHandler: (business: WithId<Business>) => void) {
+  observeBusiness(businessId: string, resultHandler: (business: WithId<PublicBusiness>) => void) {
     return businessRef(businessId).onSnapshot(
       (snapshot) => {
-        if (snapshot.exists) resultHandler(documentAs<Business>(snapshot));
+        if (snapshot.exists) resultHandler(documentAs<PublicBusiness>(snapshot));
       },
       (error) => {
         console.log(error);
