@@ -13,8 +13,10 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 
 // firestore
-const businessesRef = () =>
+const publicBusinessesRef = () =>
   firestore().collection('public').doc('subcollections').collection('businesses');
+const publicBusinessRef = (businessId: string) => publicBusinessesRef().doc(businessId);
+const businessesRef = () => firestore().collection('businesses');
 const businessRef = (businessId: string) => businessesRef().doc(businessId);
 const businessCategoriesRef = (businessId: string) =>
   businessRef(businessId).collection('categories');
@@ -26,7 +28,7 @@ const businessComplementsGroupsRef = (businessId: string) =>
 const businessComplementsRef = (businessId: string) =>
   businessRef(businessId).collection('complements');
 const businessMenuRef = (businessId: string) => businessRef(businessId).collection('menu');
-const businessMenuOrderingRef = (businessId: string, menuId: string = 'default') =>
+const businessMenuOrderRef = (businessId: string, menuId: string = 'default') =>
   businessMenuRef(businessId).doc(menuId);
 const businessMenuMessageRef = (businessId: string) => businessMenuRef(businessId).doc('message');
 
@@ -49,14 +51,14 @@ export default class BusinessApi {
   async fetchBusiness(value: string) {
     const r = /^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}$/.exec(value);
     const fieldPath = !r ? 'slug' : 'code';
-    const query = businessesRef().where(fieldPath, '==', value).limit(1);
+    const query = publicBusinessesRef().where(fieldPath, '==', value).limit(1);
     const snapshot = await query.get();
     if (snapshot.empty) return null;
     return documentAs<PublicBusiness>(snapshot.docs[0]);
   }
 
   observeBusiness(businessId: string, resultHandler: (business: WithId<PublicBusiness>) => void) {
-    return businessRef(businessId).onSnapshot(
+    return publicBusinessRef(businessId).onSnapshot(
       (snapshot) => {
         if (snapshot.exists) resultHandler(documentAs<PublicBusiness>(snapshot));
       },
@@ -71,10 +73,14 @@ export default class BusinessApi {
     return businessCategoriesRef(businessId)
       .where('enabled', '==', true)
       .onSnapshot(
-        (snapshot) => resultHandler(documentsAs<Category>(snapshot.docs)),
+        (snapshot) => {
+          if (snapshot.empty) resultHandler([]);
+          else resultHandler(documentsAs<Category>(snapshot.docs));
+        },
         (error) => {
           console.error(error);
           crashlytics().recordError(error);
+          resultHandler([]);
         }
       );
   }
@@ -83,10 +89,14 @@ export default class BusinessApi {
     return businessProductsRef(businessId)
       .where('enabled', '==', true)
       .onSnapshot(
-        (snapshot) => resultHandler(documentsAs<Product>(snapshot.docs)),
+        (snapshot) => {
+          if (snapshot.empty) resultHandler([]);
+          else resultHandler(documentsAs<Product>(snapshot.docs));
+        },
         (error) => {
           console.error(error);
           crashlytics().recordError(error);
+          resultHandler([]);
         }
       );
   }
@@ -112,10 +122,14 @@ export default class BusinessApi {
     return businessComplementsGroupsRef(businessId)
       .where('enabled', '==', true)
       .onSnapshot(
-        (snapshot) => resultHandler(documentsAs<ComplementGroup>(snapshot.docs)),
+        (snapshot) => {
+          if (snapshot.empty) resultHandler([]);
+          else resultHandler(documentsAs<ComplementGroup>(snapshot.docs));
+        },
         (error) => {
           console.error(error);
           crashlytics().recordError(error);
+          resultHandler([]);
         }
       );
   }
@@ -124,20 +138,24 @@ export default class BusinessApi {
     return businessComplementsRef(businessId)
       .where('enabled', '==', true)
       .onSnapshot(
-        (snapshot) => resultHandler(documentsAs<Complement>(snapshot.docs)),
+        (snapshot) => {
+          if (snapshot.empty) resultHandler([]);
+          else resultHandler(documentsAs<Complement>(snapshot.docs));
+        },
         (error) => {
           console.error(error);
           crashlytics().recordError(error);
+          resultHandler([]);
         }
       );
   }
 
-  observeMenuOrdering(
+  observeMenuOrder(
     businessId: string,
     resultHandler: (products: WithId<Ordering>) => void,
     menuId?: string
   ) {
-    return businessMenuOrderingRef(businessId, menuId).onSnapshot(
+    return businessMenuOrderRef(businessId, menuId).onSnapshot(
       (snapshot) => resultHandler(documentAs<Ordering>(snapshot)),
       (error) => {
         console.error(error);

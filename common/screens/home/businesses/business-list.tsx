@@ -8,7 +8,7 @@ import { BusinessListItem } from './business-list-item';
 
 interface Props<P> extends FlashListProps<P> {}
 
-export const BusinessList = ({ style, ...props }: Props<object>) => {
+export const BusinessList = ({ style, ...props }: Props<BusinessAlgolia>) => {
   // state
   const filters = useUniqState([]);
   const location = useUniqState<LatLng>({ latitude: -23.541516, longitude: -46.655214 });
@@ -23,6 +23,7 @@ export const BusinessList = ({ style, ...props }: Props<object>) => {
   // UI
   return (
     <FlashList
+      {...props}
       keyExtractor={(item) => item.objectID}
       data={results}
       renderItem={({ item, index }) => {
@@ -30,7 +31,7 @@ export const BusinessList = ({ style, ...props }: Props<object>) => {
           <Pressable
             onPress={() =>
               router.push({
-                pathname: '/(logged)/r/[id]',
+                pathname: '/(logged)/r/[id]/',
                 params: { id: item.objectID },
               })
             }
