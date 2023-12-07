@@ -19,6 +19,7 @@ export default function HomeScreen() {
   useTrackScreenView('Início');
   // side effects
   useEffect(() => {
+    console.log(currentPlace);
     if (!currentPlace || !isPlaceValid(currentPlace)) {
       router.push('/places/new');
     }

@@ -27,6 +27,16 @@ export default class ConsumersApi {
     }
   }
 
+  async createPlace(place: Partial<Place>) {
+    await placesRef()
+      .doc()
+      .update({
+        ...place,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      } as Place);
+  }
+
   async updatePlace(place: WithId<Place>) {
     await placeRef(place.id).update({
       ...place,

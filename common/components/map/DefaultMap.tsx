@@ -89,7 +89,7 @@ export const DefaultMap = forwardRef(
               key="location"
               coordinate={location}
               tracksViewChanges={false}
-              draggable
+              draggable={Boolean(onLocationUpdate)}
               onDragEnd={(ev) => {
                 if (onLocationUpdate) onLocationUpdate(ev.nativeEvent.coordinate);
               }}

@@ -10,6 +10,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
@@ -81,6 +82,8 @@ export default function NewPlacNumberScreen() {
           }
         })
         .catch((error) => {
+          console.info(error);
+          if (error instanceof Error) crashlytics().recordError(error);
           setLoading(false);
           showToast('Não foi possível validar seu endereço. Tente novamente.', 'error');
         });
