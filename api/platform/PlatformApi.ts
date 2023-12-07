@@ -1,7 +1,7 @@
 import { documentsAs } from '@/common/firebase/documentAs';
 import { getFirebaseRegion } from '@/extra';
 import {
-  Bank,
+  Cuisine,
   Issue,
   IssueType,
   PlatformAccess,
@@ -23,7 +23,7 @@ export const platformAccessRef = () => platformRef().doc('access');
 export const platformFeesRef = () => platformRef().doc('fees');
 // platform data
 export const platformDataRef = () => platformRef().doc('data');
-export const banksRef = () => platformDataRef().collection('banks');
+export const cuisinesRef = () => platformDataRef().collection('cuisines');
 export const issuesRef = () => platformDataRef().collection('issues');
 // platform logs
 export const platformLogsRef = () => platformRef().doc('logs');
@@ -59,9 +59,9 @@ export default class PlatformApi {
     return snapshot.data() as PlatformFees;
   }
 
-  async fetchBanks() {
-    const snapshot = await banksRef().orderBy('order', 'asc').get();
-    return documentsAs<Bank>(snapshot.docs);
+  async fetchCuisines() {
+    const snapshot = await cuisinesRef().orderBy('order', 'asc').get();
+    return documentsAs<Cuisine>(snapshot.docs);
   }
 
   async fetchIssues(type: IssueType) {

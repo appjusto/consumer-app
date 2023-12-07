@@ -10,6 +10,8 @@ import * as Application from 'expo-application';
 import { onSimulator } from '@/common/version/device';
 import { getManifestExtra } from '../extra';
 import AuthApi from './auth/AuthApi';
+import BannerApi from './banners/BannerApi';
+import BusinessApi from './business/BusinessApi';
 import ChatsApi from './chats/ChatsApi';
 import ComplaintsApi from './complaints/ComplaintsApi';
 import ConsumersApi from './consumer/ConsumersApi';
@@ -29,6 +31,8 @@ export default class Api {
   private _platform: PlatformApi;
   private _profile: ProfileApi;
   private _consumers: ConsumersApi;
+  private _business: BusinessApi;
+  private _banner: BannerApi;
   private _fleets: FleetsApi;
   private _search: SearchApi;
   private _orders: OrdersApi;
@@ -70,6 +74,8 @@ export default class Api {
     this._platform = new PlatformApi(this._auth);
     this._profile = new ProfileApi(this._auth);
     this._consumers = new ConsumersApi(this._auth);
+    this._business = new BusinessApi();
+    this._banner = new BannerApi();
     this._fleets = new FleetsApi(this._profile);
     this._orders = new OrdersApi(this._auth);
     this._ledger = new LedgerApi(this._auth);
@@ -94,6 +100,14 @@ export default class Api {
 
   consumers() {
     return this._consumers;
+  }
+
+  business() {
+    return this._business;
+  }
+
+  banner() {
+    return this._banner;
   }
 
   fleets() {

@@ -4,7 +4,9 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { useInitialState } from '@/common/react/useInitialState';
-import colors from '@/common/styles/colors';
+import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
+import { BannerList } from '@/common/screens/home/banners/banner-list';
+import { CuisineList } from '@/common/screens/home/cuisine/cuisine-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { router } from 'expo-router';
@@ -19,7 +21,6 @@ export default function HomeScreen() {
   useTrackScreenView('Início');
   // side effects
   useEffect(() => {
-    console.log(currentPlace);
     if (!currentPlace || !isPlaceValid(currentPlace)) {
       router.push('/places/new');
     }
@@ -29,16 +30,10 @@ export default function HomeScreen() {
   return (
     <View style={{ ...screens.default }}>
       <DefaultView style={screens.headless}>
+        <AdreessBar />
         <DefaultScrollView>
-          <View style={{ padding: paddings.lg }}></View>
-          <View
-            style={{
-              flex: 1,
-              paddingVertical: paddings.sm,
-              paddingHorizontal: paddings.lg,
-              backgroundColor: colors.neutral50,
-            }}
-          ></View>
+          <CuisineList style={{ marginVertical: paddings.xl, marginLeft: paddings.lg }} />
+          <BannerList style={{ marginBottom: paddings.lg, marginLeft: paddings.lg }} />
         </DefaultScrollView>
       </DefaultView>
     </View>

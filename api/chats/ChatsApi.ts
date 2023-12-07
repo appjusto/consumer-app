@@ -1,11 +1,12 @@
 import { documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { ChatMessage, WithId } from '@appjusto/types';
+import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import AuthApi from '../auth/AuthApi';
 
 const chatsRef = () => firestore().collection('chats');
-const chatRef = (id: string) => firestore().collection('chats').doc(id);
+const chatRef = (id: string) => chatsRef().doc(id);
 
 export default class ChatsApi {
   constructor(private auth: AuthApi) {}
@@ -15,13 +16,19 @@ export default class ChatsApi {
       .where('orderId', '==', orderId)
       .where('participantsIds', 'array-contains', this.auth.getUserId())
       .orderBy('timestamp', 'asc');
-    return query.onSnapshot(async (snapshot) => {
-      if (snapshot.empty) {
-        resultHandler([]);
-      } else {
-        resultHandler(documentsAs<ChatMessage>(snapshot.docs));
+    return query.onSnapshot(
+      (snapshot) => {
+        if (snapshot.empty) {
+          resultHandler([]);
+        } else {
+          resultHandler(documentsAs<ChatMessage>(snapshot.docs));
+        }
+      },
+      (error) => {
+        console.error(error);
+        crashlytics().recordError(error);
       }
-    });
+    );
   }
 
   async sendMessage(message: Partial<ChatMessage>) {
