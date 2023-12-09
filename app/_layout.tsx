@@ -77,7 +77,7 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ActionSheetProvider>
         <ToastProvider>
-          <ApiProvider url={null}>
+          <ApiProvider>
             <AuthProvider>
               <PlatformProvider>
                 <NotificationProvider>

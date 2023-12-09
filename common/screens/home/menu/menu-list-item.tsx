@@ -1,4 +1,4 @@
-import { getProductDownloadURL } from '@/api/business/menu/getProductDownloadURL';
+import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
@@ -8,7 +8,6 @@ import paddings from '@/common/styles/paddings';
 import { Product, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
 import { Skeleton } from 'moti/skeleton';
-import { useCallback, useEffect, useState } from 'react';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -21,25 +20,7 @@ const LOGO_SIZE = 100;
 
 export const MenuListItem = ({ businessId, item, recyclingKey, style, ...props }: Props) => {
   // state
-  const [url, setURL] = useState<string | null>();
-  // helpers
-  const fetchDownloadURL = useCallback(async () => {
-    if (!item) return;
-    try {
-      return await getProductDownloadURL(businessId, item);
-    } catch (error: any) {
-      console.log(error);
-      return null;
-    }
-  }, [businessId, item]);
-  // side effects
-  useEffect(() => {
-    fetchDownloadURL()
-      .then(setURL)
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [fetchDownloadURL]);
+  const url = useProductImageURI(businessId, item);
   // UI
   return (
     <View style={[{ borderWidth: 0 }, style]}>

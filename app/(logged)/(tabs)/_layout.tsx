@@ -42,7 +42,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="(home)"
         options={{
           title: 'Início',
           headerShown: false,
@@ -68,7 +68,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="deliveries"
+        name="deliveries/index"
         options={{
           title: 'Seus ganhos',
           headerShown: false,

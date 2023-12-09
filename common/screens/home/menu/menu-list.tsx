@@ -30,7 +30,7 @@ export const MenuList = ({ businessId, style, ...props }: Props<string | WithId<
           <Pressable
             onPress={() =>
               router.push({
-                pathname: '/(logged)/r/[id]/p/[productId]',
+                pathname: '/(logged)/(tabs)/(home)/r/[id]/p/[productId]',
                 params: { id: businessId, productId: item.id },
               })
             }

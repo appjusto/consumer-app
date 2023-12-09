@@ -5,15 +5,13 @@ const ApiContext = React.createContext<Value>({ api });
 
 interface Props {
   children: React.ReactNode;
-  url?: string | null;
 }
 
 interface Value {
   api: Api;
-  url?: string | null;
 }
 
-export const ApiProvider = ({ url, children }: Props) => {
+export const ApiProvider = ({ children }: Props) => {
   // result
   return <ApiContext.Provider value={{ api }}>{children}</ApiContext.Provider>;
 };

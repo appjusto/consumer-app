@@ -10,6 +10,7 @@ interface Value {
   currentPlace: WithId<Place> | Partial<Place> | null | undefined;
   temporaryPlace: Partial<Place> | null | undefined;
   updateTemporaryPlace: (place: Partial<Place>) => void;
+  clearTemporaryPlace: () => void;
 }
 
 const PreferencesContext = React.createContext<Value | undefined>(undefined);
@@ -17,11 +18,13 @@ const PreferencesContext = React.createContext<Value | undefined>(undefined);
 export const PreferencesProvider = (props: Props) => {
   // state
   const lastPlace = useFetchLastPlace();
-  const { temporaryPlace, updateTemporaryPlace } = useTemporaryPlace();
+  const { temporaryPlace, updateTemporaryPlace, clearTemporaryPlace } = useTemporaryPlace();
   const currentPlace = lastPlace ?? temporaryPlace;
   // result
   return (
-    <PreferencesContext.Provider value={{ currentPlace, temporaryPlace, updateTemporaryPlace }}>
+    <PreferencesContext.Provider
+      value={{ currentPlace, temporaryPlace, updateTemporaryPlace, clearTemporaryPlace }}
+    >
       {props.children}
     </PreferencesContext.Provider>
   );
@@ -43,4 +46,10 @@ export const useContextUpdateTemporaryPlace = () => {
   const value = React.useContext(PreferencesContext);
   if (!value) throw new Error('Api fora de contexto.');
   return value.updateTemporaryPlace;
+};
+
+export const useContextClearTemporaryPlace = () => {
+  const value = React.useContext(PreferencesContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.clearTemporaryPlace;
 };

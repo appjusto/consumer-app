@@ -1,9 +1,11 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { isPlaceValid } from '@/api/consumer/places/isPlaceValid';
-import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
+import {
+  useContextClearTemporaryPlace,
+  useContextCurrentPlace,
+} from '@/api/preferences/context/PreferencesContext';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
-import { useInitialState } from '@/common/react/useInitialState';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
 import { BannerList } from '@/common/screens/home/banners/banner-list';
 import { BusinessList } from '@/common/screens/home/businesses/business-list';
@@ -16,17 +18,21 @@ import { View } from 'react-native';
 
 export default function HomeScreen() {
   // context
-  const currentPlace = useInitialState(useContextCurrentPlace());
-  // state
+  const currentPlace = useContextCurrentPlace();
+  const clearCurrentPlace = useContextClearTemporaryPlace();
   // tracking
   useTrackScreenView('Início');
   // side effects
   useEffect(() => {
-    if (!currentPlace || !isPlaceValid(currentPlace)) {
+    if (currentPlace === undefined) return;
+    if (currentPlace === null) {
       router.push('/places/new');
+    } else if (!isPlaceValid(currentPlace)) {
+      clearCurrentPlace();
     }
-  }, [currentPlace]);
-  // handlers
+  }, [clearCurrentPlace, currentPlace]);
+  // logs
+  console.log('currentPlace', currentPlace);
   // UI
   return (
     <View style={{ ...screens.default }}>

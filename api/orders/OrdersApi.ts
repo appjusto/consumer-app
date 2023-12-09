@@ -21,34 +21,27 @@ const reviewRef = (id: string) => reviewsRef().doc(id);
 // API
 export interface ObserveOrdersOptions {
   statuses?: OrderStatus[];
+  businessId?: string;
   from?: Date;
   to?: Date;
+  limit?: number;
 }
 
-interface CompleteDeliveryOptions {
-  orderId: string;
-  handshakeResponse?: string;
-  deliveredTo?: string;
-  comment?: string;
-}
 export default class OrdersApi {
   constructor(private auth: AuthApi) {}
   // observe orders
   observeOrders(options: ObserveOrdersOptions, resultHandler: (orders: WithId<Order>[]) => void) {
     console.log('observeOrders', options);
-    const { statuses, from, to } = options;
+    const { statuses, businessId, from, to, limit } = options;
     let query = ordersRef()
       .where('consumer.id', '==', this.auth.getUserId())
       .orderBy('createdOn', 'desc');
-    if (statuses) {
-      query = query.where('status', 'in', statuses);
-    }
-    if (from) {
-      query = query.where('createdOn', '>', fromDate(from));
-    }
-    if (to) {
-      query = query.where('createdOn', '<', fromDate(to));
-    }
+    if (statuses) query = query.where('status', 'in', statuses);
+    if (businessId) query = query.where('business.id', '==', businessId);
+    if (from) query = query.where('createdOn', '>', fromDate(from));
+    if (to) query = query.where('createdOn', '<', fromDate(to));
+    if (limit) query = query.limit(limit);
+
     return query.onSnapshot(
       async (snapshot) => {
         console.log('observeOrders snapshot', snapshot.size);

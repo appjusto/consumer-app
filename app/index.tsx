@@ -22,9 +22,9 @@ export default function Index() {
   useEffect(() => {
     if (!router) return;
     if (!logged) return;
-    // if (isAnonymous) router.replace('/welcome');
-    if (isAnonymous) router.replace('/home');
-    else if (situation === 'approved') router.replace('/home');
+    // if (isAnonymous) router.replace('/(unlogged)/welcome');
+    if (isAnonymous) router.replace('/(logged)/(tabs)/(home)/');
+    else if (situation === 'approved') router.replace('/(logged)/(tabs)/(home)/');
   }, [situation, logged, isAnonymous, router]);
   // UI
   return <Loading />;

@@ -26,6 +26,14 @@ const store = async (place: Partial<Place>) => {
   }
 };
 
+const clear = async () => {
+  try {
+    await AsyncStorage.removeItem(KEY);
+  } catch (error: unknown) {
+    console.info(error);
+  }
+};
+
 export const useTemporaryPlace = () => {
   // handlers
   const [temporaryPlace, setTemporaryPlace] = useState<Partial<Place> | null>();
@@ -38,5 +46,9 @@ export const useTemporaryPlace = () => {
     store(place);
     setTemporaryPlace(place);
   }, []);
-  return { temporaryPlace, updateTemporaryPlace };
+  const clearTemporaryPlace = async () => {
+    await clear();
+    await retrieve().then(setTemporaryPlace);
+  };
+  return { temporaryPlace, updateTemporaryPlace, clearTemporaryPlace };
 };
