@@ -118,7 +118,7 @@ export const PeriodControl = ({
         />
         <OnlyIconButton
           icon={<ChevronLeft size={16} color={colors.neutral800} />}
-          iconStyle={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
+          style={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
           onPress={() => previousPeriod()}
         />
         <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(true)}>
@@ -140,7 +140,7 @@ export const PeriodControl = ({
         </Pressable>
         <OnlyIconButton
           icon={<ChevronRight size={16} color={colors.neutral800} />}
-          iconStyle={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
+          style={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
           disabled={!nextEnabled}
           onPress={() => nextPeriod()}
         />

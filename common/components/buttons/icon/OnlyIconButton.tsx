@@ -6,8 +6,9 @@ type OnlyIconProps = ViewProps & {
   icon: React.ReactNode;
   variant?: 'default' | 'circle';
   disabled?: boolean;
+  disabledIcon?: React.ReactNode;
+  disabledStyle?: StyleProp<ViewStyle>;
   size?: number;
-  iconStyle?: StyleProp<ViewStyle>;
   onPress: () => void;
 };
 
@@ -16,35 +17,33 @@ export const OnlyIconButton = ({
   onPress,
   variant,
   disabled,
+  disabledIcon,
+  disabledStyle,
   size,
   style,
-  iconStyle,
   ...props
 }: OnlyIconProps) => {
   const realSize = size ? size : variant === 'default' ? 32 : 44;
   return (
-    <View style={[style]}>
-      <Pressable onPress={onPress} {...props}>
-        {({ pressed }) => (
-          <View
-            style={[
-              {
-                width: realSize,
-                height: realSize,
-                ...borders.default,
-                borderColor: colors.neutral200,
-                borderRadius: variant === 'circle' ? realSize / 2 : realSize / 6,
-                backgroundColor: pressed ? colors.neutral100 : colors.white,
-                justifyContent: 'center',
-                alignItems: 'center',
-              },
-              iconStyle,
-            ]}
-          >
-            {icon}
-          </View>
-        )}
-      </Pressable>
-    </View>
+    <Pressable
+      style={[
+        {
+          width: realSize,
+          height: realSize,
+          ...borders.default,
+          borderColor: colors.neutral200,
+          borderRadius: variant === 'circle' ? realSize / 2 : realSize / 6,
+          backgroundColor: disabled ? colors.neutral100 : colors.white,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        style,
+      ]}
+      onPress={onPress}
+      disabled={disabled}
+      {...props}
+    >
+      {({ pressed }) => <View style={{}}>{disabled && disabledIcon ? disabledIcon : icon}</View>}
+    </Pressable>
   );
 };

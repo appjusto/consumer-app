@@ -18,7 +18,7 @@ interface Props extends ViewProps {
 
 const LOGO_SIZE = 100;
 
-export const MenuListItem = ({ businessId, item, recyclingKey, style, ...props }: Props) => {
+export const ProductListItem = ({ businessId, item, recyclingKey, style, ...props }: Props) => {
   // state
   const url = useProductImageURI(businessId, item);
   // UI

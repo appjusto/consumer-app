@@ -56,7 +56,8 @@ export const DefaultButton = ({
             style={[
               {
                 ...borders.default,
-                padding: paddings.sm,
+                paddingVertical: paddings.sm,
+                paddingHorizontal: size === 'lg' ? paddings.lg : paddings.sm,
                 backgroundColor: backgroundColor(pressed),
                 borderColor: borderColor(pressed),
                 alignItems: 'center',

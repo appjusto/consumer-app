@@ -8,7 +8,7 @@ import { DefaultScrollView } from '@/common/components/containers/DefaultScrollV
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
 import { BannerList } from '@/common/screens/home/banners/banner-list';
-import { BusinessList } from '@/common/screens/home/businesses/business-list';
+import { BusinessList } from '@/common/screens/home/businesses/list/business-list';
 import { CuisineList } from '@/common/screens/home/cuisine/cuisine-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';

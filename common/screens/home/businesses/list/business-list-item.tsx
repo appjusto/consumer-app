@@ -3,8 +3,8 @@ import { RoundedText } from '@/common/components/texts/RoundedText';
 import paddings from '@/common/styles/paddings';
 import { BusinessAlgolia } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
+import { BusinessLogo } from '../logo/business-logo';
 import { BusinessListItemReview } from './business-list-item-reviews';
-import { BusinessLogo } from './business-logo';
 
 interface Props extends ViewProps {
   item: BusinessAlgolia;

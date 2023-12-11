@@ -22,6 +22,7 @@ export default function Index() {
   useEffect(() => {
     if (!router) return;
     if (!logged) return;
+    console.log('index', isAnonymous, situation);
     // if (isAnonymous) router.replace('/(unlogged)/welcome');
     if (isAnonymous) router.replace('/(logged)/(tabs)/(home)/');
     else if (situation === 'approved') router.replace('/(logged)/(tabs)/(home)/');

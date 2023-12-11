@@ -32,7 +32,7 @@ export const AspectReview = ({ label, type, disabled, style, onChange, ...props 
       <View style={{ flexDirection: 'row' }}>
         <OnlyIconButton
           variant="circle"
-          iconStyle={{
+          style={{
             backgroundColor: type === 'positive' ? colors.primary100 : colors.neutral50,
             borderWidth: 0,
           }}
@@ -42,12 +42,12 @@ export const AspectReview = ({ label, type, disabled, style, onChange, ...props 
           }}
         />
         <OnlyIconButton
-          style={{ marginLeft: paddings.lg }}
-          variant="circle"
-          iconStyle={{
+          style={{
+            marginLeft: paddings.lg,
             backgroundColor: type === 'negative' ? colors.warning100 : colors.neutral50,
             borderWidth: 0,
           }}
+          variant="circle"
           icon={<ThumbsDown color={type === 'negative' ? colors.warning500 : colors.neutral700} />}
           onPress={() => {
             if (onChange && !disabled && type !== 'negative') onChange('negative');

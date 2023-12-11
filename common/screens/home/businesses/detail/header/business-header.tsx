@@ -5,7 +5,7 @@ import paddings from '@/common/styles/paddings';
 import { Image } from 'expo-image';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
-import { BusinessLogo } from '../../businesses/business-logo';
+import { BusinessLogo } from '../../logo/business-logo';
 interface Props extends ViewProps {
   businessId: string;
 }
@@ -13,7 +13,7 @@ interface Props extends ViewProps {
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = 150;
 
-export const MenuListBusinessHeader = ({ businessId, style, ...props }: Props) => {
+export const BusinessHeader = ({ businessId, style, ...props }: Props) => {
   // state
   const coverUrl = useImageURL(getBusinessCoverStoragePath(businessId));
   // UI

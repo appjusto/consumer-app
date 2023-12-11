@@ -196,8 +196,7 @@ export default function ChatScreen() {
               />
             </View>
             <OnlyIconButton
-              style={{ marginLeft: paddings.sm }}
-              iconStyle={{ backgroundColor: colors.black }}
+              style={{ marginLeft: paddings.sm, backgroundColor: colors.black }}
               icon={<Send color={colors.white} />}
               onPress={sendMessage}
             />

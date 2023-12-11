@@ -24,6 +24,7 @@ export const RoutesProvider = (props: Props) => {
   // side effects
   // routing
   useEffect(() => {
+    console.log('routes', isAnonymous, situation);
     if (situation === undefined) return;
     if (isAnonymous) {
       if (restricted) router.replace('/sign-in');

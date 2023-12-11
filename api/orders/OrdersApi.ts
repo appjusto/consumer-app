@@ -1,12 +1,21 @@
 import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { getFirebaseRegion } from '@/extra';
-import { Order, OrderReview, OrderStatus, WithId } from '@appjusto/types';
+import {
+  Order,
+  OrderItem,
+  OrderReview,
+  OrderStatus,
+  Place,
+  PublicBusiness,
+  WithId,
+} from '@appjusto/types';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import { omit } from 'lodash';
 import AuthApi from '../auth/AuthApi';
 import { fromDate } from '../firebase/timestamp';
+import { addBusinessToOrder } from './business/toOrderBusiness';
 
 // functions
 const region = getFirebaseRegion();
@@ -65,8 +74,35 @@ export default class OrdersApi {
     );
   }
 
+  async createFoodOrder(
+    business: WithId<PublicBusiness>,
+    items: OrderItem[] = [],
+    destination: Place
+  ) {
+    const payload = addBusinessToOrder(
+      {
+        type: 'food',
+        status: 'quote',
+        fulfillment: 'delivery',
+        dispatchingStatus: 'idle',
+        dispatchingState: null,
+        consumer: {
+          id: this.auth.getUserId()!,
+        },
+        destination,
+        createdOn: serverTimestamp(),
+        items,
+      },
+      business
+    );
+    const ref = ordersRef().doc();
+    await ref.set(payload);
+    return ref.id;
+  }
+
   async updateOrder(orderId: string, update: Partial<Order>) {
     console.log('updating order', orderId, JSON.stringify(update));
+    // TODO: track
     await orderRef(orderId).update(update);
   }
 

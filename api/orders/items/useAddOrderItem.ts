@@ -13,6 +13,7 @@ import {
 import { nanoid } from 'nanoid/non-secure';
 import { useEffect, useState } from 'react';
 import { hasSatisfiedAllGroups } from './complements/hasSatisfiedAllGroups';
+import { toOrderItemComplement } from './complements/toOrderItemComplement';
 import { totalComplements } from './complements/totalComplements';
 
 export const useAddOrderItem = (productId: string, itemId?: string) => {
@@ -39,39 +40,45 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
   }, [itemId, quote, product]);
   // result
   // complements
-  const addComplement = (group: WithId<ComplementGroup>, complement: WithId<Complement>) => {
-    setComplements([
-      ...complements,
-      {
-        name: complement.name,
-        complementId: complement.id,
-        price: complement.price,
-        externalId: complement.externalId ?? '',
-        group: {
-          id: group.id,
-          name: group.name,
-          externalId: group.externalId ?? '',
-        },
-        quantity: 1,
-      },
-    ]);
-  };
-  const removeComplement = (complementId: string) => {
-    setComplements(complements.filter((c) => c.complementId !== complementId));
-  };
-  const updateComplementQuantity = (complementId: string, delta: number) => {
-    const index = complements.findIndex((c) => c.complementId === complementId);
-    const complement = complements[index];
-    const quantity = complement.quantity + delta;
-    if (quantity === 0) removeComplement(complementId);
-    else {
-      setComplements([
-        ...complements.slice(0, index),
-        { ...complement, quantity },
-        ...complements.slice(index + 1),
-      ]);
+  const updateComplementQuantity = (
+    group: WithId<ComplementGroup>,
+    complement: WithId<Complement>,
+    delta: number
+  ) => {
+    const index = complements.findIndex((c) => c.complementId === complement.id);
+    // add
+    if (index === -1) {
+      if (delta > 0) {
+        setComplements([...complements, toOrderItemComplement(group, complement, delta)]);
+      }
+    } else {
+      const orderComplement = complements[index];
+      const quantity = Math.min(Math.max(orderComplement.quantity + delta, 0), group.maximum);
+      // remove
+      if (quantity === 0)
+        setComplements(complements.filter((c) => c.complementId !== complement.id));
+      // update
+      else {
+        setComplements([
+          ...complements.slice(0, index),
+          { ...orderComplement, quantity },
+          ...complements.slice(index + 1),
+        ]);
+      }
     }
   };
+  const toggleComplement = (
+    group: WithId<ComplementGroup>,
+    complement: WithId<Complement>,
+    added: boolean
+  ) => {
+    setComplements(
+      complements
+        .filter((c) => c.group.id !== group.id)
+        .concat(added ? [toOrderItemComplement(group, complement)] : [])
+    );
+  };
+
   const getComplementQuantity = (complementId: string) =>
     complements.find((c) => c.complementId === complementId)?.quantity ?? 0;
 
@@ -83,7 +90,6 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
 
   const getOrderItem = (): OrderItem | null => {
     if (!product) return null;
-    if (!canAddItem) return null;
     return {
       id: itemId ?? nanoid(),
       product: {
@@ -101,10 +107,11 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
   // result
   return {
     canAddItem,
+    quantity,
+    setQuantity,
     canAddComplement,
-    addComplement,
-    removeComplement,
     updateComplementQuantity,
+    toggleComplement,
     getComplementQuantity,
     getTotalComplements,
     getOrderItem,
