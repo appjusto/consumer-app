@@ -8,7 +8,7 @@ import { Loading } from '@/common/components/views/Loading';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { FlashList } from '@shopify/flash-list';
-import { router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 import { BusinessFooter } from './footer/business-footer';
 import { BusinessHeader } from './header/business-header';
@@ -30,6 +30,7 @@ export const BusinessDetail = ({ style, ...props }: Props) => {
   if (!business || !products) return <Loading />;
   return (
     <View style={{ ...screens.default }}>
+      <Stack.Screen options={{ title: business.name }} />
       <FlashList
         {...props}
         data={products}

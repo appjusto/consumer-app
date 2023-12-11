@@ -106,6 +106,10 @@ export default class OrdersApi {
     await orderRef(orderId).update(update);
   }
 
+  async deleteOrder(orderId: string) {
+    await orderRef(orderId).delete();
+  }
+
   // reviews
   observeOrderReview(orderId: string, resultHandler: (orders: WithId<OrderReview> | null) => void) {
     const query = reviewsRef()

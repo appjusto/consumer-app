@@ -14,10 +14,7 @@ export default function BusinessLayout() {
   // UI
   return (
     <BusinessProvider businessId={businessId}>
-      <Stack>
-        <Stack.Screen name="index" options={{ title: 'Restaurante' }} />
-        <Stack.Screen name="p/[productId]" options={{ title: 'Produto' }} />
-      </Stack>
+      <Stack />
     </BusinessProvider>
   );
 }

@@ -5,11 +5,15 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
+import { router, useLocalSearchParams } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {}
 
 export const BusinessFooter = ({ style, ...props }: Props) => {
+  // params
+  const params = useLocalSearchParams<{ id: string }>();
+  const businessId = params.id;
   // context
   const quote = useContextBusinessQuote();
   // UI
@@ -43,7 +47,16 @@ export const BusinessFooter = ({ style, ...props }: Props) => {
             >{` / ${totalItems} ite${totalItems > 1 ? 'ns' : 'm'}`}</DefaultText>
           </View>
         </View>
-        <DefaultButton title="Ver sacola" size="lg" onPress={() => null} />
+        <DefaultButton
+          title="Ver sacola"
+          size="lg"
+          onPress={() =>
+            router.push({
+              pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout',
+              params: { id: businessId },
+            })
+          }
+        />
       </View>
     </View>
   );

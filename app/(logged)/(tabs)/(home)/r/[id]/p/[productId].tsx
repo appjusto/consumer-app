@@ -18,7 +18,7 @@ export default function ProductScreen() {
   // tracking
   useTrackScreenView('Produto', { businessId, productId });
   // logs
-  console.log('quote', quote);
+  // console.log('quote', quote);
   // UI
   if (!product || quote === undefined) return <Loading />;
   return <ProductDetail product={product} />;

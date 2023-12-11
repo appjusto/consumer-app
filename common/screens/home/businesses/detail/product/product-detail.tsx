@@ -18,7 +18,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place, Product, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
 import { ProductComplements } from '../complement/product-complements';
@@ -58,14 +58,14 @@ export const ProductDetail = ({ product, style, ...props }: Props) => {
     if (!profile) return;
     if (!currentPlace) return;
     if (!business) return;
-    if (!orderItem) return;
+    if (!orderItem?.id) return;
     if (!quote) {
       // create order
       await api.orders().createFoodOrder(business, [orderItem], currentPlace as Place);
     } else {
       // update order
       const updatedOrder =
-        quantity > 0 ? addItemToOrder(quote, orderItem) : removeItemFromOrder(quote, orderItem);
+        quantity > 0 ? addItemToOrder(quote, orderItem) : removeItemFromOrder(quote, orderItem.id);
       await api.orders().updateOrder(quote.id, updatedOrder);
     }
     router.back();
@@ -75,6 +75,7 @@ export const ProductDetail = ({ product, style, ...props }: Props) => {
   // UI
   return (
     <View style={[{ ...screens.default }, style]} {...props}>
+      <Stack.Screen options={{ title: product.name }} />
       <DefaultScrollView>
         {/* image */}
         <Skeleton.Group show={!url}>

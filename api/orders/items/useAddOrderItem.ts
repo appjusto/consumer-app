@@ -98,6 +98,7 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
         price: product.price,
         categoryName: category?.name ?? '',
         externalId: product.externalId ?? '',
+        imageUrl: product.imageUrls?.find(() => true),
       },
       quantity,
       notes,

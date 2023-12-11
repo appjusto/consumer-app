@@ -1,12 +1,12 @@
 import { useContextApi } from '@/api/ApiContext';
-import { Product, ProductAlgolia, WithId } from '@appjusto/types';
+import { OrderItem, Product, ProductAlgolia, WithId } from '@appjusto/types';
 import storage from '@react-native-firebase/storage';
 import { useEffect, useState } from 'react';
 import { getProductImageStoragePath } from '../../BusinessApi';
 
 export const useProductImageURI = (
   businessId: string | undefined,
-  product: WithId<Product> | ProductAlgolia | undefined,
+  product: WithId<Product> | ProductAlgolia | OrderItem | undefined,
   type: 'listing' | 'detail' = 'listing'
 ) => {
   // context
@@ -19,6 +19,9 @@ export const useProductImageURI = (
     if (!product) return;
     if ('imageUrls' in product && product.imageUrls?.length) {
       setProductURL(product.imageUrls.find(() => true)!);
+    } else if ('product' in product) {
+      if (product.product.imageUrl) setProductURL(product.product.imageUrl);
+      else setProductId(product.product.id);
     } else if ('id' in product) {
       setProductId(product.id);
     } else {
@@ -29,6 +32,7 @@ export const useProductImageURI = (
     if (!businessId) return;
     if (!productId) return;
     const size = type === 'listing' ? '288x288' : '1008x720';
+    console.log(businessId, productId);
     storage()
       .ref(getProductImageStoragePath(businessId, productId, size))
       .getDownloadURL()

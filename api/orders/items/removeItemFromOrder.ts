@@ -1,8 +1,8 @@
-import { Order, OrderItem } from '@appjusto/types';
+import { Order } from '@appjusto/types';
 
-export const removeItemFromOrder = (order: Order, item: OrderItem): Order => {
+export const removeItemFromOrder = (order: Order, itemId: string): Order => {
   if (!order?.items) return order;
-  const index = order.items.findIndex((i) => i.id === item.id);
+  const index = order.items.findIndex((i) => i.id === itemId);
   if (index === -1) return order;
   return {
     ...order,

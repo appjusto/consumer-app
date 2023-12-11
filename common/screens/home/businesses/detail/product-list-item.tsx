@@ -2,21 +2,17 @@ import { useProductImageURI } from '@/api/business/menu/products/useProductImage
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
-import colors from '@/common/styles/colors';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import { Product, WithId } from '@appjusto/types';
-import { Image } from 'expo-image';
-import { Skeleton } from 'moti/skeleton';
 import { View, ViewProps } from 'react-native';
+import { ProductImage } from './product-image';
 
 interface Props extends ViewProps {
   businessId: string;
   item: WithId<Product>;
   recyclingKey?: string;
 }
-
-const LOGO_SIZE = 100;
 
 export const ProductListItem = ({ businessId, item, recyclingKey, style, ...props }: Props) => {
   // state
@@ -47,26 +43,12 @@ export const ProductListItem = ({ businessId, item, recyclingKey, style, ...prop
           <DefaultText color="primary900">{formatCurrency(item.price)}</DefaultText>
         </View>
         {/* image */}
-        <View style={{ marginLeft: paddings.sm, borderRadius: 8, overflow: 'hidden' }}>
-          <Skeleton.Group show={!url}>
-            <Skeleton
-              colors={[colors.neutral50, colors.neutral100]}
-              width={LOGO_SIZE}
-              height={LOGO_SIZE}
-            >
-              <View>
-                {url ? (
-                  <Image
-                    recyclingKey={recyclingKey}
-                    style={{ width: LOGO_SIZE, height: LOGO_SIZE }}
-                    contentFit="cover"
-                    source={{ uri: url }}
-                  />
-                ) : null}
-              </View>
-            </Skeleton>
-          </Skeleton.Group>
-        </View>
+        <ProductImage
+          style={{ marginLeft: paddings.sm }}
+          url={url}
+          size={100}
+          recyclingKey={recyclingKey}
+        />
       </View>
       <HR style={{ marginHorizontal: paddings.lg }} />
     </View>
