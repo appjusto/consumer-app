@@ -2,6 +2,7 @@ import { EmptyIcon } from '@/common/components/modals/error/icon';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
+import { Stack } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {}
@@ -10,6 +11,7 @@ export const EmptyCart = ({ style, ...props }: Props) => {
   // UI
   return (
     <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, style]} {...props}>
+      <Stack.Screen options={{ title: 'Sua sacola' }} />
       <EmptyIcon />
       <DefaultText style={{ marginTop: paddings.lg }} size="lg" color="neutral800">
         Sua sacola está vazia

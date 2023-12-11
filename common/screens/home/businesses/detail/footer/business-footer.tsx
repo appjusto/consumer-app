@@ -1,5 +1,5 @@
 import { useContextBusinessQuote } from '@/api/business/context/business-context';
-import { getOrderTotal } from '@/api/orders/total/getOrderTotal';
+import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
@@ -39,7 +39,7 @@ export const BusinessFooter = ({ style, ...props }: Props) => {
             Total sem a entrega
           </DefaultText>
           <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
-            <DefaultText size="md">{formatCurrency(getOrderTotal(quote))}</DefaultText>
+            <DefaultText size="md">{formatCurrency(getOrderItemsTotal(quote))}</DefaultText>
             <DefaultText
               style={{ marginLeft: paddings.xs }}
               size="xs"

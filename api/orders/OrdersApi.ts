@@ -1,11 +1,14 @@
 import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
+import { getAppVersion } from '@/common/version';
 import { getFirebaseRegion } from '@/extra';
 import {
+  Fare,
   Order,
   OrderItem,
   OrderReview,
   OrderStatus,
+  PayableWith,
   Place,
   PublicBusiness,
   WithId,
@@ -19,7 +22,7 @@ import { addBusinessToOrder } from './business/toOrderBusiness';
 
 // functions
 const region = getFirebaseRegion();
-const cancelOrder = firebase.app().functions(region).httpsCallable('cancelOrder');
+const getOrderQuotes = firebase.app().functions(region).httpsCallable('getOrderQuotes');
 
 // firestore
 const ordersRef = () => firestore().collection('orders');
@@ -27,7 +30,6 @@ const orderRef = (id: string) => ordersRef().doc(id);
 const reviewsRef = () => firestore().collection('reviews');
 const reviewRef = (id: string) => reviewsRef().doc(id);
 
-// API
 export interface ObserveOrdersOptions {
   statuses?: OrderStatus[];
   businessId?: string;
@@ -108,6 +110,17 @@ export default class OrdersApi {
 
   async deleteOrder(orderId: string) {
     await orderRef(orderId).delete();
+  }
+
+  async getOrderQuotes(orderId: string, paymentMethod: PayableWith) {
+    console.log('getOrderQuotes');
+    const response = await getOrderQuotes({
+      orderId,
+      paymentMethod,
+      useCredits: true,
+      meta: { version: getAppVersion() },
+    });
+    return response.data as Fare[];
   }
 
   // reviews
