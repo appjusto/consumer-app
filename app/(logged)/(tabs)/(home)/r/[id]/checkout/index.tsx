@@ -6,11 +6,11 @@ import { DefaultScrollView } from '@/common/components/containers/DefaultScrollV
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
-import { BusinessFooter } from '@/common/screens/home/businesses/detail/footer/business-footer';
+import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -24,6 +24,7 @@ export default function OrderCheckoutScreen() {
   // tracking
   useTrackScreenView('Checkout: sacola');
   // side effects
+  // update order fare
   useEffect(() => {
     if (!quote) return;
     if (!fares?.length) return;
@@ -31,7 +32,12 @@ export default function OrderCheckoutScreen() {
       api.orders().updateOrder(quote.id, { fare: fares[0] });
     }
   }, [api, fares, quote]);
-  console.log('orderId', quote?.id);
+  // go back when order becomes empty
+  useEffect(() => {
+    if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
+  }, [quote]);
+  // logs
+  // console.log('orderId', quote?.id);
   // UI
   if (!quote) return <EmptyCart />;
   return (
@@ -49,7 +55,7 @@ export default function OrderCheckoutScreen() {
         <OrderTotalBreakdown order={quote} />
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
-      <BusinessFooter variant="checkout" />
+      <CartButton variant="checkout" />
     </View>
   );
 }

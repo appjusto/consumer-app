@@ -6,6 +6,6 @@ export const hasSatisfiedGroup = (
   complements: OrderItemComplement[]
 ) => {
   const total = totalComplements(group, complements);
-  console.log(group.name, group.minimum, group.maximum, total);
+  // console.log(group.name, group.minimum, group.maximum, total);
   return total >= group.minimum && total <= group.maximum;
 };

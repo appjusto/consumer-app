@@ -69,7 +69,6 @@ export const ProductDetail = ({ style, ...props }: Props) => {
     if (!orderItem?.id) return;
     if (!quote) {
       // create order
-      console.log(orderItem);
       await api.orders().createFoodOrder(business, [orderItem], currentPlace as Place);
     } else {
       // update order

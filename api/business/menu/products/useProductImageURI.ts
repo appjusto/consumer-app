@@ -32,7 +32,6 @@ export const useProductImageURI = (
     if (!businessId) return;
     if (!productId) return;
     const size = type === 'listing' ? '288x288' : '1008x720';
-    console.log(businessId, productId);
     storage()
       .ref(getProductImageStoragePath(businessId, productId, size))
       .getDownloadURL()

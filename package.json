@@ -25,7 +25,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@appjusto/dates": "^1.0.1",
+    "@appjusto/dates": "^2.0.0",
     "@appjusto/menu": "^1.0.0",
     "@appjusto/types": "^23.11.14",
     "@expo/react-native-action-sheet": "^4.0.1",

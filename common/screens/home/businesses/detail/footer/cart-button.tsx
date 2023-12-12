@@ -13,7 +13,7 @@ interface Props extends ViewProps {
   variant: 'business' | 'checkout';
 }
 
-export const BusinessFooter = ({ variant, style, ...props }: Props) => {
+export const CartButton = ({ variant, style, ...props }: Props) => {
   // params
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;

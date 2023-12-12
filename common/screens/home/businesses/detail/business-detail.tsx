@@ -10,7 +10,7 @@ import screens from '@/common/styles/screens';
 import { FlashList } from '@shopify/flash-list';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
-import { BusinessFooter } from './footer/business-footer';
+import { CartButton } from './footer/cart-button';
 import { BusinessHeader } from './header/business-header';
 import { ProductListItem } from './product-list-item';
 
@@ -37,7 +37,6 @@ export const BusinessDetail = ({ style, ...props }: Props) => {
         keyExtractor={(item) => (typeof item === 'string' ? item : item.id)}
         ListHeaderComponent={<BusinessHeader businessId={businessId} />}
         renderItem={({ item, index }) => {
-          console.log(item);
           if (typeof item === 'string')
             return (
               <View style={{ marginTop: paddings.xl, marginLeft: paddings.lg }}>
@@ -59,7 +58,7 @@ export const BusinessDetail = ({ style, ...props }: Props) => {
         }}
         estimatedItemSize={78}
       />
-      <BusinessFooter variant="business" />
+      <CartButton variant="business" />
     </View>
   );
 };
