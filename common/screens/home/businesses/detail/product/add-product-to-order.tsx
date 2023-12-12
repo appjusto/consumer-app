@@ -10,7 +10,7 @@ import { View, ViewProps } from 'react-native';
 interface Props extends ViewProps {
   quantity: number;
   total: number;
-  zeroable?: boolean;
+  editing?: boolean;
   disabled?: boolean;
   onSetQuantity: (quantity: number) => void;
   onAddItemToOrder: () => void;
@@ -19,7 +19,7 @@ interface Props extends ViewProps {
 export const AddProductToOrder = ({
   quantity,
   total,
-  zeroable,
+  editing,
   disabled,
   style,
   onSetQuantity,
@@ -49,15 +49,18 @@ export const AddProductToOrder = ({
         >
           <QuantityButton
             quantity={quantity}
-            // TODO: depends if is on order already
-            minValue={1}
+            minValue={editing ? 0 : 1}
             size={42}
             textColor="black"
             onIncrement={() => onSetQuantity(quantity + 1)}
             onDecrement={() => onSetQuantity(quantity - 1)}
           />
           <DefaultButton
-            title={quantity > 0 ? `Adicionar ${formatCurrency(total)}` : 'Remover'}
+            title={
+              quantity > 0
+                ? `${editing ? 'Atualizar' : 'Adicionar'} ${formatCurrency(total)}`
+                : 'Remover'
+            }
             size="lg"
             disabled={disabled}
             onPress={onAddItemToOrder}

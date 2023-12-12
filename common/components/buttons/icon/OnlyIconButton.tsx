@@ -15,7 +15,7 @@ type OnlyIconProps = ViewProps & {
 export const OnlyIconButton = ({
   icon,
   onPress,
-  variant,
+  variant = 'default',
   disabled,
   disabledIcon,
   disabledStyle,

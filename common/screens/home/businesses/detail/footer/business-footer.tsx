@@ -1,4 +1,5 @@
 import { useContextBusinessQuote } from '@/api/business/context/business-context';
+import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -8,9 +9,11 @@ import paddings from '@/common/styles/paddings';
 import { router, useLocalSearchParams } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  variant: 'business' | 'checkout';
+}
 
-export const BusinessFooter = ({ style, ...props }: Props) => {
+export const BusinessFooter = ({ variant, style, ...props }: Props) => {
   // params
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
@@ -18,6 +21,12 @@ export const BusinessFooter = ({ style, ...props }: Props) => {
   const quote = useContextBusinessQuote();
   // UI
   if (!quote) return null;
+  const totalLabel = quote.fare?.courier?.value
+    ? variant === 'business'
+      ? 'sem a entrega'
+      : 'com a entrega'
+    : '';
+  const total = variant === 'business' ? getOrderItemsTotal(quote) : getOrderTotalCost(quote);
   const totalItems = quote.items?.length ? quote.items.length : 0;
   return (
     <View style={[{}, style]} {...props}>
@@ -36,10 +45,10 @@ export const BusinessFooter = ({ style, ...props }: Props) => {
       <View style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
         <View>
           <DefaultText size="xs" color="neutral700">
-            Total sem a entrega
+            {`Total ${totalLabel}`}
           </DefaultText>
           <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
-            <DefaultText size="md">{formatCurrency(getOrderItemsTotal(quote))}</DefaultText>
+            <DefaultText size="md">{formatCurrency(total)}</DefaultText>
             <DefaultText
               style={{ marginLeft: paddings.xs }}
               size="xs"
@@ -48,11 +57,15 @@ export const BusinessFooter = ({ style, ...props }: Props) => {
           </View>
         </View>
         <DefaultButton
-          title="Ver sacola"
+          title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
           size="lg"
+          disabled={variant === 'checkout' && !quote.fare}
           onPress={() =>
             router.push({
-              pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout',
+              pathname:
+                variant === 'business'
+                  ? '/(logged)/(tabs)/(home)/r/[id]/checkout/'
+                  : '/(logged)/(tabs)/(home)/r/[id]/checkout/delivery',
               params: { id: businessId },
             })
           }

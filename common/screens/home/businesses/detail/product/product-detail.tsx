@@ -1,6 +1,8 @@
 import { useContextApi } from '@/api/ApiContext';
+import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import {
   useContextBusiness,
+  useContextBusinessProduct,
   useContextBusinessQuote,
 } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
@@ -12,34 +14,38 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { Loading } from '@/common/components/views/Loading';
 import colors from '@/common/styles/colors';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Place, Product, WithId } from '@appjusto/types';
+import { Place } from '@appjusto/types';
 import { Image } from 'expo-image';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
 import { ProductComplements } from '../complement/product-complements';
 import { AddProductToOrder } from './add-product-to-order';
 
-interface Props extends ViewProps {
-  product: WithId<Product>;
-}
+interface Props extends ViewProps {}
 
 const HEIGHT = 200;
 const WIDTH = Dimensions.get('screen').width;
 
-export const ProductDetail = ({ product, style, ...props }: Props) => {
+export const ProductDetail = ({ style, ...props }: Props) => {
+  // params
+  const params = useLocalSearchParams<{ id: string; productId: string; itemId: string }>();
+  const businessId = params.id;
+  const productId = params.productId;
+  const itemId = params.itemId;
   // context
   const api = useContextApi();
   const profile = useContextProfile();
   const currentPlace = useContextCurrentPlace();
   const quote = useContextBusinessQuote();
   const business = useContextBusiness();
-  const businessId = business?.id;
   // state
+  const product = useContextBusinessProduct(productId);
   const {
     canAddItem,
     quantity,
@@ -50,9 +56,11 @@ export const ProductDetail = ({ product, style, ...props }: Props) => {
     updateComplementQuantity,
     toggleComplement,
     getOrderItem,
-  } = useAddOrderItem(product.id);
+  } = useAddOrderItem(productId, itemId);
   const url = useProductImageURI(businessId, product);
   const orderItem = getOrderItem();
+  // tracking
+  useTrackScreenView('Produto', { businessId, productId });
   // handlers
   const updateOrder = async () => {
     if (!profile) return;
@@ -74,6 +82,7 @@ export const ProductDetail = ({ product, style, ...props }: Props) => {
   const addToOrderDisabled = !profile || !currentPlace || !business || !orderItem || !canAddItem;
   // console.log(!profile, !currentPlace, !business, !orderItem, !canAddItem);
   // UI
+  if (!product || quote === undefined) return <Loading />;
   return (
     <View style={[{ ...screens.default }, style]} {...props}>
       <Stack.Screen options={{ title: product.name }} />
@@ -116,6 +125,7 @@ export const ProductDetail = ({ product, style, ...props }: Props) => {
       <AddProductToOrder
         quantity={quantity}
         total={getItemTotal(getOrderItem())}
+        editing={Boolean(itemId)}
         disabled={addToOrderDisabled}
         onSetQuantity={(value) => setQuantity(value)}
         onAddItemToOrder={updateOrder}

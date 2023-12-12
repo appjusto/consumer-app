@@ -1,6 +1,7 @@
 import { useObserveBusinessQuote } from '@/api/orders/useObserveBusinessQuote';
 import { Category, Order, Product, PublicBusiness, WithId } from '@appjusto/types';
-import React from 'react';
+import { memoize } from 'lodash';
+import React, { useMemo } from 'react';
 import { useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
 import { useObserveBusiness } from '../useObserveBusiness';
 
@@ -23,20 +24,19 @@ export const BusinessProvider = ({ businessId, children }: Props) => {
   // state
   const business = useObserveBusiness(businessId);
   const quote = useObserveBusinessQuote(businessId);
-  const {
-    categoriesWithProducts,
-    loaded,
-    groupsWithComplements,
-    getProductCategory,
-    getComplementGroup,
-  } = useObserveBusinessMenu(businessId);
-  const products = loaded
-    ? categoriesWithProducts.reduce(
-        (r, category) => [...r, category.name, ...category.items],
-        [] as (string | WithId<Product>)[]
-      )
-    : undefined;
-  const getProduct = (productId: string) => {
+  const { categoriesWithProducts, loaded, groupsWithComplements, getProductCategory } =
+    useObserveBusinessMenu(businessId);
+  const products = useMemo(
+    () =>
+      loaded
+        ? categoriesWithProducts.reduce(
+            (r, category) => [...r, category.name, ...category.items],
+            [] as (string | WithId<Product>)[]
+          )
+        : undefined,
+    [loaded, categoriesWithProducts]
+  );
+  const getProduct = memoize((productId: string) => {
     const product = products?.find((value) => typeof value === 'object' && value.id === productId);
     if (typeof product !== 'object') return undefined;
     if (!product.complementsEnabled) return product;
@@ -47,7 +47,7 @@ export const BusinessProvider = ({ businessId, children }: Props) => {
         ({ id }) => product.complementsGroupsIds?.includes(id)
       ),
     } as WithId<Product>;
-  };
+  });
   // result
   return (
     <BusinessContext.Provider value={{ quote, business, products, getProduct, getProductCategory }}>

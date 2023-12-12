@@ -6,11 +6,13 @@ import { DefaultScrollView } from '@/common/components/containers/DefaultScrollV
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
+import { BusinessFooter } from '@/common/screens/home/businesses/detail/footer/business-footer';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
   // context
@@ -20,7 +22,7 @@ export default function OrderCheckoutScreen() {
   const fares = useOrderFares(quote, 'credit_card');
   const [additionalInfo, setAdditionalInfo] = useState('');
   // tracking
-  useTrackScreenView('Checkout');
+  useTrackScreenView('Checkout: sacola');
   // side effects
   useEffect(() => {
     if (!quote) return;
@@ -33,17 +35,21 @@ export default function OrderCheckoutScreen() {
   // UI
   if (!quote) return <EmptyCart />;
   return (
-    <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Sua sacola' }} />
-      <BusinessCart />
-      <DefaultInput
-        style={{ padding: paddings.lg }}
-        title="Informações adicionais"
-        placeholder="Adicione observações do pedido"
-        value={additionalInfo}
-        onChangeText={setAdditionalInfo}
-      />
-      <OrderTotalBreakdown order={quote} />
-    </DefaultScrollView>
+    <View style={{ ...screens.default }}>
+      <DefaultScrollView>
+        <Stack.Screen options={{ title: 'Sua sacola' }} />
+        <BusinessCart />
+        <DefaultInput
+          style={{ padding: paddings.lg }}
+          title="Informações adicionais"
+          placeholder="Adicione observações do pedido"
+          value={additionalInfo}
+          onChangeText={setAdditionalInfo}
+        />
+        <OrderTotalBreakdown order={quote} />
+      </DefaultScrollView>
+      <View style={{ flex: 1 }} />
+      <BusinessFooter variant="checkout" />
+    </View>
   );
 }

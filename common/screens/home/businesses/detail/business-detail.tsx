@@ -59,7 +59,7 @@ export const BusinessDetail = ({ style, ...props }: Props) => {
         }}
         estimatedItemSize={78}
       />
-      <BusinessFooter />
+      <BusinessFooter variant="business" />
     </View>
   );
 };

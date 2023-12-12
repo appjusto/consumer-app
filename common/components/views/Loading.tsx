@@ -5,12 +5,13 @@ import { ActivityIndicator } from 'react-native';
 import { DefaultView } from '../containers/DefaultView';
 
 interface Props {
+  color?: ColorName;
   backgroundColor?: ColorName;
   title?: string;
   size?: number | 'small' | 'large' | undefined;
 }
 
-export function Loading({ backgroundColor, title, size = 'large' }: Props) {
+export function Loading({ color, backgroundColor, title, size = 'large' }: Props) {
   return (
     <DefaultView
       style={{
@@ -21,7 +22,7 @@ export function Loading({ backgroundColor, title, size = 'large' }: Props) {
       }}
     >
       {title ? <Stack.Screen options={{ title }} /> : null}
-      <ActivityIndicator size={size} color={colors.primary900} />
+      <ActivityIndicator size={size} color={color ? colors[color] : colors.primary900} />
     </DefaultView>
   );
 }

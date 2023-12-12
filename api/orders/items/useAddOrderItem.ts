@@ -33,6 +33,7 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
     if (!quote) return;
     if (!product) return;
     const item = quote.items?.find((i) => i.id === itemId);
+    console.log('item', item);
     if (!item) return;
     setComplements(item.complements ?? []);
     setQuantity(item.quantity);

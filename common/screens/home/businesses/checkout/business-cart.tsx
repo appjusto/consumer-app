@@ -14,10 +14,11 @@ export const BusinessCart = ({ style, ...props }: Props) => {
   const api = useContextApi();
   const quote = useContextBusinessQuote();
   const orderId = quote?.id;
+  const clearable = quote?.items?.length && quote.items.length > 0;
   // handlers
   const deleteOrder = async () => {
     if (!orderId) return;
-    await api.orders().deleteOrder(orderId);
+    await api.orders().updateOrder(orderId, { items: [] });
     router.back();
   };
   // UI
@@ -26,11 +27,12 @@ export const BusinessCart = ({ style, ...props }: Props) => {
     <View style={[{}, style]} {...props}>
       <Stack.Screen
         options={{
-          headerRight: () => (
-            <Pressable onPress={deleteOrder}>
-              <DefaultText color="error900">Limpar</DefaultText>
-            </Pressable>
-          ),
+          headerRight: () =>
+            clearable ? (
+              <Pressable onPress={deleteOrder}>
+                <DefaultText color="error900">Limpar</DefaultText>
+              </Pressable>
+            ) : null,
         }}
       />
       <BusinessCartHeader business={quote.business} />

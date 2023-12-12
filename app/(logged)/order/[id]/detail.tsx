@@ -1,7 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { getOrderBaseRevenue } from '@/api/orders/revenue/getOrderBaseRevenue';
-import { getOrderExtraRevenue } from '@/api/orders/revenue/getOrderExtraRevenue';
-import { getOrderTipRevenue } from '@/api/orders/revenue/getOrderTip';
+
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -28,9 +26,9 @@ export default function OrderDetailScreen() {
   // UI
   if (!order) return <Loading title="Detalhe da corrida" />;
   const { status, code } = order;
-  const baseRevenue = getOrderBaseRevenue(order);
-  const tipRevenue = getOrderTipRevenue(order);
-  const extraRevenue = getOrderExtraRevenue(order);
+  const baseRevenue = 0;
+  const tipRevenue = 0;
+  const extraRevenue = 0;
 
   return (
     <DefaultScrollView style={{ ...screens.default }}>

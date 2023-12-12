@@ -1,11 +1,9 @@
 import { Order } from '@appjusto/types';
-import { getOrderBaseRevenue } from './getOrderBaseRevenue';
-import { getOrderExtraRevenue } from './getOrderExtraRevenue';
-import { getOrderTipRevenue } from './getOrderTip';
+import { getOrderItemsTotal } from '../total/getOrderItemsTotal';
+import { getOrderDeliveryCost } from './getOrderDeliveryCost';
 
-export const getOrderRevenue = (order: Order) => {
-  let value = getOrderBaseRevenue(order);
-  value += getOrderTipRevenue(order);
-  value += getOrderExtraRevenue(order);
+export const getOrderTotalCost = (order: Order) => {
+  let value = getOrderItemsTotal(order);
+  value += getOrderDeliveryCost(order);
   return value;
 };

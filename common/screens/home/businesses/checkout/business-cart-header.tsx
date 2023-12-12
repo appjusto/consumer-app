@@ -25,7 +25,9 @@ export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
     >
       <View>
         <DefaultText color="neutral700">Seu pedido em</DefaultText>
-        <DefaultText size="lg">{business.name}</DefaultText>
+        <DefaultText style={{ marginTop: paddings.xs }} size="lg">
+          {business.name}
+        </DefaultText>
       </View>
       <Pressable
         onPress={() =>
