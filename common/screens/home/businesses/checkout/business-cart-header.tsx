@@ -5,11 +5,12 @@ import { router } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
-  business: OrderBusiness;
+  business: OrderBusiness | undefined | null;
 }
 
 export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
   // UI
+  if (!business) return null;
   return (
     <View
       style={[
@@ -17,7 +18,6 @@ export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: paddings.lg,
         },
         style,
       ]}

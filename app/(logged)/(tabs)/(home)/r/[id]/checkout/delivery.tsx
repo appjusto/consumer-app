@@ -9,15 +9,18 @@ import { PreparationMode } from '@/common/screens/home/businesses/checkout/deliv
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
+  // params
+  const params = useLocalSearchParams<{ id: string }>();
+  const businessId = params.id;
   // context
   const quote = useContextBusinessQuote();
   // tracking
-  useTrackScreenView('Checkout: entrega');
+  useTrackScreenView('Checkout: entrega', { businessId });
   // side effects
   // go back when order becomes empty
   useEffect(() => {
@@ -37,7 +40,15 @@ export default function OrderCheckoutDeliveryScreen() {
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
-      <CartButton variant="checkout" />
+      <CartButton
+        variant="checkout"
+        onPress={() =>
+          router.push({
+            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/payment',
+            params: { id: businessId },
+          })
+        }
+      />
     </View>
   );
 }

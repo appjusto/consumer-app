@@ -6,14 +6,15 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   variant: 'business' | 'checkout';
+  onPress: () => void;
 }
 
-export const CartButton = ({ variant, style, ...props }: Props) => {
+export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
   // params
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
@@ -60,15 +61,7 @@ export const CartButton = ({ variant, style, ...props }: Props) => {
           title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
           size="lg"
           disabled={variant === 'checkout' && !quote.fare}
-          onPress={() =>
-            router.push({
-              pathname:
-                variant === 'business'
-                  ? '/(logged)/(tabs)/(home)/r/[id]/checkout/'
-                  : '/(logged)/(tabs)/(home)/r/[id]/checkout/delivery',
-              params: { id: businessId },
-            })
-          }
+          onPress={onPress}
         />
       </View>
     </View>

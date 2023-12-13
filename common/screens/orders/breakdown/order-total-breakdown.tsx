@@ -46,7 +46,7 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
   const total = fare.total - credits;
   // UI
   return (
-    <View style={[{ padding: paddings.lg, borderWidth: 0 }, style]} {...props}>
+    <View style={[{ borderWidth: 0 }, style]} {...props}>
       {/* p2p fee */}
       {platformFee ? <Item title="Taxa de serviço" value={platformFee} /> : null}
       {/* food items */}

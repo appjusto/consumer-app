@@ -18,12 +18,11 @@ export default function BusinessDetailScreen() {
   // params
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
-  // tracking
-  useTrackScreenView('Restaurante', { businessId });
-  // UI
   // context
   const business = useContextBusiness();
   const products = useContextBusinessProducts();
+  // tracking
+  useTrackScreenView('Restaurante', { businessId });
   // UI
   if (!business || !products) return <Loading />;
   return (
@@ -55,7 +54,16 @@ export default function BusinessDetailScreen() {
         }}
         estimatedItemSize={78}
       />
-      <CartButton variant="business" />
+      <CartButton
+        variant="business"
+        onPress={() =>
+          router.push({
+            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/',
+
+            params: { id: businessId },
+          })
+        }
+      />
     </View>
   );
 }
