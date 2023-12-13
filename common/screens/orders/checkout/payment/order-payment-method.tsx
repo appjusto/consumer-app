@@ -7,6 +7,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
 import { CardIcon } from './cards/card-icon';
+import { IconPixLogo } from './pix-logo';
 
 interface Props extends ViewProps {}
 
@@ -14,6 +15,7 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
   // context
   const {
     acceptedCardsOnOrder,
+    acceptedOnOrder,
     paymentMethod,
     paymentMethodId,
     setPaymentMethod,
@@ -21,8 +23,30 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
   } = useContextOrderPayments();
   // state
   // UI
+  console.log(acceptedOnOrder);
   return (
     <View style={[{}, style]} {...props}>
+      {acceptedOnOrder?.includes('pix') ? (
+        <View style={{ marginTop: paddings.lg }}>
+          <RadioCardButton
+            checked={paymentMethod === 'pix'}
+            onPress={() => {
+              setPaymentMethod!('pix');
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {/* logo */}
+              <IconPixLogo />
+              {/* details */}
+              <View style={{ marginLeft: paddings.md, borderWidth: 0 }}>
+                <DefaultText size="md" color="black">
+                  Pix
+                </DefaultText>
+              </View>
+            </View>
+          </RadioCardButton>
+        </View>
+      ) : null}
       {(acceptedCardsOnOrder ?? []).map((card) => {
         const type = getCardType(card);
         return (
@@ -36,9 +60,7 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {/* logo */}
-                <View>
-                  <CardIcon type={type} />
-                </View>
+                <CardIcon type={type} />
                 {/* details */}
                 <View style={{ marginLeft: paddings.md, borderWidth: 0 }}>
                   <DefaultText size="md" color="black">

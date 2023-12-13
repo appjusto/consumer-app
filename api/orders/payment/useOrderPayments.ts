@@ -1,6 +1,6 @@
 import { useContextBusiness } from '@/api/business/context/business-context';
 import { useCards } from '@/api/consumer/cards/useCards';
-import { useContextPlatformParams } from '@/api/platform/context/PlatformContext';
+import { useContextPlatformParams } from '@/api/platform/context/platform-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { Card, PayableWith, VRCard, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';

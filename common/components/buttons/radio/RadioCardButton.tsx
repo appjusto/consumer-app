@@ -14,8 +14,8 @@ export const RadioCardButton = ({ checked, style, children, ...props }: Props) =
       style={[
         {
           padding: paddings.lg,
-          backgroundColor: colors.primary100,
-          borderColor: colors.primary500,
+          backgroundColor: checked ? colors.primary100 : colors.white,
+          borderColor: checked ? colors.primary500 : colors.neutral100,
           borderWidth: 1,
           borderRadius: 8,
         },
@@ -35,7 +35,7 @@ export const RadioCardButton = ({ checked, style, children, ...props }: Props) =
           size={18}
           style={{
             borderWidth: 1,
-            borderColor: colors.primary900,
+            borderColor: checked ? colors.primary900 : colors.neutral200,
             backgroundColor: colors.white,
           }}
         >

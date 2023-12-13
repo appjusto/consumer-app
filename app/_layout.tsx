@@ -1,6 +1,6 @@
 import { ApiProvider } from '@/api/ApiContext';
 import { AnalyticsProvider } from '@/api/analytics/context/AnalyticsContext';
-import { PlatformProvider } from '@/api/platform/context/PlatformContext';
+import { PlatformProvider } from '@/api/platform/context/platform-context';
 import { PreferencesProvider } from '@/api/preferences/context/PreferencesContext';
 import { AuthProvider } from '@/common/auth/AuthContext';
 import { useSplashScreen } from '@/common/components/splashscreen/useSplashScreen';

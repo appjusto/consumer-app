@@ -23,7 +23,7 @@ const getCardIcon = (type: SupportedCardType | null) => {
 
 export const CardIcon = ({ type, style, ...props }: Props) => {
   // logs
-  console.log(type, getCardIcon(type as SupportedCardType));
+  // console.log(type, getCardIcon(type as SupportedCardType));
   // UI
   return (
     <View style={[{}, style]} {...props}>
