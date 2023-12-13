@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextBusinessQuote } from '@/api/business/context/business-context';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
@@ -17,7 +17,7 @@ export default function OrderCheckoutScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
   // context
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   // state
   const [additionalInfo, setAdditionalInfo] = useState('');
   // tracking

@@ -1,11 +1,9 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import {
-  useContextBusiness,
-  useContextBusinessQuote,
-} from '@/api/business/context/business-context';
+import { useContextBusiness } from '@/api/business/context/business-context';
 import { getNextDateSlots } from '@/api/business/schedule/getNextDateSlots';
 import { fromDate } from '@/api/firebase/timestamp';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { useContextGetServerTime } from '@/api/platform/context/PlatformContext';
 import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -31,7 +29,7 @@ export default function OrderCheckoutScheduleScreen() {
   // context
   const api = useContextApi();
   const business = useContextBusiness();
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   const getServerTime = useContextGetServerTime();
   // state
   const [selectedIndex, setSelectedIndex] = useState(0);

@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextBusinessQuote } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { updateOrderItemQuantity } from '@/api/orders/items/updateOrderItemQuantity';
@@ -24,7 +24,7 @@ interface Props extends ViewProps {
 export const BusinessCartItem = ({ item, style, ...props }: Props) => {
   // context
   const api = useContextApi();
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   const businessId = quote?.business?.id as string;
   // state
   const url = useProductImageURI(quote?.business?.id, item);

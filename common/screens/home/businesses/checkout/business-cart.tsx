@@ -1,5 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextBusinessQuote } from '@/api/business/context/business-context';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
 import { Stack, router } from 'expo-router';
@@ -12,7 +12,7 @@ interface Props extends ViewProps {}
 export const BusinessCart = ({ style, ...props }: Props) => {
   // context
   const api = useContextApi();
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   const orderId = quote?.id;
   const clearable = quote?.items?.length && quote.items.length > 0;
   // handlers

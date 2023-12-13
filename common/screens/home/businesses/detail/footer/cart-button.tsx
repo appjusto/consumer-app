@@ -1,4 +1,4 @@
-import { useContextBusinessQuote } from '@/api/business/context/business-context';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
@@ -6,7 +6,6 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
-import { useLocalSearchParams } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -15,11 +14,8 @@ interface Props extends ViewProps {
 }
 
 export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
   // context
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   // UI
   if (!quote) return null;
   const totalLabel = quote.fare?.courier?.value

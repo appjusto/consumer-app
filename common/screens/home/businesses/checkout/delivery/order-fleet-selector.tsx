@@ -1,5 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextBusinessQuoteFares } from '@/api/business/context/business-context';
+import { useContextOrderFares } from '@/api/orders/context/order-provider';
 import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -18,7 +18,7 @@ export const OrderFleetSelector = ({ order, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const fares = useContextBusinessQuoteFares();
+  const fares = useContextOrderFares();
   // handlers
   const updateFare = (fare: Fare) => {
     api

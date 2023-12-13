@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextBusinessQuote } from '@/api/business/context/business-context';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DeliveryAddress } from '@/common/screens/home/businesses/checkout/delivery/delivery-address';
@@ -18,7 +18,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
   // context
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   // tracking
   useTrackScreenView('Checkout: entrega', { businessId });
   // side effects

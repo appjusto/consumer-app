@@ -1,4 +1,5 @@
 import { BusinessProvider } from '@/api/business/context/business-context';
+import { OrderProvider } from '@/api/orders/context/order-provider';
 import { Stack, useLocalSearchParams } from 'expo-router';
 
 export const unstable_settings = {
@@ -14,7 +15,9 @@ export default function BusinessLayout() {
   // UI
   return (
     <BusinessProvider businessId={businessId}>
-      <Stack />
+      <OrderProvider businessId={businessId}>
+        <Stack />
+      </OrderProvider>
     </BusinessProvider>
   );
 }

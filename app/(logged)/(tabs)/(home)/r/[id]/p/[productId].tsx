@@ -3,9 +3,9 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import {
   useContextBusiness,
   useContextBusinessProduct,
-  useContextBusinessQuote,
 } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
+import { useContextOrderQuote } from '@/api/orders/context/order-provider';
 import { addItemToOrder } from '@/api/orders/items/addItemToOrder';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
@@ -40,7 +40,7 @@ export default function ProductDetailScreen() {
   const api = useContextApi();
   const profile = useContextProfile();
   const currentPlace = useContextCurrentPlace();
-  const quote = useContextBusinessQuote();
+  const quote = useContextOrderQuote();
   const business = useContextBusiness();
   // state
   const product = useContextBusinessProduct(productId);

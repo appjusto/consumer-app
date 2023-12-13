@@ -1,8 +1,6 @@
-import { useObserveBusinessQuote } from '@/api/orders/useObserveBusinessQuote';
-import { Category, Fare, Order, Product, PublicBusiness, WithId } from '@appjusto/types';
+import { Category, Product, PublicBusiness, WithId } from '@appjusto/types';
 import { memoize } from 'lodash';
 import React, { useMemo } from 'react';
-import { useOrderFares } from '../fares/useOrderFares';
 import { useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
 import { useObserveBusiness } from '../useObserveBusiness';
 
@@ -14,8 +12,6 @@ interface Props {
 }
 
 interface Value {
-  quote?: WithId<Order> | null;
-  fares?: Fare[] | undefined;
   business?: WithId<PublicBusiness> | null;
   products?: (string | WithId<Product>)[];
   getProduct?: (produtId: string) => WithId<Product> | undefined;
@@ -25,8 +21,6 @@ interface Value {
 export const BusinessProvider = ({ businessId, children }: Props) => {
   // state
   const business = useObserveBusiness(businessId);
-  const quote = useObserveBusinessQuote(businessId);
-  const fares = useOrderFares(quote);
   const { categoriesWithProducts, loaded, groupsWithComplements, getProductCategory } =
     useObserveBusinessMenu(businessId);
   const products = useMemo(
@@ -54,7 +48,12 @@ export const BusinessProvider = ({ businessId, children }: Props) => {
   // result
   return (
     <BusinessContext.Provider
-      value={{ quote, fares, business, products, getProduct, getProductCategory }}
+      value={{
+        business,
+        products,
+        getProduct,
+        getProductCategory,
+      }}
     >
       {children}
     </BusinessContext.Provider>
@@ -65,18 +64,6 @@ export const useContextBusiness = () => {
   const value = React.useContext(BusinessContext);
   if (!value) throw new Error('Api fora de contexto.');
   return value.business;
-};
-
-export const useContextBusinessQuote = () => {
-  const value = React.useContext(BusinessContext);
-  if (!value) throw new Error('Api fora de contexto.');
-  return value.quote;
-};
-
-export const useContextBusinessQuoteFares = () => {
-  const value = React.useContext(BusinessContext);
-  if (!value) throw new Error('Api fora de contexto.');
-  return value.fares;
 };
 
 export const useContextBusinessProducts = () => {

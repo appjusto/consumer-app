@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
 import { ObserveOrdersOptions } from './OrdersApi';
 
-export const useObserveBusinessQuote = (businessId: string) => {
+export const useObserveOrderQuote = (businessId?: string) => {
   // context
   const api = useContextApi();
   // refs

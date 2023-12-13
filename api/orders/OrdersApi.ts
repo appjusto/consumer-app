@@ -8,6 +8,7 @@ import {
   OrderItem,
   OrderReview,
   OrderStatus,
+  OrderType,
   PayableWith,
   Place,
   PublicBusiness,
@@ -47,8 +48,9 @@ export default class OrdersApi {
     let query = ordersRef()
       .where('consumer.id', '==', this.auth.getUserId())
       .orderBy('createdOn', 'desc');
-    if (statuses) query = query.where('status', 'in', statuses);
     if (businessId) query = query.where('business.id', '==', businessId);
+    else query = query.where('type', '==', 'p2p' as OrderType);
+    if (statuses) query = query.where('status', 'in', statuses);
     if (from) query = query.where('createdOn', '>', fromDate(from));
     if (to) query = query.where('createdOn', '<', fromDate(to));
     if (limit) query = query.limit(limit);
