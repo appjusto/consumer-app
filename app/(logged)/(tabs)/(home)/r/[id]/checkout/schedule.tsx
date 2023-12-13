@@ -3,7 +3,7 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextBusiness } from '@/api/business/context/business-context';
 import { getNextDateSlots } from '@/api/business/schedule/getNextDateSlots';
 import { fromDate } from '@/api/firebase/timestamp';
-import { useContextOrderQuote } from '@/api/orders/context/order-provider';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { useContextGetServerTime } from '@/api/platform/context/PlatformContext';
 import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';

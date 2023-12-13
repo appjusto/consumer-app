@@ -1,7 +1,8 @@
 import { useContextBusiness } from '@/api/business/context/business-context';
+import { useCards } from '@/api/consumer/cards/useCards';
 import { useContextPlatformParams } from '@/api/platform/context/PlatformContext';
 import { useContextProfile } from '@/common/auth/AuthContext';
-import { PayableWith } from '@appjusto/types';
+import { Card, PayableWith, VRCard, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';
 
 export const useOrderPayments = () => {
@@ -10,10 +11,27 @@ export const useOrderPayments = () => {
   const profile = useContextProfile();
   const acceptedByPlatform = platformParams?.acceptedPaymentMethods;
   const defaultPaymentMethod = profile ? profile.defaultPaymentMethod ?? null : undefined;
-  const defaultPaymentMethodId = profile?.defaultPaymentMethodId;
+  const defaultPaymentMethodId = profile?.defaultPaymentMethodId ?? null;
   const business = useContextBusiness();
   // state
+  const cards = useCards();
   const [acceptedOnOrder, setAcceptedOnOrder] = useState<PayableWith[]>();
+  const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
+  const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
+  const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
+  // side effects
+  useEffect(() => {
+    if (defaultPaymentMethod === undefined) return;
+    if (paymentMethod === null) return;
+    if (paymentMethod) return;
+    setPaymentMethod(defaultPaymentMethod);
+  }, [defaultPaymentMethod, paymentMethod]);
+  useEffect(() => {
+    if (defaultPaymentMethodId === undefined) return;
+    if (paymentMethodId === null) return;
+    if (paymentMethodId) return;
+    setPaymentMethodId(defaultPaymentMethodId);
+  }, [defaultPaymentMethodId, paymentMethodId]);
   useEffect(() => {
     if (profile?.tags?.includes('unsafe')) {
       setAcceptedOnOrder(['pix']);
@@ -31,11 +49,30 @@ export const useOrderPayments = () => {
       );
     }
   }, [profile, acceptedByPlatform, business]);
+  useEffect(() => {
+    if (!acceptedOnOrder) return;
+    if (!cards) return;
+    setAcceptedCardsOnOrder(
+      cards.filter((card) => {
+        if (card.processor === 'iugu' && acceptedOnOrder.includes('credit_card')) return true;
+        if (card.processor === 'vr') {
+          const vrCard = card as WithId<VRCard>;
+          return acceptedOnOrder.includes(vrCard.type);
+        }
+        return false;
+      })
+    );
+  }, [acceptedOnOrder, cards]);
   // result
   return {
     acceptedByPlatform,
     acceptedOnOrder,
+    acceptedCardsOnOrder,
     defaultPaymentMethod,
     defaultPaymentMethodId,
+    paymentMethod,
+    setPaymentMethod,
+    paymentMethodId,
+    setPaymentMethodId,
   };
 };

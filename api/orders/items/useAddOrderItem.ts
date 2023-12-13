@@ -11,7 +11,7 @@ import {
 } from '@appjusto/types';
 import { nanoid } from 'nanoid/non-secure';
 import { useEffect, useState } from 'react';
-import { useContextOrderQuote } from '../context/order-provider';
+import { useContextOrderQuote } from '../context/order-context';
 import { hasSatisfiedAllGroups } from './complements/hasSatisfiedAllGroups';
 import { toOrderItemComplement } from './complements/toOrderItemComplement';
 import { totalComplements } from './complements/totalComplements';

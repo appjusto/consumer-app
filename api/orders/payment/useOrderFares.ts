@@ -16,11 +16,13 @@ export const useOrderFares = (
   const id = order?.id;
   const fulfillment = order?.fulfillment;
   const destinationAddress = order?.destination?.address.description;
+  const routeDistance = order?.route?.distance;
   // side effects
   useEffect(() => {
     console.log('useOrderFares', defaultPaymentMethod);
     if (!id) return;
     if (defaultPaymentMethod === undefined) return;
+    if (!routeDistance) return;
     api
       .orders()
       .getOrderQuotes(id, defaultPaymentMethod ?? 'pix')
@@ -31,8 +33,8 @@ export const useOrderFares = (
       .catch((error) => {
         if (error instanceof Error) showToast(error.message, 'error');
       });
-  }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress]);
+  }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress, routeDistance]);
   // result
-  console.log('results', fares);
+  // console.log('results', fares);
   return fares;
 };

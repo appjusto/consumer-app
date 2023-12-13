@@ -1,6 +1,6 @@
 import { documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
-import { Place, WithId } from '@appjusto/types';
+import { Card, Place, WithId } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import AuthApi from '../auth/AuthApi';
@@ -8,10 +8,10 @@ import AuthApi from '../auth/AuthApi';
 // firestore
 const placesRef = () => firestore().collection('places');
 const placeRef = (id: string) => placesRef().doc(id);
+const cardsRef = () => firestore().collection('cards');
 
 export default class ConsumersApi {
   constructor(private auth: AuthApi) {}
-  // account
   // places
   async fetchPlaces() {
     try {
@@ -26,7 +26,6 @@ export default class ConsumersApi {
       throw new Error('Não foi possível obter seus endereços. Tente novamente mais tarde.');
     }
   }
-
   async createPlace(place: Partial<Place>) {
     await placesRef()
       .doc()
@@ -36,11 +35,24 @@ export default class ConsumersApi {
         updatedAt: serverTimestamp(),
       } as Place);
   }
-
   async updatePlace(place: WithId<Place>) {
     await placeRef(place.id).update({
       ...place,
       updatedAt: serverTimestamp(),
     } as Place);
+  }
+  // cards
+  observeCards(resultHandler: (orders: WithId<Card>[]) => void) {
+    const query = cardsRef()
+      .where('accountId', '==', this.auth.getUserId())
+      .where('status', '==', 'enabled');
+    return query.onSnapshot(
+      async (snapshot) => {
+        resultHandler(snapshot.empty ? [] : documentsAs<Card>(snapshot.docs));
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 }

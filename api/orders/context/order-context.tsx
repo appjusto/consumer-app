@@ -1,6 +1,6 @@
 import { useOrderPayments } from '@/api/orders/payment/useOrderPayments';
 import { useObserveOrderQuote } from '@/api/orders/useObserveOrderQuote';
-import { Fare, Order, PayableWith, WithId } from '@appjusto/types';
+import { Card, Fare, Order, PayableWith, WithId } from '@appjusto/types';
 import { pick } from 'lodash';
 import React from 'react';
 import { useOrderFares } from '../payment/useOrderFares';
@@ -15,15 +15,31 @@ interface Props {
 interface Value {
   quote?: WithId<Order> | null;
   fares?: Fare[] | undefined;
+  acceptedByPlatform?: PayableWith[];
   acceptedOnOrder?: PayableWith[];
+  acceptedCardsOnOrder?: WithId<Card>[];
   defaultPaymentMethod?: PayableWith | null;
   defaultPaymentMethodId?: string | null;
+  paymentMethod?: PayableWith | null;
+  setPaymentMethod?: (value: PayableWith) => void;
+  paymentMethodId?: string | null;
+  setPaymentMethodId?: (value: string) => void;
 }
 
 export const OrderProvider = ({ businessId, children }: Props) => {
   // state
   const quote = useObserveOrderQuote(businessId);
-  const { acceptedOnOrder, defaultPaymentMethod, defaultPaymentMethodId } = useOrderPayments();
+  const {
+    acceptedByPlatform,
+    acceptedOnOrder,
+    acceptedCardsOnOrder,
+    defaultPaymentMethod,
+    defaultPaymentMethodId,
+    paymentMethod,
+    setPaymentMethod,
+    paymentMethodId,
+    setPaymentMethodId,
+  } = useOrderPayments();
   const fares = useOrderFares(quote, defaultPaymentMethod);
   // result
   return (
@@ -31,9 +47,15 @@ export const OrderProvider = ({ businessId, children }: Props) => {
       value={{
         quote,
         fares,
+        acceptedByPlatform,
+        acceptedCardsOnOrder,
         acceptedOnOrder,
         defaultPaymentMethod,
         defaultPaymentMethodId,
+        paymentMethod,
+        setPaymentMethod,
+        paymentMethodId,
+        setPaymentMethodId,
       }}
     >
       {children}
@@ -56,5 +78,15 @@ export const useContextOrderFares = () => {
 export const useContextOrderPayments = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
-  return pick(value, ['acceptedOnOrder', 'defaultPaymentMethod', 'defaultPaymentMethodId']);
+  return pick(value, [
+    'acceptedByPlatform',
+    'acceptedOnOrder',
+    'acceptedCardsOnOrder',
+    'defaultPaymentMethod',
+    'defaultPaymentMethodId',
+    'paymentMethod',
+    'setPaymentMethod',
+    'paymentMethodId',
+    'setPaymentMethodId',
+  ]);
 };

@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrderQuote } from '@/api/orders/context/order-provider';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DeliveryAddress } from '@/common/screens/home/businesses/checkout/delivery/delivery-address';

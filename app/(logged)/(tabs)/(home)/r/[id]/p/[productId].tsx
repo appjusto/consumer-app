@@ -5,7 +5,7 @@ import {
   useContextBusinessProduct,
 } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
-import { useContextOrderQuote } from '@/api/orders/context/order-provider';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { addItemToOrder } from '@/api/orders/items/addItemToOrder';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';

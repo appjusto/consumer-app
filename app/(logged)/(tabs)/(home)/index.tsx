@@ -32,7 +32,7 @@ export default function HomeScreen() {
     }
   }, [clearCurrentPlace, currentPlace]);
   // logs
-  console.log('currentPlace', currentPlace);
+  // console.log('currentPlace', currentPlace);
   // UI
   return (
     <View style={{ ...screens.default }}>

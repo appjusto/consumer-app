@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrderQuote } from '@/api/orders/context/order-provider';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -7,6 +7,7 @@ import { HR } from '@/common/components/views/HR';
 import { BusinessCartHeader } from '@/common/screens/home/businesses/checkout/business-cart-header';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
+import { OrderPaymentMethod } from '@/common/screens/orders/checkout/payment/order-payment-method';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -39,6 +40,7 @@ export default function OrderCheckoutDeliveryScreen() {
           <OrderTotalBreakdown style={{ marginTop: paddings.lg }} order={quote} />
           <HR style={{ marginVertical: paddings.xl }} />
           <DefaultText size="lg">Forma de pagamento</DefaultText>
+          <OrderPaymentMethod />
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />

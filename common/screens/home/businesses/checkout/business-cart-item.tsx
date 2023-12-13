@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
-import { useContextOrderQuote } from '@/api/orders/context/order-provider';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { updateOrderItemQuantity } from '@/api/orders/items/updateOrderItemQuantity';
