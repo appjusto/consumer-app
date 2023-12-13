@@ -120,7 +120,9 @@ export default class OrdersApi {
       useCredits: true,
       meta: { version: getAppVersion() },
     });
-    return response.data as Fare[];
+    const fares = response.data as Fare[];
+    console.log('getOrderQuotes', fares);
+    return fares;
   }
 
   // reviews

@@ -30,7 +30,7 @@ export const RadioCardButton = ({ checked, style, children, ...props }: Props) =
           alignItems: 'center',
         }}
       >
-        <View>{children}</View>
+        <View style={{ flex: 1 }}>{children}</View>
         <CircledView
           size={18}
           style={{

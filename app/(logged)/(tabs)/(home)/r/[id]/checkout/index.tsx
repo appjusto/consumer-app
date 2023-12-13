@@ -1,7 +1,5 @@
-import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextBusinessQuote } from '@/api/business/context/business-context';
-import { useOrderFares } from '@/api/business/fares/useOrderFares';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
@@ -16,22 +14,11 @@ import { View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
   // context
-  const api = useContextApi();
   const quote = useContextBusinessQuote();
   // state
-  const fares = useOrderFares(quote, 'credit_card');
   const [additionalInfo, setAdditionalInfo] = useState('');
   // tracking
   useTrackScreenView('Checkout: sacola');
-  // side effects
-  // update order fare
-  useEffect(() => {
-    if (!quote) return;
-    if (!fares?.length) return;
-    if (!quote?.fare) {
-      api.orders().updateOrder(quote.id, { fare: fares[0] });
-    }
-  }, [api, fares, quote]);
   // go back when order becomes empty
   useEffect(() => {
     if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
