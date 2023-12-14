@@ -1,9 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { isPlaceValid } from '@/api/consumer/places/isPlaceValid';
-import {
-  useContextClearTemporaryPlace,
-  useContextCurrentPlace,
-} from '@/api/preferences/context/PreferencesContext';
+import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
@@ -19,7 +15,6 @@ import { View } from 'react-native';
 export default function HomeScreen() {
   // context
   const currentPlace = useContextCurrentPlace();
-  const clearCurrentPlace = useContextClearTemporaryPlace();
   // tracking
   useTrackScreenView('Início');
   // side effects
@@ -27,10 +22,8 @@ export default function HomeScreen() {
     if (currentPlace === undefined) return;
     if (currentPlace === null) {
       router.push('/places/new');
-    } else if (!isPlaceValid(currentPlace)) {
-      clearCurrentPlace();
     }
-  }, [clearCurrentPlace, currentPlace]);
+  }, [currentPlace]);
   // logs
   // console.log('currentPlace', currentPlace);
   // UI

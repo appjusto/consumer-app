@@ -28,6 +28,8 @@ export const RoutesProvider = (props: Props) => {
     if (situation === undefined) return;
     if (isAnonymous) {
       if (restricted) router.replace('/sign-in');
+    } else if (situation === 'approved') {
+      router.replace('/(logged)/(tabs)/(home)/');
     } else if (situation === 'rejected') {
       router.replace('/rejected');
     } else if (situation === 'blocked') {

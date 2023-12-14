@@ -63,7 +63,7 @@ export default class BusinessApi {
         if (snapshot.exists) resultHandler(documentAs<PublicBusiness>(snapshot));
       },
       (error) => {
-        console.log(error);
+        console.log('observeBusiness', error);
       }
     );
   }

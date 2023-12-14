@@ -48,7 +48,7 @@ export default function OrderCheckoutDeliveryScreen() {
         variant="checkout"
         onPress={() =>
           router.push({
-            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/delivery',
+            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/confirmation',
             params: { id: businessId },
           })
         }

@@ -1,8 +1,8 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import {
+  useContextSetTemporaryPlace,
   useContextTemporaryPlace,
-  useContextUpdateTemporaryPlace,
 } from '@/api/preferences/context/PreferencesContext';
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
@@ -27,7 +27,7 @@ export default function NewPlacNumberScreen() {
   const showToast = useShowToast();
   const isAnonymous = useContextIsUserAnonymous();
   const temporaryPlace = useContextTemporaryPlace();
-  const updateTemporaryPlace = useContextUpdateTemporaryPlace();
+  const setTemporaryPlace = useContextSetTemporaryPlace();
   // state
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -35,12 +35,13 @@ export default function NewPlacNumberScreen() {
   // side effects
   // error handling
   useEffect(() => {
+    console.log('temporaryPlace', temporaryPlace);
     if (!temporaryPlace?.location) {
       showToast('Não foi possível obter sua localização. Tente novamente.', 'error');
       crashlytics().recordError(
         new Error('Tela de complemento: não foi possível obter a localização')
       );
-      router.replace('/home/');
+      // router.replace('/(logged)/(tabs)/(home)/');
     }
   }, [showToast, temporaryPlace]);
   // tracking
@@ -53,8 +54,8 @@ export default function NewPlacNumberScreen() {
       instructions: trim(instructions),
     };
     if (isAnonymous) {
-      updateTemporaryPlace(place);
-      router.replace('/home/');
+      setTemporaryPlace(place);
+      router.replace('/(logged)/(tabs)/(home)/');
     } else {
       setLoading(true);
       api

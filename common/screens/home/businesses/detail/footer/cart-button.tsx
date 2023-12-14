@@ -9,7 +9,7 @@ import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
-  variant: 'business' | 'checkout';
+  variant: 'business' | 'checkout' | 'place-order';
   onPress: () => void;
 }
 
@@ -54,7 +54,13 @@ export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
           </View>
         </View>
         <DefaultButton
-          title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
+          title={
+            variant === 'business'
+              ? 'Ver sacola'
+              : variant === 'place-order'
+              ? 'Confirmar pedido'
+              : 'Continuar'
+          }
           size="lg"
           disabled={variant === 'checkout' && !quote.fare}
           onPress={onPress}

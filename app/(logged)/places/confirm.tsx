@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextUpdateTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
+import { useContextSetTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultMap } from '@/common/components/map/DefaultMap';
@@ -26,7 +26,7 @@ export default function ConfirmNewPlaceScreen() {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const updateTemporaryPlace = useContextUpdateTemporaryPlace();
+  const setTemporaryPlace = useContextSetTemporaryPlace();
   // state
   const [description, setDescription] = useState(params.description);
   const [main, setMain] = useState(params.main);
@@ -73,7 +73,11 @@ export default function ConfirmNewPlaceScreen() {
   };
   const confirmHandler = () => {
     if (!location) return;
-    updateTemporaryPlace({ address: { description, main, secondary, googlePlaceId }, location });
+    console.log('confirm', { address: { description, main, secondary, googlePlaceId }, location });
+    setTemporaryPlace({
+      address: { description, main, secondary, googlePlaceId },
+      location,
+    });
     router.push('/places/complement');
   };
   console.log('location', location);
