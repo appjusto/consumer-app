@@ -3,7 +3,7 @@ import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { HR } from '@/common/components/views/HR';
+import { HRShadow } from '@/common/components/views/hr-shadow';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
@@ -27,18 +27,7 @@ export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
   const totalItems = quote.items?.length ? quote.items.length : 0;
   return (
     <View style={[{}, style]} {...props}>
-      <HR
-        style={{
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-          elevation: 3,
-        }}
-      />
+      <HRShadow />
       <View style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
         <View>
           <DefaultText size="xs" color="neutral700">

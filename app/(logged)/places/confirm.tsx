@@ -20,7 +20,7 @@ type Params = {
   googlePlaceId?: string;
 };
 
-export default function ConfirmNewPlaceScreen() {
+export default function NewPlaceConfirmScreen() {
   // params
   const params = useLocalSearchParams<Params>();
   // context

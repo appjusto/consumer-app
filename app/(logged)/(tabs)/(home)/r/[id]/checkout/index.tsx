@@ -28,7 +28,7 @@ export default function OrderCheckoutScreen() {
     if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
   }, [quote]);
   // logs
-  // console.log('orderId', quote?.id);
+  console.log('orderId', quote?.id);
   // UI
   if (!quote) return <EmptyCart />;
   return (

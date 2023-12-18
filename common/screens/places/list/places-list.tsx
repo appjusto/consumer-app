@@ -9,10 +9,11 @@ import { PlaceListItem } from './places-list-item';
 import { PlaceListItemModal } from './places-list-item-modal';
 
 interface Props extends ViewProps {
+  selectedId?: string;
   onSelect?: (place: WithId<Place>) => void;
 }
 
-export const PlacesList = ({ onSelect, style, ...props }: Props) => {
+export const PlacesList = ({ selectedId, onSelect, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   // state
@@ -40,7 +41,7 @@ export const PlacesList = ({ onSelect, style, ...props }: Props) => {
         <PlaceListItem
           style={{ marginTop: paddings.lg }}
           place={place}
-          checked={i === 0}
+          checked={place.id === selectedId}
           key={place.id}
           onPress={() => {
             if (onSelect) onSelect(place);

@@ -23,7 +23,7 @@ type Params = {
   googlePlaceId?: string;
 };
 
-export default function NewPlacNumberScreen() {
+export default function NewPlaceNumberScreen() {
   // params
   const {
     sessionToken,
