@@ -5,7 +5,7 @@ import { getNextDateSlots } from '@/api/business/schedule/getNextDateSlots';
 import { fromDate } from '@/api/firebase/timestamp';
 import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { useContextGetServerTime } from '@/api/platform/context/platform-context';
-import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
+import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import {

@@ -22,9 +22,24 @@ export default class ConsumersApi {
       if (snapshot.empty) return [];
       return documentsAs<Place>(snapshot.docs);
     } catch (error: unknown) {
+      console.error(error);
       if (error instanceof Error) crashlytics().recordError(error);
       throw new Error('Não foi possível obter seus endereços. Tente novamente mais tarde.');
     }
+  }
+  observePlaces(resultHandler: (orders: WithId<Place>[]) => void) {
+    const query = placesRef()
+      .where('accountId', '==', this.auth.getUserId())
+      .orderBy('updatedAt', 'desc');
+    return query.onSnapshot(
+      async (snapshot) => {
+        resultHandler(snapshot.empty ? [] : documentsAs<Place>(snapshot.docs));
+      },
+      (error) => {
+        console.error(error);
+        if (error instanceof Error) crashlytics().recordError(error);
+      }
+    );
   }
   async createPlace(place: Partial<Place>) {
     await placesRef()
@@ -40,6 +55,9 @@ export default class ConsumersApi {
       ...place,
       updatedAt: serverTimestamp(),
     } as Place);
+  }
+  async deletePlace(place: WithId<Place>) {
+    await placeRef(place.id).delete();
   }
   // cards
   observeCards(resultHandler: (orders: WithId<Card>[]) => void) {

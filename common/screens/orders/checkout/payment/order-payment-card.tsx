@@ -1,7 +1,7 @@
 import { cardType } from '@/api/consumer/cards/card-type';
 import { getCardLastDigits } from '@/api/consumer/cards/card-type/getCardLastDigits';
 import { getCardType } from '@/api/consumer/cards/card-type/getCardType';
-import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
+import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
 import { Card, WithId } from '@appjusto/types';

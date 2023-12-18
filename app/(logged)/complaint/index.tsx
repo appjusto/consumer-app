@@ -3,7 +3,7 @@ import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { RadioButton } from '@/common/components/buttons/radio/RadioButton';
+import { RadioButton } from '@/common/components/buttons/radio/radio-button';
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';

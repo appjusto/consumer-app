@@ -6,6 +6,7 @@ import { formatDistance } from '@/common/formatters/distance';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order } from '@appjusto/types';
+import { router } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -13,6 +14,15 @@ interface Props extends ViewProps {
 }
 
 export const DeliveryAddress = ({ order, style, ...props }: Props) => {
+  // handlers
+  const changeHandler = () => {
+    if (order.business?.id) {
+      router.push({
+        pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/places/',
+        params: { id: order.business.id },
+      });
+    }
+  };
   // UI
   const place = order.fulfillment === 'delivery' ? order.destination : order.origin;
   const address = place?.address;
@@ -33,7 +43,7 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
             place?.additionalInfo ? ` \u00B7 ${place.additionalInfo}` : ''
           }`}</DefaultText>
         </View>
-        <LinkButton variant="ghost" onPress={() => null}>
+        <LinkButton variant="ghost" onPress={changeHandler}>
           Trocar
         </LinkButton>
       </View>

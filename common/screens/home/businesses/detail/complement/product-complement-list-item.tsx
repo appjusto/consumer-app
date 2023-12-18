@@ -1,5 +1,5 @@
 import { QuantityButton } from '@/common/components/buttons/quantity/quantity-button';
-import { RadioButton } from '@/common/components/buttons/radio/RadioButton';
+import { RadioButton } from '@/common/components/buttons/radio/radio-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { formatCurrency } from '@/common/formatters/currency';
 import lineHeight from '@/common/styles/lineHeight';

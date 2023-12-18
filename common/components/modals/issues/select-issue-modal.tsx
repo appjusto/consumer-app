@@ -1,7 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useIssues } from '@/api/platform/issues/useIssues';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { RadioButton } from '@/common/components/buttons/radio/RadioButton';
+import { RadioButton } from '@/common/components/buttons/radio/radio-button';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { ModalHandle } from '@/common/components/modals/modal-handle';

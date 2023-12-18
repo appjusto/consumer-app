@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useContextBusiness } from '@/api/business/context/business-context';
-import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
+import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';

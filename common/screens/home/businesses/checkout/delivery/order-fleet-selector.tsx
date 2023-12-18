@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useContextOrderFares } from '@/api/orders/context/order-context';
-import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
+import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';

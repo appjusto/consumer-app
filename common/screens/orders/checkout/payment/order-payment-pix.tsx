@@ -1,4 +1,4 @@
-import { RadioCardButton } from '@/common/components/buttons/radio/RadioCardButton';
+import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
