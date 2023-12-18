@@ -80,10 +80,12 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
             {deliveryFinancialFee && deliveryFinancialValue ? (
               <View style={{ marginTop: paddings.lg }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <DefaultText size="md" color="black">
+                  <DefaultText size="md" color="neutral900">
                     Tarifa financeira
                   </DefaultText>
-                  <DefaultText color="black">{formatCurrency(deliveryFinancialValue)}</DefaultText>
+                  <DefaultText color="neutral900">
+                    {formatCurrency(deliveryFinancialValue)}
+                  </DefaultText>
                 </View>
                 <DefaultText
                   style={{ marginTop: paddings.sm, ...lineHeight.sm }}
@@ -98,12 +100,12 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
               <View style={{ marginTop: paddings.xl }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <View style={{ flexDirection: 'row' }}>
-                    <DefaultText size="md" color="black">
+                    <DefaultText size="md" color="neutral900">
                       Seguro
                     </DefaultText>
                     <IzaIcon style={{ marginLeft: paddings.sm }} />
                   </View>
-                  <DefaultText color="black">{formatCurrency(insurance)}</DefaultText>
+                  <DefaultText color="neutral900">{formatCurrency(insurance)}</DefaultText>
                 </View>
                 <DefaultText
                   style={{ marginTop: paddings.sm, ...lineHeight.sm }}

@@ -7,7 +7,6 @@ import {
   Order,
   OrderItem,
   OrderReview,
-  OrderStatus,
   OrderType,
   PayableWith,
   Place,
@@ -20,25 +19,18 @@ import { omit } from 'lodash';
 import AuthApi from '../auth/AuthApi';
 import { fromDate } from '../firebase/timestamp';
 import { addBusinessToOrder } from './business/toOrderBusiness';
+import { ObserveOrdersOptions, PlaceOrderOptions } from './types';
 
 // functions
 const region = getFirebaseRegion();
 const getOrderQuotes = firebase.app().functions(region).httpsCallable('getOrderQuotes');
+const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
 
 // firestore
 const ordersRef = () => firestore().collection('orders');
 const orderRef = (id: string) => ordersRef().doc(id);
 const reviewsRef = () => firestore().collection('reviews');
 const reviewRef = (id: string) => reviewsRef().doc(id);
-
-export interface ObserveOrdersOptions {
-  statuses?: OrderStatus[];
-  businessId?: string;
-  from?: Date;
-  to?: Date;
-  limit?: number;
-}
-
 export default class OrdersApi {
   constructor(private auth: AuthApi) {}
   // observe orders
@@ -125,6 +117,14 @@ export default class OrdersApi {
     const fares = response.data as Fare[];
     console.log('getOrderQuotes', fares);
     return fares;
+  }
+
+  async placeOrder(options: PlaceOrderOptions) {
+    console.log('placeOrder');
+    await placeOrder({
+      ...options,
+      meta: { version: getAppVersion() },
+    });
   }
 
   // reviews

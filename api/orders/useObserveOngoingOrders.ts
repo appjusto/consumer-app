@@ -1,8 +1,8 @@
 import { Order, WithId } from '@appjusto/types';
 import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
-import { ObserveOrdersOptions } from './OrdersApi';
 import { OngoingOrdersStatuses } from './status';
+import { ObserveOrdersOptions } from './types';
 
 export const useObserveOngoingOrders = (enabled = true) => {
   // context

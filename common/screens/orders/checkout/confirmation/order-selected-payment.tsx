@@ -7,10 +7,9 @@ interface Props extends ViewProps {}
 
 export const OrderSelectedPayment = ({ style, ...props }: Props) => {
   // context
-  const { acceptedCardsOnOrder, paymentMethod, paymentMethodId } = useContextOrderPayments();
-  const card = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
+  const { paymentMethod, selectedCard } = useContextOrderPayments();
   // UI
   if (paymentMethod === 'pix') return <OrderPaymentPix />;
-  else if (card) return <OrderPaymentCard card={card} />;
+  else if (selectedCard) return <OrderPaymentCard card={selectedCard} />;
   return null;
 };

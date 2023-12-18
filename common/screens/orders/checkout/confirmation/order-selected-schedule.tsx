@@ -45,9 +45,7 @@ export const OrderSelectedSchedule = ({ style, ...props }: Props) => {
           <DefaultText size="lg">{toDate(deliveryEstimate).getDate()}</DefaultText>
         </View>
         <View style={{ marginLeft: paddings.lg }}>
-          <DefaultText size="md">{`Entrega ${Dayjs(toDate(deliveryEstimate))
-            .calendar()
-            .toLowerCase()}`}</DefaultText>
+          <DefaultText size="md">{`${Dayjs(toDate(deliveryEstimate)).calendar()}`}</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
             {timestampWithETA(deliveryEstimate)}
           </DefaultText>

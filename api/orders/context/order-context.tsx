@@ -18,6 +18,7 @@ interface Value {
   acceptedByPlatform?: PayableWith[];
   acceptedOnOrder?: PayableWith[];
   acceptedCardsOnOrder?: WithId<Card>[];
+  selectedCard?: WithId<Card>;
   defaultPaymentMethod?: PayableWith | null;
   defaultPaymentMethodId?: string | null;
   paymentMethod?: PayableWith | null;
@@ -41,6 +42,7 @@ export const OrderProvider = ({ businessId, children }: Props) => {
     setPaymentMethodId,
   } = useOrderPayments();
   const fares = useOrderFares(quote, defaultPaymentMethod);
+  const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
   // result
   return (
     <OrderContext.Provider
@@ -49,6 +51,7 @@ export const OrderProvider = ({ businessId, children }: Props) => {
         fares,
         acceptedByPlatform,
         acceptedCardsOnOrder,
+        selectedCard,
         acceptedOnOrder,
         defaultPaymentMethod,
         defaultPaymentMethodId,
@@ -88,5 +91,6 @@ export const useContextOrderPayments = () => {
     'setPaymentMethod',
     'paymentMethodId',
     'setPaymentMethodId',
+    'selectedCard',
   ]);
 };

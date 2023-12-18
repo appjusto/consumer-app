@@ -2,7 +2,7 @@ import { useUniqState } from '@/common/react/useUniqState';
 import { Order, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';
 import { useContextApi } from '../ApiContext';
-import { ObserveOrdersOptions } from './OrdersApi';
+import { ObserveOrdersOptions } from './types';
 
 export const useObserveOrdersFromPeriod = (_from: Date | undefined, _to: Date | undefined) => {
   // context

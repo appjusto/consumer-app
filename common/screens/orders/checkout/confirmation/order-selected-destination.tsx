@@ -10,8 +10,8 @@ export const OrderSelectedDestination = ({ style, ...props }: Props) => {
   // context
   const order = useContextOrderQuote();
   // UI
-  const destination = order?.destination;
-  if (!destination) return null;
+  const place = order?.fulfillment === 'delivery' ? order?.destination : order?.origin;
+  if (!order || !place) return null;
   return (
     <View
       style={[
@@ -26,10 +26,10 @@ export const OrderSelectedDestination = ({ style, ...props }: Props) => {
       ]}
       {...props}
     >
-      <DefaultText size="md">{destination.address.main}</DefaultText>
+      <DefaultText size="md">{place.address.main}</DefaultText>
       <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">{`${
-        destination.address.secondary
-      }${destination.additionalInfo ? ` \u00B7 ${destination.additionalInfo}` : ''}`}</DefaultText>
+        place.address.secondary
+      }${place.additionalInfo ? ` \u00B7 ${place.additionalInfo}` : ''}`}</DefaultText>
     </View>
   );
 };

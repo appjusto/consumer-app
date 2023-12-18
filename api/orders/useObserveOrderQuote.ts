@@ -1,7 +1,7 @@
 import { Order, WithId } from '@appjusto/types';
 import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
-import { ObserveOrdersOptions } from './OrdersApi';
+import { ObserveOrdersOptions } from './types';
 
 export const useObserveOrderQuote = (businessId?: string) => {
   // context
