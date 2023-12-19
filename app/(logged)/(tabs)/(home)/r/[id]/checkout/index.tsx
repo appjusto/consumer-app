@@ -6,10 +6,11 @@ import { BusinessCart } from '@/common/screens/home/businesses/checkout/business
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
@@ -23,10 +24,7 @@ export default function OrderCheckoutScreen() {
   // tracking
   useTrackScreenView('Checkout: sacola', { businessId });
   // side effects
-  // go back when order becomes empty
-  useEffect(() => {
-    if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
-  }, [quote]);
+  useBackWhenOrderExpires();
   // logs
   console.log('orderId', quote?.id);
   // UI

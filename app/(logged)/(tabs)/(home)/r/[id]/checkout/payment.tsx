@@ -8,10 +8,10 @@ import { BusinessCartHeader } from '@/common/screens/home/businesses/checkout/bu
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
 import { OrderPaymentMethod } from '@/common/screens/orders/checkout/payment/order-payment-method';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -23,10 +23,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // tracking
   useTrackScreenView('Checkout: pagamento', { businessId });
   // side effects
-  // go back when order becomes empty
-  useEffect(() => {
-    if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
-  }, [quote]);
+  useBackWhenOrderExpires();
   // UI
   if (!quote) return null;
   return (

@@ -11,11 +11,11 @@ import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -29,11 +29,8 @@ export default function OrderCheckoutDeliveryScreen() {
   // tracking
   useTrackScreenView('Checkout: pagamento', { businessId });
   // side effects
+  useBackWhenOrderExpires();
   const options = usePlaceOrderOptions();
-  // go back when order becomes empty
-  useEffect(() => {
-    if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
-  }, [quote]);
   // handlers
   const canPlaceOrder = Boolean(options);
   const placeOrder = () => {

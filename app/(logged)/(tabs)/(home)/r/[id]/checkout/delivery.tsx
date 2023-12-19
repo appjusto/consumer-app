@@ -7,10 +7,10 @@ import { FulfillmentSelector } from '@/common/screens/home/businesses/checkout/d
 import { OrderFleetSelector } from '@/common/screens/home/businesses/checkout/delivery/order-fleet-selector';
 import { PreparationMode } from '@/common/screens/home/businesses/checkout/delivery/preparation-mode';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -22,10 +22,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // tracking
   useTrackScreenView('Checkout: entrega', { businessId });
   // side effects
-  // go back when order becomes empty
-  useEffect(() => {
-    if (quote === null) router.replace('/(logged)/(tabs)/(home)/');
-  }, [quote]);
+  useBackWhenOrderExpires();
   // UI
   if (!quote) return null;
   return (
