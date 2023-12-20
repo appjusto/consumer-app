@@ -13,7 +13,9 @@ export const useOrderFares = (
   // state
   const [fares, setFares] = useState<Fare[]>();
   // helpers
+  const created = Boolean(order?.timestamps?.quote);
   const id = order?.id;
+  const fare = order?.fare;
   const fulfillment = order?.fulfillment;
   const destinationAddress = order?.destination?.address.description;
   const routeDistance = order?.route?.distance;
@@ -28,7 +30,6 @@ export const useOrderFares = (
       .getOrderQuotes(id, defaultPaymentMethod ?? 'pix')
       .then((fares) => {
         setFares(fares);
-        if (fares.length) api.orders().updateOrder(id, { fare: fares[0] });
       })
       .catch((error) => {
         if (error instanceof Error) showToast(error.message, 'error');
@@ -36,5 +37,17 @@ export const useOrderFares = (
   }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress, routeDistance]);
   // result
   // console.log('results', fares);
+  useEffect(() => {
+    if (!created) return;
+    if (!id) return;
+    if (!fares?.length) return;
+    if (fare) return;
+    api
+      .orders()
+      .updateOrder(id, { fare: fares[0] })
+      .catch(() => {
+        console.error('Erro ao atualizar fare');
+      });
+  }, [created, id, fares, fare, api]);
   return fares;
 };

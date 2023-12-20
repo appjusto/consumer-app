@@ -1,3 +1,4 @@
+import { cardFormatter } from '@/common/formatters/card';
 import { cepFormatter } from '@/common/formatters/cep';
 import { cnpjFormatter } from '@/common/formatters/cnpj';
 import { cpfFormatter } from '@/common/formatters/cpf';
@@ -56,5 +57,15 @@ export default {
     mask: '00',
     parser: numbersOnlyParser,
     formatter: undefined,
+  },
+  threedigtsnumber: {
+    mask: '000',
+    parser: numbersOnlyParser,
+    formatter: undefined,
+  },
+  creditcard16: {
+    mask: '0000 0000 0000 0000',
+    parser: numbersOnlyParser,
+    formatter: cardFormatter,
   },
 };

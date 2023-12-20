@@ -37,7 +37,8 @@ export const useProductImageURI = (
       .getDownloadURL()
       .then((url) => {
         if (url) setProductURL(url);
-      });
+      })
+      .catch(() => null);
   }, [api, businessId, productId, type]);
   // result
   return productURL;

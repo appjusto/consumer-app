@@ -57,6 +57,7 @@ export const PlaceListItem = ({
           ) : null}
         </View>
         <OnlyIconButton
+          style={{ borderWidth: 0, backgroundColor: checked ? colors.primary100 : undefined }}
           icon={<MoreVertical size={20} color={checked ? colors.primary900 : colors.neutral900} />}
           onPress={onSelectOptions}
         />

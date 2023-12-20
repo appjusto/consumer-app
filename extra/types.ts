@@ -13,6 +13,9 @@ export interface Extra {
     };
   };
   algolia: AlgoliaConfig;
+  iugu: {
+    accountId: string;
+  };
   eas: {
     projectId: string;
   };

@@ -10,7 +10,7 @@ export const useBackWhenOrderExpires = () => {
   useEffect(() => {
     if (quote === null) {
       console.log('quote === null; going back');
-      router.replace('/(logged)/(tabs)/(home)/');
+      router.push('/(logged)/(tabs)/(home)/');
     }
   }, [quote]);
 };

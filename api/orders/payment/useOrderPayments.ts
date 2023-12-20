@@ -64,9 +64,14 @@ export const useOrderPayments = () => {
     );
   }, [acceptedOnOrder, cards]);
   // result
+  const acceptsCards =
+    acceptedOnOrder?.includes('credit_card') ||
+    acceptedOnOrder?.includes('vr-alimentação') ||
+    acceptedOnOrder?.includes('vr-refeição');
   return {
     acceptedByPlatform,
     acceptedOnOrder,
+    acceptsCards,
     acceptedCardsOnOrder,
     defaultPaymentMethod,
     defaultPaymentMethodId,

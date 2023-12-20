@@ -1,15 +1,20 @@
 import { useContextOrderPayments } from '@/api/orders/context/order-context';
+import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
+import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
-import { OrderPaymentCard } from './order-payment-card';
+import { PaymentCard } from './cards/payment-card';
 import { OrderPaymentPix } from './order-payment-pix';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  onAddCard: () => void;
+}
 
-export const OrderPaymentMethod = ({ style, ...props }: Props) => {
+export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   // context
   const {
-    acceptedCardsOnOrder,
     acceptedOnOrder,
+    acceptsCards,
+    acceptedCardsOnOrder = [],
     paymentMethod,
     paymentMethodId,
     setPaymentMethod,
@@ -18,9 +23,10 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
   // state
   // UI
   console.log(acceptedOnOrder);
+  const acceptsPix = acceptedOnOrder?.includes('pix');
   return (
     <View style={[{}, style]} {...props}>
-      {acceptedOnOrder?.includes('pix') ? (
+      {acceptsPix ? (
         <OrderPaymentPix
           checked={paymentMethod === 'pix'}
           onPress={() => {
@@ -28,9 +34,9 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
           }}
         />
       ) : null}
-      {(acceptedCardsOnOrder ?? []).map((card) => {
+      {acceptedCardsOnOrder.map((card) => {
         return (
-          <OrderPaymentCard
+          <PaymentCard
             card={card}
             checked={paymentMethod === 'credit_card' && card.id === paymentMethodId}
             key={card.id}
@@ -41,6 +47,14 @@ export const OrderPaymentMethod = ({ style, ...props }: Props) => {
           />
         );
       })}
+      {acceptsCards ? (
+        <DefaultButton
+          style={{ marginTop: paddings.lg }}
+          title="Adicionar cartão"
+          variant="outline"
+          onPress={onAddCard}
+        />
+      ) : null}
     </View>
   );
 };

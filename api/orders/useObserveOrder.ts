@@ -2,17 +2,16 @@ import { Order, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';
 import { useContextApi } from '../ApiContext';
 
-export const useObserveOrder = (orderId?: string, enabled = true) => {
+export const useObserveOrder = (orderId?: string) => {
   // context
   const api = useContextApi();
   // state
   const [order, setOrder] = useState<WithId<Order> | null>();
   // side effects
   useEffect(() => {
-    if (!enabled) return;
     if (!orderId) return;
     return api.orders().observeOrder(orderId, setOrder);
-  }, [api, enabled, orderId]);
+  }, [api, orderId]);
   // result
   return order;
 };

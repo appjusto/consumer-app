@@ -37,7 +37,14 @@ export default function OrderCheckoutDeliveryScreen() {
           <OrderTotalBreakdown style={{ marginTop: paddings.lg }} order={quote} />
           <HR style={{ marginVertical: paddings.xl }} />
           <DefaultText size="lg">Forma de pagamento</DefaultText>
-          <OrderPaymentMethod />
+          <OrderPaymentMethod
+            onAddCard={() => {
+              router.push({
+                pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/cards/add',
+                params: { id: businessId },
+              });
+            }}
+          />
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />

@@ -6,7 +6,7 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { HR } from '@/common/components/views/HR';
+import { HRShadow } from '@/common/components/views/hr-shadow';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
@@ -74,18 +74,7 @@ export default function OrderCheckoutDeliveryScreen() {
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       <View>
-        <HR
-          style={{
-            shadowColor: '#000',
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.22,
-            shadowRadius: 2.22,
-            elevation: 3,
-          }}
-        />
+        <HRShadow />
         <View
           style={{
             padding: paddings.lg,

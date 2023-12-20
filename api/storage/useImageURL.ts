@@ -12,10 +12,7 @@ export const useImageURL = (path?: string | null) => {
     }
     getDownloadURL(path)
       .then(setURL)
-      .catch((error) => {
-        console.log(error);
-        setURL(null);
-      });
+      .catch(() => setURL(null));
   }, [path]);
   return url;
 };

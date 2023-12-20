@@ -1,22 +1,34 @@
+import { cardType } from '@/api/consumer/cards/card-type';
+import { getCardLastDigits } from '@/api/consumer/cards/card-type/getCardLastDigits';
+import { getCardType } from '@/api/consumer/cards/card-type/getCardType';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Place } from '@appjusto/types';
+import { Card, WithId } from '@appjusto/types';
 import { Pencil, Trash2 } from 'lucide-react-native';
 import { Modal, ModalProps, Pressable, View } from 'react-native';
 
 interface Props extends ModalProps {
-  place: Place | undefined;
+  card: WithId<Card> | undefined;
+  loading: boolean;
   onDismiss: () => void;
   onDelete: () => void;
-  onEdit: () => void;
+  onView: () => void;
 }
-export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...props }: Props) => {
-  if (!place) return null;
+export const PaymentCardModal = ({
+  card,
+  loading,
+  onDismiss,
+  onDelete,
+  onView,
+  ...props
+}: Props) => {
+  if (!card) return null;
   // UI
+  const type = getCardType(card);
   return (
     <Modal transparent animationType="slide" {...props}>
       <Pressable style={{ flex: 1 }} onPress={onDismiss}>
@@ -38,7 +50,9 @@ export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...prop
             >
               <ModalHandle />
               <DefaultText style={{ marginTop: paddings['2xl'] }} size="md" color="black">
-                {place.address.main}
+                {`${cardType.getTypeInfo(type as string).niceType}  ••••  ${getCardLastDigits(
+                  card
+                )}`}
               </DefaultText>
               <View style={{ marginTop: paddings['2xl'], flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
@@ -48,6 +62,8 @@ export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...prop
                     leftView={
                       <Trash2 style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
                     }
+                    disabled={loading}
+                    loading={loading}
                     onPress={onDelete}
                   />
                 </View>
@@ -58,13 +74,15 @@ export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...prop
                     leftView={
                       <Pencil style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
                     }
-                    onPress={onEdit}
+                    disabled={loading}
+                    onPress={onView}
                   />
                 </View>
               </View>
               <LinkButton
                 style={{ marginVertical: paddings['2xl'] }}
                 variant="destructive"
+                disabled={loading}
                 onPress={onDismiss}
               >
                 Cancelar

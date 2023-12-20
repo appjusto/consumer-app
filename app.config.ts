@@ -136,6 +136,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       appId: process.env.EXPO_PUBLIC_ALGOLIA_APPID,
       apiKey: process.env.EXPO_PUBLIC_ALGOLIA_APIKEY,
     },
+    iugu: {
+      accountId: process.env.EXPO_PUBLIC_IUGU_ACCOUNT_ID,
+    },
     eas: {
       projectId,
     },

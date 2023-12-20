@@ -20,7 +20,7 @@ import FleetsApi from './fleets/FleetsApi';
 import IncidentsApi from './incidents/IncidentsApi';
 import LedgerApi from './ledger/LedgerApi';
 import MapsApi from './maps/MapsApi';
-import OrdersApi from './orders/OrdersApi';
+import OrdersApi from './orders/orders-api';
 import PlatformApi from './platform/PlatformApi';
 import ProfileApi from './profile/ProfileApi';
 

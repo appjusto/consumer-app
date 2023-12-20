@@ -1,9 +1,9 @@
 import { useOrderPayments } from '@/api/orders/payment/useOrderPayments';
-import { useObserveOrderQuote } from '@/api/orders/useObserveOrderQuote';
 import { Card, Fare, Order, PayableWith, WithId } from '@appjusto/types';
 import { pick } from 'lodash';
 import React from 'react';
 import { useOrderFares } from '../payment/useOrderFares';
+import { useObserveOrderQuote } from '../useObserveOrderQuote';
 
 const OrderContext = React.createContext<Value>({});
 
@@ -17,6 +17,7 @@ interface Value {
   fares?: Fare[] | undefined;
   acceptedByPlatform?: PayableWith[];
   acceptedOnOrder?: PayableWith[];
+  acceptsCards?: boolean;
   acceptedCardsOnOrder?: WithId<Card>[];
   selectedCard?: WithId<Card>;
   defaultPaymentMethod?: PayableWith | null;
@@ -33,6 +34,7 @@ export const OrderProvider = ({ businessId, children }: Props) => {
   const {
     acceptedByPlatform,
     acceptedOnOrder,
+    acceptsCards,
     acceptedCardsOnOrder,
     defaultPaymentMethod,
     defaultPaymentMethodId,
@@ -50,9 +52,10 @@ export const OrderProvider = ({ businessId, children }: Props) => {
         quote,
         fares,
         acceptedByPlatform,
+        acceptedOnOrder,
+        acceptsCards,
         acceptedCardsOnOrder,
         selectedCard,
-        acceptedOnOrder,
         defaultPaymentMethod,
         defaultPaymentMethodId,
         paymentMethod,
@@ -84,6 +87,7 @@ export const useContextOrderPayments = () => {
   return pick(value, [
     'acceptedByPlatform',
     'acceptedOnOrder',
+    'acceptsCards',
     'acceptedCardsOnOrder',
     'defaultPaymentMethod',
     'defaultPaymentMethodId',

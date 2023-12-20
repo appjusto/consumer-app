@@ -1,9 +1,9 @@
-import { DinersIcon } from '@/common/screens/orders/checkout/payment/cards/diners-icon';
-import { EloIcon } from '@/common/screens/orders/checkout/payment/cards/elo-icon';
-import { MasterCardIcon } from '@/common/screens/orders/checkout/payment/cards/mastercard-icon';
-import { VisaIcon } from '@/common/screens/orders/checkout/payment/cards/visa-icon';
-import { VRAlimentacao } from '@/common/screens/orders/checkout/payment/cards/vr-alimentacao';
-import { VRRefeicao } from '@/common/screens/orders/checkout/payment/cards/vr-refeicao';
+import { DinersIcon } from '@/common/screens/orders/checkout/payment/icons/diners-icon';
+import { EloIcon } from '@/common/screens/orders/checkout/payment/icons/elo-icon';
+import { MasterCardIcon } from '@/common/screens/orders/checkout/payment/icons/mastercard-icon';
+import { VisaIcon } from '@/common/screens/orders/checkout/payment/icons/visa-icon';
+import { VRAlimentacao } from '@/common/screens/orders/checkout/payment/icons/vr-alimentacao';
+import { VRRefeicao } from '@/common/screens/orders/checkout/payment/icons/vr-refeicao';
 import { View, ViewProps } from 'react-native';
 import { SupportedCardType } from '../../../../../../api/consumer/cards/card-type/types';
 

@@ -59,7 +59,6 @@ export default function BusinessDetailScreen() {
         onPress={() =>
           router.push({
             pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/',
-
             params: { id: businessId },
           })
         }

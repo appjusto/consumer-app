@@ -61,11 +61,10 @@ export default function ProfileScreen() {
             onPress={() => router.push('/profile/personal')}
           />
           <DefaultListItem
-            title="Selfie e documento"
-            subtitles={['Sua selfie e a imagem do seu documento']}
+            title="Seus cartões"
             leftView={<BookMinus size={20} color={colors.black} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/images')}
+            onPress={() => router.push('/profile/cards/list')}
           />
 
           <View style={{ flex: 1 }} />

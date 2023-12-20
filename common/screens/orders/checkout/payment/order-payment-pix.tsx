@@ -2,7 +2,7 @@ import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-bu
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
-import { IconPixLogo } from './pix-logo';
+import { IconPixLogo } from './icons/pix-logo';
 
 interface Props extends ViewProps {
   checked?: boolean;
