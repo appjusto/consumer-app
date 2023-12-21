@@ -14,7 +14,7 @@ import BannerApi from './banners/BannerApi';
 import BusinessApi from './business/BusinessApi';
 import ChatsApi from './chats/ChatsApi';
 import ComplaintsApi from './complaints/ComplaintsApi';
-import ConsumersApi from './consumer/ConsumersApi';
+import ConsumersApi from './consumer/consumers-api';
 import AlgoliaApi from './externals/algolia/AlgoliaApi';
 import FleetsApi from './fleets/FleetsApi';
 import IncidentsApi from './incidents/IncidentsApi';

@@ -44,15 +44,15 @@ export const PaymentCard = ({
             </DefaultText>
           </View>
           <View style={{ flex: 1 }} />
-          <OnlyIconButton
-            style={{ borderWidth: 0, backgroundColor: checked ? colors.primary100 : undefined }}
-            icon={
-              <MoreVertical size={20} color={checked ? colors.primary900 : colors.neutral900} />
-            }
-            onPress={() => {
-              if (onSelectOptions) onSelectOptions();
-            }}
-          />
+          {onSelectOptions ? (
+            <OnlyIconButton
+              style={{ borderWidth: 0, backgroundColor: checked ? colors.primary100 : undefined }}
+              icon={
+                <MoreVertical size={20} color={checked ? colors.primary900 : colors.neutral900} />
+              }
+              onPress={onSelectOptions}
+            />
+          ) : null}
         </View>
       </RadioCardButton>
     </View>

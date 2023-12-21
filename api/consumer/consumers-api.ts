@@ -115,7 +115,7 @@ export default class ConsumersApi {
         hash,
         meta: { version: getAppVersion() },
       } as SaveIuguCardPayload);
-      const cardId = result.data as string;
+      const cardId = result.data.id as string;
       return cardId;
     } else if (processor === 'vr') {
       const result = await saveCard({
@@ -127,7 +127,7 @@ export default class ConsumersApi {
         cvv,
         meta: { version: getAppVersion() },
       } as SaveVRCardPayload);
-      const cardId = result.data as string;
+      const cardId = result.data.id as string;
       return cardId;
     }
     throw new Error('Não foi possível identificar a bandeira.');
