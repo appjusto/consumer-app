@@ -56,7 +56,7 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
               title="Avaliar corrida"
               onPress={() =>
                 router.push({
-                  pathname: '/(logged)/order/[id]/delivered',
+                  pathname: '/(logged)/orders/[id]/delivered',
                   params: { id: order.id },
                 })
               }

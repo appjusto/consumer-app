@@ -6,7 +6,6 @@ import { BusinessCart } from '@/common/screens/home/businesses/checkout/business
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -22,9 +21,9 @@ export default function OrderCheckoutScreen() {
   // state
   const [additionalInfo, setAdditionalInfo] = useState('');
   // tracking
-  useTrackScreenView('Checkout: sacola', { businessId });
+  useTrackScreenView('Checkout: sacola', { businessId, orderId: quote?.id });
   // side effects
-  useBackWhenOrderExpires();
+  // useBackWhenOrderExpires();
   // logs
   console.log('orderId', quote?.id);
   // UI
@@ -46,6 +45,7 @@ export default function OrderCheckoutScreen() {
       <View style={{ flex: 1 }} />
       <CartButton
         variant="checkout"
+        disabled={!quote.fare}
         onPress={() =>
           router.push({
             pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/delivery',

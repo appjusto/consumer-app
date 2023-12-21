@@ -15,7 +15,7 @@ import { useRouterAccordingOrderStatus } from '@/common/screens/orders/useRouter
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { MessageCircle } from 'lucide-react-native';
 
 export default function OngoingOrderScreen() {
@@ -95,12 +95,7 @@ export default function OngoingOrderScreen() {
               style={{ marginLeft: paddings.sm }}
               title="Ajuda"
               variant="destructive"
-              onPress={() => {
-                router.push({
-                  pathname: '/(logged)/order/[id]/support',
-                  params: { id: orderId },
-                });
-              }}
+              onPress={() => {}}
             />
           </View>
         </View>

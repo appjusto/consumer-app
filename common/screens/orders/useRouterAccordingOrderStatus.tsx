@@ -22,9 +22,12 @@ export const useRouterAccordingOrderStatus = (
       setModalText('Você saiu desta corrida');
       setModalShown(true);
     } else if (isOrderOngoing(status) && !ongoing) {
-      router.replace({ pathname: '/(logged)/order/[id]/ongoing', params: { id: orderId } });
+      router.replace({ pathname: '/(logged)/orders/[id]/ongoing', params: { id: orderId } });
     } else if (status === 'delivered') {
-      router.replace({ pathname: '/(logged)/order/[id]/delivered', params: { id: orderId } });
+      router.replace({
+        pathname: '/(logged)/orders/[id]/delivered',
+        params: { id: orderId },
+      });
     } else if (status === 'canceled') {
       setModalText('Esta corrida foi cancelada');
       setModalShown(true);

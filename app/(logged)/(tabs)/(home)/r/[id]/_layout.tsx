@@ -16,7 +16,12 @@ export default function BusinessLayout() {
   return (
     <BusinessProvider businessId={businessId}>
       <OrderProvider businessId={businessId}>
-        <Stack />
+        <Stack>
+          <Stack.Screen
+            name="checkout/confirming"
+            options={{ presentation: 'modal', headerShown: false }}
+          />
+        </Stack>
       </OrderProvider>
     </BusinessProvider>
   );

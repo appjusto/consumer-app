@@ -27,7 +27,7 @@ export const OrderList = ({ orders, title, emptyText, style, children, ...props 
               key={order.id}
               onPress={() =>
                 router.push({
-                  pathname: '/(logged)/order/[id]/detail',
+                  pathname: '/(logged)/orders/[id]/detail',
                   params: { id: order.id },
                 })
               }

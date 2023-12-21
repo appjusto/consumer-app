@@ -7,7 +7,6 @@ import { FulfillmentSelector } from '@/common/screens/home/businesses/checkout/d
 import { OrderFleetSelector } from '@/common/screens/home/businesses/checkout/delivery/order-fleet-selector';
 import { PreparationMode } from '@/common/screens/home/businesses/checkout/delivery/preparation-mode';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -20,9 +19,9 @@ export default function OrderCheckoutDeliveryScreen() {
   // context
   const quote = useContextOrderQuote();
   // tracking
-  useTrackScreenView('Checkout: entrega', { businessId });
+  useTrackScreenView('Checkout: entrega', { businessId, orderId: quote?.id });
   // side effects
-  useBackWhenOrderExpires();
+  // useBackWhenOrderExpires();
   // UI
   if (!quote) return null;
   return (
@@ -39,6 +38,7 @@ export default function OrderCheckoutDeliveryScreen() {
       <View style={{ flex: 1 }} />
       <CartButton
         variant="checkout"
+        disabled={!quote.fare}
         onPress={() =>
           router.push({
             pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/payment',

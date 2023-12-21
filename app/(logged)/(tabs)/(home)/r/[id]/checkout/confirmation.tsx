@@ -11,11 +11,11 @@ import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -26,24 +26,29 @@ export default function OrderCheckoutDeliveryScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrderQuote();
+  // state
+  const [loading, setLoading] = useState(false);
   // tracking
-  useTrackScreenView('Checkout: pagamento', { businessId });
+  useTrackScreenView('Checkout: pagamento', { businessId, orderId: quote?.id });
   // side effects
-  useBackWhenOrderExpires();
+  // useBackWhenOrderExpires(!loading);
   const options = usePlaceOrderOptions();
   // handlers
   const canPlaceOrder = Boolean(options);
   const placeOrder = () => {
     if (!options) return;
-    // TODO: loading
+    setLoading(true);
     api
       .orders()
       .placeOrder(options)
       .then(() => {
-        // TODO: next screen
+        router.push({
+          pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/confirming',
+          params: { id: businessId, orderId: options.orderId },
+        });
       })
       .catch((error) => {
-        console.error(error);
+        setLoading(false);
         if (error instanceof Error) {
           showToast(error.message, 'error');
           crashlytics().recordError(error);
@@ -89,7 +94,8 @@ export default function OrderCheckoutDeliveryScreen() {
             <DefaultButton
               title="Confirmar pedido"
               onPress={placeOrder}
-              disabled={!canPlaceOrder}
+              disabled={!canPlaceOrder || loading}
+              loading={loading}
             />
           </View>
         </View>

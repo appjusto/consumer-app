@@ -15,9 +15,7 @@ export function Loading({ color, backgroundColor, title, size = 'large' }: Props
   return (
     <DefaultView
       style={{
-        ...screens.default,
-        justifyContent: 'center',
-        alignItems: 'center',
+        ...screens.centered,
         backgroundColor: colors[backgroundColor ?? 'white'],
       }}
     >

@@ -81,13 +81,14 @@ export default class ConsumersApi {
   observeCards(resultHandler: (orders: WithId<Card>[]) => void) {
     const query = cardsRef()
       .where('accountId', '==', this.auth.getUserId())
-      .where('status', '==', 'enabled');
+      .where('status', '==', 'enabled')
+      .orderBy('createdAt', 'desc');
     return query.onSnapshot(
       async (snapshot) => {
         resultHandler(snapshot.empty ? [] : documentsAs<Card>(snapshot.docs));
       },
       (error) => {
-        console.error(error);
+        console.log(error);
       }
     );
   }

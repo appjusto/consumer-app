@@ -10,10 +10,11 @@ import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   variant: 'business' | 'checkout' | 'place-order';
+  disabled: boolean;
   onPress: () => void;
 }
 
-export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
+export const CartButton = ({ variant, disabled, onPress, style, ...props }: Props) => {
   // context
   const quote = useContextOrderQuote();
   // UI
@@ -51,7 +52,7 @@ export const CartButton = ({ variant, onPress, style, ...props }: Props) => {
               : 'Continuar'
           }
           size="lg"
-          disabled={variant === 'checkout' && !quote.fare}
+          disabled={disabled}
           onPress={onPress}
         />
       </View>

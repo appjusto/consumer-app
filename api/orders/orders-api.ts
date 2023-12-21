@@ -120,7 +120,7 @@ export default class OrdersApi {
   }
 
   async placeOrder(options: PlaceOrderOptions) {
-    console.log('placeOrder');
+    console.log('placeOrder', options);
     await placeOrder({
       ...options,
       meta: { version: getAppVersion() },

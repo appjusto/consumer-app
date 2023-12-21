@@ -19,13 +19,16 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Dayjs } from '@appjusto/dates';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { capitalize } from 'lodash';
 import { Clock3 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutScheduleScreen() {
+  // params
+  const params = useLocalSearchParams<{ id: string }>();
+  const businessId = params.id;
   // context
   const api = useContextApi();
   const business = useContextBusiness();
@@ -38,7 +41,7 @@ export default function OrderCheckoutScheduleScreen() {
   const [days, setDays] = useState<Date[]>();
   const [daySelectorData, setDaySelectorData] = useState<HorizontalSelectorItem[]>();
   // tracking
-  useTrackScreenView('Checkout: agendamento');
+  useTrackScreenView('Checkout: agendamento', { businessId, orderId: quote?.id });
   // side effects
   useEffect(() => {
     if (!business) return;
