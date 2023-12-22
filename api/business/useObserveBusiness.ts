@@ -2,7 +2,7 @@ import { PublicBusiness, WithId } from '@appjusto/types';
 import React from 'react';
 import { useContextApi } from '../ApiContext';
 
-export const useObserveBusiness = (businessId: string) => {
+export const useObserveBusiness = (businessId?: string) => {
   // context
   const api = useContextApi();
   // state
@@ -10,6 +10,7 @@ export const useObserveBusiness = (businessId: string) => {
   // side effects
   // observe fleet
   React.useEffect(() => {
+    if (!businessId) return;
     return api.business().observeBusiness(businessId, setBusiness);
   }, [api, businessId]);
   // result

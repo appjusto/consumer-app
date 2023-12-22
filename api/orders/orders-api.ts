@@ -5,15 +5,16 @@ import { getFirebaseRegion } from '@/extra';
 import {
   Fare,
   Order,
+  OrderConfirmation,
   OrderItem,
   OrderReview,
-  OrderType,
   PayableWith,
   Place,
   PublicBusiness,
   WithId,
 } from '@appjusto/types';
 import firebase from '@react-native-firebase/app';
+import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import { omit } from 'lodash';
 import AuthApi from '../auth/AuthApi';
@@ -29,8 +30,12 @@ const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
 // firestore
 const ordersRef = () => firestore().collection('orders');
 const orderRef = (id: string) => ordersRef().doc(id);
+const privateRef = (id: string) => orderRef(id).collection('private');
+const confirmationRef = (id: string) => privateRef(id).doc('confirmation');
+const cancellationRef = (id: string) => privateRef(id).doc('cancellation');
 const reviewsRef = () => firestore().collection('reviews');
 const reviewRef = (id: string) => reviewsRef().doc(id);
+
 export default class OrdersApi {
   constructor(private auth: AuthApi) {}
   // observe orders
@@ -41,7 +46,7 @@ export default class OrdersApi {
       .where('consumer.id', '==', this.auth.getUserId())
       .orderBy('createdOn', 'desc');
     if (businessId) query = query.where('business.id', '==', businessId);
-    else query = query.where('type', '==', 'p2p' as OrderType);
+    // else query = query.where('type', '==', 'p2p' as OrderType);
     if (statuses) query = query.where('status', 'in', statuses);
     if (from) query = query.where('createdOn', '>', fromDate(from));
     if (to) query = query.where('createdOn', '<', fromDate(to));
@@ -125,6 +130,19 @@ export default class OrdersApi {
       ...options,
       meta: { version: getAppVersion() },
     });
+  }
+
+  // confirmation
+  observeConfirmation(orderId: string, resultHandler: (confirmation: OrderConfirmation) => void) {
+    confirmationRef(orderId).onSnapshot(
+      (snapshot) => {
+        resultHandler(snapshot.data() as OrderConfirmation);
+      },
+      (error) => {
+        console.error(error);
+        crashlytics().recordError(error);
+      }
+    );
   }
 
   // reviews

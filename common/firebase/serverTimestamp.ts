@@ -2,3 +2,5 @@ import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firest
 
 export const serverTimestamp = () =>
   firestore.FieldValue.serverTimestamp() as FirebaseFirestoreTypes.Timestamp;
+
+export type Timestamp = FirebaseFirestoreTypes.Timestamp;
