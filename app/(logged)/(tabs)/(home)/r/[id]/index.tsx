@@ -3,6 +3,7 @@ import {
   useContextBusiness,
   useContextBusinessProducts,
 } from '@/api/business/context/business-context';
+import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
@@ -21,6 +22,7 @@ export default function BusinessDetailScreen() {
   // context
   const business = useContextBusiness();
   const products = useContextBusinessProducts();
+  const quote = useContextOrderQuote();
   // tracking
   useTrackScreenView('Restaurante', { businessId });
   // UI
@@ -55,7 +57,9 @@ export default function BusinessDetailScreen() {
         estimatedItemSize={78}
       />
       <CartButton
+        order={quote}
         variant="business"
+        disabled={!quote}
         onPress={() =>
           router.push({
             pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/',

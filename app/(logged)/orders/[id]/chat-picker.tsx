@@ -76,25 +76,25 @@ export default function ChatPickerScreen() {
       }}
     >
       <Stack.Screen options={{ title: 'Chat' }} />
-      {courierId ? (
-        <Pressable onPress={() => openChat(courierId)}>
-          {() => (
-            <ChatCard
-              title="Chat com consumidor"
-              iconName="fleets"
-              hasUnreadMessages={hasUnreadMessagesFromCourier}
-            />
-          )}
-        </Pressable>
-      ) : null}
       {businessId ? (
         <Pressable onPress={() => openChat(businessId)}>
           {() => (
             <ChatCard
-              style={{ marginTop: paddings.lg }}
               title="Chat com restaurante"
               iconName="utentils"
               hasUnreadMessages={hasUnreadMessagesFromBusiness}
+            />
+          )}
+        </Pressable>
+      ) : null}
+      {courierId ? (
+        <Pressable onPress={() => openChat(courierId)}>
+          {() => (
+            <ChatCard
+              style={{ marginTop: paddings.lg }}
+              title="Chat com entregador"
+              iconName="fleets"
+              hasUnreadMessages={hasUnreadMessagesFromCourier}
             />
           )}
         </Pressable>

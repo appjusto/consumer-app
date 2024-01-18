@@ -1,5 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
+import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import { OrderMap } from '@/common/screens/orders/map/order-map';
 import { useRouterAccordingOrderStatus } from '@/common/screens/orders/useRouterAccordingOrderStatus';
@@ -29,20 +30,16 @@ export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
   // UI
   if (!order) return <Loading title="Pedido em andamento" />;
   return (
-    <View style={[{}, style]} {...props}>
+    <DefaultScrollView style={[{ flex: 1, backgroundColor: colors.neutral50 }, style]} {...props}>
       <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
-      {/* estimate */}
       <OngoingOrderEstimate order={order} />
-      {/* map */}
       <OrderMap order={order} />
-      <View style={{ padding: paddings.lg, backgroundColor: colors.neutral50 }}>
-        <View>
-          <OngoingOrderStatusMessageBox order={order} />
-        </View>
+      <View style={{ flex: 1, padding: paddings.lg }}>
+        <OngoingOrderStatusMessageBox order={order} />
         <OngoingOrderDeliveryAddress style={{ marginTop: paddings.lg }} order={order} />
         <OngoingOrderHandshake style={{ marginTop: paddings.lg }} order={order} />
         <OngoingOrderEstimateFoodOverview style={{ marginTop: paddings.lg }} order={order} />
       </View>
-    </View>
+    </DefaultScrollView>
   );
 };

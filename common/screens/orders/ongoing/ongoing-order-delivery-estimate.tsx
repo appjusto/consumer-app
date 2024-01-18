@@ -2,6 +2,7 @@ import { useOrderDeliveryEstimate } from '@/api/orders/estimate/useOrderDelivery
 import { isOrderOngoing } from '@/api/orders/status';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Time, formatTimestamp, timestampWithETA } from '@/common/formatters/timestamp';
+import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
@@ -28,6 +29,7 @@ export const OngoingOrderEstimate = ({ order, style, ...props }: Props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           borderWidth: 0,
+          backgroundColor: colors.white,
         },
         style,
       ]}

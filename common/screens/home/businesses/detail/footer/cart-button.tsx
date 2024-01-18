@@ -1,4 +1,3 @@
-import { useContextOrderQuote } from '@/api/orders/context/order-context';
 import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
@@ -6,26 +5,27 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
+import { Order } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
+  order: Order | undefined | null;
   variant: 'business' | 'checkout' | 'place-order';
   disabled: boolean;
   onPress: () => void;
 }
 
-export const CartButton = ({ variant, disabled, onPress, style, ...props }: Props) => {
+export const CartButton = ({ order, variant, disabled, onPress, style, ...props }: Props) => {
   // context
-  const quote = useContextOrderQuote();
   // UI
-  if (!quote) return null;
-  const totalLabel = quote.fare?.courier?.value
+  if (!order) return null;
+  const totalLabel = order.fare?.courier?.value
     ? variant === 'business'
       ? 'sem a entrega'
       : 'com a entrega'
     : '';
-  const total = variant === 'business' ? getOrderItemsTotal(quote) : getOrderTotalCost(quote);
-  const totalItems = quote.items?.length ? quote.items.length : 0;
+  const total = variant === 'business' ? getOrderItemsTotal(order) : getOrderTotalCost(order);
+  const totalItems = order.items?.length ? order.items.length : 0;
   return (
     <View style={[{}, style]} {...props}>
       <HRShadow />
