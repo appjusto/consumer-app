@@ -1,19 +1,26 @@
+import { useObserveOrderCard } from '@/api/orders/payment/useObserveOrderCard';
+import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { HR } from '@/common/components/views/HR';
+import { formatCurrency } from '@/common/formatters/currency';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
 import { ChevronRight } from 'lucide-react-native';
 import { Pressable, View, ViewProps } from 'react-native';
+import { OrderSelectedPayment } from '../checkout/confirmation/order-selected-payment';
 
 interface Props extends ViewProps {
   order: WithId<Order>;
 }
 
-export const OngoingOrderEstimateFoodOverview = ({ order, style, ...props }: Props) => {
-  const { business, code } = order;
-  if (!business?.id) return null;
+export const OngoingOrderFoodOverview = ({ order, style, ...props }: Props) => {
+  const { business, code, paymentMethod } = order;
+  // state
+  const card = useObserveOrderCard(paymentMethod !== 'pix' ? order.id : undefined);
   // UI
+  if (!business?.id) return null;
   return (
     <View
       style={[
@@ -21,7 +28,7 @@ export const OngoingOrderEstimateFoodOverview = ({ order, style, ...props }: Pro
           paddingHorizontal: paddings.lg,
           paddingVertical: paddings.lgg,
           backgroundColor: colors.white,
-          ...borders.white,
+          ...borders.light,
         },
         style,
       ]}
@@ -49,7 +56,18 @@ export const OngoingOrderEstimateFoodOverview = ({ order, style, ...props }: Pro
         </View>
       </Pressable>
       {/* payment */}
-      <View></View>
+      <HR style={{ marginVertical: paddings.lg }} />
+      <OrderSelectedPayment variant="ongoing" paymentMethod={paymentMethod} card={card} />
+      <HR style={{ marginVertical: paddings.lg }} />
+      {/* total */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <DefaultText size="md" color="black">
+          Total
+        </DefaultText>
+        <DefaultText size="md" color="black">
+          {formatCurrency(getOrderTotalCost(order))}
+        </DefaultText>
+      </View>
     </View>
   );
 };

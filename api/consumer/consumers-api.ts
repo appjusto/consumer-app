@@ -1,4 +1,4 @@
-import { documentsAs } from '@/common/firebase/documentAs';
+import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { getAppVersion } from '@/common/version';
 import { getFirebaseRegion, getManifestExtra } from '@/extra';
@@ -91,6 +91,18 @@ export default class ConsumersApi {
         console.log(error);
       }
     );
+  }
+  async fetchCard(cardId: string) {
+    try {
+      const ref = cardsRef().doc(cardId);
+      const snapshot = await ref.get();
+      if (!snapshot.exists) return null;
+      return documentAs<Card>(snapshot);
+    } catch (error: unknown) {
+      console.error(error);
+      if (error instanceof Error) crashlytics().recordError(error);
+      throw new Error('Não foi possível obter seus endereços. Tente novamente mais tarde.');
+    }
   }
   async saveCard(data: CardInfo, cancelToken?: CancelToken) {
     const { processor, name, number, month, year, cvv } = data;

@@ -30,7 +30,7 @@ export const OngoingOrderHandshake = ({ order, style, ...props }: Props) => {
           paddingHorizontal: paddings.lg,
           paddingVertical: paddings.lgg,
           backgroundColor: colors.white,
-          ...borders.white,
+          ...borders.light,
         },
         style,
       ]}

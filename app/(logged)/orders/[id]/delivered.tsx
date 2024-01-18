@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { getOrderRevenue } from '@/api/orders/revenue/getOrderRevenue';
+import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -86,7 +86,7 @@ export default function OngoingOrderScreen() {
       <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
       <FeedbackHeader title="Corrida finalizada!" text={['Valor recebido']} variant="success">
         <DefaultText style={{ marginTop: paddings.xs }} size="lg">
-          {formatCurrency(getOrderRevenue(order))}
+          {formatCurrency(getOrderTotalCost(order))}
         </DefaultText>
       </FeedbackHeader>
       <View

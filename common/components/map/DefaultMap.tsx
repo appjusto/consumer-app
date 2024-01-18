@@ -68,7 +68,7 @@ export const DefaultMap = forwardRef(
       <View style={{ flex: 1 }}>
         <MapView
           ref={ref}
-          style={[{ flex: 1, minHeight: 30, minWidth: 30 }, style]}
+          style={[{ flex: 1, minHeight: 300, minWidth: 30 }, style]}
           provider={PROVIDER_GOOGLE}
           initialRegion={
             origin

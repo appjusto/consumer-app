@@ -37,6 +37,7 @@ export default function OrderCheckoutDeliveryScreen() {
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       <CartButton
+        order={quote}
         variant="checkout"
         disabled={!quote.fare}
         onPress={() =>

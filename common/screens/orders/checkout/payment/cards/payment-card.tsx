@@ -13,6 +13,7 @@ import { CardIcon } from '../icons/card-icon';
 
 interface Props extends ViewProps {
   card: WithId<Card>;
+  variant?: 'default' | 'ongoing';
   checked?: boolean;
   onPress?: () => void;
   onSelectOptions?: () => void;
@@ -20,6 +21,7 @@ interface Props extends ViewProps {
 
 export const PaymentCard = ({
   card,
+  variant,
   checked,
   style,
   onPress,
@@ -29,8 +31,12 @@ export const PaymentCard = ({
   const type = getCardType(card);
   // UI
   return (
-    <View style={[{ marginTop: paddings.lg }, style]} {...props}>
-      <RadioCardButton checked={checked} onPress={onPress}>
+    <View style={[{}, style]} {...props}>
+      <RadioCardButton
+        style={variant === 'ongoing' ? { padding: 0, borderWidth: 0 } : undefined}
+        checked={checked}
+        onPress={onPress}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* logo */}
           <CardIcon type={type} />

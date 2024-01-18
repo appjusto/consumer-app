@@ -7,6 +7,7 @@ import {
   Order,
   OrderConfirmation,
   OrderItem,
+  OrderPayments,
   OrderReview,
   PayableWith,
   Place,
@@ -32,6 +33,7 @@ const ordersRef = () => firestore().collection('orders');
 const orderRef = (id: string) => ordersRef().doc(id);
 const privateRef = (id: string) => orderRef(id).collection('private');
 const confirmationRef = (id: string) => privateRef(id).doc('confirmation');
+const paymentsRef = (id: string) => privateRef(id).doc('payments');
 const cancellationRef = (id: string) => privateRef(id).doc('cancellation');
 const reviewsRef = () => firestore().collection('reviews');
 const reviewRef = (id: string) => reviewsRef().doc(id);
@@ -137,6 +139,18 @@ export default class OrdersApi {
     confirmationRef(orderId).onSnapshot(
       (snapshot) => {
         resultHandler(snapshot.data() as OrderConfirmation);
+      },
+      (error) => {
+        console.error(error);
+        crashlytics().recordError(error);
+      }
+    );
+  }
+
+  observePayment(orderId: string, resultHandler: (payment: OrderPayments) => void) {
+    paymentsRef(orderId).onSnapshot(
+      (snapshot) => {
+        resultHandler(snapshot.data() as OrderPayments);
       },
       (error) => {
         console.error(error);

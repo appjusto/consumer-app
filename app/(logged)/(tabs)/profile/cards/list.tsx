@@ -59,6 +59,7 @@ export default function ProfileCardListScreen() {
           {cards.map((card) => {
             return (
               <PaymentCard
+                style={{ marginTop: paddings.lg }}
                 card={card}
                 key={card.id}
                 onPress={() =>

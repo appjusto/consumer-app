@@ -9,9 +9,10 @@ import paddings from '@/common/styles/paddings';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
+import { OngoingOrderCourier } from './ongoing-order-courier';
 import { OngoingOrderDeliveryAddress } from './ongoing-order-delivery-address';
 import { OngoingOrderEstimate } from './ongoing-order-delivery-estimate';
-import { OngoingOrderEstimateFoodOverview } from './ongoing-order-food-overview';
+import { OngoingOrderFoodOverview } from './ongoing-order-food-overview';
 import { OngoingOrderHandshake } from './ongoing-order-handshake';
 import { OngoingOrderStatusMessageBox } from './ongoing-order-status-message-box';
 
@@ -34,11 +35,12 @@ export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
       <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
       <OngoingOrderEstimate order={order} />
       <OrderMap order={order} />
-      <View style={{ flex: 1, padding: paddings.lg }}>
+      <View style={{ flex: 1, padding: paddings.lg, marginBottom: paddings.xl }}>
         <OngoingOrderStatusMessageBox order={order} />
+        <OngoingOrderCourier style={{ marginTop: paddings.lg }} order={order} />
         <OngoingOrderDeliveryAddress style={{ marginTop: paddings.lg }} order={order} />
         <OngoingOrderHandshake style={{ marginTop: paddings.lg }} order={order} />
-        <OngoingOrderEstimateFoodOverview style={{ marginTop: paddings.lg }} order={order} />
+        <OngoingOrderFoodOverview style={{ marginTop: paddings.lg }} order={order} />
       </View>
     </DefaultScrollView>
   );

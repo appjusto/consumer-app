@@ -6,14 +6,19 @@ import { IconPixLogo } from './icons/pix-logo';
 
 interface Props extends ViewProps {
   checked?: boolean;
+  variant?: 'default' | 'ongoing';
   onPress?: () => void;
 }
 
-export const OrderPaymentPix = ({ checked, style, onPress, ...props }: Props) => {
+export const OrderPaymentPix = ({ checked, variant, style, onPress, ...props }: Props) => {
   // UI
   return (
-    <View style={[{ marginTop: paddings.lg }, style]} {...props}>
-      <RadioCardButton checked={checked} onPress={onPress}>
+    <View style={[{}, style]} {...props}>
+      <RadioCardButton
+        style={variant === 'ongoing' ? { padding: 0, borderWidth: 0 } : undefined}
+        checked={checked}
+        onPress={onPress}
+      >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* logo */}
           <IconPixLogo />

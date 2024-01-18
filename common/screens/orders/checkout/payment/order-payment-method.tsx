@@ -22,12 +22,13 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   } = useContextOrderPayments();
   // state
   // UI
-  console.log(acceptedOnOrder);
+  // console.log(acceptedOnOrder);
   const acceptsPix = acceptedOnOrder?.includes('pix');
   return (
     <View style={[{}, style]} {...props}>
       {acceptsPix ? (
         <OrderPaymentPix
+          style={{ marginTop: paddings.lg }}
           checked={paymentMethod === 'pix'}
           onPress={() => {
             setPaymentMethod!('pix');
@@ -37,6 +38,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
       {acceptedCardsOnOrder.map((card) => {
         return (
           <PaymentCard
+            style={{ marginTop: paddings.lg }}
             card={card}
             checked={paymentMethod === 'credit_card' && card.id === paymentMethodId}
             key={card.id}

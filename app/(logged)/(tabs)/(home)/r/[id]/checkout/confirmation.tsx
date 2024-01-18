@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrderQuote } from '@/api/orders/context/order-context';
+import { useContextOrderPayments, useContextOrderQuote } from '@/api/orders/context/order-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -26,6 +26,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrderQuote();
+  const { paymentMethod, selectedCard } = useContextOrderPayments();
   // state
   const [loading, setLoading] = useState(false);
   // tracking
@@ -74,7 +75,11 @@ export default function OrderCheckoutDeliveryScreen() {
           <DefaultText style={{ marginTop: paddings.lg }} size="lg">
             Pagamento
           </DefaultText>
-          <OrderSelectedPayment style={{ marginTop: paddings.lg }} />
+          <OrderSelectedPayment
+            style={{ marginTop: paddings.lg }}
+            paymentMethod={paymentMethod}
+            card={selectedCard}
+          />
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
