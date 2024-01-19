@@ -28,7 +28,7 @@
   "dependencies": {
     "@appjusto/dates": "^2.0.0",
     "@appjusto/menu": "^1.0.0",
-    "@appjusto/types": "^23.11.26",
+    "@appjusto/types": "^23.11.30",
     "@expo/react-native-action-sheet": "^4.0.1",
     "@expo/vector-icons": "^13.0.0",
     "@fnando/cnpj": "^1.0.2",
@@ -57,6 +57,7 @@
     "expo-asset": "~8.10.1",
     "expo-av": "^13.4.1",
     "expo-build-properties": "~0.8.3",
+    "expo-crypto": "~12.4.1",
     "expo-dev-client": "^2.4.10",
     "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",
@@ -98,8 +99,7 @@
     "react-native-svg": "13.9.0",
     "react-native-view-shot": "3.7.0",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "13.2.2",
-    "expo-crypto": "~12.4.1"
+    "react-native-webview": "13.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

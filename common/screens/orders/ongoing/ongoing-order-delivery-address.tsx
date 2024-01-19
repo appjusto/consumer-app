@@ -15,6 +15,7 @@ export const OngoingOrderDeliveryAddress = ({ order, style, ...props }: Props) =
   const place = delivery ? destination : origin;
   const address = place?.address;
   const deliveredByAppJusto = delivery && dispatchingStatus === 'confirmed';
+  const deliveredByRestaurant = delivery && order.fare?.courier?.payee === 'business';
   const outsourced = delivery && dispatchingStatus === 'outsourced';
   // UI
   return (
@@ -23,6 +24,7 @@ export const OngoingOrderDeliveryAddress = ({ order, style, ...props }: Props) =
         {
           paddingHorizontal: paddings.lg,
           paddingVertical: paddings.lgg,
+          marginBottom: paddings.lg,
           backgroundColor: colors.white,
           ...borders.light,
         },
@@ -59,8 +61,12 @@ export const OngoingOrderDeliveryAddress = ({ order, style, ...props }: Props) =
             }}
           >
             <DefaultText color="neutral800" size="xs">
-              {`Esta entrega está sendo feita ${
-                deliveredByAppJusto ? 'pela rede AppJusto' : 'por uma empresa parceira'
+              {`Entrega ${
+                deliveredByAppJusto
+                  ? 'pela rede AppJusto'
+                  : deliveredByRestaurant
+                  ? 'pelo próprio restaurante'
+                  : 'por uma empresa parceira'
               }`}{' '}
             </DefaultText>
           </View>

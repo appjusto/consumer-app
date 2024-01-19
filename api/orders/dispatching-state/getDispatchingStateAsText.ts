@@ -1,9 +1,13 @@
-import { DispatchingState } from '@appjusto/types';
+import { DispatchingState, OrderType } from '@appjusto/types';
 
-export const getDispatchingStateAsText = (dispatchingState?: DispatchingState | null) => {
-  if (dispatchingState === 'going-pickup') return 'Indo para a coleta';
-  if (dispatchingState === 'arrived-pickup') return 'No local de coleta';
-  if (dispatchingState === 'going-destination') return 'Indo para a entrega';
-  if (dispatchingState === 'arrived-destination') return 'Chegou';
+export const getDispatchingStateAsText = (
+  type: OrderType,
+  dispatchingState?: DispatchingState | null
+) => {
+  const origin = type === 'food' ? 'restaurante' : 'local de coleta';
+  if (dispatchingState === 'going-pickup') return `Indo para o ${origin}`;
+  if (dispatchingState === 'arrived-pickup') return `No ${origin}`;
+  if (dispatchingState === 'going-destination') return `Indo para a entrega`;
+  if (dispatchingState === 'arrived-destination') return `Chegou`;
   return '';
 };

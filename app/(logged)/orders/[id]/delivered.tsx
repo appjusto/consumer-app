@@ -60,7 +60,7 @@ export default function OngoingOrderScreen() {
     console.log('to update:', review);
 
     if (isEmpty(review)) {
-      router.back();
+      router.replace('/(logged)/(tabs)/(home)/');
     } else {
       setLoading(true);
       api
@@ -68,7 +68,7 @@ export default function OngoingOrderScreen() {
         .setOrderReview(orderId, review)
         .then(() => {
           setLoading(false);
-          router.back();
+          router.replace('/(logged)/(tabs)/(home)/');
         })
         .catch((error: unknown) => {
           setLoading(false);

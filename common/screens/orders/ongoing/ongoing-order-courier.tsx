@@ -21,6 +21,7 @@ export const OngoingOrderCourier = ({ order, style, ...props }: Props) => {
         {
           paddingHorizontal: paddings.lg,
           paddingVertical: paddings.lgg,
+          marginBottom: paddings.lg,
           backgroundColor: colors.white,
           ...borders.light,
         },

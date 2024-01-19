@@ -13,7 +13,7 @@ interface Props extends ViewProps {
 }
 
 export const HomeOngoingBusinessOrder = ({ order, style, ...props }: Props) => {
-  const { fulfillment, code, status, dispatchingState, business } = order;
+  const { fulfillment, code, status, type, dispatchingState, business } = order;
   const delivery = fulfillment === 'delivery';
   const estimateLabel = delivery ? 'Previsão de entrega' : 'Previsão de preparo';
   const estimate = useOrderDeliveryEstimate(order);
@@ -51,7 +51,7 @@ export const HomeOngoingBusinessOrder = ({ order, style, ...props }: Props) => {
           <CheckCircle2 color={colors.info500} size={16} />
           <View style={{ flexDirection: 'row' }}>
             <DefaultText style={{ marginLeft: paddings.xs }} color="info900">
-              {`Pedido ${getOrderStatusAsText(status, dispatchingState).toLocaleLowerCase()}`}
+              {`Pedido ${getOrderStatusAsText(type, status, dispatchingState).toLocaleLowerCase()}`}
             </DefaultText>
           </View>
         </View>

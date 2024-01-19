@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { Issue, IssueType } from '@appjusto/types';
 import { useEffect, useState } from 'react';
 
-export const useIssues = (type?: IssueType) => {
+export const useIssues = (type: IssueType | undefined | null) => {
   // context
   const api = useContextApi();
   // state

@@ -7,6 +7,7 @@ import { openChat } from '@/common/screens/orders/chat/openChat';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
+import { router } from 'expo-router';
 import { MessageCircle } from 'lucide-react-native';
 import { View } from 'react-native';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
@@ -59,7 +60,12 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
         style={{ marginLeft: paddings.sm }}
         title="Ajuda"
         variant="destructive"
-        onPress={() => {}}
+        onPress={() =>
+          router.push({
+            pathname: '/(logged)/orders/[id]/incident',
+            params: { id: order.id },
+          })
+        }
       />
     </View>
   );

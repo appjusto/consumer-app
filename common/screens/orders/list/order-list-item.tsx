@@ -1,4 +1,4 @@
-import { getOrderRevenue } from '@/api/orders/revenue/getOrderRevenue';
+import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderTimestamp } from '@/api/orders/timestamp/getOrderTime';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { formatCurrency } from '@/common/formatters/currency';
@@ -16,7 +16,7 @@ interface Props extends ViewProps {
 }
 
 export const OrderListItem = ({ order, style, ...props }: Props) => {
-  const { status } = order;
+  const { type, status } = order;
   // UI
   return (
     <View
@@ -49,10 +49,10 @@ export const OrderListItem = ({ order, style, ...props }: Props) => {
         </View>
       </View>
       <View style={{ flex: 1, marginTop: paddings.xs }} />
-      <OrderStatusBadge status={status} />
+      <OrderStatusBadge type={type} status={status} />
       <View style={{ flex: 1, marginTop: paddings.xs }} />
       <DefaultText size={isLargeScreen() ? 'md' : 'sm'} color="black">
-        {formatCurrency(getOrderRevenue(order))}
+        {formatCurrency(getOrderTotalCost(order))}
       </DefaultText>
       <ChevronRight size={16} color={colors.neutral800} style={{ marginLeft: paddings.sm }} />
     </View>

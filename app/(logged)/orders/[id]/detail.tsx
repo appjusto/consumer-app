@@ -25,7 +25,7 @@ export default function OrderDetailScreen() {
   // side effects
   // UI
   if (!order) return <Loading title="Detalhe da corrida" />;
-  const { status, code } = order;
+  const { type, status, code } = order;
   const baseRevenue = 0;
   const tipRevenue = 0;
   const extraRevenue = 0;
@@ -40,7 +40,7 @@ export default function OrderDetailScreen() {
               <DefaultText size="lg" color="black">
                 {`Corrida #${code}`}
               </DefaultText>
-              <OrderStatusBadge style={{ marginLeft: paddings.md }} status={status} />
+              <OrderStatusBadge style={{ marginLeft: paddings.md }} type={type} status={status} />
             </View>
             <View style={{ marginTop: paddings.lg }}>
               <DefaultText size="sm" color="neutral800">

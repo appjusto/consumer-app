@@ -8,6 +8,7 @@ import {
   HelpCircle,
   MessageCircle,
   Package,
+  PhoneCall,
   ShieldCheck,
   Smartphone,
   ThumbsDown,
@@ -27,6 +28,7 @@ export type IconName =
   | 'safety'
   | 'help'
   | 'smartphone'
+  | 'phone'
   | 'file'
   | 'chat'
   | 'helmet'
@@ -73,6 +75,9 @@ const getIcon = (name: IconName, variant?: Variant) => {
   }
   if (name === 'smartphone') {
     return <Smartphone size={iconSize} color={color} />;
+  }
+  if (name === 'phone') {
+    return <PhoneCall size={iconSize} color={color} />;
   }
   if (name === 'file') {
     return <FileText size={iconSize} color={color} />;

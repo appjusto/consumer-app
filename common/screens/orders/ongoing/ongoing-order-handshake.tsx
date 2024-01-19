@@ -29,6 +29,7 @@ export const OngoingOrderHandshake = ({ order, style, ...props }: Props) => {
           alignItems: 'center',
           paddingHorizontal: paddings.lg,
           paddingVertical: paddings.lgg,
+          marginBottom: paddings.lg,
           backgroundColor: colors.white,
           ...borders.light,
         },

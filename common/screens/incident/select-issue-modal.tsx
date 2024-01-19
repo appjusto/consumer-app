@@ -17,7 +17,7 @@ import { Modal, ModalProps, Pressable, View } from 'react-native';
 
 interface Props extends ModalProps {
   title: string;
-  issueType: IssueType | undefined | null;
+  issueType: IssueType | null;
   loading?: boolean;
   onConfirm: (issue: Issue, comment: string) => void;
   onDismiss: () => void;

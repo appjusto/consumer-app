@@ -2,15 +2,16 @@ import { getOrderStatusAsText } from '@/api/orders/status/getOrderStatusAsText';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors, { ColorName } from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { OrderStatus } from '@appjusto/types';
+import { OrderStatus, OrderType } from '@appjusto/types';
 import { View } from 'react-native';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
 interface Props extends ViewProps {
+  type: OrderType;
   status: OrderStatus;
 }
 
-export const OrderStatusBadge = ({ status, style, ...props }: Props) => {
+export const OrderStatusBadge = ({ type, status, style, ...props }: Props) => {
   const backgroundColor = () => {
     if (status === 'delivered') return colors.success100;
     else if (status === 'canceled') return colors.error100;
@@ -33,7 +34,7 @@ export const OrderStatusBadge = ({ status, style, ...props }: Props) => {
       ]}
       {...props}
     >
-      <DefaultText color={textColor()}>{getOrderStatusAsText(status)}</DefaultText>
+      <DefaultText color={textColor()}>{getOrderStatusAsText(type, status, null)}</DefaultText>
     </View>
   );
 };

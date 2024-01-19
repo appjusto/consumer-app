@@ -16,7 +16,7 @@ interface Props extends ViewProps {
 }
 
 export const OngoingOrderStatusMessageBox = ({ order, style, ...props }: Props) => {
-  const { status, dispatchingStatus, dispatchingState } = order;
+  const { status, type, dispatchingState } = order;
   // UI
   if (!isOrderOngoing(status)) return null;
   const variant =
@@ -56,7 +56,7 @@ export const OngoingOrderStatusMessageBox = ({ order, style, ...props }: Props) 
         <View>{icon()}</View>
         <View style={{ marginLeft: paddings.lg }}>
           <DefaultText style={{ marginBottom: paddings.xs }} size="md" color="black">
-            {getOrderStatusAsText(status, dispatchingState)}
+            {getOrderStatusAsText(type, status, dispatchingState)}
           </DefaultText>
 
           <DefaultText

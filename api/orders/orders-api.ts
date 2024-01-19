@@ -6,6 +6,7 @@ import {
   Fare,
   Order,
   OrderConfirmation,
+  OrderCourierLocationLog,
   OrderItem,
   OrderPayments,
   OrderReview,
@@ -18,6 +19,7 @@ import firebase from '@react-native-firebase/app';
 import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import { omit } from 'lodash';
+import { LatLng } from 'react-native-maps';
 import AuthApi from '../auth/AuthApi';
 import { fromDate } from '../firebase/timestamp';
 import { addBusinessToOrder } from './business/toOrderBusiness';
@@ -32,6 +34,7 @@ const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
 const ordersRef = () => firestore().collection('orders');
 const orderRef = (id: string) => ordersRef().doc(id);
 const privateRef = (id: string) => orderRef(id).collection('private');
+const logsRef = (id: string) => orderRef(id).collection('logs');
 const confirmationRef = (id: string) => privateRef(id).doc('confirmation');
 const paymentsRef = (id: string) => privateRef(id).doc('payments');
 const cancellationRef = (id: string) => privateRef(id).doc('cancellation');
@@ -147,6 +150,7 @@ export default class OrdersApi {
     );
   }
 
+  // payment
   observePayment(orderId: string, resultHandler: (payment: OrderPayments) => void) {
     paymentsRef(orderId).onSnapshot(
       (snapshot) => {
@@ -155,6 +159,31 @@ export default class OrdersApi {
       (error) => {
         console.error(error);
         crashlytics().recordError(error);
+      }
+    );
+  }
+
+  // courier locatio
+  observeCourierLocation(
+    orderId: string,
+    courierId: string,
+    resultHandler: (order: LatLng | null) => void
+  ) {
+    const query = logsRef(orderId)
+      .where('type', '==', 'courier-location')
+      .where('courierId', '==', courierId)
+      .orderBy('timestamp', 'desc');
+    return query.onSnapshot(
+      async (snapshot) => {
+        if (snapshot.empty) {
+          resultHandler(null);
+        } else {
+          const doc = snapshot.docs[0].data() as OrderCourierLocationLog;
+          resultHandler(doc.location);
+        }
+      },
+      (error) => {
+        console.error(error);
       }
     );
   }
