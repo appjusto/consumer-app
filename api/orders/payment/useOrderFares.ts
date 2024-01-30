@@ -18,36 +18,37 @@ export const useOrderFares = (
   const fare = order?.fare;
   const fulfillment = order?.fulfillment;
   const destinationAddress = order?.destination?.address.description;
-  const routeDistance = order?.route?.distance;
+  // const routeDistance = order?.route?.distance;
   // side effects
   useEffect(() => {
-    console.log('useOrderFares', defaultPaymentMethod);
+    console.log(
+      'useOrderFares',
+      id,
+      fulfillment,
+      defaultPaymentMethod,
+      destinationAddress
+      // routeDistance
+    );
     if (!id) return;
+    if (!destinationAddress) return;
     if (defaultPaymentMethod === undefined) return;
-    if (!routeDistance) return;
+    // if (!routeDistance) return;
     api
       .orders()
       .getOrderQuotes(id, defaultPaymentMethod ?? 'pix')
       .then((fares) => {
         setFares(fares);
+        api
+          .orders()
+          .updateOrder(id, { fare: fares[0] })
+          .catch(() => {
+            console.error('Erro ao atualizar fare');
+          });
       })
       .catch((error) => {
         if (error instanceof Error) showToast(error.message, 'error');
       });
-  }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress, routeDistance]);
+  }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress]);
   // result
-  // console.log('results', fares);
-  useEffect(() => {
-    if (!created) return;
-    if (!id) return;
-    if (!fares?.length) return;
-    if (fare) return;
-    api
-      .orders()
-      .updateOrder(id, { fare: fares[0] })
-      .catch(() => {
-        console.error('Erro ao atualizar fare');
-      });
-  }, [created, id, fares, fare, api]);
   return fares;
 };

@@ -9,11 +9,14 @@ import { PlacesList } from '@/common/screens/places/list/places-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place, WithId } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function CheckoutChangeDestinationScreen() {
+  // params
+  const params = useLocalSearchParams<{ id: string }>();
+  const businessId = params.id;
   // context
   const api = useContextApi();
   const quote = useContextOrderQuote();
@@ -26,17 +29,15 @@ export default function CheckoutChangeDestinationScreen() {
   const updateOrderHandler = () => {
     if (!selectedPlace) return;
     if (!orderId) return;
+    console.log('r/[id]/checkout/places updateOrderHandler');
     api
       .consumers()
       .updatePlace(selectedPlace)
-      .then(() => {
-        api.orders().updateOrder(orderId, { destination: selectedPlace });
-      })
-      .then(() => {
-        router.back();
-      });
+      .then(() => api.orders().updateOrder(orderId, { destination: selectedPlace }))
+      .then(() => router.back());
   };
   // UI
+  if (!orderId) return null;
   return (
     <View style={{ ...screens.default }}>
       <Stack.Screen options={{ title: 'Seus endereços' }} />
@@ -54,10 +55,23 @@ export default function CheckoutChangeDestinationScreen() {
           style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}
         >
           <View style={{ flex: 1 }}>
-            <DefaultButton title="Novo endereço" variant="outline" onPress={() => null} />
+            <DefaultButton
+              title="Novo endereço"
+              variant="outline"
+              onPress={() =>
+                router.push({
+                  pathname: '/(logged)/places/new',
+                  params: { returnScreen: `/r/${businessId}/checkout/delivery`, orderId },
+                })
+              }
+            />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
-            <DefaultButton title="Salvar" onPress={updateOrderHandler} disabled={!selectedPlace} />
+            <DefaultButton
+              title="Salvar"
+              onPress={updateOrderHandler}
+              disabled={!selectedPlace || selectedPlace?.id === quote?.destination?.id}
+            />
           </View>
         </View>
       </View>

@@ -25,7 +25,7 @@ export const PlaceDetail = ({ place, loading, onSave, style, ...props }: Props) 
   // side effects
   // error handling
   useEffect(() => {
-    console.log('temporaryPlace', place);
+    // console.log('temporaryPlace', place);
     if (!place?.location) {
       showToast('Não foi possível obter sua localização. Tente novamente.', 'error');
       crashlytics().recordError(
@@ -37,7 +37,7 @@ export const PlaceDetail = ({ place, loading, onSave, style, ...props }: Props) 
   if (!place?.location) return null;
   if (!place?.address) return null;
   return (
-    <View style={[{}, style]} {...props}>
+    <View style={[{ flex: 1 }, style]} {...props}>
       <DefaultMap location={place.location} locationColor="primary900" />
       <View style={{ marginTop: paddings.sm, padding: paddings.lg }}>
         <DefaultText size="lg" color="black">
@@ -63,6 +63,7 @@ export const PlaceDetail = ({ place, loading, onSave, style, ...props }: Props) 
         />
         <View style={{ flex: 1 }} />
         <DefaultButton
+          style={{ marginBottom: paddings.xl }}
           title="Salvar endereço"
           disabled={loading}
           loading={loading}

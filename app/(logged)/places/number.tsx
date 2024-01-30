@@ -21,6 +21,8 @@ type Params = {
   secondary: string;
   description: string;
   googlePlaceId?: string;
+  returnScreen: string;
+  orderId: string;
 };
 
 export default function NewPlaceNumberScreen() {
@@ -31,7 +33,10 @@ export default function NewPlaceNumberScreen() {
     main,
     secondary,
     googlePlaceId = '',
+    returnScreen,
+    orderId,
   } = useLocalSearchParams<Params>();
+  console.log('NewPlaceNumberScreen', orderId);
   // context
   const api = useContextApi();
   const showToast = useShowToast();
@@ -61,7 +66,7 @@ export default function NewPlaceNumberScreen() {
     if (withoutNumber) {
       router.push({
         pathname: '/places/confirm',
-        params: { description, main, secondary, googlePlaceId },
+        params: { description, main, secondary, googlePlaceId, returnScreen, orderId },
       });
     } else {
       if (!number) return;
@@ -77,7 +82,7 @@ export default function NewPlaceNumberScreen() {
           } else {
             router.push({
               pathname: '/places/confirm',
-              params: { ...firstAddress },
+              params: { ...firstAddress, returnScreen, orderId },
             });
           }
         })

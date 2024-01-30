@@ -12,13 +12,18 @@ import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Address } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { MapPin } from 'lucide-react-native';
 import { nanoid } from 'nanoid/non-secure';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Keyboard, Pressable, TextInput, View } from 'react-native';
 
 export default function NewPlaceScreen() {
+  // params
+  const params = useLocalSearchParams<{ returnScreen: string; orderId: string }>();
+  const returnScreen = params.returnScreen;
+  const orderId = params.orderId;
+  console.log('NewPlaceScreen', orderId);
   // context
   const api = useContextApi();
   // refs
@@ -58,7 +63,7 @@ export default function NewPlaceScreen() {
     Keyboard.dismiss();
     router.push({
       pathname: addressHasNumber(address) ? '/places/confirm' : '/places/number',
-      params: { sessionToken, ...address },
+      params: { sessionToken, returnScreen, orderId, ...address },
     });
   };
   // tracking

@@ -45,6 +45,18 @@ export default class ConsumersApi {
       throw new Error('Não foi possível obter seus endereços. Tente novamente mais tarde.');
     }
   }
+  async fetchPlace(placeId: string) {
+    try {
+      const ref = placesRef().doc(placeId);
+      const snapshot = await ref.get();
+      if (!snapshot.exists) return null;
+      return documentAs<Place>(snapshot);
+    } catch (error: unknown) {
+      console.error(error);
+      if (error instanceof Error) crashlytics().recordError(error);
+      throw new Error('Não foi possível obter endereço. Tente novamente mais tarde.');
+    }
+  }
   observePlaces(resultHandler: (orders: WithId<Place>[]) => void) {
     const query = placesRef()
       .where('accountId', '==', this.auth.getUserId())
@@ -60,13 +72,15 @@ export default class ConsumersApi {
     );
   }
   async createPlace(place: Partial<Place>) {
-    await placesRef()
-      .doc()
-      .update({
-        ...place,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      } as Place);
+    const ref = placesRef().doc();
+    console.log('createPlace', ref.id, place);
+    await ref.set({
+      ...place,
+      accountId: this.auth.getUserId(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    } as Place);
+    return ref.id;
   }
   async updatePlace(place: WithId<Place>) {
     await placeRef(place.id).update({

@@ -11,7 +11,7 @@ export default function BusinessLayout() {
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
   // logs
-  console.log('_layout', businessId);
+  // console.log('_layout', businessId);
   // UI
   return (
     <BusinessProvider businessId={businessId}>

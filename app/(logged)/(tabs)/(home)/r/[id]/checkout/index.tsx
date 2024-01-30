@@ -25,7 +25,7 @@ export default function OrderCheckoutScreen() {
   // side effects
   // useBackWhenOrderExpires();
   // logs
-  console.log('orderId', quote?.id);
+  console.log('r/[id]/checkout', quote?.id);
   // UI
   if (!quote) return <EmptyCart />;
   return (

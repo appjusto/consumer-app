@@ -5,12 +5,12 @@ import { HR } from '@/common/components/views/HR';
 import { formatDistance } from '@/common/formatters/distance';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Order } from '@appjusto/types';
+import { Order, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
-  order: Order;
+  order: WithId<Order>;
 }
 
 export const DeliveryAddress = ({ order, style, ...props }: Props) => {

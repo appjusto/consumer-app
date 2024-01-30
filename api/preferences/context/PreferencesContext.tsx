@@ -9,7 +9,7 @@ interface Props {
 interface Value {
   currentPlace: WithId<Place> | Partial<Place> | null | undefined;
   temporaryPlace: Partial<Place> | null | undefined;
-  setTemporaryPlace: (place: Partial<Place>) => void;
+  setTemporaryPlace: (place: Partial<Place> | null) => void;
 }
 
 const PreferencesContext = React.createContext<Value | undefined>(undefined);

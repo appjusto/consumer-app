@@ -1,6 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextSetTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultMap } from '@/common/components/map/DefaultMap';
@@ -18,15 +17,17 @@ type Params = {
   secondary: string;
   description: string;
   googlePlaceId?: string;
+  returnScreen: string;
+  orderId: string;
 };
 
 export default function NewPlaceConfirmScreen() {
   // params
   const params = useLocalSearchParams<Params>();
+  console.log('NewPlaceConfirmScreen', params.orderId);
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const setTemporaryPlace = useContextSetTemporaryPlace();
   // state
   const [description, setDescription] = useState(params.description);
   const [main, setMain] = useState(params.main);
@@ -73,14 +74,29 @@ export default function NewPlaceConfirmScreen() {
   };
   const confirmHandler = () => {
     if (!location) return;
-    console.log('confirm', { address: { description, main, secondary, googlePlaceId }, location });
-    setTemporaryPlace({
-      address: { description, main, secondary, googlePlaceId },
-      location,
+    console.log('confirm', {
+      description,
+      main,
+      secondary,
+      googlePlaceId: googlePlaceId ?? '',
+      location: `${location.latitude},${location.longitude}`,
+      returnScreen: params.returnScreen,
+      orderId: params.orderId,
     });
-    router.push('/places/complement');
+    router.push({
+      pathname: '/places/complement',
+      params: {
+        description,
+        main,
+        secondary,
+        googlePlaceId: googlePlaceId ?? '',
+        location: `${location.latitude},${location.longitude}`,
+        returnScreen: params.returnScreen,
+        orderId: params.orderId,
+      },
+    });
   };
-  console.log('location', location);
+  // console.log('location', location);
   // UI
 
   if (location === undefined) return null;

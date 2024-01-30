@@ -16,6 +16,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // params
   const params = useLocalSearchParams<{ id: string }>();
   const businessId = params.id;
+  console.log('r/[id]/checkout', businessId);
   // context
   const quote = useContextOrderQuote();
   // tracking
