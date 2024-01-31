@@ -18,13 +18,11 @@ type Params = {
   description: string;
   googlePlaceId?: string;
   returnScreen: string;
-  orderId: string;
 };
 
 export default function NewPlaceConfirmScreen() {
   // params
   const params = useLocalSearchParams<Params>();
-  console.log('NewPlaceConfirmScreen', params.orderId);
   // context
   const api = useContextApi();
   const showToast = useShowToast();
@@ -81,7 +79,6 @@ export default function NewPlaceConfirmScreen() {
       googlePlaceId: googlePlaceId ?? '',
       location: `${location.latitude},${location.longitude}`,
       returnScreen: params.returnScreen,
-      orderId: params.orderId,
     });
     router.push({
       pathname: '/places/complement',
@@ -92,7 +89,6 @@ export default function NewPlaceConfirmScreen() {
         googlePlaceId: googlePlaceId ?? '',
         location: `${location.latitude},${location.longitude}`,
         returnScreen: params.returnScreen,
-        orderId: params.orderId,
       },
     });
   };

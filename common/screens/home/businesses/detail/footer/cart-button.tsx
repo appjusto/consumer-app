@@ -26,6 +26,7 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
     : '';
   const total = variant === 'business' ? getOrderItemsTotal(order) : getOrderTotalCost(order);
   const totalItems = order.items?.length ? order.items.length : 0;
+  if (!totalItems) return null;
   return (
     <View style={[{}, style]} {...props}>
       <HRShadow />

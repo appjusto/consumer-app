@@ -12,43 +12,41 @@ export const useOrderFares = (
   const showToast = useShowToast();
   // state
   const [fares, setFares] = useState<Fare[]>();
+  const [loading, setLoading] = useState(false);
   // helpers
+  const orderId = order?.id;
   const created = Boolean(order?.timestamps?.quote);
-  const id = order?.id;
-  const fare = order?.fare;
+  const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
-  const destinationAddress = order?.destination?.address.description;
-  // const routeDistance = order?.route?.distance;
   // side effects
+  console.log('order', orderId);
   useEffect(() => {
-    console.log(
-      'useOrderFares',
-      id,
-      fulfillment,
-      defaultPaymentMethod,
-      destinationAddress
-      // routeDistance
-    );
-    if (!id) return;
-    if (!destinationAddress) return;
+    console.log('useOrderFares', orderId, created, distance, fulfillment, defaultPaymentMethod);
+    if (!orderId) return;
+    if (!created) return;
+    if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
-    // if (!routeDistance) return;
+    // setFares(undefined);
+    setLoading(true);
     api
       .orders()
-      .getOrderQuotes(id, defaultPaymentMethod ?? 'pix')
+      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix')
       .then((fares) => {
         setFares(fares);
         api
           .orders()
-          .updateOrder(id, { fare: fares[0] })
+          .updateOrder(orderId, { fare: fares[0] })
           .catch(() => {
             console.error('Erro ao atualizar fare');
           });
       })
       .catch((error) => {
         if (error instanceof Error) showToast(error.message, 'error');
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [api, id, showToast, fulfillment, defaultPaymentMethod, destinationAddress]);
+  }, [api, orderId, created, distance, showToast, fulfillment, defaultPaymentMethod]);
   // result
-  return fares;
+  return { fares, loading };
 };

@@ -22,6 +22,7 @@ export default function CheckoutChangeDestinationScreen() {
   const quote = useContextOrderQuote();
   const orderId = quote?.id;
   // state
+  const [loading, setLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<WithId<Place>>();
   // tracking
   useTrackScreenView('Checkout: alterar destino');
@@ -30,11 +31,19 @@ export default function CheckoutChangeDestinationScreen() {
     if (!selectedPlace) return;
     if (!orderId) return;
     console.log('r/[id]/checkout/places updateOrderHandler');
+    setLoading(true);
     api
       .consumers()
       .updatePlace(selectedPlace)
       .then(() => api.orders().updateOrder(orderId, { destination: selectedPlace }))
-      .then(() => router.back());
+      .then(() => {
+        setLoading(false);
+        router.back();
+      })
+      .catch(() => {
+        setLoading(false);
+        // TODO: show toast
+      });
   };
   // UI
   if (!orderId) return null;
@@ -59,7 +68,7 @@ export default function CheckoutChangeDestinationScreen() {
               title="Novo endereço"
               variant="outline"
               onPress={() =>
-                router.push({
+                router.replace({
                   pathname: '/(logged)/places/new',
                   params: { returnScreen: `/r/${businessId}/checkout/delivery`, orderId },
                 })
@@ -70,7 +79,8 @@ export default function CheckoutChangeDestinationScreen() {
             <DefaultButton
               title="Salvar"
               onPress={updateOrderHandler}
-              disabled={!selectedPlace || selectedPlace?.id === quote?.destination?.id}
+              disabled={!selectedPlace || selectedPlace?.id === quote?.destination?.id || loading}
+              loading={loading}
             />
           </View>
         </View>

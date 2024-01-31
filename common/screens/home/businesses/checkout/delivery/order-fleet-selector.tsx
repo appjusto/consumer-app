@@ -18,7 +18,7 @@ export const OrderFleetSelector = ({ order, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const fares = useContextOrderFares();
+  const { fares } = useContextOrderFares();
   // handlers
   const updateFare = (fare: Fare) => {
     api

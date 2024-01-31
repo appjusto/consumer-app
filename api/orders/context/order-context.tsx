@@ -15,6 +15,7 @@ interface Props {
 interface Value {
   quote?: WithId<Order> | null;
   fares?: Fare[] | undefined;
+  loading?: boolean;
   acceptedByPlatform?: PayableWith[];
   acceptedOnOrder?: PayableWith[];
   acceptsCards?: boolean;
@@ -43,7 +44,7 @@ export const OrderProvider = ({ businessId, children }: Props) => {
     paymentMethodId,
     setPaymentMethodId,
   } = useOrderPayments();
-  const fares = useOrderFares(quote, defaultPaymentMethod);
+  const { fares, loading } = useOrderFares(quote, defaultPaymentMethod);
   const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
   // result
   return (
@@ -51,6 +52,7 @@ export const OrderProvider = ({ businessId, children }: Props) => {
       value={{
         quote,
         fares,
+        loading,
         acceptedByPlatform,
         acceptedOnOrder,
         acceptsCards,
@@ -78,7 +80,7 @@ export const useContextOrderQuote = () => {
 export const useContextOrderFares = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
-  return value.fares;
+  return { fares: value.fares, loading: value.loading };
 };
 
 export const useContextOrderPayments = () => {

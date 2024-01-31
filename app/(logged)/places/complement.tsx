@@ -6,7 +6,7 @@ import { DefaultScrollView } from '@/common/components/containers/DefaultScrollV
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { PlaceDetail } from '@/common/screens/places/detail/place-detail';
 import screens from '@/common/styles/screens';
-import { Place, WithId } from '@appjusto/types';
+import { Place } from '@appjusto/types';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { isEmpty, trim } from 'lodash';
 import { useState } from 'react';
@@ -23,16 +23,8 @@ type Params = {
 
 export default function NewPlaceComplementScreen() {
   // params
-  const {
-    description,
-    main,
-    secondary,
-    googlePlaceId = '',
-    location,
-    returnScreen,
-    orderId,
-  } = useLocalSearchParams<Params>();
-  console.log('NewPlaceComplementScreen', orderId);
+  const params = useLocalSearchParams<Params>();
+  const { description, main, secondary, googlePlaceId = '', location, returnScreen } = params;
 
   // context
   const api = useContextApi();
@@ -59,23 +51,11 @@ export default function NewPlaceComplementScreen() {
       setTemporaryPlace(updatedPlace);
       router.replace('/(logged)/(tabs)/(home)/');
     } else {
-      setLoading(true);
-      // setTemporaryPlace(null);
-      api
-        .consumers()
-        .createPlace(updatedPlace)
-        .then((id) => ({ ...updatedPlace, id }) as WithId<Place>)
-        .then((place) => api.orders().updateOrder(orderId, { destination: place }))
-        .then(() => {
-          setLoading(false);
-          // @ts-ignore
-          router.replace(returnScreen);
-        })
-        .catch((error) => {
-          console.log(error);
-          showToast('Não foi possível salvar seu endereço. Tente novamente.', 'error');
-          setLoading(false);
-        });
+      // @ts-ignore
+      router.replace({
+        pathname: returnScreen,
+        params,
+      });
     }
   };
   // UI

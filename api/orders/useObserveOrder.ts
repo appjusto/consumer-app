@@ -9,6 +9,7 @@ export const useObserveOrder = (orderId?: string) => {
   const [order, setOrder] = useState<WithId<Order> | null>();
   // side effects
   useEffect(() => {
+    setOrder(undefined);
     if (!orderId) return;
     return api.orders().observeOrder(orderId, setOrder);
   }, [api, orderId]);

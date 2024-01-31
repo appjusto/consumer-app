@@ -68,7 +68,12 @@ export default class OrdersApi {
     );
   }
 
-  observeOrder(orderId: string, resultHandler: (orders: WithId<Order> | null) => void) {
+  observeOrder(
+    orderId: string,
+    resultHandler: (orders: WithId<Order> | null) => void
+    // commitedOnly = false
+  ) {
+    console.log('observeOrder', orderId);
     const query = orderRef(orderId);
     return query.onSnapshot(
       async (snapshot) => {
@@ -78,6 +83,19 @@ export default class OrdersApi {
         console.error(error);
       }
     );
+    // return query.onSnapshot(
+    //   {
+    //     includeMetadataChanges: commitedOnly,
+    //   },
+    //   {
+    //     error: (e) => console.error('observeOrder', e),
+    //     next: (snapshot) => {
+    //       if (!commitedOnly || !snapshot.metadata.fromCache) {
+    //         resultHandler(snapshot.exists ? documentAs<Order>(snapshot) : null);
+    //       }
+    //     },
+    //   }
+    // );
   }
 
   async createFoodOrder(
@@ -113,26 +131,40 @@ export default class OrdersApi {
   }
 
   async deleteOrder(orderId: string) {
+    console.log('deleteOrder', orderId);
     await orderRef(orderId).delete();
   }
 
   async getOrderQuotes(orderId: string, paymentMethod: PayableWith) {
-    console.log('getOrderQuotes');
-    const response = await getOrderQuotes({
+    console.log('getOrderQuotes', {
       orderId,
       paymentMethod,
-      useCredits: true,
-      meta: { version: getAppVersion() },
     });
-    const fares = response.data as Fare[];
-    console.log('getOrderQuotes', fares);
-    return fares;
+    try {
+      const response = await getOrderQuotes({
+        orderId,
+        paymentMethod,
+        useCredits: true,
+        meta: { version: getAppVersion() },
+      });
+      const fares = response.data as Fare[];
+      console.log('getOrderQuotes completed');
+      return fares;
+    } catch (error) {
+      console.log(error);
+      console.log(JSON.stringify(error));
+      console.error('getOrderQuotes error');
+      return [];
+    }
   }
 
   async placeOrder(options: PlaceOrderOptions) {
     console.log('placeOrder', options);
     await placeOrder({
       ...options,
+      // payment: {
+      //   payableWith: 'cash',
+      // },
       meta: { version: getAppVersion() },
     });
   }

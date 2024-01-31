@@ -20,10 +20,8 @@ import { ActivityIndicator, Keyboard, Pressable, TextInput, View } from 'react-n
 
 export default function NewPlaceScreen() {
   // params
-  const params = useLocalSearchParams<{ returnScreen: string; orderId: string }>();
+  const params = useLocalSearchParams<{ returnScreen: string }>();
   const returnScreen = params.returnScreen;
-  const orderId = params.orderId;
-  console.log('NewPlaceScreen', orderId);
   // context
   const api = useContextApi();
   // refs
@@ -63,7 +61,7 @@ export default function NewPlaceScreen() {
     Keyboard.dismiss();
     router.push({
       pathname: addressHasNumber(address) ? '/places/confirm' : '/places/number',
-      params: { sessionToken, returnScreen, orderId, ...address },
+      params: { sessionToken, returnScreen, ...address },
     });
   };
   // tracking

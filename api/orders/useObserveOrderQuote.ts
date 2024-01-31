@@ -19,7 +19,7 @@ export const useObserveOrderQuote = (businessId?: string) => {
   useEffect(() => {
     if (!orders) return;
     if (orders.length === 0) setOrderQuote(null);
-    else if (orders[0].items?.length === 0) setOrderQuote(null);
+    // else if (orders[0].items?.length === 0) setOrderQuote(null);
     else setOrderQuote(orders[0]);
   }, [orders]);
   // result
