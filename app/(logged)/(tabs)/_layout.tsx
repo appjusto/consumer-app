@@ -1,4 +1,3 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
 import { Pressable, View, ViewProps, useColorScheme } from 'react-native';
 
@@ -6,7 +5,7 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
-import { Home, Receipt, Users2 } from 'lucide-react-native';
+import { Home, InfoIcon, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
   focused?: boolean;
@@ -55,8 +54,7 @@ export default function TabLayout() {
             <Link href="/matching" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
+                  <InfoIcon
                     size={25}
                     color={Colors[colorScheme ?? 'light'].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}

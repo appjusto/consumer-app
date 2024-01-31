@@ -110,7 +110,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         },
       },
     ],
-    './plugins/react-native-maps-plugin',
+    // './plugins/react-native-maps-plugin',
     // './plugins/withAndroidVerifiedLinksWorkaround',
   ],
   experiments: {

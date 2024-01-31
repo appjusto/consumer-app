@@ -1,7 +1,7 @@
 import colors from '@/common/styles/colors';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
-import { Feather } from '@expo/vector-icons';
+import { ArrowRight } from 'lucide-react-native';
 import React from 'react';
 import { Pressable, View, ViewProps } from 'react-native';
 import { DefaultText } from '../../texts/DefaultText';
@@ -51,7 +51,7 @@ export const AccordionItem = ({ data, collpased, style, onPress, ...props }: Pro
               </DefaultText>
             ) : null}
           </View>
-          <Feather size={28} name={collpased ? 'chevron-up' : 'chevron-down'} />
+          <ArrowRight size={28} />
         </View>
         <View>
           <View>

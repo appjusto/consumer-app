@@ -13,7 +13,6 @@ import { setupNotifications } from '@/common/notifications/setup';
 import { RoutesProvider } from '@/common/routes/RoutesContext';
 import { getAppVersion } from '@/common/version';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen } from 'expo-router';
@@ -41,7 +40,6 @@ export default function RootLayout() {
     HankenGroteskMedium: require('../assets/fonts/HankenGrotesk-Medium.ttf'),
     HankenGroteskSemiBold: require('../assets/fonts/HankenGrotesk-SemiBold.ttf'),
     HankenGroteskBold: require('../assets/fonts/HankenGrotesk-Bold.ttf'),
-    ...FontAwesome.font,
   });
   const colorScheme = useColorScheme();
   const splashScreenShown = useSplashScreen();
