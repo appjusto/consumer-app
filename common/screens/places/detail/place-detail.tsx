@@ -12,11 +12,10 @@ import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   place: Partial<Place>;
-  loading: boolean;
   onSave: (additionalInfo: string, instructions: string) => void;
 }
 
-export const PlaceDetail = ({ place, loading, onSave, style, ...props }: Props) => {
+export const PlaceDetail = ({ place, onSave, style, ...props }: Props) => {
   // context
   const showToast = useShowToast();
   // state
@@ -65,8 +64,6 @@ export const PlaceDetail = ({ place, loading, onSave, style, ...props }: Props) 
         <DefaultButton
           style={{ marginBottom: paddings.xl }}
           title="Salvar endereço"
-          disabled={loading}
-          loading={loading}
           onPress={() => onSave(additionalInfo, instructions)}
         />
       </DefaultView>
