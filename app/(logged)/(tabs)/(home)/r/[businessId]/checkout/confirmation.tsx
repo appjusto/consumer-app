@@ -44,7 +44,7 @@ export default function OrderCheckoutDeliveryScreen() {
       .placeOrder(options)
       .then(() => {
         router.replace({
-          pathname: '/(logged)/(tabs)/(home)/confirming/[orderId]/',
+          pathname: '/(logged)/confirming/[orderId]/',
           params: { orderId: options.orderId },
         });
       })

@@ -28,7 +28,7 @@ export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
   // side effects
   useRouterAccordingOrderStatus(orderId, orderStatus, true);
   // UI
-  if (!order) return <Loading title="Pedido em andamento" />;
+  if (!order) return <Loading title="" />;
   return (
     <DefaultScrollView style={[{ flex: 1, backgroundColor: colors.neutral50 }, style]} {...props}>
       <Stack.Screen options={{ title: `Pedido #${order.code}` }} />

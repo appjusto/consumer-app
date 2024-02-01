@@ -1,3 +1,4 @@
+import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -5,23 +6,25 @@ import { HRShadow } from '@/common/components/views/hr-shadow';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { Dimensions, View, ViewProps } from 'react-native';
+import { Dimensions, View } from 'react-native';
 
-const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
-interface Props extends ViewProps {
-  orderId: string;
-}
+const ConfirmingGif = require('../../../../assets/images/order/confirming.gif');
 
 const SIZE = Dimensions.get('screen').width - 100;
 
-export const OrderCheckoutFeedbackScreenView = ({ orderId, style, ...props }: Props) => {
+export default function OrderCheckoutFeedbackScreen() {
+  // params
+  const params = useLocalSearchParams<{ orderId: string }>();
+  const orderId = params.orderId;
   // state
   const order = useObserveOrder(orderId);
   const status = order?.status;
-  // const processing = status === 'confirming' || status === 'charged';
   const waitingAcceptance = status === 'confirmed';
+  // tracking
+  useTrackScreenView('Checkout: confirmando pedido', { orderId });
+  // side effects
   useEffect(() => {
     console.log(status);
     if (status === 'expired') {
@@ -38,6 +41,7 @@ export const OrderCheckoutFeedbackScreenView = ({ orderId, style, ...props }: Pr
   // UI
   return (
     <View style={{ ...screens.centered }}>
+      <Stack.Screen options={{ headerShown: false }} />
       <View style={{ flex: 1 }} />
       <View style={{ flex: 1, borderWidth: 0 }}>
         <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} />
@@ -57,4 +61,4 @@ export const OrderCheckoutFeedbackScreenView = ({ orderId, style, ...props }: Pr
       </View>
     </View>
   );
-};
+}
