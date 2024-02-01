@@ -11,7 +11,7 @@ import { onSimulator } from '@/common/version/device';
 import { getManifestExtra } from '../extra';
 import AuthApi from './auth/AuthApi';
 import BannerApi from './banners/BannerApi';
-import BusinessApi from './business/BusinessApi';
+import BusinessApi from './business/business-api';
 import ChatsApi from './chats/ChatsApi';
 import ComplaintsApi from './complaints/ComplaintsApi';
 import ConsumersApi from './consumer/consumers-api';

@@ -4,7 +4,7 @@ import { useObserveBusinessComplements } from './useObserveBusinessComplements';
 import { useObserveBusinessMenuOrder } from './useObserveBusinessMenuOrder';
 import { useObserveBusinessProducts } from './useObserveBusinessProducts';
 
-export const useObserveBusinessMenu = (businessId: string) => {
+export const useObserveBusinessMenu = (businessId?: string) => {
   const categories = useObserveBusinessCategories(businessId);
   const products = useObserveBusinessProducts(businessId);
   const productsOrdering = useObserveBusinessMenuOrder(businessId);

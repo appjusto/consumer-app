@@ -15,8 +15,8 @@ import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const quote = useContextOrderQuote();
   const { paymentMethod, paymentMethodId } = useContextOrderPayments();
@@ -42,8 +42,8 @@ export default function OrderCheckoutDeliveryScreen() {
           <OrderPaymentMethod
             onAddCard={() => {
               router.push({
-                pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/cards/add',
-                params: { id: businessId },
+                pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/cards/add',
+                params: { businessId },
               });
             }}
           />
@@ -56,8 +56,8 @@ export default function OrderCheckoutDeliveryScreen() {
         disabled={disabled}
         onPress={() =>
           router.push({
-            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/confirmation',
-            params: { id: businessId },
+            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/confirmation',
+            params: { businessId },
           })
         }
       />

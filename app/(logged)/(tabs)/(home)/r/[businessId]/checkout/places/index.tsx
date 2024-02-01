@@ -15,8 +15,8 @@ import { View } from 'react-native';
 
 export default function CheckoutChangeDestinationScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const api = useContextApi();
   const quote = useContextOrderQuote();

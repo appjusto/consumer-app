@@ -58,6 +58,7 @@ export default class BusinessApi {
   }
 
   observeBusiness(businessId: string, resultHandler: (business: WithId<PublicBusiness>) => void) {
+    console.log('observeBusiness', businessId);
     return publicBusinessRef(businessId).onSnapshot(
       (snapshot) => {
         if (snapshot.exists) resultHandler(documentAs<PublicBusiness>(snapshot));

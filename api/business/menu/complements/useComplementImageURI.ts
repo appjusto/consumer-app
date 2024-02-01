@@ -1,7 +1,7 @@
 import { Complement, WithId } from '@appjusto/types';
 import storage from '@react-native-firebase/storage';
 import { useEffect, useState } from 'react';
-import { getComplementImageStoragePath } from '../../BusinessApi';
+import { getComplementImageStoragePath } from '../../business-api';
 
 export const useComplementImageURI = (
   businessId: string | undefined,

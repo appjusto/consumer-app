@@ -19,14 +19,14 @@ export const useOrderFares = (
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
   // side effects
-  console.log('order', orderId);
+  // console.log('order', orderId);
   useEffect(() => {
-    console.log('useOrderFares', orderId, created, distance, fulfillment, defaultPaymentMethod);
     if (!orderId) return;
     if (!created) return;
     if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
     // setFares(undefined);
+    console.log('useOrderFares', orderId, created, distance, fulfillment, defaultPaymentMethod);
     setLoading(true);
     api
       .orders()

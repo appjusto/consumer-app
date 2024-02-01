@@ -7,8 +7,8 @@ import { View } from 'react-native';
 
 export default function CheckoutAddCardScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const { setPaymentMethod, setPaymentMethodId } = useContextOrderPayments();
   // tracking
@@ -19,8 +19,8 @@ export default function CheckoutAddCardScreen() {
     setPaymentMethodId!(cardId);
 
     router.push({
-      pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/payment',
-      params: { id: businessId },
+      pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/payment',
+      params: { businessId },
     });
   };
   // UI

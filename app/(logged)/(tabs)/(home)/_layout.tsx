@@ -5,5 +5,18 @@ export const unstable_settings = {
 };
 
 export default function HomeLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack
+      screenOptions={({ route }) => {
+        // console.log(route);
+        return { headerShown: route.name !== 'index' };
+      }}
+    >
+      <Stack.Screen name="index" options={{ title: 'Restaurantes' }} />
+      {/* <Stack.Screen
+        name="checkout/confirming"
+        options={{ presentation: 'modal', headerShown: false }}
+      /> */}
+    </Stack>
+  );
 }

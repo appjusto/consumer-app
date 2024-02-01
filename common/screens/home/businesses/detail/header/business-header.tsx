@@ -1,4 +1,4 @@
-import { getBusinessCoverStoragePath } from '@/api/business/BusinessApi';
+import { getBusinessCoverStoragePath } from '@/api/business/business-api';
 import { useImageURL } from '@/api/storage/useImageURL';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';

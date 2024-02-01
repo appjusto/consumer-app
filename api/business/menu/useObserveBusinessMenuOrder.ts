@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { Ordering } from '@appjusto/types';
 import React from 'react';
 
-export const useObserveBusinessMenuOrder = (businessId: string, menuId?: string) => {
+export const useObserveBusinessMenuOrder = (businessId?: string, menuId?: string) => {
   // context
   const api = useContextApi();
   // state

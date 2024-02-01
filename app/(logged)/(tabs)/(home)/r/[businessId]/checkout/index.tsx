@@ -16,8 +16,8 @@ import { View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const quote = useContextOrderQuote();
   // state
@@ -51,8 +51,8 @@ export default function OrderCheckoutScreen() {
         disabled={!quote.fare}
         onPress={() =>
           router.push({
-            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/delivery',
-            params: { id: businessId },
+            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/delivery',
+            params: { businessId },
           })
         }
       />

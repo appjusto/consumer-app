@@ -1,4 +1,4 @@
-import { getBusinessLogoStoragePath } from '@/api/business/BusinessApi';
+import { getBusinessLogoStoragePath } from '@/api/business/business-api';
 import { useImageURL } from '@/api/storage/useImageURL';
 import colors from '@/common/styles/colors';
 import { Image } from 'expo-image';

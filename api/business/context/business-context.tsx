@@ -7,7 +7,7 @@ import { useObserveBusiness } from '../useObserveBusiness';
 const BusinessContext = React.createContext<Value>({});
 
 interface Props {
-  businessId: string;
+  businessId?: string;
   children: React.ReactNode;
 }
 

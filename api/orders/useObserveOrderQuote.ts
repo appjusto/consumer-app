@@ -14,6 +14,7 @@ export const useObserveOrderQuote = (businessId?: string) => {
   const [orderQuote, setOrderQuote] = useState<WithId<Order> | null>();
   // side effects
   useEffect(() => {
+    if (!businessId) return;
     return api.orders().observeOrders(options, setOrders);
   }, [api, businessId, options]);
   useEffect(() => {

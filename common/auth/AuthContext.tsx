@@ -25,8 +25,8 @@ export const AuthProvider = (props: Props) => {
   const userId = user?.uid;
   const isAnonymous = user?.isAnonymous === true;
   const [profile, setProfile] = useState<WithId<ConsumerProfile> | null>();
-  console.log('userId', userId);
-  console.log('profile', profile);
+  // console.log('userId', userId);
+  // console.log('profile', profile);
   // side effects
   useEffect(() => {
     if (!userId) return;
@@ -40,7 +40,7 @@ export const AuthProvider = (props: Props) => {
     return api.profile().observeProfile(userId, setProfile);
   }, [api, userId, isAnonymous]);
   useEffect(() => {
-    console.log('user', user);
+    // console.log('user', user);
     if (user === null) {
       setProfile(null);
     }

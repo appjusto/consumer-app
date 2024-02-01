@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { OrderItem, Product, ProductAlgolia, WithId } from '@appjusto/types';
 import storage from '@react-native-firebase/storage';
 import { useEffect, useState } from 'react';
-import { getProductImageStoragePath } from '../../BusinessApi';
+import { getProductImageStoragePath } from '../../business-api';
 
 export const useProductImageURI = (
   businessId: string | undefined,

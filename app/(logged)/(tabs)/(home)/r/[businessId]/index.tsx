@@ -17,8 +17,8 @@ import { Pressable, View } from 'react-native';
 
 export default function BusinessDetailScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const business = useContextBusiness();
   const products = useContextBusinessProducts();
@@ -45,8 +45,8 @@ export default function BusinessDetailScreen() {
             <Pressable
               onPress={() =>
                 router.push({
-                  pathname: '/(logged)/(tabs)/(home)/r/[id]/p/[productId]',
-                  params: { id: businessId, productId: item.id },
+                  pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
+                  params: { businessId, productId: item.id },
                 })
               }
             >
@@ -62,8 +62,8 @@ export default function BusinessDetailScreen() {
         disabled={!quote}
         onPress={() =>
           router.push({
-            pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/',
-            params: { id: businessId },
+            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/',
+            params: { businessId },
           })
         }
       />

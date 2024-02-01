@@ -20,8 +20,8 @@ import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const businessId = params.id;
+  const params = useLocalSearchParams<{ businessId: string }>();
+  const businessId = params.businessId;
   // context
   const api = useContextApi();
   const showToast = useShowToast();
@@ -44,8 +44,8 @@ export default function OrderCheckoutDeliveryScreen() {
       .placeOrder(options)
       .then(() => {
         router.push({
-          pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/confirming',
-          params: { id: businessId, orderId: options.orderId },
+          pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/confirming',
+          params: { businessId, orderId: options.orderId },
         });
       })
       .catch((error) => {
