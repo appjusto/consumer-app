@@ -62,7 +62,7 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
         variant="destructive"
         onPress={() =>
           router.push({
-            pathname: '/(logged)/orders/[id]/incident',
+            pathname: '/(logged)/(tabs)/(orders)/[id]/incident',
             params: { id: order.id },
           })
         }

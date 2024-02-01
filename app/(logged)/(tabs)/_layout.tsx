@@ -66,9 +66,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="deliveries/index"
+        name="(orders)"
         options={{
-          title: 'Seus ganhos',
+          title: 'Pedidos',
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused}>

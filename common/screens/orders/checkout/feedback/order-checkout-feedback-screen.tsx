@@ -20,16 +20,17 @@ export const OrderCheckoutFeedbackScreenView = ({ orderId, style, ...props }: Pr
   // state
   const order = useObserveOrder(orderId);
   const status = order?.status;
-  const processing = status === 'confirming' || status === 'charged';
+  // const processing = status === 'confirming' || status === 'charged';
   const waitingAcceptance = status === 'confirmed';
   useEffect(() => {
+    console.log(status);
     if (status === 'expired') {
     } else if (status === 'declined') {
     } else if (status === 'rejected') {
     } else if (status === 'canceled') {
     } else if (status === 'preparing' || status === 'ready' || status === 'scheduled') {
       router.replace({
-        pathname: '/(logged)/orders/[id]/',
+        pathname: '/(logged)/(tabs)/(orders)/[id]/',
         params: { id: orderId },
       });
     }

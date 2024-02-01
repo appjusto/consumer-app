@@ -15,10 +15,13 @@ export const useRouterAccordingOrderStatus = (
     if (!orderId) return;
     if (!status) return;
     if (isOrderOngoing(status) && !ongoing) {
-      router.replace({ pathname: '/(logged)/orders/[id]/ongoing', params: { id: orderId } });
+      router.navigate({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
+        params: { id: orderId },
+      });
     } else if (status === 'delivered') {
-      router.replace({
-        pathname: '/(logged)/orders/[id]/delivered',
+      router.navigate({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
         params: { id: orderId },
       });
     } else if (status === 'canceled') {

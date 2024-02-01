@@ -19,7 +19,10 @@ export const HomeOngoingOrders = ({ style, ...props }: Props) => {
             key={order.id}
             style={{ marginBottom: paddings.sm }}
             onPress={() => {
-              router.push({ pathname: '/(logged)/orders/[id]/ongoing', params: { id: order.id } });
+              router.push({
+                pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
+                params: { id: order.id },
+              });
             }}
           >
             {order.type === 'food' ? <HomeOngoingBusinessOrder order={order} /> : null}
