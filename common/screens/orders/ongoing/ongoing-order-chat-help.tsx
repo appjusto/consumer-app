@@ -61,7 +61,7 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
         title="Ajuda"
         variant="destructive"
         onPress={() =>
-          router.push({
+          router.navigate({
             pathname: '/(logged)/(tabs)/(orders)/[id]/incident',
             params: { id: order.id },
           })

@@ -41,7 +41,7 @@ export default function OrderCheckoutDeliveryScreen() {
           <DefaultText size="lg">Forma de pagamento</DefaultText>
           <OrderPaymentMethod
             onAddCard={() => {
-              router.push({
+              router.navigate({
                 pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/cards/add',
                 params: { businessId },
               });
@@ -55,7 +55,7 @@ export default function OrderCheckoutDeliveryScreen() {
         variant="checkout"
         disabled={disabled}
         onPress={() =>
-          router.push({
+          router.navigate({
             pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/confirmation',
             params: { businessId },
           })

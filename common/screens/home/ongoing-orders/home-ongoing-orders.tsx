@@ -19,7 +19,7 @@ export const HomeOngoingOrders = ({ style, ...props }: Props) => {
             key={order.id}
             style={{ marginBottom: paddings.sm }}
             onPress={() => {
-              router.push({
+              router.navigate({
                 pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
                 params: { id: order.id },
               });

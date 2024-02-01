@@ -123,7 +123,7 @@ export const FleetCard = ({ fleet, style, ...props }: Props) => {
           title="Ver detalhes"
           variant="outline"
           onPress={() =>
-            router.push({ pathname: '/(logged)/fleets/[id]', params: { id: fleet.id } })
+            router.navigate({ pathname: '/(logged)/fleets/[id]', params: { id: fleet.id } })
           }
         />
         {!usingFleet ? (

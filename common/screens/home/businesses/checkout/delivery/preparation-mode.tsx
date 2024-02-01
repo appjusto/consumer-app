@@ -35,7 +35,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
   };
   const scheduleOrder = () => {
     if (!business) return;
-    router.push({
+    router.navigate({
       pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/schedule',
       params: { id: business.id },
     });

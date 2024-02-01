@@ -55,7 +55,7 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
             <DefaultButton
               title="Avaliar corrida"
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
                   params: { id: order.id },
                 })

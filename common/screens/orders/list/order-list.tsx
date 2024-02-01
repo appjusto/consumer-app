@@ -26,7 +26,7 @@ export const OrderList = ({ orders, title, emptyText, style, children, ...props 
             <Pressable
               key={order.id}
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: '/(logged)/(tabs)/(orders)/[id]/detail',
                   params: { id: order.id },
                 })

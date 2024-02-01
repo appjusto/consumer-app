@@ -78,7 +78,7 @@ export default function SignIn() {
             disabled={!canSubmit}
             style={{ marginBottom: paddings.sm }}
             onPress={() => {
-              router.push({
+              router.navigate({
                 pathname: `/phone-verification`,
                 params: { phone, countryCode: 55 },
               });

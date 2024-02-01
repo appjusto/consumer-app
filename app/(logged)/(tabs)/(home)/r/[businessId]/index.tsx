@@ -44,7 +44,7 @@ export default function BusinessDetailScreen() {
           return (
             <Pressable
               onPress={() =>
-                router.push({
+                router.navigate({
                   pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
                   params: { businessId, productId: item.id },
                 })
@@ -61,7 +61,7 @@ export default function BusinessDetailScreen() {
         variant="business"
         disabled={!quote}
         onPress={() =>
-          router.push({
+          router.navigate({
             pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/',
             params: { businessId },
           })

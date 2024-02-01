@@ -97,7 +97,7 @@ export default function OrderSupportScreen() {
         {businessId ? (
           <Pressable
             onPress={() => {
-              router.push({
+              router.navigate({
                 pathname: '/(logged)/(tabs)/(orders)/[id]/chat/[counterpart]',
                 params: { id: orderId, counterpart: businessId },
               });

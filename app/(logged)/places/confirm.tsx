@@ -80,7 +80,7 @@ export default function NewPlaceConfirmScreen() {
       location: `${location.latitude},${location.longitude}`,
       returnScreen: params.returnScreen,
     });
-    router.push({
+    router.navigate({
       pathname: '/places/complement',
       params: {
         description,

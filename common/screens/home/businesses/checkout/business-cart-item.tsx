@@ -47,7 +47,7 @@ export const BusinessCartItem = ({ item, style, ...props }: Props) => {
       <View style={[{ flexDirection: 'row', borderWidth: 0 }]} {...props}>
         <Pressable
           onPress={() =>
-            router.push({
+            router.navigate({
               pathname: '/(logged)/(tabs)/(home)/r/[id]/p/[productId]',
               params: { id: businessId, productId: item.product.id, itemId: item.id },
             })

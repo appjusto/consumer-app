@@ -17,7 +17,7 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
   // handlers
   const changeHandler = () => {
     if (order.business?.id) {
-      router.push({
+      router.navigate({
         pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/places/',
         params: { id: order.business.id },
       });

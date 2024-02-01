@@ -63,7 +63,7 @@ export default function ProfileCardListScreen() {
                 card={card}
                 key={card.id}
                 onPress={() =>
-                  router.push({
+                  router.navigate({
                     pathname: '/(logged)/(tabs)/profile/cards/[id]',
                     params: { id: card.id },
                   })

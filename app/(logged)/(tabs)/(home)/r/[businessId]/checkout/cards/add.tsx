@@ -18,7 +18,7 @@ export default function CheckoutAddCardScreen() {
     setPaymentMethod!('credit_card');
     setPaymentMethodId!(cardId);
 
-    router.push({
+    router.navigate({
       pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/payment',
       params: { businessId },
     });

@@ -49,7 +49,7 @@ export default function OrderCheckoutScreen() {
         variant="checkout"
         disabled={!quote.fare}
         onPress={() =>
-          router.push({
+          router.navigate({
             pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/delivery',
             params: { businessId },
           })

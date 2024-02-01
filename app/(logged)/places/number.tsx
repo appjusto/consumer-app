@@ -61,7 +61,7 @@ export default function NewPlaceNumberScreen() {
     if (!main) return;
     if (!confirmEnabled) return;
     if (withoutNumber) {
-      router.push({
+      router.navigate({
         pathname: '/places/confirm',
         params: { description, main, secondary, googlePlaceId, returnScreen },
       });
@@ -77,7 +77,7 @@ export default function NewPlaceNumberScreen() {
           if (!firstAddress) {
             showToast('Não foi possível validar seu endereço. Tente novamente.', 'error');
           } else {
-            router.push({
+            router.navigate({
               pathname: '/places/confirm',
               params: { ...firstAddress, returnScreen },
             });

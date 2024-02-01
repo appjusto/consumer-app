@@ -59,7 +59,7 @@ export default function NewPlaceScreen() {
   // on select address
   const selectHandler = (address: Address) => {
     Keyboard.dismiss();
-    router.push({
+    router.navigate({
       pathname: addressHasNumber(address) ? '/places/confirm' : '/places/number',
       params: { sessionToken, returnScreen, ...address },
     });
