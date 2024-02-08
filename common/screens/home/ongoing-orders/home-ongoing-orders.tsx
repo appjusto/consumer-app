@@ -1,12 +1,14 @@
 import { useObserveOngoingOrders } from '@/api/orders/useObserveOngoingOrders';
 import paddings from '@/common/styles/paddings';
-import { router } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 import { HomeOngoingBusinessOrder } from './home-ongoing-business-order';
 
 interface Props extends ViewProps {}
 
 export const HomeOngoingOrders = ({ style, ...props }: Props) => {
+  // context
+  const navigation = useNavigation();
   // state
   const orders = useObserveOngoingOrders();
   // UI
@@ -19,9 +21,11 @@ export const HomeOngoingOrders = ({ style, ...props }: Props) => {
             key={order.id}
             style={{ marginBottom: paddings.sm }}
             onPress={() => {
-              router.navigate({
-                pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
+              // @ts-ignore
+              navigation.navigate('(orders)', {
+                screen: '[id]/ongoing',
                 params: { id: order.id },
+                initial: false,
               });
             }}
           >

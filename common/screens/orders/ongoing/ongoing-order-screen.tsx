@@ -1,11 +1,12 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { getOrderStage } from '@/api/orders/status';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
-import { useRouterAccordingOrderStatus } from '@/common/screens/orders/useRouterAccordingOrderStatus';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 import { OngoingOrderCourier } from './ongoing-order-courier';
@@ -22,10 +23,24 @@ interface Props extends ViewProps {
 export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
   // state
   const order = useObserveOrder(orderId);
+  const status = order?.status;
+  const type = order?.type;
   // tracking
   useTrackScreenView('Pedido em andamento');
   // side effects
-  useRouterAccordingOrderStatus(order, 'ongoing');
+  useEffect(() => {
+    if (!status) return;
+    if (!type) return;
+    const stage = getOrderStage(status, type);
+    if (stage === 'completed') {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
+        params: { id: orderId },
+      });
+    } else if (stage !== 'ongoing') {
+      router.back();
+    }
+  }, [orderId, status, type]);
   // UI
   if (!order) return <Loading title="" />;
   return (

@@ -16,7 +16,7 @@ import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBac
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -25,6 +25,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const params = useLocalSearchParams<{ businessId: string }>();
   const businessId = params.businessId;
   // context
+  const navigation = useNavigation();
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrderQuote();
@@ -46,14 +47,12 @@ export default function OrderCheckoutDeliveryScreen() {
       .placeOrder(options)
       .then(() => {
         trackEvent('Pedido feito');
-        // router.replace({
-        //   pathname: '/(logged)/(tabs)/(orders)/[id]/confirming',
-        //   params: { id: options.orderId },
-        // });
-        router.replace({
-          // pathname: '/home',
-          pathname: '/(logged)/(tabs)/(home)/',
-          params: { orderId: options.orderId },
+        router.navigate('/(logged)/(tabs)/(home)/');
+        // @ts-ignore
+        navigation.navigate('(orders)', {
+          screen: '[id]/confirming',
+          params: { id: options.orderId },
+          initial: false,
         });
       })
       .catch((error) => {

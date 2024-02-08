@@ -1,8 +1,9 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { getOrderStage } from '@/api/orders/status';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { Loading } from '@/common/components/views/Loading';
-import { useRouterAccordingOrderStatus } from '@/common/screens/orders/useRouterAccordingOrderStatus';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function OrderScreen() {
   // params
@@ -10,10 +11,34 @@ export default function OrderScreen() {
   const orderId = params.id;
   // state
   const order = useObserveOrder(orderId);
+  const status = order?.status;
+  const type = order?.type;
   // tracking
   useTrackScreenView('Carregando pedido');
   // side effects
-  useRouterAccordingOrderStatus(order, 'index');
+  useEffect(() => {
+    if (!status) return;
+    if (!type) return;
+    const stage = getOrderStage(status, type);
+    if (stage === 'confirming') {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/confirming',
+        params: { id: orderId },
+      });
+    } else if (stage === 'ongoing') {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
+        params: { id: orderId },
+      });
+    } else if (stage === 'completed') {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
+        params: { id: orderId },
+      });
+    } else {
+      router.back();
+    }
+  }, [orderId, status, type]);
   // UI
   if (!order) return <Loading title="Pedido em andamento" />;
   return null;

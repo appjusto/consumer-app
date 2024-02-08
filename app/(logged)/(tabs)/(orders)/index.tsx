@@ -8,28 +8,13 @@ import { HistoryBusinessOrder } from '@/common/screens/orders/history/history-bu
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Order, WithId } from '@appjusto/types';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect } from 'react';
+import { router } from 'expo-router';
 import { Pressable } from 'react-native';
 
 export default function OrdersIndex() {
-  // params
-  const params = useLocalSearchParams<{ orderId: string }>();
-  const orderId = params.orderId;
   useTrackScreenView('Pedidos');
   // state
   const orders = useObserveOngoingOrders() ?? [];
-  // side effects
-  useEffect(() => {
-    console.log('### home', orderId);
-    if (orderId) {
-      router.navigate({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/',
-        params: { id: orderId },
-      });
-      router.setParams({ orderId: '' });
-    }
-  }, [orderId]);
   // handlers
   const handleClick = (order: WithId<Order>) => {
     const { status, type } = order;

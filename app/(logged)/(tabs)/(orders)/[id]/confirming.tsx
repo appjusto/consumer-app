@@ -1,16 +1,17 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
+import { getOrderStage } from '@/api/orders/status';
 import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
-import { useRouterAccordingOrderStatus } from '@/common/screens/orders/useRouterAccordingOrderStatus';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Image } from 'expo-image';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { AlertOctagon, Phone } from 'lucide-react-native';
+import { useEffect } from 'react';
 import { Dimensions, Linking, View } from 'react-native';
 
 const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
@@ -25,11 +26,22 @@ export default function OrderConfirmingScreen() {
   const order = useObserveOrder(orderId);
   const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
   const status = order?.status;
+  const type = order?.type;
   const waitingAcceptance = status === 'confirmed';
   // tracking
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects
-  useRouterAccordingOrderStatus(order, 'confirming');
+  useEffect(() => {
+    if (!status) return;
+    if (!type) return;
+    const stage = getOrderStage(status, type);
+    if (stage === 'ongoing') {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
+        params: { id: orderId },
+      });
+    }
+  }, [orderId, status, type]);
   // handlers
   const callBusinessHandler = () => {
     Linking.openURL(`tel:${businessPhone}`)
@@ -45,7 +57,7 @@ export default function OrderConfirmingScreen() {
   // UI
   return (
     <View style={{ ...screens.centered }}>
-      <Stack.Screen options={{ headerShown: false }} />
+      <Stack.Screen options={{ title: 'Criando pedido', headerShown: false }} />
       <View style={{ flex: 1 }} />
       <View style={{ flex: 1, borderWidth: 0 }}>
         <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} />
