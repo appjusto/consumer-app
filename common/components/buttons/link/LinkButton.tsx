@@ -9,6 +9,7 @@ type LinkButtonProps = ViewProps & {
   disabled?: boolean;
   variant?: 'default' | 'ghost' | 'destructive';
   textStyle?: StyleProp<TextStyle>;
+  leftView?: React.ReactNode;
   onPress: () => void;
 };
 
@@ -18,6 +19,7 @@ export const LinkButton = ({
   variant = 'default',
   style,
   textStyle,
+  leftView,
   children,
   ...props
 }: LinkButtonProps) => {
@@ -28,10 +30,12 @@ export const LinkButton = ({
           <View
             style={[
               {
+                flexDirection: 'row',
                 padding: paddings.md,
               },
             ]}
           >
+            {leftView}
             <DefaultText
               style={[
                 size === 'small' ? { ...typography.sm } : { ...typography.md },

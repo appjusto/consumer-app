@@ -28,8 +28,7 @@ export default function IncidentScreen() {
   // state
   const order = useObserveOrder(orderId);
   const issueType = issueTypeForOrder(order);
-  const business = useObserveBusiness(order?.business?.id);
-  const phone = business?.phones?.find(({ type }) => type === 'desk')?.number;
+  const phone = useObserveBusiness(order?.business?.id)?.phone;
   const [loading, setLoading] = useState(false);
   const [reportIssueModalShown, setReportIssueModalShown] = useState(false);
   // tracking

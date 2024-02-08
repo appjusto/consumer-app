@@ -4,7 +4,7 @@ export const unstable_settings = {
   initialRouteName: 'index',
 };
 
-export default function HomeLayout() {
+export default function OrdersLayout() {
   return (
     <Stack
       screenOptions={({ route }) => {

@@ -22,11 +22,10 @@ interface Props extends ViewProps {
 export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
   // state
   const order = useObserveOrder(orderId);
-  const orderStatus = order?.status;
   // tracking
   useTrackScreenView('Pedido em andamento');
   // side effects
-  useRouterAccordingOrderStatus(orderId, orderStatus, true);
+  useRouterAccordingOrderStatus(order, 'ongoing');
   // UI
   if (!order) return <Loading title="" />;
   return (

@@ -10,13 +10,10 @@ export default function OrderScreen() {
   const orderId = params.id;
   // state
   const order = useObserveOrder(orderId);
-  const orderStatus = order?.status;
-  console.log('OrderScreen orderId', orderId);
-  console.log('OrderScreen orderStatus', orderStatus);
   // tracking
   useTrackScreenView('Carregando pedido');
   // side effects
-  useRouterAccordingOrderStatus(orderId, orderStatus);
+  useRouterAccordingOrderStatus(order, 'index');
   // UI
   if (!order) return <Loading title="Pedido em andamento" />;
   return null;

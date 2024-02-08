@@ -9,11 +9,14 @@ import { CuisineList } from '@/common/screens/home/cuisine/cuisine-list';
 import { HomeOngoingOrders } from '@/common/screens/home/ongoing-orders/home-ongoing-orders';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 
 export default function HomeScreen() {
+  // params
+  const params = useLocalSearchParams<{ orderId: string }>();
+  const orderId = params.orderId;
   // context
   const currentPlace = useContextCurrentPlace();
   // tracking
@@ -25,6 +28,15 @@ export default function HomeScreen() {
       router.push('/places/new');
     }
   }, [currentPlace]);
+  useEffect(() => {
+    if (orderId) {
+      router.replace({
+        pathname: '/(logged)/(tabs)/(orders)/',
+        params: { orderId },
+      });
+      router.setParams({ orderId: '' });
+    }
+  }, [orderId]);
   // logs
   // console.log('currentPlace', currentPlace);
   // UI

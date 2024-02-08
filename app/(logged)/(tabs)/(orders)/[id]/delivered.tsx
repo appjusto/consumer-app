@@ -23,7 +23,7 @@ import { isEmpty } from 'lodash';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-export default function OngoingOrderScreen() {
+export default function OrderDeliveredScreen() {
   // context
   const api = useContextApi();
   const showToast = useShowToast();

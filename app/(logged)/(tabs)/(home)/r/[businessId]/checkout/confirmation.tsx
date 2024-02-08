@@ -1,4 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
+import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrderPayments, useContextOrderQuote } from '@/api/orders/context/order-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
@@ -11,6 +12,7 @@ import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -32,7 +34,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // tracking
   useTrackScreenView('Checkout: pagamento', { businessId, orderId: quote?.id });
   // side effects
-  // useBackWhenOrderExpires(!loading);
+  useBackWhenOrderExpires(!loading);
   const options = usePlaceOrderOptions();
   // handlers
   const canPlaceOrder = Boolean(options);
@@ -43,8 +45,14 @@ export default function OrderCheckoutDeliveryScreen() {
       .orders()
       .placeOrder(options)
       .then(() => {
+        trackEvent('Pedido feito');
+        // router.replace({
+        //   pathname: '/(logged)/(tabs)/(orders)/[id]/confirming',
+        //   params: { id: options.orderId },
+        // });
         router.replace({
-          pathname: '/(logged)/confirming/[orderId]/',
+          // pathname: '/home',
+          pathname: '/(logged)/(tabs)/(home)/',
           params: { orderId: options.orderId },
         });
       })
@@ -57,6 +65,7 @@ export default function OrderCheckoutDeliveryScreen() {
         }
       });
   };
+  console.log('r/[id]/checkout/confirmation', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';

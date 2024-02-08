@@ -8,6 +8,7 @@ import { BusinessCartHeader } from '@/common/screens/home/businesses/checkout/bu
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
 import { OrderPaymentMethod } from '@/common/screens/orders/checkout/payment/order-payment-method';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -23,7 +24,8 @@ export default function OrderCheckoutDeliveryScreen() {
   // tracking
   useTrackScreenView('Checkout: pagamento', { businessId, orderId: quote?.id });
   // side effects
-  // useBackWhenOrderExpires();
+  useBackWhenOrderExpires();
+  console.log('r/[id]/checkout/payment', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   const disabled =

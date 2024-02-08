@@ -8,6 +8,7 @@ import { OrderFleetSelector } from '@/common/screens/home/businesses/checkout/de
 import { PreparationMode } from '@/common/screens/home/businesses/checkout/delivery/preparation-mode';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { useUpdateOrderDestination } from '@/common/screens/orders/checkout/places/useUpdateOrderDestination';
+import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -17,7 +18,6 @@ export default function OrderCheckoutDeliveryScreen() {
   // params
   const params = useLocalSearchParams<{ businessId: string }>();
   const businessId = params.businessId;
-  console.log('r/[id]/checkout', businessId);
   // context
   const quote = useContextOrderQuote();
   // const { loading } = useContextOrderFares();
@@ -25,7 +25,8 @@ export default function OrderCheckoutDeliveryScreen() {
   useTrackScreenView('Checkout: entrega', { businessId, orderId: quote?.id });
   // side effects
   useUpdateOrderDestination(quote?.id);
-  // useBackWhenOrderExpires();
+  useBackWhenOrderExpires();
+  console.log('r/[id]/checkout/delivery', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   return (

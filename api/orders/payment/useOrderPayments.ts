@@ -11,7 +11,7 @@ export const useOrderPayments = () => {
   const profile = useContextProfile();
   const acceptedByPlatform = platformParams?.acceptedPaymentMethods;
   const defaultPaymentMethod = profile ? profile.defaultPaymentMethod ?? null : undefined;
-  const defaultPaymentMethodId = profile?.defaultPaymentMethodId ?? null;
+  const defaultPaymentMethodId = profile?.defaultPaymentMethodId;
   const business = useContextBusiness();
   // state
   const cards = useCards();
@@ -19,6 +19,7 @@ export const useOrderPayments = () => {
   const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
+  // console.log('defaultPaymentMethodId', defaultPaymentMethodId, paymentMethodId);
   // side effects
   useEffect(() => {
     if (defaultPaymentMethod === undefined) return;
@@ -33,10 +34,10 @@ export const useOrderPayments = () => {
     setPaymentMethodId(defaultPaymentMethodId);
   }, [defaultPaymentMethodId, paymentMethodId]);
   useEffect(() => {
-    if (profile?.tags?.includes('unsafe')) {
-      setAcceptedOnOrder(['pix']);
-      return;
-    }
+    // if (profile?.tags?.includes('unsafe')) {
+    //   setAcceptedOnOrder(['pix']);
+    //   return;
+    // }
     if (!acceptedByPlatform) return;
     if (business === undefined) return;
     if (business === null) {

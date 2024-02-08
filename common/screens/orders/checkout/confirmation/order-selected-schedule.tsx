@@ -35,6 +35,7 @@ export const OrderSelectedSchedule = ({ style, ...props }: Props) => {
           style={{
             paddingVertical: paddings.sm,
             paddingHorizontal: paddings.lg,
+            // justifyContent: 'flex-end',
             backgroundColor: colors.primary100,
             borderColor: colors.primary300,
             borderWidth: 1,
@@ -42,7 +43,9 @@ export const OrderSelectedSchedule = ({ style, ...props }: Props) => {
           }}
         >
           <DefaultText>{capitalize(formatTimestamp(deliveryEstimate, 'ddd'))}</DefaultText>
-          <DefaultText size="lg">{toDate(deliveryEstimate).getDate()}</DefaultText>
+          <DefaultText style={{ textAlign: 'center', borderWidth: 0 }} size="lg">
+            {toDate(deliveryEstimate).getDate()}
+          </DefaultText>
         </View>
         <View style={{ marginLeft: paddings.lg }}>
           <DefaultText size="md">{`${Dayjs(toDate(deliveryEstimate)).calendar()}`}</DefaultText>
