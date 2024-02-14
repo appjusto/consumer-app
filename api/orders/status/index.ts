@@ -14,14 +14,14 @@ export const FailedOrdersStatuses: OrderStatus[] = ['expired'];
 
 export const isOrderOngoing = (status: OrderStatus) => OngoingOrdersStatuses.includes(status);
 
-type OrderStage = 'quote' | 'confirming' | 'ongoing' | 'expired' | 'completed';
+type OrderStage = 'quote' | 'placing' | 'ongoing' | 'expired' | 'completed';
 export const getOrderStage = (status: OrderStatus, type: OrderType): OrderStage => {
   if (status === 'quote') return 'quote';
   if (status === 'expired') return 'expired';
-  if (status === 'confirming') return 'confirming';
-  if (status === 'charged') return 'confirming';
+  if (status === 'confirming') return 'placing';
+  if (status === 'charged') return 'placing';
   if (status === 'confirmed') {
-    if (type === 'food') return 'confirming';
+    if (type === 'food') return 'placing';
     return 'ongoing';
   }
   if (isOrderOngoing(status)) return 'ongoing';

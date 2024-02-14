@@ -27,6 +27,7 @@ export default function OrderConfirmingScreen() {
   const status = order?.status;
   const type = order?.type;
   const waitingAcceptance = status === 'confirmed';
+  console.log('waitingAcceptance', waitingAcceptance, status);
   // tracking
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects

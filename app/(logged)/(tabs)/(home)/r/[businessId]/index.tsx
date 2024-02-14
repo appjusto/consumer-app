@@ -23,10 +23,24 @@ export default function BusinessDetailScreen() {
   const business = useContextBusiness();
   const products = useContextBusinessProducts();
   const quote = useContextOrder();
+  const orderId = quote?.id;
   // tracking
   useTrackScreenView('Restaurante', { businessId });
+  // handlers
+  const productHandler = (productId: string) =>
+    router.navigate({
+      pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
+      params: { businessId, productId },
+    });
+  const checkoutHandler = () => {
+    if (!orderId) return;
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/',
+      params: { orderId },
+    });
+  };
   // UI
-  if (!business || !products) return <Loading />;
+  if (!business || !products || !businessId) return <Loading />;
   return (
     <View style={{ ...screens.default }}>
       <Stack.Screen options={{ title: business.name }} />
@@ -42,31 +56,14 @@ export default function BusinessDetailScreen() {
               </View>
             );
           return (
-            <Pressable
-              onPress={() =>
-                router.navigate({
-                  pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
-                  params: { businessId, productId: item.id },
-                })
-              }
-            >
+            <Pressable onPress={() => productHandler(item.id)}>
               {({ pressed }) => <ProductListItem businessId={businessId} item={item} />}
             </Pressable>
           );
         }}
         estimatedItemSize={78}
       />
-      <CartButton
-        order={quote}
-        variant="business"
-        disabled={!quote}
-        onPress={() =>
-          router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/',
-            params: { businessId },
-          })
-        }
-      />
+      <CartButton order={quote} variant="business" disabled={!quote} onPress={checkoutHandler} />
     </View>
   );
 }

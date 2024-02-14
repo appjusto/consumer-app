@@ -19,10 +19,11 @@ export default function OrdersIndex() {
   const handleClick = (order: WithId<Order>) => {
     const { status, type } = order;
     const stage = getOrderStage(status, type);
+    console.log(order.id, stage);
     if (stage === 'ongoing') {
       router.navigate({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
-        params: { id: order.id },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
+        params: { orderId: order.id },
       });
     }
   };

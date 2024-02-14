@@ -29,6 +29,7 @@ export const OrderProvider = ({ children }: Props) => {
   const packageQuote = useObservePackageQuote(!orderId && !businessId);
   const order = orderWithId ?? businessQuote ?? packageQuote;
   const { fares, loading } = useOrderFares(order, paymentMethod);
+  console.log('OrderProvider', orderId, orderWithId);
   // result
   return (
     <OrderContext.Provider

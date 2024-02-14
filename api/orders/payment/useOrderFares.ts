@@ -15,7 +15,7 @@ export const useOrderFares = (
   const [loading, setLoading] = useState(false);
   // helpers
   const orderId = order?.id;
-  const created = Boolean(order?.timestamps?.quote);
+  const created = order?.status === 'quote' && Boolean(order?.timestamps?.quote);
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
   // side effects

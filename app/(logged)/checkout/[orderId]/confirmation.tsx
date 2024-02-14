@@ -51,7 +51,7 @@ export default function OrderCheckoutDeliveryScreen() {
         router.navigate('/(logged)/(tabs)/(home)/');
         // @ts-ignore
         navigation.navigate('(orders)', {
-          screen: '[id]/confirming',
+          screen: '[orderId]/confirming',
           params: { id: options.orderId },
           initial: false,
         });
@@ -65,7 +65,7 @@ export default function OrderCheckoutDeliveryScreen() {
         }
       });
   };
-  console.log('r/[id]/checkout/confirmation', typeof quote, quote?.id);
+  console.log('checkout/[orderId]/confirmation', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';

@@ -20,7 +20,7 @@ export default function OrderScreen() {
     if (!type) return;
     if (!orderId) return;
     const stage = getOrderStage(status, type);
-    if (stage === 'confirming') {
+    if (stage === 'placing') {
       router.replace({
         pathname: '/(logged)/(tabs)/(orders)/[orderId]/confirming',
         params: { orderId },

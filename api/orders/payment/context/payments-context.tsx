@@ -1,6 +1,5 @@
 import { useContextBusiness } from '@/api/business/context/business-context';
 import { useCards } from '@/api/consumer/cards/useCards';
-import { OrderProvider } from '@/api/orders/context/order-context';
 import { useContextPlatformParams } from '@/api/platform/context/platform-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { Card, PayableWith, VRCard, WithId } from '@appjusto/types';
@@ -107,7 +106,7 @@ export const PaymentsProvider = ({ children }: Props) => {
         setPaymentMethodId,
       }}
     >
-      <OrderProvider>{children}</OrderProvider>
+      {children}
     </PaymentsContext.Provider>
   );
 };
