@@ -10,24 +10,21 @@ import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-tot
 import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
   const quote = useContextOrder();
   // state
   const [additionalInfo, setAdditionalInfo] = useState('');
   // tracking
-  useTrackScreenView('Checkout: sacola', { businessId, orderId: quote?.id });
+  useTrackScreenView('Checkout: sacola', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
   useBackWhenOrderExpires();
   // logs
-  console.log('r/[id]/checkout/index', typeof quote, quote?.id);
+  console.log('checkout/[orderId]/index', typeof quote, quote?.id);
   // UI
   if (!quote || isOrderEmpty(quote)) return <EmptyCart />;
   return (
@@ -51,8 +48,8 @@ export default function OrderCheckoutScreen() {
         disabled={!quote.fare}
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/delivery',
-            params: { businessId },
+            pathname: '/(logged)/checkout/[orderId]/delivery',
+            params: { orderId: quote.id },
           })
         }
       />

@@ -1,4 +1,4 @@
-import { useContextOrderPayments } from '@/api/orders/context/order-context';
+import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
 import { DinersIcon } from './diners-icon';
@@ -11,7 +11,7 @@ import { VRRefeicao } from './vr-refeicao';
 interface Props extends ViewProps {}
 
 export const CardsAccepted = ({ style, ...props }: Props) => {
-  const { acceptedOnOrder } = useContextOrderPayments();
+  const { acceptedOnOrder } = useContextPayments();
   if (!acceptedOnOrder) return null;
   return (
     <View style={[{ flexDirection: 'row' }, style]} {...props}>

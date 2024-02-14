@@ -1,6 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextOrder } from '@/api/orders/context/order-context';
 
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -11,17 +11,15 @@ import { OrderDetailReview } from '@/common/screens/orders/review/order-detail-r
 import { OrderStatusBadge } from '@/common/screens/orders/status/order-status-badge';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router';
 import { View } from 'react-native';
 
 export default function OrderDetailScreen() {
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
-  // state
-  const order = useObserveOrder(orderId);
+  // context
+  const order = useContextOrder();
+  const orderId = order?.id;
   // tracking
-  useTrackScreenView('Detalhe do Pedido');
+  useTrackScreenView('Detalhe do Pedido', { orderId });
   // side effects
   // UI
   if (!order) return <Loading title="Detalhe da corrida" />;

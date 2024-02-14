@@ -1,4 +1,4 @@
-import { useContextOrderQuote } from '@/api/orders/context/order-context';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -8,7 +8,7 @@ interface Props extends ViewProps {}
 
 export const OrderSelectedDestination = ({ style, ...props }: Props) => {
   // context
-  const order = useContextOrderQuote();
+  const order = useContextOrder();
   // UI
   const place = order?.fulfillment === 'delivery' ? order?.destination : order?.origin;
   if (!order || !place) return null;

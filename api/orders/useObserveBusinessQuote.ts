@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
 import { ObserveOrdersOptions } from './types';
 
-export const useObserveOrderQuote = (businessId?: string) => {
+export const useObserveBusinessQuote = (businessId?: string, enabled = true) => {
   // context
   const api = useContextApi();
   // refs
@@ -14,9 +14,10 @@ export const useObserveOrderQuote = (businessId?: string) => {
   const [orderQuote, setOrderQuote] = useState<WithId<Order> | null>();
   // side effects
   useEffect(() => {
+    if (!enabled) return;
     if (!businessId) return;
     return api.orders().observeOrders(options, setOrders);
-  }, [api, businessId, options]);
+  }, [api, options, enabled, businessId]);
   useEffect(() => {
     if (!orders) return;
     if (orders.length === 0) setOrderQuote(null);

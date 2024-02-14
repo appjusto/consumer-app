@@ -1,4 +1,4 @@
-import { useContextOrderPayments } from '@/api/orders/context/order-context';
+import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
@@ -19,7 +19,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
     paymentMethodId,
     setPaymentMethod,
     setPaymentMethodId,
-  } = useContextOrderPayments();
+  } = useContextPayments();
   // state
   // UI
   // console.log(acceptedOnOrder);

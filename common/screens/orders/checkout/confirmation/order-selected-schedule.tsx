@@ -1,5 +1,5 @@
 import { toDate } from '@/api/firebase/timestamp';
-import { useContextOrderQuote } from '@/api/orders/context/order-context';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { formatTimestamp, timestampWithETA } from '@/common/formatters/timestamp';
 import colors from '@/common/styles/colors';
@@ -12,7 +12,7 @@ interface Props extends ViewProps {}
 
 export const OrderSelectedSchedule = ({ style, ...props }: Props) => {
   // context
-  const order = useContextOrderQuote();
+  const order = useContextOrder();
   // UI
   const deliveryEstimate = order?.scheduledTo ?? order?.arrivals?.destination?.estimate;
   if (!deliveryEstimate) return;

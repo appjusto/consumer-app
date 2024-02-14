@@ -1,7 +1,7 @@
 import colors from './colors';
 
-const primaryLightColor = '#B8E994';
-const primaryDarkColor = '#22543D';
+const primaryLightColor = colors.neutral800;
+const primaryDarkColor = colors.black;
 
 export default {
   light: {

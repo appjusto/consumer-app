@@ -1,7 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { getOrderStage } from '@/api/orders/status';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
@@ -9,7 +9,7 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Image } from 'expo-image';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { AlertOctagon, Phone } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { Dimensions, Linking, View } from 'react-native';
@@ -19,11 +19,10 @@ const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif
 const SIZE = Dimensions.get('screen').width - 100;
 
 export default function OrderConfirmingScreen() {
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
+  // context
+  const order = useContextOrder();
+  const orderId = order?.id;
   // state
-  const order = useObserveOrder(orderId);
   const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
   const status = order?.status;
   const type = order?.type;
@@ -32,13 +31,14 @@ export default function OrderConfirmingScreen() {
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects
   useEffect(() => {
+    if (!orderId) return;
     if (!status) return;
     if (!type) return;
     const stage = getOrderStage(status, type);
     if (stage === 'ongoing') {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
-        params: { id: orderId },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
+        params: { orderId },
       });
     }
   }, [orderId, status, type]);
@@ -49,9 +49,10 @@ export default function OrderConfirmingScreen() {
       .catch((error) => console.error(error));
   };
   const problemHandler = () => {
+    if (!orderId) return;
     router.push({
-      pathname: '/(logged)/(tabs)/(orders)/[id]/incident',
-      params: { id: orderId },
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/incident',
+      params: { orderId },
     });
   };
   // UI

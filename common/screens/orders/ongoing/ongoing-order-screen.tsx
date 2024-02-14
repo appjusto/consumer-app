@@ -1,6 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { getOrderStage } from '@/api/orders/status';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import colors from '@/common/styles/colors';
@@ -16,13 +16,12 @@ import { OngoingOrderFoodOverview } from './ongoing-order-food-overview';
 import { OngoingOrderHandshake } from './ongoing-order-handshake';
 import { OngoingOrderMapInfo } from './ongoing-order-map-info';
 
-interface Props extends ViewProps {
-  orderId: string;
-}
+interface Props extends ViewProps {}
 
-export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
-  // state
-  const order = useObserveOrder(orderId);
+export const OngoingOrderScreenView = ({ style, ...props }: Props) => {
+  // context
+  const order = useContextOrder();
+  const orderId = order?.id;
   const status = order?.status;
   const type = order?.type;
   // tracking
@@ -31,11 +30,12 @@ export const OngoingOrderScreenView = ({ orderId, style, ...props }: Props) => {
   useEffect(() => {
     if (!status) return;
     if (!type) return;
+    if (!orderId) return;
     const stage = getOrderStage(status, type);
     if (stage === 'completed') {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
-        params: { id: orderId },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+        params: { orderId },
       });
     } else if (stage !== 'ongoing') {
       router.back();

@@ -1,7 +1,8 @@
-import { LatLng, OrderStatus, PlaceOrderPayloadPayment } from '@appjusto/types';
+import { LatLng, OrderStatus, OrderType, PlaceOrderPayloadPayment } from '@appjusto/types';
 
 export interface ObserveOrdersOptions {
   statuses?: OrderStatus[];
+  type?: OrderType;
   businessId?: string;
   from?: Date;
   to?: Date;

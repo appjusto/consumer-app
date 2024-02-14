@@ -5,7 +5,7 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
-import { Home, InfoIcon, Receipt, Users2 } from 'lucide-react-native';
+import { Home, InfoIcon, Package, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
   focused?: boolean;
@@ -62,6 +62,18 @@ export default function TabLayout() {
                 )}
               </Pressable>
             </Link>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="encomendas"
+        options={{
+          title: 'Encomendas',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused}>
+              <Package size={24} color={focused ? activeColor : inactiveColor} />
+            </TabIcon>
           ),
         }}
       />

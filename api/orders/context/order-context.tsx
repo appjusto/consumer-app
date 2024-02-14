@@ -1,69 +1,41 @@
-import { useOrderPayments } from '@/api/orders/payment/useOrderPayments';
-import { Card, Fare, Order, PayableWith, WithId } from '@appjusto/types';
-import { pick } from 'lodash';
+import { Fare, Order, WithId } from '@appjusto/types';
+import { useGlobalSearchParams } from 'expo-router';
 import React from 'react';
+import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
-import { useObserveOrderQuote } from '../useObserveOrderQuote';
+import { useObserveBusinessQuote } from '../useObserveBusinessQuote';
+import { useObserveOrder } from '../useObserveOrder';
+import { useObservePackageQuote } from '../useObservePackageQuote';
 
 const OrderContext = React.createContext<Value>({});
 
 interface Props {
-  businessId?: string;
   children: React.ReactNode;
 }
 
 interface Value {
-  quote?: WithId<Order> | null;
+  order?: WithId<Order> | null;
   fares?: Fare[] | undefined;
   loading?: boolean;
-  acceptedByPlatform?: PayableWith[];
-  acceptedOnOrder?: PayableWith[];
-  acceptsCards?: boolean;
-  acceptedCardsOnOrder?: WithId<Card>[];
-  selectedCard?: WithId<Card>;
-  defaultPaymentMethod?: PayableWith | null;
-  defaultPaymentMethodId?: string | null;
-  paymentMethod?: PayableWith | null;
-  setPaymentMethod?: (value: PayableWith) => void;
-  paymentMethodId?: string | null;
-  setPaymentMethodId?: (value: string) => void;
 }
 
-export const OrderProvider = ({ businessId, children }: Props) => {
+export const OrderProvider = ({ children }: Props) => {
+  const { orderId, businessId } = useGlobalSearchParams<{ orderId: string; businessId: string }>();
+  // context
+  const { paymentMethod } = useContextPayments();
   // state
-  const quote = useObserveOrderQuote(businessId);
-  const {
-    acceptedByPlatform,
-    acceptedOnOrder,
-    acceptsCards,
-    acceptedCardsOnOrder,
-    defaultPaymentMethod,
-    defaultPaymentMethodId,
-    paymentMethod,
-    setPaymentMethod,
-    paymentMethodId,
-    setPaymentMethodId,
-  } = useOrderPayments();
-  const { fares, loading } = useOrderFares(quote, defaultPaymentMethod);
-  const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
+  const orderWithId = useObserveOrder(orderId);
+  const businessQuote = useObserveBusinessQuote(businessId, Boolean(businessId) && !orderId);
+  const packageQuote = useObservePackageQuote(!orderId && !businessId);
+  const order = orderWithId ?? businessQuote ?? packageQuote;
+  const { fares, loading } = useOrderFares(order, paymentMethod);
   // result
   return (
     <OrderContext.Provider
       value={{
-        quote,
+        order,
         fares,
         loading,
-        acceptedByPlatform,
-        acceptedOnOrder,
-        acceptsCards,
-        acceptedCardsOnOrder,
-        selectedCard,
-        defaultPaymentMethod,
-        defaultPaymentMethodId,
-        paymentMethod,
-        setPaymentMethod,
-        paymentMethodId,
-        setPaymentMethodId,
       }}
     >
       {children}
@@ -71,32 +43,14 @@ export const OrderProvider = ({ businessId, children }: Props) => {
   );
 };
 
-export const useContextOrderQuote = () => {
+export const useContextOrder = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
-  return value.quote;
+  return value.order;
 };
 
 export const useContextOrderFares = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
   return { fares: value.fares, loading: value.loading };
-};
-
-export const useContextOrderPayments = () => {
-  const value = React.useContext(OrderContext);
-  if (!value) throw new Error('Api fora de contexto.');
-  return pick(value, [
-    'acceptedByPlatform',
-    'acceptedOnOrder',
-    'acceptsCards',
-    'acceptedCardsOnOrder',
-    'defaultPaymentMethod',
-    'defaultPaymentMethodId',
-    'paymentMethod',
-    'setPaymentMethod',
-    'paymentMethodId',
-    'setPaymentMethodId',
-    'selectedCard',
-  ]);
 };

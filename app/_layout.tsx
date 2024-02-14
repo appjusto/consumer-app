@@ -1,6 +1,8 @@
 import { ApiProvider } from '@/api/ApiContext';
 import { AnalyticsProvider } from '@/api/analytics/context/AnalyticsContext';
-import { BusinessOrderProvider } from '@/api/orders/context/business-order-context';
+import { BusinessProvider } from '@/api/business/context/business-context';
+import { OrderProvider } from '@/api/orders/context/order-context';
+import { PaymentsProvider } from '@/api/orders/payment/context/payments-context';
 import { PlatformProvider } from '@/api/platform/context/platform-context';
 import { PreferencesProvider } from '@/api/preferences/context/PreferencesContext';
 import { AuthProvider } from '@/common/auth/AuthContext';
@@ -83,9 +85,13 @@ export default function RootLayout() {
                   <RoutesProvider>
                     <AnalyticsProvider>
                       <PreferencesProvider>
-                        <BusinessOrderProvider>
-                          <Slot />
-                        </BusinessOrderProvider>
+                        <BusinessProvider>
+                          <PaymentsProvider>
+                            <OrderProvider>
+                              <Slot />
+                            </OrderProvider>
+                          </PaymentsProvider>
+                        </BusinessProvider>
                       </PreferencesProvider>
                     </AnalyticsProvider>
                   </RoutesProvider>

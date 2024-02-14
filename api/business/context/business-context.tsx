@@ -1,4 +1,5 @@
 import { Category, Product, PublicBusiness, WithId } from '@appjusto/types';
+import { useGlobalSearchParams } from 'expo-router';
 import { memoize } from 'lodash';
 import React, { useMemo } from 'react';
 import { useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
@@ -18,7 +19,8 @@ interface Value {
   getProductCategory?: (produtId: string) => WithId<Category> | undefined;
 }
 
-export const BusinessProvider = ({ businessId, children }: Props) => {
+export const BusinessProvider = ({ children }: Props) => {
+  const { businessId } = useGlobalSearchParams<{ businessId: string }>();
   // state
   const business = useObserveBusiness(businessId);
   const { categoriesWithProducts, loaded, groupsWithComplements, getProductCategory } =
@@ -62,7 +64,7 @@ export const BusinessProvider = ({ businessId, children }: Props) => {
 
 export const useContextBusiness = () => {
   const value = React.useContext(BusinessContext);
-  if (!value) throw new Error('Api fora de contexto.');
+  if (!value) return null;
   return value.business;
 };
 

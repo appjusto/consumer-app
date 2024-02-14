@@ -1,11 +1,32 @@
 import { useContextBusiness } from '@/api/business/context/business-context';
 import { useCards } from '@/api/consumer/cards/useCards';
+import { OrderProvider } from '@/api/orders/context/order-context';
 import { useContextPlatformParams } from '@/api/platform/context/platform-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { Card, PayableWith, VRCard, WithId } from '@appjusto/types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export const useOrderPayments = () => {
+const PaymentsContext = React.createContext<Value>({});
+
+interface Props {
+  children: React.ReactNode;
+}
+
+interface Value {
+  acceptedByPlatform?: PayableWith[];
+  acceptedOnOrder?: PayableWith[];
+  acceptsCards?: boolean;
+  acceptedCardsOnOrder?: WithId<Card>[];
+  selectedCard?: WithId<Card>;
+  defaultPaymentMethod?: PayableWith | null;
+  defaultPaymentMethodId?: string | null;
+  paymentMethod?: PayableWith | null;
+  setPaymentMethod?: (value: PayableWith) => void;
+  paymentMethodId?: string | null;
+  setPaymentMethodId?: (value: string) => void;
+}
+
+export const PaymentsProvider = ({ children }: Props) => {
   // context
   const platformParams = useContextPlatformParams();
   const profile = useContextProfile();
@@ -13,13 +34,13 @@ export const useOrderPayments = () => {
   const defaultPaymentMethod = profile ? profile.defaultPaymentMethod ?? null : undefined;
   const defaultPaymentMethodId = profile?.defaultPaymentMethodId;
   const business = useContextBusiness();
-  // state
+  // states
   const cards = useCards();
   const [acceptedOnOrder, setAcceptedOnOrder] = useState<PayableWith[]>();
   const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
-  // console.log('defaultPaymentMethodId', defaultPaymentMethodId, paymentMethodId);
+  const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
   // side effects
   useEffect(() => {
     if (defaultPaymentMethod === undefined) return;
@@ -69,16 +90,30 @@ export const useOrderPayments = () => {
     acceptedOnOrder?.includes('credit_card') ||
     acceptedOnOrder?.includes('vr-alimentação') ||
     acceptedOnOrder?.includes('vr-refeição');
-  return {
-    acceptedByPlatform,
-    acceptedOnOrder,
-    acceptsCards,
-    acceptedCardsOnOrder,
-    defaultPaymentMethod,
-    defaultPaymentMethodId,
-    paymentMethod,
-    setPaymentMethod,
-    paymentMethodId,
-    setPaymentMethodId,
-  };
+  // result
+  return (
+    <PaymentsContext.Provider
+      value={{
+        acceptedByPlatform,
+        acceptedOnOrder,
+        acceptsCards,
+        acceptedCardsOnOrder,
+        selectedCard,
+        defaultPaymentMethod,
+        defaultPaymentMethodId,
+        paymentMethod,
+        setPaymentMethod,
+        paymentMethodId,
+        setPaymentMethodId,
+      }}
+    >
+      <OrderProvider>{children}</OrderProvider>
+    </PaymentsContext.Provider>
+  );
+};
+
+export const useContextPayments = () => {
+  const value = React.useContext(PaymentsContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value;
 };

@@ -1,12 +1,13 @@
 import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
 import { useEffect, useState } from 'react';
-import { useContextOrderPayments, useContextOrderQuote } from '../context/order-context';
+import { useContextOrder } from '../context/order-context';
 import { PlaceOrderOptions } from '../types';
+import { useContextPayments } from './context/payments-context';
 
 export const usePlaceOrderOptions = () => {
   // context
-  const quote = useContextOrderQuote();
-  const { paymentMethod, selectedCard } = useContextOrderPayments();
+  const quote = useContextOrder();
+  const { paymentMethod, selectedCard } = useContextPayments();
   // state
   const [payment, setPayment] = useState<PlaceOrderPayloadPayment>();
   const [options, setOptions] = useState<PlaceOrderOptions>();

@@ -3,7 +3,7 @@ import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { issueTypeForOrder } from '@/api/incidents/issueTypeForOrder';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
@@ -14,19 +14,17 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Issue } from '@appjusto/types';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Linking, Pressable, View } from 'react-native';
 
 export default function IncidentScreen() {
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
   // context
   const api = useContextApi();
   const showToast = useShowToast();
+  const order = useContextOrder();
+  const orderId = order?.id;
   // state
-  const order = useObserveOrder(orderId);
   const issueType = issueTypeForOrder(order);
   const phone = useObserveBusiness(order?.business?.id)?.phone;
   const [loading, setLoading] = useState(false);

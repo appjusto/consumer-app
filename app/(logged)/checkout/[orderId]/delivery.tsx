@@ -11,18 +11,15 @@ import { useUpdateOrderDestination } from '@/common/screens/orders/checkout/plac
 import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
   const quote = useContextOrder();
   // const { loading } = useContextOrderFares();
   // tracking
-  useTrackScreenView('Checkout: entrega', { businessId, orderId: quote?.id });
+  useTrackScreenView('Checkout: entrega', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
   useUpdateOrderDestination(quote?.id);
   useBackWhenOrderExpires();
@@ -47,8 +44,8 @@ export default function OrderCheckoutDeliveryScreen() {
         disabled={!quote.fare}
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/payment',
-            params: { businessId },
+            pathname: '/(logged)/checkout/[orderId]/payment',
+            params: { orderId: quote.id },
           })
         }
       />

@@ -1,7 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -18,7 +18,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { OrderReview, ReviewType } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { isEmpty } from 'lodash';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -27,23 +27,22 @@ export default function OrderDeliveredScreen() {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
+  const order = useContextOrder();
+  const orderId = order?.id;
   // state
-  const order = useObserveOrder(orderId);
   const [consumerReview, setConsumerReview] = useState<ReviewType>();
   const [businessReview, setBusinessReview] = useState<ReviewType>();
   const [platformReview, setPlatformReview] = useState<ReviewType>();
   const [nps, setNPS] = useState<number>();
   const [loading, setLoading] = useState(false);
   // tracking
-  useTrackScreenView('Pedido entregue');
+  useTrackScreenView('Pedido entregue', { orderId });
   // handlers
   // update review
   const setReviewHandler = () => {
     // TODO: tags
     if (!order) return;
+    if (!orderId) return;
     let review: Partial<OrderReview> = { npsVersion: '10' };
     if (consumerReview) {
       review = { ...review, consumerReview: { id: order.consumer.id, rating: consumerReview } };
@@ -79,6 +78,8 @@ export default function OrderDeliveredScreen() {
         });
     }
   };
+  const supportHandler = () => () => openWhatsAppSupportURL('Pedido entregue');
+  const complaintHandler = () => router.replace('/complaint/');
   // UI
   if (!order) return <Loading title="Pedido entregue!" />;
   return (
@@ -122,7 +123,7 @@ export default function OrderDeliveredScreen() {
             <DefaultText style={{ marginTop: paddings.xs }}>
               Fale com um de nossos atendentes ou realize uma denúncia
             </DefaultText>
-            <Pressable onPress={() => openWhatsAppSupportURL('Pedido entregue')}>
+            <Pressable onPress={supportHandler}>
               <DefaultCard
                 style={{ marginTop: paddings.lg }}
                 icon={<DefaultCardIcon iconName="chat" />}
@@ -130,7 +131,7 @@ export default function OrderDeliveredScreen() {
                 subtitle="Fale com a gente através do nosso WhatsApp"
               />
             </Pressable>
-            <Pressable onPress={() => router.replace('/complaint/')}>
+            <Pressable onPress={complaintHandler}>
               <DefaultCard
                 style={{ marginTop: paddings.sm }}
                 icon={<DefaultCardIcon iconName="alert" variant="warning" />}

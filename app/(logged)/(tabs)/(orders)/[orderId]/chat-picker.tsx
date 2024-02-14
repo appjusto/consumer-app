@@ -50,21 +50,21 @@ export const ChatCard = ({ title, iconName, hasUnreadMessages, style, ...props }
 export default function ChatPickerScreen() {
   // params
   const params = useLocalSearchParams<{
-    id: string;
+    orderId: string;
     courierId: string;
     businessId: string;
     hasUnreadMessagesFromCourier: string;
     hasUnreadMessagesFromBusiness: string;
   }>();
-  const { id: orderId, courierId, businessId } = params;
+  const { orderId, courierId, businessId } = params;
   const hasUnreadMessagesFromCourier = params.hasUnreadMessagesFromCourier === 'true';
   const hasUnreadMessagesFromBusiness = params.hasUnreadMessagesFromBusiness === 'true';
-  useTrackScreenView('Escolher Chat');
+  useTrackScreenView('Escolher Chat', { orderId });
   // handlers
   const openChat = (counterpartId: string) =>
     router.replace({
-      pathname: '/(logged)/(tabs)/(orders)/[id]/chat/[counterpart]',
-      params: { id: orderId, counterpart: counterpartId },
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat/[counterpart]',
+      params: { orderId, counterpart: counterpartId },
     });
   // UI
   return (

@@ -12,21 +12,22 @@ import { OrderPaymentMethod } from '@/common/screens/orders/checkout/payment/ord
 import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
   const quote = useContextOrder();
+  const orderId = quote?.id;
   const { paymentMethod, paymentMethodId } = useContextPayments();
   // tracking
-  useTrackScreenView('Checkout: pagamento', { businessId, orderId: quote?.id });
+  useTrackScreenView('Checkout: pagamento', {
+    businessId: quote?.business?.id,
+    orderId,
+  });
   // side effects
   useBackWhenOrderExpires();
-  console.log('r/[id]/checkout/payment', typeof quote, quote?.id);
+  console.log('r/[id]/checkout/payment', typeof quote, orderId);
   // UI
   if (!quote) return null;
   const disabled =
@@ -45,8 +46,8 @@ export default function OrderCheckoutDeliveryScreen() {
           <OrderPaymentMethod
             onAddCard={() => {
               router.navigate({
-                pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/cards/add',
-                params: { businessId },
+                pathname: '/(logged)/checkout/[orderId]/cards/add',
+                params: { orderId },
               });
             }}
           />
@@ -59,8 +60,8 @@ export default function OrderCheckoutDeliveryScreen() {
         disabled={disabled}
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/confirmation',
-            params: { businessId },
+            pathname: '/(logged)/checkout/[orderId]/confirmation',
+            params: { orderId },
           })
         }
       />

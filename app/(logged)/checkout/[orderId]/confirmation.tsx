@@ -17,14 +17,11 @@ import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBac
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { Stack, router, useNavigation } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
   const navigation = useNavigation();
   const api = useContextApi();
@@ -34,7 +31,10 @@ export default function OrderCheckoutDeliveryScreen() {
   // state
   const [loading, setLoading] = useState(false);
   // tracking
-  useTrackScreenView('Checkout: pagamento', { businessId, orderId: quote?.id });
+  useTrackScreenView('Checkout: pagamento', {
+    businessId: quote?.business?.id,
+    orderId: quote?.id,
+  });
   // side effects
   useBackWhenOrderExpires(!loading);
   const options = usePlaceOrderOptions();

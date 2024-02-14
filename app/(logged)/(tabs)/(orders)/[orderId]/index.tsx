@@ -1,16 +1,15 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { getOrderStage } from '@/api/orders/status';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { Loading } from '@/common/components/views/Loading';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useEffect } from 'react';
 
 export default function OrderScreen() {
-  // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
+  // context
+  const order = useContextOrder();
+  const orderId = order?.id;
   // state
-  const order = useObserveOrder(orderId);
   const status = order?.status;
   const type = order?.type;
   // tracking
@@ -19,21 +18,22 @@ export default function OrderScreen() {
   useEffect(() => {
     if (!status) return;
     if (!type) return;
+    if (!orderId) return;
     const stage = getOrderStage(status, type);
     if (stage === 'confirming') {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/confirming',
-        params: { id: orderId },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/confirming',
+        params: { orderId },
       });
     } else if (stage === 'ongoing') {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/ongoing',
-        params: { id: orderId },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
+        params: { orderId },
       });
     } else if (stage === 'completed') {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
-        params: { id: orderId },
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+        params: { orderId },
       });
     } else {
       router.back();

@@ -3,7 +3,7 @@ import {
   useContextBusiness,
   useContextBusinessProducts,
 } from '@/api/business/context/business-context';
-import { useContextOrderQuote } from '@/api/orders/context/order-context';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
@@ -22,7 +22,7 @@ export default function BusinessDetailScreen() {
   // context
   const business = useContextBusiness();
   const products = useContextBusinessProducts();
-  const quote = useContextOrderQuote();
+  const quote = useContextOrder();
   // tracking
   useTrackScreenView('Restaurante', { businessId });
   // UI

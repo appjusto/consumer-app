@@ -46,12 +46,12 @@ export default class OrdersApi {
   // observe orders
   observeOrders(options: ObserveOrdersOptions, resultHandler: (orders: WithId<Order>[]) => void) {
     console.log('observeOrders', options);
-    const { statuses, businessId, from, to, limit } = options;
+    const { statuses, businessId, type, from, to, limit } = options;
     let query = ordersRef()
       .where('consumer.id', '==', this.auth.getUserId())
       .orderBy('createdOn', 'desc');
     if (businessId) query = query.where('business.id', '==', businessId);
-    // else query = query.where('type', '==', 'p2p' as OrderType);
+    if (type) query = query.where('type', '==', type);
     if (statuses) query = query.where('status', 'in', statuses);
     if (from) query = query.where('createdOn', '>', fromDate(from));
     if (to) query = query.where('createdOn', '<', fromDate(to));

@@ -1,26 +1,28 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { AddCardScreenView } from '@/common/screens/orders/checkout/payment/cards/screen-add-card';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { View } from 'react-native';
 
 export default function CheckoutAddCardScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
+  const quote = useContextOrder();
   const { setPaymentMethod, setPaymentMethodId } = useContextPayments();
   // tracking
-  useTrackScreenView('Checkout: adicionar cartão');
+  useTrackScreenView('Checkout: adicionar cartão', {
+    businessId: quote?.business?.id,
+    orderId: quote?.id,
+  });
   // handlers
   const completeHandler = (cardId: string) => {
     setPaymentMethod!('credit_card');
     setPaymentMethodId!(cardId);
 
     router.navigate({
-      pathname: '/(logged)/(tabs)/(home)/r/[businessId]/checkout/payment',
-      params: { businessId },
+      pathname: '/(logged)/checkout/[orderId]/payment',
+      params: { orderId: quote?.id },
     });
   };
   // UI
