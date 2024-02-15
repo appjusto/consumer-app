@@ -32,8 +32,8 @@ export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
       <Pressable
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[id]/',
-            params: { id: business.id },
+            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
+            params: { businessId: business.id },
           })
         }
       >

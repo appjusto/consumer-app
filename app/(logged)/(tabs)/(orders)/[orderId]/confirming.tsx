@@ -22,12 +22,11 @@ export default function OrderConfirmingScreen() {
   // context
   const order = useContextOrder();
   const orderId = order?.id;
-  // state
-  const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
   const status = order?.status;
   const type = order?.type;
   const waitingAcceptance = status === 'confirmed';
-  console.log('waitingAcceptance', waitingAcceptance, status);
+  // state
+  const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
   // tracking
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects
@@ -35,6 +34,7 @@ export default function OrderConfirmingScreen() {
     if (!orderId) return;
     if (!status) return;
     if (!type) return;
+    // console.log('OrderConfirmingScreen', orderId, status, waitingAcceptance);
     const stage = getOrderStage(status, type);
     if (stage === 'ongoing') {
       router.replace({
@@ -59,7 +59,7 @@ export default function OrderConfirmingScreen() {
   // UI
   return (
     <View style={{ ...screens.centered }}>
-      <Stack.Screen options={{ title: 'Criando pedido', headerShown: false }} />
+      <Stack.Screen options={{ title: 'Criando pedido', headerShown: true }} />
       <View style={{ flex: 1 }} />
       <View style={{ flex: 1, borderWidth: 0 }}>
         <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} />

@@ -24,8 +24,8 @@ export default function OrderSupportScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   // params
-  const params = useLocalSearchParams<{ id: string }>();
-  const orderId = params.id;
+  const params = useLocalSearchParams<{ orderId: string }>();
+  const orderId = params.orderId;
   // state
   const order = useObserveOrder(orderId);
   const businessId = order?.business?.id;

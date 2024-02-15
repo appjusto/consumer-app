@@ -23,7 +23,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // side effects
   useUpdateOrderDestination(quote?.id);
   useBackWhenOrderExpires();
-  console.log('r/[id]/checkout/delivery', typeof quote, quote?.id);
+  console.log('r/[businessId]/checkout/delivery', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   return (

@@ -30,7 +30,7 @@ export default function CheckoutChangeDestinationScreen() {
   const updateOrderHandler = () => {
     if (!selectedPlace) return;
     if (!orderId) return;
-    console.log('r/[id]/checkout/places updateOrderHandler');
+    console.log('r/[businessId]/checkout/places updateOrderHandler');
     setLoading(true);
     api
       .consumers()

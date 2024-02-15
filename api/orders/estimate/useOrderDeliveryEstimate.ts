@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 export const useOrderDeliveryEstimate = (order: Order) => {
   const { fulfillment, scheduledTo } = order;
   const delivery = fulfillment === 'delivery';
-  const preparing = order.timestamps.preparing;
+  const preparing = order.timestamps?.preparing;
   const destinationEstimate = order.arrivals?.destination?.estimate;
   // state
   const business = useObserveBusiness(order.business?.id);

@@ -4,6 +4,7 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
+import { getOrderStage } from '@/api/orders/status';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -18,7 +19,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, router, useNavigation } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -27,6 +28,9 @@ export default function OrderCheckoutDeliveryScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrder();
+  const orderId = quote?.id;
+  const status = quote?.status;
+  const type = quote?.type;
   const { paymentMethod, selectedCard } = useContextPayments();
   // state
   const [loading, setLoading] = useState(false);
@@ -36,6 +40,13 @@ export default function OrderCheckoutDeliveryScreen() {
     orderId: quote?.id,
   });
   // side effects
+  useEffect(() => {
+    if (!status) return;
+    if (!type) return;
+    const stage = getOrderStage(status, type);
+    if (stage === 'placing') {
+    }
+  }, [navigation, orderId, status, type]);
   useBackWhenOrderExpires(!loading);
   const options = usePlaceOrderOptions();
   // handlers
@@ -48,11 +59,12 @@ export default function OrderCheckoutDeliveryScreen() {
       .placeOrder(options)
       .then(() => {
         trackEvent('Pedido feito');
+        console.log(options);
         router.navigate('/(logged)/(tabs)/(home)/');
         // @ts-ignore
         navigation.navigate('(orders)', {
           screen: '[orderId]/confirming',
-          params: { id: options.orderId },
+          params: { orderId: options.orderId },
           initial: false,
         });
       })

@@ -56,8 +56,8 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
               title="Avaliar corrida"
               onPress={() =>
                 router.navigate({
-                  pathname: '/(logged)/(tabs)/(orders)/[id]/delivered',
-                  params: { id: order.id },
+                  pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+                  params: { orderId: order.id },
                 })
               }
             />

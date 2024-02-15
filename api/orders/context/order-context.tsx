@@ -1,6 +1,6 @@
 import { Fare, Order, WithId } from '@appjusto/types';
-import { useGlobalSearchParams } from 'expo-router';
-import React from 'react';
+import { useGlobalSearchParams, usePathname } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
 import { useObserveBusinessQuote } from '../useObserveBusinessQuote';
@@ -20,16 +20,29 @@ interface Value {
 }
 
 export const OrderProvider = ({ children }: Props) => {
-  const { orderId, businessId } = useGlobalSearchParams<{ orderId: string; businessId: string }>();
+  // params
+  const params = useGlobalSearchParams<{ orderId: string; businessId: string }>();
+  const { orderId, businessId } = params;
+  const pathname = usePathname();
+  const businessContext = Boolean(businessId) && !orderId;
+  const packageContext = pathname.startsWith('/encomendas');
   // context
   const { paymentMethod } = useContextPayments();
   // state
+  const [order, setOrder] = useState<WithId<Order> | null>();
   const orderWithId = useObserveOrder(orderId);
-  const businessQuote = useObserveBusinessQuote(businessId, Boolean(businessId) && !orderId);
-  const packageQuote = useObservePackageQuote(!orderId && !businessId);
-  const order = orderWithId ?? businessQuote ?? packageQuote;
+  const businessQuote = useObserveBusinessQuote(businessId, businessContext);
+  const packageQuote = useObservePackageQuote(packageContext);
   const { fares, loading } = useOrderFares(order, paymentMethod);
-  console.log('OrderProvider', orderId, orderWithId);
+  // side effects
+  useEffect(() => {
+    if (orderId) setOrder(orderWithId);
+    else if (businessId) setOrder(businessQuote);
+    else if (packageContext) setOrder(packageQuote);
+    else setOrder(null);
+  }, [orderId, orderWithId, businessId, businessQuote, packageContext, packageQuote]);
+  // logs
+  // console.log('OrderProvider', pathname, params, useSegments());
   // result
   return (
     <OrderContext.Provider

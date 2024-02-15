@@ -16,12 +16,10 @@ interface Props extends ViewProps {
 export const DeliveryAddress = ({ order, style, ...props }: Props) => {
   // handlers
   const changeHandler = () => {
-    if (order.business?.id) {
-      router.navigate({
-        pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/places/',
-        params: { id: order.business.id },
-      });
-    }
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/places',
+      params: { orderId: order.id },
+    });
   };
   // UI
   const place = order.fulfillment === 'delivery' ? order.destination : order.origin;

@@ -27,7 +27,7 @@ export default function OrderCheckoutDeliveryScreen() {
   });
   // side effects
   useBackWhenOrderExpires();
-  console.log('r/[id]/checkout/payment', typeof quote, orderId);
+  console.log('r/[businessId]/checkout/payment', typeof quote, orderId);
   // UI
   if (!quote) return null;
   const disabled =

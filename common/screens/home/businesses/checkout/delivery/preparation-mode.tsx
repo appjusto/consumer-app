@@ -34,10 +34,9 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
       });
   };
   const scheduleOrder = () => {
-    if (!business) return;
     router.navigate({
-      pathname: '/(logged)/(tabs)/(home)/r/[id]/checkout/schedule',
-      params: { id: business.id },
+      pathname: '/(logged)/checkout/[orderId]/schedule',
+      params: { orderId: order.id },
     });
   };
   // UI

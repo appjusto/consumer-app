@@ -12,6 +12,7 @@ import { router } from 'expo-router';
 import { Pressable } from 'react-native';
 
 export default function OrdersIndex() {
+  // tracking
   useTrackScreenView('Pedidos');
   // state
   const orders = useObserveOngoingOrders() ?? [];
@@ -20,7 +21,13 @@ export default function OrdersIndex() {
     const { status, type } = order;
     const stage = getOrderStage(status, type);
     console.log(order.id, stage);
-    if (stage === 'ongoing') {
+    if (stage === 'placing') {
+      router.navigate({
+        pathname: '/(logged)/(tabs)/(orders)/[orderId]/confirming',
+        params: { orderId: order.id },
+      });
+    } else if (stage === 'ongoing') {
+      console.log('/(logged)/(tabs)/(orders)/[orderId]/ongoing', order.id);
       router.navigate({
         pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
         params: { orderId: order.id },

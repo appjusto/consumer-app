@@ -31,8 +31,8 @@ export const BusinessList = ({ style, ...props }: Props<BusinessAlgolia>) => {
           <Pressable
             onPress={() =>
               router.navigate({
-                pathname: '/(logged)/(tabs)/(home)/r/[id]/',
-                params: { id: item.objectID },
+                pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
+                params: { businessId: item.objectID },
               })
             }
           >

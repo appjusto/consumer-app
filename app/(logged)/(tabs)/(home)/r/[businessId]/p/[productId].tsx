@@ -32,7 +32,7 @@ const WIDTH = Dimensions.get('screen').width;
 
 export default function ProductDetailScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string; productId: string; itemId: string }>();
+  const params = useLocalSearchParams<{ businessId: string; productId: string; itemId: string }>();
   const businessId = params.businessId;
   const productId = params.productId;
   const itemId = params.itemId;

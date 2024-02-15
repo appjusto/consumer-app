@@ -14,12 +14,13 @@ export const useObservePackageQuote = (enabled = true) => {
   const [orderQuote, setOrderQuote] = useState<WithId<Order> | null>();
   // side effects
   useEffect(() => {
+    setOrders(undefined);
     if (!enabled) return;
     return api.orders().observeOrders(options, setOrders);
   }, [api, options, enabled]);
   useEffect(() => {
-    if (!orders) return;
-    if (orders.length === 0) setOrderQuote(null);
+    if (!orders) setOrderQuote(undefined);
+    else if (orders.length === 0) setOrderQuote(null);
     else setOrderQuote(orders[0]);
   }, [orders]);
   // result

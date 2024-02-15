@@ -19,14 +19,21 @@ export const useOrderFares = (
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
   // side effects
-  // console.log('order', orderId);
+  // console.log('useOrderFares', orderId, order?.status);
   useEffect(() => {
     if (!orderId) return;
     if (!created) return;
     if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
     // setFares(undefined);
-    console.log('useOrderFares', orderId, created, distance, fulfillment, defaultPaymentMethod);
+    // console.log(
+    //   'useOrderFares -> update',
+    //   orderId,
+    //   created,
+    //   distance,
+    //   fulfillment,
+    //   defaultPaymentMethod
+    // );
     setLoading(true);
     api
       .orders()
@@ -46,7 +53,7 @@ export const useOrderFares = (
       .finally(() => {
         setLoading(false);
       });
-  }, [api, orderId, created, distance, showToast, fulfillment, defaultPaymentMethod]);
+  }, [api, showToast, orderId, created, distance, fulfillment, defaultPaymentMethod]);
   // result
   return { fares, loading };
 };

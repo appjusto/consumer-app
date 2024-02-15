@@ -19,14 +19,14 @@ export const openChat = (
   }
   if (counterpartId) {
     router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[id]/chat/[counterpart]',
-      params: { id: order.id, counterpart: counterpartId },
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat/[counterpart]',
+      params: { orderId: order.id, counterpart: counterpartId },
     });
   } else {
     router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[id]/chat-picker',
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat-picker',
       params: {
-        id: order.id,
+        orderId: order.id,
         courierId: order.courier?.id ?? '',
         businessId: order.business?.id ?? '',
         hasUnreadMessagesFromConsumer: `${hasUnreadMessagesFromCourier}`,

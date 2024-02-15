@@ -25,7 +25,7 @@ export const OngoingOrderScreenView = ({ style, ...props }: Props) => {
   const status = order?.status;
   const type = order?.type;
   // tracking
-  useTrackScreenView('Pedido em andamento');
+  useTrackScreenView('Pedido em andamento', { orderId, status });
   // side effects
   useEffect(() => {
     if (!status) return;
@@ -38,7 +38,7 @@ export const OngoingOrderScreenView = ({ style, ...props }: Props) => {
         params: { orderId },
       });
     } else if (stage !== 'ongoing') {
-      router.back();
+      // router.back();
     }
   }, [orderId, status, type]);
   // UI

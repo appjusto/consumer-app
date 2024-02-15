@@ -62,8 +62,8 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
         variant="destructive"
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/(orders)/[id]/incident',
-            params: { id: order.id },
+            pathname: '/(logged)/(tabs)/(orders)/[orderId]/incident',
+            params: { orderId: order.id },
           })
         }
       />

@@ -11,7 +11,7 @@ export const getOrderDeliveryEstimate = (order: Order, business?: Business) => {
     return destinationEstimateAt;
   }
   // calculate according averageCookingTime when doesn't
-  const preparingAt = order.timestamps.preparing;
+  const preparingAt = order.timestamps?.preparing;
   const businessAverageCookingTime = business?.averageCookingTime;
   if (businessAverageCookingTime && preparingAt) {
     return fromDate(Dayjs(preparingAt.toDate()).add(businessAverageCookingTime, 'second').toDate());

@@ -27,8 +27,8 @@ export const OrderList = ({ orders, title, emptyText, style, children, ...props 
               key={order.id}
               onPress={() =>
                 router.navigate({
-                  pathname: '/(logged)/(tabs)/(orders)/[id]/detail',
-                  params: { id: order.id },
+                  pathname: '/(logged)/(tabs)/(orders)/[orderId]/detail',
+                  params: { orderId: order.id },
                 })
               }
             >

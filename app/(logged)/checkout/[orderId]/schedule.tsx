@@ -89,7 +89,7 @@ export default function OrderCheckoutScheduleScreen() {
       });
   };
   // UI
-  if (!quote || !daySelectorData) return <Loading />;
+  if (!quote || !daySelectorData) return <Loading title="Agendamento" />;
   const scheduledTo = quote.scheduledTo ? quote.scheduledTo.toDate() : null;
   return (
     <DefaultScrollView style={{ ...screens.default }}>

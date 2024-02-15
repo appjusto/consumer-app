@@ -48,8 +48,8 @@ export const BusinessCartItem = ({ item, style, ...props }: Props) => {
         <Pressable
           onPress={() =>
             router.navigate({
-              pathname: '/(logged)/(tabs)/(home)/r/[id]/p/[productId]',
-              params: { id: businessId, productId: item.product.id, itemId: item.id },
+              pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
+              params: { businessId, productId: item.product.id, itemId: item.id },
             })
           }
         >
