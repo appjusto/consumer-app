@@ -1,26 +1,35 @@
 import { useAlgoliaSearch } from '@/api/externals/algolia/useAlgoliaSearch';
+import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { useUniqState } from '@/common/react/useUniqState';
 import { BusinessAlgolia, LatLng } from '@appjusto/types';
-import { FlashList, FlashListProps } from '@shopify/flash-list';
+import { FlashList } from '@shopify/flash-list';
 import { router } from 'expo-router';
-import { Pressable, View } from 'react-native';
+import { useEffect } from 'react';
+import { Pressable, View, ViewProps } from 'react-native';
 import { BusinessListItem } from './business-list-item';
 
-interface Props<P> extends FlashListProps<P> {}
+interface Props extends ViewProps {}
 
-export const BusinessList = ({ style, ...props }: Props<BusinessAlgolia>) => {
+const DEFAULT_LOCATION: LatLng = { latitude: -23.541516, longitude: -46.655214 };
+
+export const BusinessList = ({ style, ...props }: Props) => {
+  // context
+  const currentPlace = useContextCurrentPlace();
   // state
   const filters = useUniqState([]);
-  const location = useUniqState<LatLng>({ latitude: -23.541516, longitude: -46.655214 });
-  const { results } = useAlgoliaSearch<BusinessAlgolia>(
+  const location = useUniqState<LatLng>(currentPlace?.location ?? DEFAULT_LOCATION);
+  const { results, isLoading } = useAlgoliaSearch<BusinessAlgolia>(
     true,
     'restaurant',
     'distance',
     filters,
     location
   );
+  // side effects
+  useEffect(() => {}, []);
   // console.log(results);
   // UI
+  if (isLoading) return null;
   return (
     <FlashList
       {...props}

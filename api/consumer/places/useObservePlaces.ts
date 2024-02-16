@@ -3,7 +3,7 @@ import { Place, WithId } from '@appjusto/types';
 import React from 'react';
 import { useContextApi } from '../../ApiContext';
 
-export const useObservePlaces = () => {
+export const useObservePlaces = (limit = 0) => {
   // context
   const api = useContextApi();
   const isAnonymous = useContextIsUserAnonymous();
@@ -16,8 +16,8 @@ export const useObservePlaces = () => {
     if (isAnonymous === undefined) return;
     if (isAnonymous === true) setPlaces([]);
     if (!profileLoaded) return;
-    return api.consumers().observePlaces(setPlaces);
-  }, [api, isAnonymous, profileLoaded]);
+    return api.consumers().observePlaces(setPlaces, limit);
+  }, [api, limit, isAnonymous, profileLoaded]);
   // result
   return places;
 };

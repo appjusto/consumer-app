@@ -30,6 +30,7 @@ export const useAlgoliaSearch = <T extends object>(
       setLastResponse(undefined);
       setLoading(true);
       try {
+        console.log('searching...');
         setLastResponse(
           await api
             .algolia()
@@ -47,9 +48,11 @@ export const useAlgoliaSearch = <T extends object>(
   // clearing cache
   useEffect(() => {
     api.algolia().clearCache();
-    search('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api]);
+  useEffect(() => {
+    search(query);
+  }, [aroundLatLng, query, search]);
   // debounced search
   useDebounce(query, search, query.length > 3);
   // update responseByPage
@@ -91,5 +94,5 @@ export const useAlgoliaSearch = <T extends object>(
     return search(query);
   };
 
-  return { results, isLoading: loading, refetch, fetchNextPage };
+  return { results, isLoading: loading, search, refetch, fetchNextPage };
 };

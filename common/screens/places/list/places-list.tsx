@@ -45,6 +45,7 @@ export const PlacesList = ({ selectedId, onSelect, style, ...props }: Props) => 
           key={place.id}
           onPress={() => {
             if (onSelect) onSelect(place);
+            else setOptionsPlace(place);
           }}
           onSelectOptions={() => setOptionsPlace(place)}
         />

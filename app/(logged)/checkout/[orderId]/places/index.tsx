@@ -9,14 +9,11 @@ import { PlacesList } from '@/common/screens/places/list/places-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place, WithId } from '@appjusto/types';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function CheckoutChangeDestinationScreen() {
-  // params
-  const params = useLocalSearchParams<{ businessId: string }>();
-  const businessId = params.businessId;
   // context
   const api = useContextApi();
   const quote = useContextOrder();
@@ -25,12 +22,11 @@ export default function CheckoutChangeDestinationScreen() {
   const [loading, setLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<WithId<Place>>();
   // tracking
-  useTrackScreenView('Checkout: alterar destino');
+  useTrackScreenView('Checkout: alterar destino', { orderId });
   // handlers
   const updateOrderHandler = () => {
     if (!selectedPlace) return;
     if (!orderId) return;
-    console.log('r/[businessId]/checkout/places updateOrderHandler');
     setLoading(true);
     api
       .consumers()
@@ -45,6 +41,12 @@ export default function CheckoutChangeDestinationScreen() {
         // TODO: show toast
       });
   };
+  const newPlaceHandler = () =>
+    router.replace({
+      pathname: `/checkout/${orderId}/places/new`,
+    });
+  // logs
+  // console.log('checkout/[orderId]/places', orderId);
   // UI
   if (!orderId) return null;
   return (
@@ -64,16 +66,7 @@ export default function CheckoutChangeDestinationScreen() {
           style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}
         >
           <View style={{ flex: 1 }}>
-            <DefaultButton
-              title="Novo endereço"
-              variant="outline"
-              onPress={() =>
-                router.replace({
-                  pathname: '/(logged)/places/new',
-                  params: { returnScreen: `/r/${businessId}/checkout/delivery`, orderId },
-                })
-              }
-            />
+            <DefaultButton title="Novo endereço" variant="outline" onPress={newPlaceHandler} />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
             <DefaultButton

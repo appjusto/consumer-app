@@ -1,4 +1,4 @@
-import { useFetchLastPlace } from '@/api/consumer/places/useFetchLastPlace';
+import { useObserveLastPlace } from '@/api/consumer/places/useObserveLastPlace';
 import { useTemporaryPlace } from '@/api/consumer/places/useTemporaryPlace';
 import { Place, WithId } from '@appjusto/types';
 import React from 'react';
@@ -16,7 +16,7 @@ const PreferencesContext = React.createContext<Value | undefined>(undefined);
 
 export const PreferencesProvider = (props: Props) => {
   // state
-  const lastPlace = useFetchLastPlace();
+  const lastPlace = useObserveLastPlace();
   const { temporaryPlace, setTemporaryPlace } = useTemporaryPlace();
   const currentPlace = lastPlace ?? temporaryPlace;
   // result

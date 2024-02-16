@@ -7,6 +7,7 @@ import { BannerList } from '@/common/screens/home/banners/banner-list';
 import { BusinessList } from '@/common/screens/home/businesses/list/business-list';
 import { CuisineList } from '@/common/screens/home/cuisine/cuisine-list';
 import { HomeOngoingOrders } from '@/common/screens/home/ongoing-orders/home-ongoing-orders';
+import { useCreatePlace } from '@/common/screens/orders/checkout/places/useCreatePlace';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -19,6 +20,8 @@ export default function HomeScreen() {
   const orderId = params.orderId;
   // context
   const currentPlace = useContextCurrentPlace();
+  // side effects
+  useCreatePlace();
   // tracking
   useTrackScreenView('Início');
   // side effects
@@ -48,7 +51,7 @@ export default function HomeScreen() {
           <CuisineList style={{ marginVertical: paddings.xl, marginLeft: paddings.lg }} />
           <BannerList style={{ marginBottom: paddings.lg, marginLeft: paddings.lg }} />
           <HomeOngoingOrders />
-          <BusinessList renderItem={undefined} data={undefined} />
+          <BusinessList />
         </DefaultScrollView>
       </DefaultView>
     </View>

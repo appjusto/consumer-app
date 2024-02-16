@@ -31,19 +31,22 @@ export default class ConsumersApi {
     this._iugu = new IuguApi(extra.iugu.accountId, extra.env !== 'live');
   }
   // places
-  async fetchPlaces() {
-    try {
-      const query = placesRef()
-        .where('accountId', '==', this.auth.getUserId())
-        .orderBy('updatedAt', 'desc');
-      const snapshot = await query.get();
-      if (snapshot.empty) return [];
-      return documentsAs<Place>(snapshot.docs);
-    } catch (error: unknown) {
-      console.error(error);
-      if (error instanceof Error) crashlytics().recordError(error);
-      throw new Error('Não foi possível obter seus endereços. Tente novamente mais tarde.');
-    }
+  observePlaces(resultHandler: (orders: WithId<Place>[]) => void, limit = 0) {
+    console.log('observePlaces', limit);
+    let query = placesRef()
+      .where('accountId', '==', this.auth.getUserId())
+      .orderBy('updatedAt', 'desc');
+    if (limit) query = query.limit(limit);
+    return query.onSnapshot(
+      async (snapshot) => {
+        resultHandler(snapshot.empty ? [] : documentsAs<Place>(snapshot.docs));
+      },
+      (error) => {
+        console.error(error);
+        if (error instanceof Error) crashlytics().recordError(error);
+        resultHandler([]);
+      }
+    );
   }
   async fetchPlace(placeId: string) {
     try {
@@ -56,20 +59,6 @@ export default class ConsumersApi {
       if (error instanceof Error) crashlytics().recordError(error);
       throw new Error('Não foi possível obter endereço. Tente novamente mais tarde.');
     }
-  }
-  observePlaces(resultHandler: (orders: WithId<Place>[]) => void) {
-    const query = placesRef()
-      .where('accountId', '==', this.auth.getUserId())
-      .orderBy('updatedAt', 'desc');
-    return query.onSnapshot(
-      async (snapshot) => {
-        resultHandler(snapshot.empty ? [] : documentsAs<Place>(snapshot.docs));
-      },
-      (error) => {
-        console.error(error);
-        if (error instanceof Error) crashlytics().recordError(error);
-      }
-    );
   }
   async createPlace(place: Partial<Place>) {
     const ref = placesRef().doc();

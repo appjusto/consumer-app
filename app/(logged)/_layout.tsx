@@ -26,7 +26,7 @@ export default function LoggedLayout() {
   // UI
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
     </Stack>
   );
 }

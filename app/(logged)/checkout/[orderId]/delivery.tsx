@@ -17,13 +17,21 @@ import { View } from 'react-native';
 export default function OrderCheckoutDeliveryScreen() {
   // context
   const quote = useContextOrder();
-  // const { loading } = useContextOrderFares();
   // tracking
   useTrackScreenView('Checkout: entrega', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
-  useUpdateOrderDestination(quote?.id);
+  useUpdateOrderDestination();
   useBackWhenOrderExpires();
-  console.log('r/[businessId]/checkout/delivery', typeof quote, quote?.id);
+  // handlers
+  const checkoutHandler = () => {
+    if (!quote) return;
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/payment',
+      params: { orderId: quote.id },
+    });
+  };
+  // logs
+  // console.log('checkout/[orderId]/delivery', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   return (
@@ -42,12 +50,7 @@ export default function OrderCheckoutDeliveryScreen() {
         order={quote}
         variant="checkout"
         disabled={!quote.fare}
-        onPress={() =>
-          router.navigate({
-            pathname: '/(logged)/checkout/[orderId]/payment',
-            params: { orderId: quote.id },
-          })
-        }
+        onPress={checkoutHandler}
       />
     </View>
   );
