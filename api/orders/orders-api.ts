@@ -124,6 +124,24 @@ export default class OrdersApi {
     return ref.id;
   }
 
+  async createP2POrder(origin: Place) {
+    const payload: Partial<Order> = {
+      type: 'p2p',
+      status: 'quote',
+      fulfillment: 'delivery',
+      dispatchingStatus: 'idle',
+      dispatchingState: null,
+      consumer: {
+        id: this.auth.getUserId()!,
+      },
+      origin,
+      createdOn: serverTimestamp(),
+    };
+    const ref = ordersRef().doc();
+    await ref.set(payload);
+    return ref.id;
+  }
+
   async updateOrder(orderId: string, update: Partial<Order>) {
     console.log('updating order', orderId, JSON.stringify(update));
     // TODO: track

@@ -23,7 +23,7 @@ export const useCreatePlace = () => {
   const focused = useIsFocused();
   // params
   const params = useGlobalSearchParams<Params>();
-  console.log('useCreatePlace', focused, params);
+  // console.log('useCreatePlace', focused, params);
   const {
     main,
     secondary,

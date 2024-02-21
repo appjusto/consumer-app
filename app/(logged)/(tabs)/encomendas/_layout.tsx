@@ -12,6 +12,10 @@ export default function OrdersLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Encomendas' }} />
+      <Stack.Screen
+        name="places/index"
+        options={{ title: 'Local de coleta', presentation: 'modal' }}
+      />
     </Stack>
   );
 }

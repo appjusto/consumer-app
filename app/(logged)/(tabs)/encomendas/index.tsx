@@ -8,8 +8,9 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
+import { router } from 'expo-router';
 import { MapPin, XCircle } from 'lucide-react-native';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 const restrictions = [
   'Dinheiro, cheques e objetos de valor',
@@ -18,9 +19,9 @@ const restrictions = [
   'Materiais inflamáveis',
 ];
 
-export default function PackagesIndex() {
+export default function P2PIndex() {
+  // tracking
   useTrackScreenView('Encomendas');
-
   // UI
   return (
     <DefaultScrollView style={{ ...screens.default }}>
@@ -33,23 +34,25 @@ export default function PackagesIndex() {
           </DefaultText>
         </View>
         {/* origin */}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: paddings.lgg,
-            paddingHorizontal: paddings.lg,
-            paddingVertical: paddings.sm,
-            borderColor: colors.neutral200,
-            borderWidth: 1,
-            borderRadius: 4,
-          }}
-        >
-          <MapPin style={{ marginRight: paddings.sm }} size={16} color={colors.neutral700} />
-          <DefaultText size="md" color="neutral700">
-            De onde você quer enviar?
-          </DefaultText>
-        </View>
+        <Pressable onPress={() => router.navigate('/encomendas/new')}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: paddings.lgg,
+              paddingHorizontal: paddings.lg,
+              paddingVertical: paddings.sm,
+              borderColor: colors.neutral200,
+              borderWidth: 1,
+              borderRadius: 4,
+            }}
+          >
+            <MapPin style={{ marginRight: paddings.sm }} size={16} color={colors.neutral700} />
+            <DefaultText size="md" color="neutral700">
+              De onde você quer enviar?
+            </DefaultText>
+          </View>
+        </Pressable>
         {/* restrictions */}
         <MessageBox style={{ marginTop: paddings.lg }}>
           As medidas do pacote devem respeitar as dimensões e pesos máximos: 36cm de altura, 44cm de
