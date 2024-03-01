@@ -1,9 +1,9 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextBusiness } from '@/api/business/context/business-context';
 import { getNextDateSlots } from '@/api/business/schedule/getNextDateSlots';
 import { fromDate } from '@/api/firebase/timestamp';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextOrder, useContextOrderBusiness } from '@/api/orders/context/order-context';
+import { getP2PNextDateSlots } from '@/api/orders/schedule/getP2PNextDateSlots';
 import { useContextGetServerTime } from '@/api/platform/context/platform-context';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -31,7 +31,7 @@ export default function OrderCheckoutScheduleScreen() {
   const businessId = params.businessId;
   // context
   const api = useContextApi();
-  const business = useContextBusiness();
+  const business = useContextOrderBusiness();
   const quote = useContextOrder();
   const getServerTime = useContextGetServerTime();
   // state
@@ -43,9 +43,11 @@ export default function OrderCheckoutScheduleScreen() {
   // tracking
   useTrackScreenView('Checkout: agendamento', { businessId, orderId: quote?.id });
   // side effects
+  // define slots
   useEffect(() => {
-    if (!business) return;
-    if (!nextDateSlots) setNextDateSlots(getNextDateSlots(business, getServerTime(), 60, 4));
+    if (nextDateSlots) return;
+    if (business) setNextDateSlots(getNextDateSlots(business, getServerTime(), 60, 4));
+    else if (business === null) setNextDateSlots(getP2PNextDateSlots(getServerTime(), 30));
   }, [business, getServerTime, nextDateSlots]);
   useEffect(() => {
     if (!nextDateSlots) return;

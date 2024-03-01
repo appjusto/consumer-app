@@ -13,7 +13,7 @@ import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Address } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { MapPin } from 'lucide-react-native';
 import { nanoid } from 'nanoid/non-secure';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -24,6 +24,8 @@ interface Props {
 }
 
 export const NewPlace = ({ basePathname }: Props) => {
+  // params
+  const { key } = useLocalSearchParams<{ key: string }>();
   // context
   const api = useContextApi();
   // refs
@@ -66,6 +68,7 @@ export const NewPlace = ({ basePathname }: Props) => {
     router.navigate({
       pathname: `${basePathname}/places/${nextScreen}`,
       params: safeRouteParams({
+        key: key ?? '',
         sessionToken,
         ...address,
       }),

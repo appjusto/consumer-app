@@ -26,14 +26,14 @@ export const useOrderFares = (
     if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
     // setFares(undefined);
-    // console.log(
-    //   'useOrderFares -> update',
-    //   orderId,
-    //   created,
-    //   distance,
-    //   fulfillment,
-    //   defaultPaymentMethod
-    // );
+    console.log(
+      'useOrderFares -> update',
+      orderId,
+      created,
+      distance,
+      fulfillment,
+      defaultPaymentMethod
+    );
     setLoading(true);
     api
       .orders()

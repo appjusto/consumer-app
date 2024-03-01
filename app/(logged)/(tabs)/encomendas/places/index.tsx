@@ -13,16 +13,17 @@ export default function P2PPlaceSelect() {
   // params
   const params = useLocalSearchParams<{
     key: string;
+    title: string;
   }>();
   // tracking
   useTrackScreenView('Encomendas: escolher');
   // handlers
   const selectPlaceHandler = (place: WithId<Place>) => {
-    console.log('selectPlaceHandler');
-    console.log({
-      key: params.key,
-      placeId: place.id,
-    });
+    // console.log('selectPlaceHandler');
+    // console.log({
+    //   key: params.key,
+    //   placeId: place.id,
+    // });
     router.navigate({
       pathname: '/encomendas/new',
       params: {
@@ -35,14 +36,21 @@ export default function P2PPlaceSelect() {
     console.log('newPlaceHandler');
     router.replace({
       pathname: `/encomendas/places/new`,
+      params: {
+        key: params.key,
+      },
     });
   };
   // logs
   console.log('encomendas/places', params);
+  const title = (() => {
+    if (params.title) return params.title;
+    return 'Seus endereços';
+  })();
   // UI
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Seus endereços' }} />
+      <Stack.Screen options={{ title }} />
       <DefaultScrollView>
         <DefaultView style={{ padding: paddings.lg }}>
           <PlacesList onSelect={selectPlaceHandler} />

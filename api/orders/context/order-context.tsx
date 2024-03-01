@@ -1,4 +1,5 @@
-import { Fare, Order, WithId } from '@appjusto/types';
+import { useObserveBusiness } from '@/api/business/useObserveBusiness';
+import { Fare, Order, PublicBusiness, WithId } from '@appjusto/types';
 import { useGlobalSearchParams, usePathname } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
@@ -15,6 +16,7 @@ interface Props {
 
 interface Value {
   order?: WithId<Order> | null;
+  business?: WithId<PublicBusiness> | null;
   fares?: Fare[] | undefined;
   loading?: boolean;
 }
@@ -30,6 +32,7 @@ export const OrderProvider = ({ children }: Props) => {
   const { paymentMethod } = useContextPayments();
   // state
   const [order, setOrder] = useState<WithId<Order> | null>();
+  const business = useObserveBusiness(order?.business?.id);
   const orderWithId = useObserveOrder(orderId);
   const businessQuote = useObserveBusinessQuote(businessId, businessContext);
   const packageQuote = useObservePackageQuote(packageContext);
@@ -49,6 +52,7 @@ export const OrderProvider = ({ children }: Props) => {
       value={{
         order,
         fares,
+        business,
         loading,
       }}
     >
@@ -61,6 +65,13 @@ export const useContextOrder = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
   return value.order;
+};
+
+export const useContextOrderBusiness = () => {
+  const value = React.useContext(OrderContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  if (value.order?.type === 'p2p') return null;
+  return value.business;
 };
 
 export const useContextOrderFares = () => {

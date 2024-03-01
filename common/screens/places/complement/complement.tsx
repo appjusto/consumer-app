@@ -1,3 +1,4 @@
+import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextSetTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
@@ -8,6 +9,7 @@ import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
 import { Stack, router, useGlobalSearchParams } from 'expo-router';
 import { isEmpty, trim } from 'lodash';
+import { useState } from 'react';
 
 type Params = {
   main: string;
@@ -15,6 +17,7 @@ type Params = {
   description: string;
   googlePlaceId?: string;
   location: string;
+  key?: string;
 };
 
 interface Props {
@@ -26,6 +29,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   const params = useGlobalSearchParams<Params>();
   const { description, main, secondary, googlePlaceId = '', location } = params;
   // context
+  const api = useContextApi();
   const isAnonymous = useContextIsUserAnonymous();
   const setTemporaryPlace = useContextSetTemporaryPlace();
   // state
@@ -34,32 +38,41 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
     address: { description, main, secondary, googlePlaceId },
     location: { latitude: latlng[0], longitude: latlng[1] },
   };
+  const [loadind, setLoading] = useState(false);
   // tracking
   useTrackScreenView('Novo endereço: complemento');
   console.log('complement', params);
   // handlers
   const saveHandler = (additionalInfo: string, instructions: string) => {
+    const updatedPlace: Partial<Place> = {
+      ...place,
+      additionalInfo: isEmpty(additionalInfo) ? null : additionalInfo,
+      instructions: trim(instructions),
+    };
     if (isAnonymous) {
-      const updatedPlace: Partial<Place> = {
-        ...place,
-        additionalInfo: isEmpty(additionalInfo) ? null : additionalInfo,
-        instructions: trim(instructions),
-      };
       setTemporaryPlace(updatedPlace);
       router.replace('/');
-    } else if (returnScreen) {
-      router.navigate({
-        pathname: returnScreen,
-        params: safeRouteParams({
-          description,
-          main,
-          secondary,
-          googlePlaceId,
-          location,
-          additionalInfo,
-          instructions,
-        }),
-      });
+    } else {
+      setLoading(true);
+      api
+        .consumers()
+        .createPlace(updatedPlace)
+        .then((id) => {
+          if (returnScreen) {
+            router.navigate({
+              pathname: returnScreen,
+              params: safeRouteParams({
+                key: params.key ?? '',
+                placeId: id,
+              }),
+            });
+          } else {
+            router.back();
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
   };
   // UI

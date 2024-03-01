@@ -32,6 +32,7 @@ export const FulfillmentSelector = ({ order, style, ...props }: Props) => {
       });
   };
   // UI
+  if (order.type === 'p2p') return null;
   return (
     <View style={[{}, style]} {...props}>
       <HorizontalSelector

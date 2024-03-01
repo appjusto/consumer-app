@@ -125,6 +125,7 @@ export default class OrdersApi {
   }
 
   async createP2POrder(origin: Place) {
+    console.log('createP2POrder');
     const payload: Partial<Order> = {
       type: 'p2p',
       status: 'quote',

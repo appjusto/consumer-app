@@ -22,6 +22,7 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
     });
   };
   // UI
+  if (order.type === 'p2p') return null;
   const place = order.fulfillment === 'delivery' ? order.destination : order.origin;
   const address = place?.address;
   return (

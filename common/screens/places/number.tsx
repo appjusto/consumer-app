@@ -22,6 +22,7 @@ type Params = {
   secondary: string;
   description: string;
   googlePlaceId?: string;
+  key?: string;
 };
 
 interface Props {
@@ -36,6 +37,7 @@ export const NewPlaceNumber = ({ basePathname }: Props) => {
     main,
     secondary,
     googlePlaceId = '',
+    key = '',
   } = useGlobalSearchParams<Params>();
   // context
   const api = useContextApi();
@@ -66,7 +68,7 @@ export const NewPlaceNumber = ({ basePathname }: Props) => {
     if (withoutNumber) {
       router.navigate({
         pathname: `${basePathname}/places/confirm`,
-        params: safeRouteParams({ description, main, secondary, googlePlaceId }),
+        params: safeRouteParams({ description, main, secondary, googlePlaceId, key }),
       });
     } else {
       if (!number) return;
@@ -82,7 +84,7 @@ export const NewPlaceNumber = ({ basePathname }: Props) => {
           } else {
             router.navigate({
               pathname: '/places/confirm',
-              params: safeRouteParams({ ...firstAddress }),
+              params: safeRouteParams({ ...firstAddress, key }),
             });
           }
         })

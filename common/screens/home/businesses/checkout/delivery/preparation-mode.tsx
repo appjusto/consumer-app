@@ -1,5 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextBusiness } from '@/api/business/context/business-context';
+import { useContextOrderBusiness } from '@/api/orders/context/order-context';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
@@ -21,7 +21,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const business = useContextBusiness();
+  const business = useContextOrderBusiness();
   // handlers
   const updateToRealtime = () => {
     api
@@ -40,23 +40,26 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
     });
   };
   // UI
-  if (!business) return;
+  // if (!business) return;
+  const realtime = order.type === 'p2p' || business?.preparationModes?.includes('realtime');
+  const scheduled = order.type === 'p2p' || business?.preparationModes?.includes('scheduled');
+  const estimate = order.arrivals?.destination?.estimate;
   return (
     <View style={[{}, style]} {...props}>
       <DefaultText size="lg">Horário da entrega</DefaultText>
-      {business.preparationModes?.includes('realtime') && order.arrivals?.destination?.estimate ? (
+      {realtime ? (
         <View style={{ marginTop: paddings.lg }}>
           <RadioCardButton onPress={updateToRealtime} checked={!order.scheduledTo}>
             <DefaultText size="md" color="black">
               Padrão
             </DefaultText>
-            <DefaultText style={{ marginTop: paddings.xs }}>{`Hoje, ${timestampWithETA(
-              order.arrivals.destination.estimate
-            )}`}</DefaultText>
+            <DefaultText style={{ marginTop: paddings.xs }}>{`Hoje${
+              estimate ? ', ' + timestampWithETA(estimate) : ''
+            }`}</DefaultText>
           </RadioCardButton>
         </View>
       ) : null}
-      {business.preparationModes?.includes('scheduled') ? (
+      {scheduled ? (
         <View style={{ marginTop: paddings.lg }}>
           <RadioCardButton onPress={scheduleOrder} checked={Boolean(order.scheduledTo)}>
             <DefaultText size="md" color="black">
