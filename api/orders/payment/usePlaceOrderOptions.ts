@@ -1,16 +1,18 @@
-import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
+import { Order, PlaceOrderPayloadPayment, VRPayableWith, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';
-import { useContextOrder } from '../context/order-context';
 import { PlaceOrderOptions } from '../types';
 import { useContextPayments } from './context/payments-context';
+import { OrderOptions } from './useOrderOptions';
 
-export const usePlaceOrderOptions = () => {
+export const usePlaceOrderOptions = (
+  quote: WithId<Order> | null | undefined,
+  options: OrderOptions
+) => {
   // context
-  const quote = useContextOrder();
   const { paymentMethod, selectedCard } = useContextPayments();
   // state
   const [payment, setPayment] = useState<PlaceOrderPayloadPayment>();
-  const [options, setOptions] = useState<PlaceOrderOptions>();
+  const [placeOptions, setOptions] = useState<PlaceOrderOptions>();
   // side effects
   useEffect(() => {
     // if (!quote) return;
@@ -41,13 +43,14 @@ export const usePlaceOrderOptions = () => {
       orderId: quote.id,
       payment,
       fleetId: quote.fare?.fleet?.id,
+      courierCode: options.courierCode,
+      additionalInfo: options.additionalInfo,
+      invoiceWithCPF: options.invoiceWithCPF,
+      wantToShareData: options.wantToShareData,
       // TODO:
       // coordinates: null
-      // additionalInfo,
-      // invoiceWithCPF
-      // wantToShareData
     });
-  }, [quote, payment]);
+  }, [quote, payment, options]);
   // result
-  return options;
+  return placeOptions;
 };

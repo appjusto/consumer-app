@@ -6,13 +6,10 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Fleet, WithId } from '@appjusto/types';
 
-import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
-import { useContextProfile } from '@/common/auth/AuthContext';
+import { useContextOrderOptions } from '@/api/orders/context/order-context';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
-import { RoundedText } from '@/common/components/texts/RoundedText';
-import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { router } from 'expo-router';
 import { Share2 } from 'lucide-react-native';
 import { View } from 'react-native';
@@ -24,21 +21,14 @@ interface Props extends ViewProps {
 
 export const FleetCard = ({ fleet, style, ...props }: Props) => {
   // context
-  const api = useContextApi();
-  const profile = useContextProfile();
-  const showToast = useShowToast();
+  const { setFleetsIds } = useContextOrderOptions()!;
   // handlers
-  const joinFleet = () => {
-    trackEvent('Entrou na frota', { fleetId: fleet.id });
-    api
-      .fleets()
-      .joinFleet(fleet.id)
-      .then(() => {
-        showToast(`Você agora faz parte da frota ${fleet.name}!`, 'success');
-      });
+  const selectFleet = () => {
+    trackEvent('Escolheu frota', { fleetId: fleet.id });
+    setFleetsIds([fleet.id]);
+    router.back();
   };
   // UI
-  const usingFleet = profile?.fleetsIds.includes(fleet.id);
   const minimumFee = formatCurrency(fleet.minimumFee);
   const distanceThreshold = formatDistance(fleet.distanceThreshold);
   const additionalPerKmAfterThreshold = formatCurrency(fleet.additionalPerKmAfterThreshold);
@@ -66,15 +56,6 @@ export const FleetCard = ({ fleet, style, ...props }: Props) => {
             onPress={() => null}
           />
         </View>
-        {usingFleet ? (
-          <RoundedText
-            style={{ marginTop: paddings.sm, backgroundColor: colors.primary100 }}
-            size="xs"
-            color="primary900"
-          >
-            Você faz parte desta frota!
-          </RoundedText>
-        ) : null}
         {/* description */}
         <DefaultText size="xs" style={{ marginTop: paddings.lg }}>
           {fleet.description}
@@ -126,13 +107,11 @@ export const FleetCard = ({ fleet, style, ...props }: Props) => {
             router.navigate({ pathname: '/(logged)/fleets/[id]', params: { id: fleet.id } })
           }
         />
-        {!usingFleet ? (
-          <DefaultButton
-            style={{ flex: 1, marginLeft: paddings.lg }}
-            title="Entrar na frota"
-            onPress={joinFleet}
-          />
-        ) : null}
+        <DefaultButton
+          style={{ flex: 1, marginLeft: paddings.lg }}
+          title="Escolher frota"
+          onPress={selectFleet}
+        />
       </View>
     </View>
   );

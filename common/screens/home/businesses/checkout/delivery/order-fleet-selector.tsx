@@ -1,26 +1,27 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextOrderFares } from '@/api/orders/context/order-context';
+import { useContextOrder, useContextOrderFares } from '@/api/orders/context/order-context';
+import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
-import { Fare, Order, WithId } from '@appjusto/types';
+import { Fare } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
+import { router } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
-interface Props extends ViewProps {
-  order: WithId<Order>;
-}
+interface Props extends ViewProps {}
 
-export const OrderFleetSelector = ({ order, style, ...props }: Props) => {
+export const OrderFleetSelector = ({ style, ...props }: Props) => {
   // context
-  const api = useContextApi();
   const showToast = useShowToast();
+  const api = useContextApi();
+  const order = useContextOrder();
   const { fares } = useContextOrderFares();
   // handlers
   const updateFare = (fare: Fare) => {
+    if (!order) return;
     api
       .orders()
       .updateOrder(order.id, { fare })
@@ -30,13 +31,23 @@ export const OrderFleetSelector = ({ order, style, ...props }: Props) => {
         showToast('Não foi possível atualizar a forma de entrega. Tente novamente.', 'error');
       });
   };
-
+  const selectFleet = () => {
+    if (!order) return;
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/fleets/search',
+      params: { orderId: order.id },
+    });
+  };
   // UI
-  if (order.fulfillment !== 'delivery') return null;
+  if (!order) return null;
+  if (!fares) return null;
   return (
     <View style={[{}, style]} {...props}>
-      <DefaultText size="lg">Frotas</DefaultText>
-      {(fares ?? []).map((fare) =>
+      <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
+        Frotas são a forma que o appjusto desenvolveu para que os entregadores possam se organizar
+        coletivamente e defiinir o valor e as condições do seu trabalho.
+      </DefaultText>
+      {fares.map((fare) =>
         fare.fleet?.id ? (
           <View key={fare.fleet?.id} style={{ flex: 1, marginTop: paddings.lg }}>
             <RadioCardButton
@@ -69,7 +80,12 @@ export const OrderFleetSelector = ({ order, style, ...props }: Props) => {
           </View>
         ) : null
       )}
-      {!fares ? <Loading /> : null}
+      <DefaultButton
+        style={{ marginTop: paddings.lg }}
+        title="Escolher outra frota"
+        variant="outline"
+        onPress={selectFleet}
+      />
     </View>
   );
 };

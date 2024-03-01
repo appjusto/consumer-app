@@ -6,8 +6,8 @@ import { SearchFilter, SearchKind, SearchOrder } from './types';
 interface SearchOptions {
   kind: SearchKind;
   order: SearchOrder;
-  filterArray: SearchFilter[];
-  aroundLatLng: LatLng;
+  filterArray: SearchFilter[] | undefined;
+  aroundLatLng?: LatLng | null;
   query?: string;
   page?: number;
   hitsPerPage?: number;
@@ -25,14 +25,18 @@ export default class AlgoliaApi {
   }: SearchOptions) {
     const index = getSearchIndex(kind, order);
     if (!index) throw new Error('Invalid index');
-    const filters = createFilters(kind, filterArray);
-    const options = {
-      aroundLatLng: `${aroundLatLng.latitude}, ${aroundLatLng.longitude}`,
-      minimumAroundRadius: 7000,
-      filters,
-      page,
-      hitsPerPage,
-    };
+    const options =
+      kind === 'fleet'
+        ? { page, filters: 'type:public', hitsPerPage }
+        : {
+            aroundLatLng: aroundLatLng
+              ? `${aroundLatLng.latitude}, ${aroundLatLng.longitude}`
+              : undefined,
+            minimumAroundRadius: 7000,
+            filters: createFilters(kind, filterArray),
+            page,
+            hitsPerPage,
+          };
     console.log(query, options);
     const result = await index.search<T>(query, options);
     return result;

@@ -4,6 +4,9 @@ import { useGlobalSearchParams, usePathname } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
+import { OrderOptions, useOrderOptions } from '../payment/useOrderOptions';
+import { usePlaceOrderOptions } from '../payment/usePlaceOrderOptions';
+import { PlaceOrderOptions } from '../types';
 import { useObserveBusinessQuote } from '../useObserveBusinessQuote';
 import { useObserveOrder } from '../useObserveOrder';
 import { useObservePackageQuote } from '../useObservePackageQuote';
@@ -18,6 +21,8 @@ interface Value {
   order?: WithId<Order> | null;
   business?: WithId<PublicBusiness> | null;
   fares?: Fare[] | undefined;
+  options?: OrderOptions;
+  placeOptions?: PlaceOrderOptions;
   loading?: boolean;
 }
 
@@ -36,7 +41,9 @@ export const OrderProvider = ({ children }: Props) => {
   const orderWithId = useObserveOrder(orderId);
   const businessQuote = useObserveBusinessQuote(businessId, businessContext);
   const packageQuote = useObservePackageQuote(packageContext);
-  const { fares, loading } = useOrderFares(order, paymentMethod);
+  const options = useOrderOptions();
+  const placeOptions = usePlaceOrderOptions(order, options);
+  const { fares, loading } = useOrderFares(order, paymentMethod, options.fleetsIds);
   // side effects
   useEffect(() => {
     if (orderId) setOrder(orderWithId);
@@ -52,6 +59,8 @@ export const OrderProvider = ({ children }: Props) => {
       value={{
         order,
         fares,
+        options,
+        placeOptions,
         business,
         loading,
       }}
@@ -78,4 +87,16 @@ export const useContextOrderFares = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
   return { fares: value.fares, loading: value.loading };
+};
+
+export const useContextOrderOptions = () => {
+  const value = React.useContext(OrderContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.options;
+};
+
+export const useContextPlaceOrderOptions = () => {
+  const value = React.useContext(OrderContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.placeOptions;
 };

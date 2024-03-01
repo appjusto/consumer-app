@@ -16,6 +16,7 @@ const restaurantsByPositiveReviews = client.initIndex(`${env}_businesses_positiv
 const products = client.initIndex(`${env}_products`);
 const productsByPrice = client.initIndex(`${env}_products_price_asc`);
 const productsByTotalSold = client.initIndex(`${env}_products_totalSold_desc`);
+const fleets = client.initIndex(`${env}_fleets`);
 
 export const getSearchIndex = (kind: SearchKind, order: SearchOrder) => {
   if (kind === 'restaurant') {
@@ -30,6 +31,8 @@ export const getSearchIndex = (kind: SearchKind, order: SearchOrder) => {
     else if (order === 'price') return productsByPrice;
     else if (order === 'popularity') return productsByTotalSold;
     return products;
+  } else if (kind === 'fleet') {
+    return fleets;
   }
 };
 

@@ -13,6 +13,7 @@ export interface PlaceOrderOptions {
   orderId: string;
   payment: PlaceOrderPayloadPayment;
   fleetId?: string;
+  courierId?: string;
   coordinates?: LatLng;
   additionalInfo?: string;
   invoiceWithCPF?: boolean;

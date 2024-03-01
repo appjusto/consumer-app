@@ -1,9 +1,8 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextOrder, useContextPlaceOrderOptions } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
-import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
 import { getOrderStage } from '@/api/orders/status';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -32,6 +31,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const status = quote?.status;
   const type = quote?.type;
   const { paymentMethod, selectedCard } = useContextPayments();
+  const placeOptions = useContextPlaceOrderOptions();
   // state
   const [loading, setLoading] = useState(false);
   // tracking
@@ -48,23 +48,22 @@ export default function OrderCheckoutDeliveryScreen() {
     }
   }, [navigation, orderId, status, type]);
   useBackWhenOrderExpires(!loading);
-  const options = usePlaceOrderOptions();
   // handlers
-  const canPlaceOrder = Boolean(options);
+  const canPlaceOrder = Boolean(placeOptions);
   const placeOrder = () => {
-    if (!options) return;
+    if (!placeOptions) return;
     setLoading(true);
     api
       .orders()
-      .placeOrder(options)
+      .placeOrder(placeOptions)
       .then(() => {
         trackEvent('Pedido feito');
-        console.log(options);
+        console.log(placeOptions);
         router.navigate('/(logged)/(tabs)/(home)/');
         // @ts-ignore
         navigation.navigate('(orders)', {
           screen: '[orderId]/confirming',
-          params: { orderId: options.orderId },
+          params: { orderId: placeOptions.orderId },
           initial: false,
         });
       })
@@ -81,7 +80,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';
-  console.log(options);
+  console.log(placeOptions);
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>

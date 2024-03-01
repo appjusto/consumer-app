@@ -20,6 +20,7 @@ import FleetsApi from './fleets/FleetsApi';
 import IncidentsApi from './incidents/IncidentsApi';
 import LedgerApi from './ledger/LedgerApi';
 import MapsApi from './maps/MapsApi';
+import CouriersApi from './orders/courier/couriers-api';
 import OrdersApi from './orders/orders-api';
 import PlatformApi from './platform/PlatformApi';
 import ProfileApi from './profile/ProfileApi';
@@ -31,6 +32,7 @@ export default class Api {
   private _platform: PlatformApi;
   private _profile: ProfileApi;
   private _consumers: ConsumersApi;
+  private _couriers: CouriersApi;
   private _business: BusinessApi;
   private _banner: BannerApi;
   private _fleets: FleetsApi;
@@ -74,6 +76,7 @@ export default class Api {
     this._platform = new PlatformApi(this._auth);
     this._profile = new ProfileApi(this._auth);
     this._consumers = new ConsumersApi(this._auth);
+    this._couriers = new CouriersApi();
     this._business = new BusinessApi();
     this._banner = new BannerApi();
     this._fleets = new FleetsApi(this._profile);
@@ -100,6 +103,10 @@ export default class Api {
 
   consumers() {
     return this._consumers;
+  }
+
+  couriers() {
+    return this._couriers;
   }
 
   business() {

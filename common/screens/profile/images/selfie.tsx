@@ -10,7 +10,7 @@ interface Props extends ViewProps {
 export default function Selfie({ courierId, size = 40, style, ...props }: Props) {
   // context
   const api = useContextApi();
-  const path = api.profile().getSelfiePath('160', courierId);
+  const path = api.couriers().getSelfiePath('160', courierId);
   // UI
   return (
     <View style={[{}, style]} {...props}>

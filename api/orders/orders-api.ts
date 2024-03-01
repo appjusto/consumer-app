@@ -4,6 +4,7 @@ import { getAppVersion } from '@/common/version';
 import { getFirebaseRegion } from '@/extra';
 import {
   Fare,
+  GetOrderQuotesPayload,
   Order,
   OrderConfirmation,
   OrderCourierLocationLog,
@@ -154,7 +155,11 @@ export default class OrdersApi {
     await orderRef(orderId).delete();
   }
 
-  async getOrderQuotes(orderId: string, paymentMethod: PayableWith) {
+  async getOrderQuotes(
+    orderId: string,
+    paymentMethod: PayableWith,
+    fleetsIds: string[] | undefined
+  ) {
     console.log('getOrderQuotes', {
       orderId,
       paymentMethod,
@@ -164,8 +169,9 @@ export default class OrdersApi {
         orderId,
         paymentMethod,
         useCredits: true,
+        fleetsIds,
         meta: { version: getAppVersion() },
-      });
+      } as GetOrderQuotesPayload);
       const fares = response.data as Fare[];
       console.log('getOrderQuotes completed');
       return fares;

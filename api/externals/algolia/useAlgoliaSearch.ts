@@ -1,6 +1,6 @@
 import { useDebounce } from '@/common/functions/useDebounce';
 import { SearchResponse } from '@algolia/client-search';
-import { LatLng } from '@appjusto/types';
+import { LatLng, WithId } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useCallback, useEffect, useState } from 'react';
 import { useContextApi } from '../../ApiContext';
@@ -10,7 +10,7 @@ export const useAlgoliaSearch = <T extends object>(
   enabled: boolean,
   kind: SearchKind,
   order: SearchOrder,
-  filterArray: SearchFilter[],
+  filterArray: SearchFilter[] | undefined,
   aroundLatLng: LatLng | undefined | null,
   query: string = ''
 ) => {
@@ -20,13 +20,13 @@ export const useAlgoliaSearch = <T extends object>(
   const [lastResponse, setLastResponse] = useState<SearchResponse<T>>();
   const [responseByPage, setResponseByPage] =
     useState<Map<number | undefined, SearchResponse<T>>>();
-  const [results, setResults] = useState<T[]>();
+  const [results, setResults] = useState<WithId<T>[]>();
   const [loading, setLoading] = useState(enabled);
   // handlers
   const search = useCallback(
     async (input: string, page?: number) => {
       if (!enabled) return;
-      if (!aroundLatLng) return;
+      if (kind !== 'fleet' && !aroundLatLng) return;
       setLastResponse(undefined);
       setLoading(true);
       try {
@@ -48,7 +48,6 @@ export const useAlgoliaSearch = <T extends object>(
   // clearing cache
   useEffect(() => {
     api.algolia().clearCache();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api]);
   useEffect(() => {
     search(query);
@@ -75,7 +74,12 @@ export const useAlgoliaSearch = <T extends object>(
     if (!keys.length) setResults([]);
     else {
       setResults(
-        keys.reduce((result, key) => [...result, ...responseByPage.get(key)!.hits], [] as T[])
+        keys.reduce((result, key) => {
+          const hits = responseByPage
+            .get(key)!
+            .hits.map((item) => ({ ...item, id: item.objectID }));
+          return [...result, ...hits];
+        }, [] as WithId<T>[])
       );
     }
   }, [responseByPage]);

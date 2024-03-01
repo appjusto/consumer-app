@@ -1,4 +1,4 @@
-export type SearchKind = 'restaurant' | 'product';
+export type SearchKind = 'restaurant' | 'product' | 'fleet';
 export type SearchOrder =
   | 'distance'
   | 'price'

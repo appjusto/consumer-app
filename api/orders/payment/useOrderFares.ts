@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 
 export const useOrderFares = (
   order: WithId<Order> | null | undefined,
-  defaultPaymentMethod: PayableWith | null | undefined
+  defaultPaymentMethod: PayableWith | null | undefined,
+  fleetsIds: string[] | undefined
 ) => {
   // context
   const api = useContextApi();
@@ -32,12 +33,13 @@ export const useOrderFares = (
       created,
       distance,
       fulfillment,
-      defaultPaymentMethod
+      defaultPaymentMethod,
+      fleetsIds
     );
     setLoading(true);
     api
       .orders()
-      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix')
+      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', fleetsIds)
       .then((fares) => {
         setFares(fares);
         api
@@ -53,7 +55,7 @@ export const useOrderFares = (
       .finally(() => {
         setLoading(false);
       });
-  }, [api, showToast, orderId, created, distance, fulfillment, defaultPaymentMethod]);
+  }, [api, showToast, orderId, created, distance, fulfillment, defaultPaymentMethod, fleetsIds]);
   // result
   return { fares, loading };
 };
