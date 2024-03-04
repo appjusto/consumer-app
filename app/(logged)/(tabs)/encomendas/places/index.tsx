@@ -33,7 +33,6 @@ export default function P2PPlaceSelect() {
     });
   };
   const newPlaceHandler = () => {
-    console.log('newPlaceHandler');
     router.replace({
       pathname: `/encomendas/places/new`,
       params: {

@@ -62,8 +62,7 @@ export const PaymentsProvider = ({ children }: Props) => {
     //   return;
     // }
     if (!acceptedByPlatform) return;
-    if (business === undefined) return;
-    if (business === null) {
+    if (!business) {
       setAcceptedOnOrder(
         acceptedByPlatform.filter((value) => value !== 'vr-alimentação' && value !== 'vr-refeição')
       );

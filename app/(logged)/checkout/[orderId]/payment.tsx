@@ -38,7 +38,7 @@ export default function OrderCheckoutDeliveryScreen() {
         <Stack.Screen options={{ title: 'Pagamento' }} />
         <DefaultView style={{ padding: paddings.lg }}>
           <BusinessCartHeader business={quote.business} />
-          <HR style={{ marginVertical: paddings.xl }} />
+          {quote.type === 'food' ? <HR style={{ marginVertical: paddings.xl }} /> : null}
           <DefaultText size="lg">Resumo dos valores</DefaultText>
           <OrderTotalBreakdown style={{ marginTop: paddings.lg }} order={quote} />
           <HR style={{ marginVertical: paddings.xl }} />

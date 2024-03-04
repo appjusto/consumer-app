@@ -8,9 +8,10 @@ import { View, ViewProps } from 'react-native';
 interface Props extends ViewProps {
   place: Place | null | undefined;
   title: string;
+  editable?: boolean;
 }
 
-export const ReviewP2POrderPlace = ({ style, place, title, ...props }: Props) => {
+export const ReviewP2POrderPlace = ({ style, place, title, editable = true, ...props }: Props) => {
   if (!place) return;
   return (
     <View
@@ -35,9 +36,11 @@ export const ReviewP2POrderPlace = ({ style, place, title, ...props }: Props) =>
           </DefaultText>
         ) : null}
       </View>
-      <View>
-        <FilePenLine size={24} color={colors.black} />
-      </View>
+      {editable ? (
+        <View>
+          <FilePenLine size={24} color={colors.black} />
+        </View>
+      ) : null}
     </View>
   );
 };

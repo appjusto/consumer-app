@@ -59,10 +59,11 @@ export default function NewPackageOrderScreen() {
   // select destination
   useEffect(() => {
     if (!focused) return;
+    if (!quote) return;
     if (originId && !destinationId) {
       navigateToPlace('destination');
     }
-  }, [destinationId, originId, focused]);
+  }, [destinationId, originId, focused, quote]);
   // update places with params
   useEffect(() => {
     console.log('params change', params);
@@ -71,8 +72,10 @@ export default function NewPackageOrderScreen() {
     // if (!focused) return;
     if (params.key === 'origin') {
       setOriginId(placeId);
+      router.setParams({ key: '', placeId: '' });
     } else if (params.key === 'destination') {
       setDestinationId(placeId);
+      router.setParams({ key: '', placeId: '' });
     }
   }, [params]);
 

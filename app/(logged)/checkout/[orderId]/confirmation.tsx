@@ -15,6 +15,7 @@ import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confi
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
 import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
+import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -89,10 +90,17 @@ export default function OrderCheckoutDeliveryScreen() {
         <DefaultView style={{ padding: paddings.lg }}>
           <DefaultText size="lg">{deliveryOrTakeAway}</DefaultText>
           <OrderSelectedSchedule style={{ marginTop: paddings.lg }} />
-          <DefaultText style={{ marginTop: paddings.lg }} size="lg">
-            {`Endereço de ${deliveryOrTakeAway}`}
-          </DefaultText>
-          <OrderSelectedDestination style={{ marginTop: paddings.lg }} />
+          {quote.type === 'food' ? (
+            <>
+              <DefaultText style={{ marginTop: paddings.lg }} size="lg">
+                {`Endereço de ${deliveryOrTakeAway}`}
+              </DefaultText>
+              <OrderSelectedDestination style={{ marginTop: paddings.lg }} />
+            </>
+          ) : (
+            <ReviewP2POrder style={{ marginTop: paddings.lg }} quote={quote} />
+          )}
+
           <DefaultText style={{ marginTop: paddings.lg }} size="lg">
             Pagamento
           </DefaultText>

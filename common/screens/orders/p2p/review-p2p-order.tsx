@@ -10,15 +10,16 @@ import { ReviewP2POrderPlace } from './review-p2p-order-place';
 
 interface Props extends ViewProps {
   quote: WithId<Order> | null | undefined;
-  onEditPlace: (key: PlaceKey | number) => void;
+  onEditPlace?: (key: PlaceKey | number) => void;
 }
 
 export const ReviewP2POrder = ({ style, quote, onEditPlace, ...props }: Props) => {
   if (!quote) return null;
   const { origin, destination } = quote;
+  const editable = Boolean(onEditPlace);
   return (
     <View style={[{}, style]} {...props}>
-      <DefaultText size="lg">Confirme os endereços da rota</DefaultText>
+      <DefaultText size="lg">Endereços da rota</DefaultText>
       <View
         style={{
           marginTop: paddings.lg,
@@ -29,15 +30,16 @@ export const ReviewP2POrder = ({ style, quote, onEditPlace, ...props }: Props) =
           borderRadius: 8,
         }}
       >
-        <Pressable onPress={() => onEditPlace('origin')}>
-          <ReviewP2POrderPlace place={origin} title={getPlaceTitle('origin')} />
+        <Pressable onPress={() => (onEditPlace ? onEditPlace('origin') : null)}>
+          <ReviewP2POrderPlace place={origin} title={getPlaceTitle('origin')} editable={editable} />
         </Pressable>
         <HR style={{ marginTop: paddings.lg }} />
-        <Pressable onPress={() => onEditPlace('destination')}>
+        <Pressable onPress={() => (onEditPlace ? onEditPlace('destination') : null)}>
           <ReviewP2POrderPlace
             style={{ marginTop: paddings.lg }}
             place={destination}
             title={getPlaceTitle('destination')}
+            editable={editable}
           />
         </Pressable>
       </View>
