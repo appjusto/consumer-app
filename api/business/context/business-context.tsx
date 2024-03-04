@@ -20,6 +20,7 @@ interface Value {
 }
 
 export const BusinessProvider = ({ children }: Props) => {
+  // params
   const { businessId } = useGlobalSearchParams<{ businessId: string }>();
   // state
   const business = useObserveBusiness(businessId);

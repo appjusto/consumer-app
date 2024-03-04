@@ -1,12 +1,10 @@
-import { useObserveBusiness } from '@/api/business/useObserveBusiness';
+import { useContextBusiness } from '@/api/business/context/business-context';
 import { Fare, Order, PublicBusiness, WithId } from '@appjusto/types';
 import { useGlobalSearchParams, usePathname } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
 import { OrderOptions, useOrderOptions } from '../payment/useOrderOptions';
-import { usePlaceOrderOptions } from '../payment/usePlaceOrderOptions';
-import { PlaceOrderOptions } from '../types';
 import { useObserveBusinessQuote } from '../useObserveBusinessQuote';
 import { useObserveOrder } from '../useObserveOrder';
 import { useObservePackageQuote } from '../useObservePackageQuote';
@@ -22,35 +20,32 @@ interface Value {
   business?: WithId<PublicBusiness> | null;
   fares?: Fare[] | undefined;
   options?: OrderOptions;
-  placeOptions?: PlaceOrderOptions;
   loading?: boolean;
 }
 
 export const OrderProvider = ({ children }: Props) => {
-  // params
-  const params = useGlobalSearchParams<{ orderId: string; businessId: string }>();
-  const { orderId, businessId } = params;
-  const pathname = usePathname();
-  const businessContext = Boolean(businessId) && !orderId;
-  const packageContext = pathname.startsWith('/encomendas');
   // context
+  const business = useContextBusiness();
+  const businessId = business?.id;
   const { paymentMethod } = useContextPayments();
+  // params
+  const params = useGlobalSearchParams<{ orderId: string }>();
+  const pathname = usePathname();
   // state
   const [order, setOrder] = useState<WithId<Order> | null>();
-  const business = useObserveBusiness(order?.business?.id);
-  const orderWithId = useObserveOrder(orderId);
-  const businessQuote = useObserveBusinessQuote(businessId, businessContext);
-  const packageQuote = useObservePackageQuote(packageContext);
+  const orderWithId = useObserveOrder(params.orderId);
+  const businessQuote = useObserveBusinessQuote(businessId);
+  const packageQuote = useObservePackageQuote(pathname.startsWith('/encomendas'));
   const options = useOrderOptions();
-  const placeOptions = usePlaceOrderOptions(order, options);
   const { fares, loading } = useOrderFares(order, paymentMethod, options.fleetsIds);
+  // console.log('order-context', order?.id, orderWithId?.id, businessQuote?.id, packageQuote?.id);
   // side effects
   useEffect(() => {
-    if (orderId) setOrder(orderWithId);
-    else if (businessId) setOrder(businessQuote);
-    else if (packageContext) setOrder(packageQuote);
-    else setOrder(null);
-  }, [orderId, orderWithId, businessId, businessQuote, packageContext, packageQuote]);
+    if (orderWithId) setOrder(orderWithId);
+    else if (businessQuote) setOrder(businessQuote);
+    else if (packageQuote) setOrder(packageQuote);
+    else setOrder(undefined);
+  }, [order, businessQuote, orderWithId, packageQuote]);
   // logs
   // console.log('OrderProvider', pathname, params, useSegments());
   // result
@@ -60,7 +55,6 @@ export const OrderProvider = ({ children }: Props) => {
         order,
         fares,
         options,
-        placeOptions,
         business,
         loading,
       }}
@@ -93,10 +87,4 @@ export const useContextOrderOptions = () => {
   const value = React.useContext(OrderContext);
   if (!value) throw new Error('Api fora de contexto.');
   return value.options;
-};
-
-export const useContextPlaceOrderOptions = () => {
-  const value = React.useContext(OrderContext);
-  if (!value) throw new Error('Api fora de contexto.');
-  return value.placeOptions;
 };

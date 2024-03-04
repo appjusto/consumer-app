@@ -1,15 +1,14 @@
-import { Order, PlaceOrderPayloadPayment, VRPayableWith, WithId } from '@appjusto/types';
+import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
 import { useEffect, useState } from 'react';
+import { useContextOrder, useContextOrderOptions } from '../context/order-context';
 import { PlaceOrderOptions } from '../types';
 import { useContextPayments } from './context/payments-context';
-import { OrderOptions } from './useOrderOptions';
 
-export const usePlaceOrderOptions = (
-  quote: WithId<Order> | null | undefined,
-  options: OrderOptions
-) => {
+export const usePlaceOrderOptions = () => {
   // context
+  const quote = useContextOrder();
   const { paymentMethod, selectedCard } = useContextPayments();
+  const options = useContextOrderOptions();
   // state
   const [payment, setPayment] = useState<PlaceOrderPayloadPayment>();
   const [placeOptions, setOptions] = useState<PlaceOrderOptions>();
@@ -39,11 +38,12 @@ export const usePlaceOrderOptions = (
   useEffect(() => {
     if (!quote) return;
     if (!payment) return;
+    if (!options) return;
     setOptions({
       orderId: quote.id,
       payment,
       fleetId: quote.fare?.fleet?.id,
-      courierCode: options.courierCode,
+      courierId: options.courier?.id,
       additionalInfo: options.additionalInfo,
       invoiceWithCPF: options.invoiceWithCPF,
       wantToShareData: options.wantToShareData,

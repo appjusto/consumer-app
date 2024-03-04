@@ -36,7 +36,7 @@ export const BusinessCart = ({ style, ...props }: Props) => {
         }}
       />
       <BusinessCartHeader style={{ padding: paddings.lg }} business={quote.business} />
-      <View style={{ paddingHorizontal: paddings.lg }}>
+      <View style={{ marginTop: paddings.sm, paddingHorizontal: paddings.lg }}>
         {(quote.items ?? []).map((item) => (
           <BusinessCartItem style={{ marginTop: paddings.lg }} key={item.id} item={item} />
         ))}

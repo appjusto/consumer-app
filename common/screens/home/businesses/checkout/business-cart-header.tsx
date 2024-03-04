@@ -12,33 +12,32 @@ export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
   // UI
   if (!business) return null;
   return (
-    <View
-      style={[
-        {
+    <View style={[{}, style]} {...props}>
+      <View
+        style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-        },
-        style,
-      ]}
-      {...props}
-    >
-      <View>
-        <DefaultText color="neutral700">Seu pedido em</DefaultText>
-        <DefaultText style={{ marginTop: paddings.xs }} size="lg">
-          {business.name}
-        </DefaultText>
-      </View>
-      <Pressable
-        onPress={() =>
-          router.navigate({
-            pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
-            params: { businessId: business.id },
-          })
-        }
+        }}
       >
-        <DefaultText color="black">Adicionar itens</DefaultText>
-      </Pressable>
+        <View>
+          <DefaultText color="neutral700">Seu pedido em</DefaultText>
+          <DefaultText style={{ marginTop: paddings.xs }} size="lg">
+            {business.name}
+          </DefaultText>
+        </View>
+        <Pressable
+          onPress={() =>
+            router.navigate({
+              pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
+              params: { businessId: business.id },
+            })
+          }
+        >
+          <DefaultText color="black">Adicionar itens</DefaultText>
+        </Pressable>
+      </View>
+      {/* <HR style={{ marginVertical: paddings.xl }} /> */}
     </View>
   );
 };

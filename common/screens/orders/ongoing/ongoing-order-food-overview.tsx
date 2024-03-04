@@ -1,5 +1,5 @@
 import { useObserveOrderCard } from '@/api/orders/payment/useObserveOrderCard';
-import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';

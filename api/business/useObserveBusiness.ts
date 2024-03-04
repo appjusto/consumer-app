@@ -10,6 +10,7 @@ export const useObserveBusiness = (businessId?: string) => {
   // side effects
   // observe fleet
   React.useEffect(() => {
+    setBusiness(undefined);
     if (!businessId) return;
     return api.business().observeBusiness(businessId, setBusiness);
   }, [api, businessId]);

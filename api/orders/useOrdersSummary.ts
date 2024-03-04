@@ -1,7 +1,7 @@
 import { Order, WithId } from '@appjusto/types';
 import { totalOrderDistance } from './distance/totalOrderDistance';
-import { getOrderRevenue } from './revenue/getOrderRevenue';
 import { totalOrderTime } from './timestamp/totalOrderTime';
+import { getOrderRevenue } from './total/getOrderTotalCost';
 
 export interface OrdersSummary {
   total: number | undefined;

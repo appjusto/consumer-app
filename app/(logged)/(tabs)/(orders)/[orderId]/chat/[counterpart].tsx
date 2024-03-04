@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { unreadMessagesIds } from '@/api/chats/unreadMessagesIds';
 import { useObserveChat } from '@/api/chats/useObserveOrderChat';
-import { useObserveOrder } from '@/api/orders/useObserveOrder';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
@@ -27,13 +27,13 @@ export default function ChatScreen() {
   const api = useContextApi();
   const consumer = useContextProfile();
   const consumerId = consumer?.id;
+  const order = useContextOrder();
   // params
   const params = useLocalSearchParams<{ id: string; counterpart: string }>();
-  const orderId = params.id;
+  const orderId = order?.id;
   const counterpartId = params.counterpart;
   // console.log('chat', counterpartId);
   // state
-  const order = useObserveOrder(orderId);
   const counterpartFlavor = order
     ? counterpartId === order.courier?.id
       ? 'courier'

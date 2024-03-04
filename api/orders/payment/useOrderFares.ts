@@ -20,7 +20,7 @@ export const useOrderFares = (
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
   // side effects
-  // console.log('useOrderFares', orderId, order?.status);
+  // console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod);
   useEffect(() => {
     if (!orderId) return;
     if (!created) return;

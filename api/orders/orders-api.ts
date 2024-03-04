@@ -107,6 +107,7 @@ export default class OrdersApi {
     const payload = addBusinessToOrder(
       {
         type: 'food',
+        placedFrom: 'mobile',
         status: 'quote',
         fulfillment: 'delivery',
         dispatchingStatus: 'idle',
@@ -129,6 +130,7 @@ export default class OrdersApi {
     console.log('createP2POrder');
     const payload: Partial<Order> = {
       type: 'p2p',
+      placedFrom: 'mobile',
       status: 'quote',
       fulfillment: 'delivery',
       dispatchingStatus: 'idle',

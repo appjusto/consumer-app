@@ -1,7 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';

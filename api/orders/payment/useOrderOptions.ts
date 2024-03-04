@@ -1,5 +1,5 @@
 import { PublicCourier, WithId } from '@appjusto/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useFetchCourier } from '../courier/useFetchCourier';
 
 export interface OrderOptions {
@@ -24,23 +24,27 @@ export const useOrderOptions = (): OrderOptions => {
   const [wantToShareData, setWantToShareData] = useState(false);
   const [fleetsIds, setFleetsIds] = useState<string[]>();
   const courier = useFetchCourier(courierCode);
+  const options = useMemo<OrderOptions>(
+    () => ({
+      courierCode,
+      setCourierCode,
+      courier,
+      fleetsIds,
+      setFleetsIds,
+      additionalInfo,
+      setAdditionalInfo,
+      invoiceWithCPF,
+      setInvoiceWithCPF,
+      wantToShareData,
+      setWantToShareData,
+    }),
+    [additionalInfo, courier, courierCode, fleetsIds, invoiceWithCPF, wantToShareData]
+  );
   // select fleetsIds
   useEffect(() => {
     if (!courier) return;
     setFleetsIds(courier.fleetsIds);
   }, [courier]);
   // result
-  return {
-    courierCode,
-    setCourierCode,
-    courier,
-    fleetsIds,
-    setFleetsIds,
-    additionalInfo,
-    setAdditionalInfo,
-    invoiceWithCPF,
-    setInvoiceWithCPF,
-    wantToShareData,
-    setWantToShareData,
-  };
+  return options;
 };

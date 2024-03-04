@@ -139,10 +139,10 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
             {credits ? (
               <View style={{ marginTop: paddings.lg }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <DefaultText size="md" color="black">
+                  <DefaultText size="md" color="primary900">
                     Créditos
                   </DefaultText>
-                  <DefaultText color="black">{formatCurrency(highDemandFee)}</DefaultText>
+                  <DefaultText color="primary900">{formatCurrency(credits)}</DefaultText>
                 </View>
                 <DefaultText
                   style={{ marginTop: paddings.sm, ...lineHeight.sm }}

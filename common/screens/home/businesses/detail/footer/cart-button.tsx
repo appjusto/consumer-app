@@ -1,5 +1,5 @@
-import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
@@ -20,14 +20,15 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
   // context
   // UI
   if (!order) return null;
+  const total = variant === 'business' ? getOrderItemsTotal(order) : getOrderTotalCost(order);
   const totalLabel = order.fare?.courier?.value
     ? variant === 'business'
       ? 'sem a entrega'
       : 'com a entrega'
     : '';
-  const total = variant === 'business' ? getOrderItemsTotal(order) : getOrderTotalCost(order);
   const totalItems = order.items?.length ? order.items.length : 0;
   const itemsLabel = totalItems ? ` / ${totalItems} ite${totalItems > 1 ? 'ns' : 'm'}` : null;
+  if (variant === 'business' && !total) return null;
   return (
     <View style={[{}, style]} {...props}>
       <HRShadow />

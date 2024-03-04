@@ -1,8 +1,9 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrder, useContextPlaceOrderOptions } from '@/api/orders/context/order-context';
+import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
+import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
 import { getOrderStage } from '@/api/orders/status';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -31,7 +32,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const status = quote?.status;
   const type = quote?.type;
   const { paymentMethod, selectedCard } = useContextPayments();
-  const placeOptions = useContextPlaceOrderOptions();
+  const placeOptions = usePlaceOrderOptions();
   // state
   const [loading, setLoading] = useState(false);
   // tracking

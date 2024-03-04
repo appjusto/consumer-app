@@ -1,5 +1,5 @@
-import { getOrderTotalCost } from '@/api/orders/revenue/getOrderRevenue';
 import { getOrderTimestamp } from '@/api/orders/timestamp/getOrderTime';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { formatCurrency } from '@/common/formatters/currency';
 import { formatTimestamp } from '@/common/formatters/timestamp';

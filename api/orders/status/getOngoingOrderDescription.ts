@@ -28,7 +28,7 @@ export const getOngoingOrderDescription = (order: Order) => {
     if (dispatchingStatus === 'outsourced') {
       return 'Sua estrega está sendo feita por uma empresa parceira. Lembre-se que seu pedido já foi pago 💰';
     } else if (dispatchingState && dispatchingState !== 'idle') {
-      const person = order.courier?.name ? `${order.courier?.name},` : 'A pessoa';
+      const person = order.courier?.name ? `${order.courier?.name}` : 'A pessoa';
       return `${person} está ${getDispatchingStateAsText(
         type,
         dispatchingState

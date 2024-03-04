@@ -41,18 +41,21 @@ export const PaymentsProvider = ({ children }: Props) => {
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
   const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
   // side effects
+  // set default payment
   useEffect(() => {
     if (defaultPaymentMethod === undefined) return;
     if (paymentMethod === null) return;
     if (paymentMethod) return;
     setPaymentMethod(defaultPaymentMethod);
   }, [defaultPaymentMethod, paymentMethod]);
+  // set default payment method id
   useEffect(() => {
     if (defaultPaymentMethodId === undefined) return;
     if (paymentMethodId === null) return;
     if (paymentMethodId) return;
     setPaymentMethodId(defaultPaymentMethodId);
   }, [defaultPaymentMethodId, paymentMethodId]);
+  // select payments accepted on order according with current context
   useEffect(() => {
     // if (profile?.tags?.includes('unsafe')) {
     //   setAcceptedOnOrder(['pix']);
@@ -70,6 +73,7 @@ export const PaymentsProvider = ({ children }: Props) => {
       );
     }
   }, [profile, acceptedByPlatform, business]);
+  // set accepted cards on order according with current context
   useEffect(() => {
     if (!acceptedOnOrder) return;
     if (!cards) return;

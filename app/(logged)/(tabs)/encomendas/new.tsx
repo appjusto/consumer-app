@@ -11,6 +11,7 @@ import { getPlaceTitle } from '@/common/screens/orders/places/label';
 import { PlaceKey } from '@/common/screens/orders/places/types';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
+import { useIsFocused } from '@react-navigation/native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -29,10 +30,10 @@ export default function NewPackageOrderScreen() {
   // context
   const api = useContextApi();
   const quote = useContextOrder();
-  // const focused = useIsFocused();
+  const focused = useIsFocused();
   // state
-  const [originId, setOriginId] = useState(quote?.origin?.id);
-  const [destinationId, setDestinationId] = useState(quote?.destination?.id);
+  const [originId, setOriginId] = useState<string>();
+  const [destinationId, setDestinationId] = useState<string>();
   const origin = useFetchPlace(originId);
   const destination = useFetchPlace(destinationId);
   // tracking
@@ -50,16 +51,18 @@ export default function NewPackageOrderScreen() {
   // side effects
   // select origin
   useEffect(() => {
+    if (!focused) return;
     if (quote === null) {
       navigateToPlace('origin');
     }
-  }, [quote]);
+  }, [quote, focused]);
   // select destination
   useEffect(() => {
+    if (!focused) return;
     if (originId && !destinationId) {
       navigateToPlace('destination');
     }
-  }, [destinationId, originId]);
+  }, [destinationId, originId, focused]);
   // update places with params
   useEffect(() => {
     console.log('params change', params);
@@ -75,6 +78,7 @@ export default function NewPackageOrderScreen() {
 
   // create order
   useEffect(() => {
+    if (!focused) return;
     if (!origin) return;
     if (quote) return;
     api
@@ -84,7 +88,7 @@ export default function NewPackageOrderScreen() {
         // TODO: toast
         console.error(error);
       });
-  }, [api, quote, origin]);
+  }, [api, quote, origin, focused]);
   // update origin
   useEffect(() => {
     if (!origin) return;
@@ -125,10 +129,10 @@ export default function NewPackageOrderScreen() {
     });
   };
   // logs
-  console.log('quote', quote?.id);
-  console.log('key', params.key);
-  console.log('origin', originId, Boolean(origin));
-  console.log('destination', destinationId, Boolean(destination));
+  // console.log('quote', quote?.id);
+  // console.log('key', params.key);
+  // console.log('origin', originId, Boolean(origin));
+  // console.log('destination', destinationId, Boolean(destination));
   // UI
   return (
     <DefaultScrollView style={{ ...screens.default }}>
