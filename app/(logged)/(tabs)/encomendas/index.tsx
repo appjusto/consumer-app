@@ -22,6 +22,10 @@ const restrictions = [
 export default function P2PIndex() {
   // tracking
   useTrackScreenView('Encomendas');
+  // handlers
+  const newOrderHandler = () => {
+    router.navigate({ pathname: '/encomendas/new' });
+  };
   // UI
   return (
     <DefaultScrollView style={{ ...screens.default }}>
@@ -34,7 +38,7 @@ export default function P2PIndex() {
           </DefaultText>
         </View>
         {/* origin */}
-        <Pressable onPress={() => router.navigate('/encomendas/new')}>
+        <Pressable onPress={newOrderHandler}>
           <View
             style={{
               flexDirection: 'row',

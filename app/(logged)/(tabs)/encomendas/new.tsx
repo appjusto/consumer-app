@@ -16,6 +16,8 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
+type State = 'new' | 'waiting-origin' | 'creating' | 'waiting-destination' | 'done';
+
 export default function NewPackageOrderScreen() {
   // params
   const params = useUniqState(
@@ -24,14 +26,18 @@ export default function NewPackageOrderScreen() {
       placeId: string;
     }>()
   );
-  // const { place, setPlace } = useCreatePlace();
-  // console.log('NewPackageOrderScreen', params);
-  // const { state, originId, destinationId } = params;
   // context
   const api = useContextApi();
   const quote = useContextOrder();
   const focused = useIsFocused();
   // state
+  const [state, setState] = useState<State>(() => {
+    if (!quote) return 'new';
+    if (!quote.origin?.id) return 'waiting-origin';
+    if (!quote.destination?.id) return 'waiting-destination';
+    return 'done';
+  });
+  console.log('quote', quote?.id);
   const [originId, setOriginId] = useState<string>();
   const [destinationId, setDestinationId] = useState<string>();
   const origin = useFetchPlace(originId);
@@ -49,41 +55,40 @@ export default function NewPackageOrderScreen() {
     });
   };
   // side effects
-  // select origin
-  useEffect(() => {
-    if (!focused) return;
-    if (quote === null) {
-      navigateToPlace('origin');
-    }
-  }, [quote, focused]);
-  // select destination
-  useEffect(() => {
-    if (!focused) return;
-    if (!quote) return;
-    if (originId && !destinationId) {
-      navigateToPlace('destination');
-    }
-  }, [destinationId, originId, focused, quote]);
   // update places with params
   useEffect(() => {
     console.log('params change', params);
-    const placeId = params.placeId;
-    if (!placeId) return;
+    const { key, placeId } = params;
+    // if (!key) navigateToPlace('origin');
+    // else if (!placeId) return;
     // if (!focused) return;
-    if (params.key === 'origin') {
+    if (!placeId) return;
+    if (key === 'origin') {
       setOriginId(placeId);
       router.setParams({ key: '', placeId: '' });
-    } else if (params.key === 'destination') {
+    } else if (key === 'destination') {
       setDestinationId(placeId);
       router.setParams({ key: '', placeId: '' });
     }
   }, [params]);
-
+  // react when state changes
+  useEffect(() => {
+    console.log('state', state);
+    if (state === 'new') {
+      navigateToPlace('origin');
+    } else if (state === 'waiting-origin') {
+      navigateToPlace('origin');
+    } else if (state === 'waiting-destination') {
+      navigateToPlace('destination');
+    }
+  }, [state]);
   // create order
   useEffect(() => {
     if (!focused) return;
     if (!origin) return;
     if (quote) return;
+    if (state !== 'new') return;
+    setState('creating');
     api
       .orders()
       .createP2POrder(origin)
@@ -91,7 +96,14 @@ export default function NewPackageOrderScreen() {
         // TODO: toast
         console.error(error);
       });
-  }, [api, quote, origin, focused]);
+  }, [api, state, quote, origin, focused]);
+  // move state to created
+  useEffect(() => {
+    if (!focused) return;
+    if (state !== 'creating') return;
+    if (!quote) return;
+    setState('waiting-destination');
+  }, [focused, state, quote]);
   // update origin
   useEffect(() => {
     if (!origin) return;
@@ -110,6 +122,7 @@ export default function NewPackageOrderScreen() {
     if (!destination) return;
     if (!quote) return;
     if (quote?.destination?.id === destination.id) return;
+    if (state === 'waiting-destination') setState('done');
     api
       .orders()
       .updateOrder(quote.id, { destination })
@@ -117,7 +130,7 @@ export default function NewPackageOrderScreen() {
         // TODO: toast
         console.error(error);
       });
-  }, [api, quote, destination]);
+  }, [api, quote, destination, state]);
   // handlers
   const editPlaceHandler = (key: PlaceKey | number) => {
     if (typeof key === 'string') {
