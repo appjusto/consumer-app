@@ -11,7 +11,10 @@ export const getOrderStatusAsText = (
   if (status === 'declined') return 'Recusado';
   if (status === 'rejected') return 'Rejeitado';
   if (status === 'charged') return 'Pago';
-  if (status === 'confirmed') return 'Aguardando restaurante';
+  if (status === 'confirmed') {
+    if (type === 'food') return 'Aguardando restaurante';
+    return 'Aguardando entregador/a';
+  }
   if (status === 'scheduled') return 'Agendado';
   if (status === 'preparing') return 'Em preparo';
   if (status === 'ready') return 'Pronto';

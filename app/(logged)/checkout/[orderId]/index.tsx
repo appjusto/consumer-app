@@ -7,7 +7,6 @@ import { BusinessCart } from '@/common/screens/home/businesses/checkout/business
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router } from 'expo-router';
@@ -22,7 +21,7 @@ export default function OrderCheckoutScreen() {
   // tracking
   useTrackScreenView('Checkout: sacola', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
-  useBackWhenOrderExpires();
+  // useBackWhenOrderExpires();
   // logs
   console.log('checkout/[orderId]/index', typeof quote, quote?.id);
   // UI

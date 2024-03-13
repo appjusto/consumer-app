@@ -35,5 +35,8 @@ export const getOngoingOrderDescription = (order: Order) => {
       ).toLocaleLowerCase()}`;
     }
   }
+  if (status === 'confirmed') {
+    if (type === 'p2p') return 'Procurando uma pessoa para realizar a sua entrega.';
+  }
   return '';
 };

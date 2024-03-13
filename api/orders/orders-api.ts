@@ -24,6 +24,7 @@ import { LatLng } from 'react-native-maps';
 import AuthApi from '../auth/AuthApi';
 import { fromDate } from '../firebase/timestamp';
 import { addBusinessToOrder } from './business/toOrderBusiness';
+import { AllOrdersStatuses } from './status';
 import { ObserveOrdersOptions, PlaceOrderOptions } from './types';
 
 // functions
@@ -47,13 +48,13 @@ export default class OrdersApi {
   // observe orders
   observeOrders(options: ObserveOrdersOptions, resultHandler: (orders: WithId<Order>[]) => void) {
     console.log('observeOrders', options);
-    const { statuses, businessId, type, from, to, limit } = options;
+    const { statuses = AllOrdersStatuses, businessId, type, from, to, limit } = options;
     let query = ordersRef()
       .where('consumer.id', '==', this.auth.getUserId())
+      .where('status', 'in', statuses)
       .orderBy('createdOn', 'desc');
     if (businessId) query = query.where('business.id', '==', businessId);
     if (type) query = query.where('type', '==', type);
-    if (statuses) query = query.where('status', 'in', statuses);
     if (from) query = query.where('createdOn', '>', fromDate(from));
     if (to) query = query.where('createdOn', '<', fromDate(to));
     if (limit) query = query.limit(limit);

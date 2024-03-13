@@ -8,7 +8,6 @@ import { OrderFleetCourierSelector } from '@/common/screens/home/businesses/chec
 import { PreparationMode } from '@/common/screens/home/businesses/checkout/delivery/preparation-mode';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { useUpdateOrderDestination } from '@/common/screens/orders/checkout/places/useUpdateOrderDestination';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router } from 'expo-router';
@@ -21,7 +20,7 @@ export default function OrderCheckoutDeliveryScreen() {
   useTrackScreenView('Checkout: entrega', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
   useUpdateOrderDestination();
-  useBackWhenOrderExpires();
+  // useBackWhenOrderExpires();
   // handlers
   const checkoutHandler = () => {
     if (!quote) return;
@@ -31,7 +30,7 @@ export default function OrderCheckoutDeliveryScreen() {
     });
   };
   // logs
-  // console.log('checkout/[orderId]/delivery', typeof quote, quote?.id);
+  console.log('checkout/[orderId]/delivery', typeof quote, quote?.id);
   // UI
   if (!quote) return null;
   return (

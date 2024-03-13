@@ -108,6 +108,7 @@ export default function NewPackageOrderScreen() {
   useEffect(() => {
     if (!origin) return;
     if (!quote) return;
+    if (quote.type !== 'p2p') return;
     if (quote.origin?.id === origin.id) return;
     api
       .orders()

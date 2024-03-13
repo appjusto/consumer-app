@@ -79,6 +79,8 @@ export default function ProductDetailScreen() {
   const addToOrderDisabled = !profile || !currentPlace || !business || !orderItem || !canAddItem;
   // console.log(!profile, !currentPlace, !business, !orderItem, !canAddItem);
   // UI
+  // console.log('product', product);
+  // console.log('quote', quote);
   if (!product || quote === undefined) return <Loading />;
   return (
     <View style={{ ...screens.default }}>

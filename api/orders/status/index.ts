@@ -10,6 +10,12 @@ export const OngoingOrdersStatuses: OrderStatus[] = [
   'dispatching',
 ];
 
+export const AllOrdersStatuses: OrderStatus[] = OngoingOrdersStatuses.concat([
+  'canceled',
+  'declined',
+  'delivered',
+]);
+
 export const FailedOrdersStatuses: OrderStatus[] = ['expired'];
 
 export const isOrderOngoing = (status: OrderStatus) => OngoingOrdersStatuses.includes(status);

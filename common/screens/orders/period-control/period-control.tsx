@@ -52,18 +52,6 @@ export const PeriodControl = ({
       setTo(getEndOfMonth().getTime());
     }
   }, [period]);
-  // update to according with from
-  // useEffect(() => {
-  //   console.log('from', period, new Date(from));
-  //   if (period === 'day') {
-  //     console.log('to', period, getEndOfDay(new Date(from)));
-  //     setTo(getEndOfDay(new Date(from)).getTime());
-  //   } else if (period === 'week') {
-  //     setTo(getEndOfWeek(new Date(from)).getTime());
-  //   } else if (period === 'month') {
-  //     setTo(getEndOfMonth(new Date(from)).getTime());
-  //   }
-  // }, [period, from]);
   // handler
   useEffect(() => {
     if (!from || !to) return;
@@ -118,7 +106,7 @@ export const PeriodControl = ({
         />
         <OnlyIconButton
           icon={<ChevronLeft size={16} color={colors.neutral800} />}
-          style={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
+          style={{ backgroundColor: colors.white, borderColor: colors.white }}
           onPress={() => previousPeriod()}
         />
         <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(true)}>
@@ -128,8 +116,8 @@ export const PeriodControl = ({
                 flex: 1,
                 ...borders.default,
                 marginHorizontal: paddings.sm,
-                backgroundColor: colors.neutral50,
-                borderColor: colors.neutral50,
+                backgroundColor: colors.white,
+                borderColor: colors.white,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -140,7 +128,7 @@ export const PeriodControl = ({
         </Pressable>
         <OnlyIconButton
           icon={<ChevronRight size={16} color={colors.neutral800} />}
-          style={{ backgroundColor: colors.neutral50, borderColor: colors.neutral50 }}
+          style={{ backgroundColor: colors.white, borderColor: colors.white }}
           disabled={!nextEnabled}
           onPress={() => nextPeriod()}
         />

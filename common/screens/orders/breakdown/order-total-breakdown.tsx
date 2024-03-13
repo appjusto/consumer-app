@@ -48,7 +48,7 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
   return (
     <View style={[{ borderWidth: 0 }, style]} {...props}>
       {/* p2p fee */}
-      {platformFee ? <Item title="Taxa de serviço" value={platformFee} /> : null}
+      {platformFee ? <Item title="Serviço" value={platformFee} /> : null}
       {/* food items */}
       {itemsTotal ? <Item title="Itens do pedido" value={itemsTotal} /> : null}
       {/* food items */}

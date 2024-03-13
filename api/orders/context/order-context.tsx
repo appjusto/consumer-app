@@ -44,7 +44,7 @@ export const OrderProvider = ({ children }: Props) => {
     if (orderWithId) setOrder(orderWithId);
     else if (businessQuote) setOrder(businessQuote);
     else if (packageQuote) setOrder(packageQuote);
-    else setOrder(undefined);
+    else setOrder(null);
   }, [order, businessQuote, orderWithId, packageQuote]);
   // logs
   // console.log('OrderProvider', pathname, params, useSegments());

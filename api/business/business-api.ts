@@ -56,6 +56,13 @@ export default class BusinessApi {
     if (snapshot.empty) return null;
     return documentAs<PublicBusiness>(snapshot.docs[0]);
   }
+  async fetchBusinessById(id: string) {
+    const query = publicBusinessesRef().doc(id);
+    const snapshot = await query.get();
+    if (!snapshot.exists) return null;
+    const business = documentAs<PublicBusiness>(snapshot);
+    return business;
+  }
 
   observeBusiness(businessId: string, resultHandler: (business: WithId<PublicBusiness>) => void) {
     console.log('observeBusiness', businessId);
