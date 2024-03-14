@@ -10,12 +10,12 @@ import { AspectReview } from './aspect-review';
 
 interface Props extends ViewProps {
   orderId?: string;
-  consumerReview: ReviewType | undefined;
+  courierReview: ReviewType | undefined;
   businessReview: ReviewType | undefined;
   platformReview: ReviewType | undefined;
   nps?: number;
   disabled?: boolean;
-  setConsumerReview: (type: ReviewType) => void;
+  setCourierReview: (type: ReviewType) => void;
   setBusinessReview?: (type: ReviewType) => void;
   setPlatformReview: (type: ReviewType) => void;
   setNPS: (value: number) => void;
@@ -23,12 +23,12 @@ interface Props extends ViewProps {
 
 export const OrderReviewView = ({
   orderId,
-  consumerReview,
+  courierReview,
   businessReview,
   platformReview,
   nps,
   disabled,
-  setConsumerReview,
+  setCourierReview,
   setBusinessReview,
   setPlatformReview,
   setNPS,
@@ -41,29 +41,38 @@ export const OrderReviewView = ({
   // side effects
   useEffect(() => {
     if (!review) return;
-    if (review.consumerReview) setConsumerReview(review.consumerReview.rating);
+    if (review.consumerReview) setCourierReview(review.consumerReview.rating);
     if (review.business && setBusinessReview) setBusinessReview(review.business.rating);
     if (review.platform) setPlatformReview(review.platform.rating);
     if (review.nps) setNPS(review.nps);
-  }, [review, setPlatformReview, setBusinessReview, setConsumerReview, setNPS]);
+  }, [review, setPlatformReview, setBusinessReview, setCourierReview, setNPS]);
   // UI
   const reallyDisabled = disabled || Boolean(review);
-  const showReviewBox = !review || consumerReview || businessReview || platformReview;
+  const showReviewBox = !review || courierReview || businessReview || platformReview;
   return (
     <View>
       {showReviewBox ? (
         <View
-          style={[{ backgroundColor: colors.white, padding: paddings.lg, borderRadius: 8 }, style]}
+          style={[
+            {
+              backgroundColor: colors.white,
+              padding: paddings.lg,
+              borderRadius: 8,
+              borderColor: colors.neutral100,
+              borderWidth: 1,
+            },
+            style,
+          ]}
           {...props}
         >
           <DefaultText size="lg">Avalie sua experiência</DefaultText>
-          {!review || consumerReview ? (
+          {!review || courierReview ? (
             <AspectReview
               style={{ marginTop: paddings.lg }}
-              label="Consumidor"
-              type={consumerReview}
+              label="Entregador/a"
+              type={courierReview}
               disabled={reallyDisabled}
-              onChange={setConsumerReview}
+              onChange={setCourierReview}
             />
           ) : null}
           {(!review && setBusinessReview) || businessReview ? (
@@ -78,7 +87,7 @@ export const OrderReviewView = ({
           {!review || platformReview ? (
             <AspectReview
               style={{ marginTop: paddings.lg }}
-              label="AppJusto"
+              label="appjusto"
               type={platformReview}
               disabled={reallyDisabled}
               onChange={setPlatformReview}

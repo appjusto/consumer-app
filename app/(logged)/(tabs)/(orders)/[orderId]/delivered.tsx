@@ -1,17 +1,15 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
-import { FeedbackHeader } from '@/common/components/views/feedback-header';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportURL';
-import { formatCurrency } from '@/common/formatters/currency';
+import { TipControl } from '@/common/screens/orders/delivered/tip/tip-control';
 import { OrderReviewView } from '@/common/screens/orders/review/order-review-view';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -20,7 +18,7 @@ import { OrderReview, ReviewType } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, router } from 'expo-router';
 import { isEmpty } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 export default function OrderDeliveredScreen() {
@@ -30,22 +28,27 @@ export default function OrderDeliveredScreen() {
   const order = useContextOrder();
   const orderId = order?.id;
   // state
-  const [consumerReview, setConsumerReview] = useState<ReviewType>();
+  const [tip, setTip] = useState(0);
+  const [courierReview, setCourierReview] = useState<ReviewType>();
   const [businessReview, setBusinessReview] = useState<ReviewType>();
   const [platformReview, setPlatformReview] = useState<ReviewType>();
   const [nps, setNPS] = useState<number>();
   const [loading, setLoading] = useState(false);
   // tracking
   useTrackScreenView('Pedido entregue', { orderId });
+  // side effects
+  useEffect(() => {
+    if (!order?.tip?.value) return;
+    if (order.tip.value !== tip) setTip(order.tip.value);
+  }, [order, tip]);
   // handlers
   // update review
   const setReviewHandler = () => {
-    // TODO: tags
     if (!order) return;
     if (!orderId) return;
     let review: Partial<OrderReview> = { npsVersion: '10' };
-    if (consumerReview) {
-      review = { ...review, consumerReview: { id: order.consumer.id, rating: consumerReview } };
+    if (courierReview) {
+      review = { ...review, courier: { id: order.courier?.id ?? null, rating: courierReview } };
     }
     if (businessReview && order.business?.id) {
       review = { ...review, business: { id: order.business.id, rating: businessReview } };
@@ -83,29 +86,25 @@ export default function OrderDeliveredScreen() {
   // UI
   if (!order) return <Loading title="Pedido entregue!" />;
   return (
-    <DefaultScrollView style={{ ...screens.default }}>
+    <DefaultScrollView style={{ ...screens.default, backgroundColor: colors.neutral50 }}>
       <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
-      <FeedbackHeader title="Corrida finalizada!" text={['Valor recebido']} variant="success">
-        <DefaultText style={{ marginTop: paddings.xs }} size="lg">
-          {formatCurrency(getOrderTotalCost(order))}
-        </DefaultText>
-      </FeedbackHeader>
+
       <View
         style={{
           flex: 1,
-          marginTop: paddings['2xl'],
           padding: paddings.lg,
-          backgroundColor: colors.neutral50,
         }}
       >
+        <TipControl order={order} tip={tip} onChange={setTip} />
         <OrderReviewView
-          consumerReview={consumerReview}
+          style={{ marginTop: paddings.lg }}
+          courierReview={courierReview}
           businessReview={businessReview}
           platformReview={platformReview}
           nps={nps}
           disabled={!order}
           orderId={orderId}
-          setConsumerReview={setConsumerReview}
+          setCourierReview={setCourierReview}
           setBusinessReview={order.business?.id ? setBusinessReview : undefined}
           setPlatformReview={setPlatformReview}
           setNPS={setNPS}
@@ -116,6 +115,8 @@ export default function OrderDeliveredScreen() {
             marginTop: paddings.lg,
             padding: paddings.lg,
             borderRadius: 8,
+            borderColor: colors.neutral100,
+            borderWidth: 1,
           }}
         >
           <View style={{ marginTop: paddings.lg }}>
@@ -127,7 +128,7 @@ export default function OrderDeliveredScreen() {
               <DefaultCard
                 style={{ marginTop: paddings.lg }}
                 icon={<DefaultCardIcon iconName="chat" />}
-                title="Suporte AppJusto"
+                title="Suporte appjusto"
                 subtitle="Fale com a gente através do nosso WhatsApp"
               />
             </Pressable>
@@ -136,7 +137,7 @@ export default function OrderDeliveredScreen() {
                 style={{ marginTop: paddings.sm }}
                 icon={<DefaultCardIcon iconName="alert" variant="warning" />}
                 title="Denunciar"
-                subtitle="Realize uma denúncia através do AppJusto"
+                subtitle="Realize uma denúncia através do appjusto"
               />
             </Pressable>
           </View>

@@ -16,10 +16,19 @@ export const NPS = ({ style, value, disabled, onChange, ...props }: Props) => {
   // UI
   return (
     <View
-      style={[{ backgroundColor: colors.white, padding: paddings.lg, borderRadius: 8 }, style]}
+      style={[
+        {
+          backgroundColor: colors.white,
+          padding: paddings.lg,
+          borderRadius: 8,
+          borderColor: colors.neutral100,
+          borderWidth: 1,
+        },
+        style,
+      ]}
       {...props}
     >
-      <DefaultText size="lg">Qual a probabilidade de indicar o AppJusto?</DefaultText>
+      <DefaultText size="lg">Qual a probabilidade de indicar o appjusto?</DefaultText>
       <View
         style={{
           flexDirection: 'row',

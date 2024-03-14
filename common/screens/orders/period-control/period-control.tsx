@@ -29,7 +29,7 @@ interface Props extends ViewProps {
 
 export const PeriodControl = ({
   initialFrom = new Date(),
-  initialPeriod = 'day',
+  initialPeriod = 'month',
   onChange,
 }: Props) => {
   // state
