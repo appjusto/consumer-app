@@ -14,6 +14,7 @@ import {
   PayableWith,
   Place,
   PublicBusiness,
+  UpdateOrderCouponPayload,
   WithId,
 } from '@appjusto/types';
 import firebase from '@react-native-firebase/app';
@@ -31,6 +32,7 @@ import { ObserveOrdersOptions, PlaceOrderOptions } from './types';
 const region = getFirebaseRegion();
 const getOrderQuotes = firebase.app().functions(region).httpsCallable('getOrderQuotes');
 const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
+const updateOrderCoupon = firebase.app().functions(region).httpsCallable('updateOrderCoupon');
 
 // firestore
 const ordersRef = () => firestore().collection('orders');
@@ -184,6 +186,15 @@ export default class OrdersApi {
       console.error('getOrderQuotes error');
       return [];
     }
+  }
+
+  async updateCoupon(orderId: string, code: string) {
+    console.log('updateCoupon', orderId, code);
+    await updateOrderCoupon({
+      orderId,
+      code,
+      meta: { version: getAppVersion() },
+    } as UpdateOrderCouponPayload);
   }
 
   async placeOrder(options: PlaceOrderOptions) {

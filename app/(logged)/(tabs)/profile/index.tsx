@@ -1,6 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextProfile } from '@/common/auth/AuthContext';
+import { DefaultBadge } from '@/common/components/badges/DefaultBadge';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultListItem } from '@/common/components/lists/DefaultListItem';
 import { SingleListItem } from '@/common/components/lists/SingleListItem';
@@ -19,6 +20,7 @@ import {
   LogOut,
   Settings,
   User2,
+  Wallet,
 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -65,6 +67,29 @@ export default function ProfileScreen() {
             leftView={<BookMinus size={20} color={colors.black} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
             onPress={() => router.push('/profile/cards/list')}
+          />
+          <DefaultListItem
+            title="Seus créditos"
+            subtitles={[
+              'Compartilhe seu código e ganhe R$ 5 para cada pessoa que fizer um pedido pela primeira vez no appjusto',
+            ]}
+            leftView={<Wallet size={20} color={colors.black} />}
+            rightView={
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <DefaultBadge
+                  title="Novo"
+                  color="success900"
+                  backgroundColor="success100"
+                  borderColor="success100"
+                ></DefaultBadge>
+                <ChevronRight
+                  style={{ marginLeft: paddings.sm }}
+                  size={16}
+                  color={colors.neutral800}
+                />
+              </View>
+            }
+            onPress={() => router.push('/profile/credits')}
           />
 
           <View style={{ flex: 1 }} />

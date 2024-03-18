@@ -19,6 +19,8 @@ export const useOrderFares = (
   const created = order?.status === 'quote' && Boolean(order?.timestamps?.quote);
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
+  const coupon = order?.coupon?.code;
+  const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
   // side effects
   // console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod);
   useEffect(() => {
@@ -55,7 +57,18 @@ export const useOrderFares = (
       .finally(() => {
         setLoading(false);
       });
-  }, [api, showToast, orderId, created, distance, fulfillment, defaultPaymentMethod, fleetsIds]);
+  }, [
+    api,
+    showToast,
+    orderId,
+    created,
+    distance,
+    fulfillment,
+    defaultPaymentMethod,
+    fleetsIds,
+    coupon,
+    numberOfItems,
+  ]);
   // result
   return { fares, loading };
 };
