@@ -29,7 +29,7 @@ export const useOrderFares = (
     if (!created) return;
     if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
-    if (fulfillment === 'delivery' && !fleetsIds) return;
+    // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;
     // setFares(undefined);
     console.log(

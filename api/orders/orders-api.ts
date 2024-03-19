@@ -190,11 +190,12 @@ export default class OrdersApi {
 
   async updateCoupon(orderId: string, code: string) {
     console.log('updateCoupon', orderId, code);
-    await updateOrderCoupon({
+    const response = await updateOrderCoupon({
       orderId,
       code,
       meta: { version: getAppVersion() },
     } as UpdateOrderCouponPayload);
+    if ('error' in response.data) throw new Error(response.data.error);
   }
 
   async placeOrder(options: PlaceOrderOptions) {

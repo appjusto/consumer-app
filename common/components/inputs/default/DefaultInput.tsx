@@ -15,6 +15,7 @@ export type DefaultInputProps = TextInput['props'] &
     limit?: number;
     leftView?: React.ReactNode;
     rightView?: React.ReactNode;
+    error?: boolean;
     containerStyle?: StyleProp<ViewStyle> | undefined;
     inputStyle?: StyleProp<TextStyle> | undefined;
     titleStyle?: StyleProp<TextStyle> | undefined;
@@ -33,6 +34,7 @@ export const DefaultInput = forwardRef(
       limit,
       leftView,
       rightView,
+      error,
       style,
       containerStyle,
       inputStyle,
@@ -52,6 +54,7 @@ export const DefaultInput = forwardRef(
     const [focused, setFocused] = useState(false);
     // UI
     const borderColor = () => {
+      if (error) return colors.error500;
       if (focused) return colors.black;
       if (!value) return colors.neutral200;
       return colors.neutral700;
