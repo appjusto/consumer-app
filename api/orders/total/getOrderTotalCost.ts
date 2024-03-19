@@ -7,5 +7,6 @@ export const getOrderTotalCost = (order: Order) => {
   value += getOrderDeliveryCost(order);
   value += order.fare?.platform?.value ?? 0;
   value -= order?.fare?.credits ?? 0;
+  value -= order?.fare?.discount ?? 0;
   return value;
 };

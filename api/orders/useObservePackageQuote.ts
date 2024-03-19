@@ -1,11 +1,14 @@
 import { Order, WithId } from '@appjusto/types';
+import { usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
 import { ObserveOrdersOptions } from './types';
 
-export const useObservePackageQuote = (enabled = true) => {
+export const useObservePackageQuote = () => {
   // context
   const api = useContextApi();
+  const pathname = usePathname();
+  const enabled = pathname.startsWith('/encomendas');
   // refs
   const optionsRef = useRef<ObserveOrdersOptions>({ statuses: ['quote'], type: 'p2p', limit: 1 });
   const options = optionsRef.current;

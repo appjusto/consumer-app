@@ -40,7 +40,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
     });
   };
   // UI
-  // if (!business) return;
+  // console.log('PreparationMode', business);
   const realtime = order.type === 'p2p' || business?.preparationModes?.includes('realtime');
   const scheduled = order.type === 'p2p' || business?.preparationModes?.includes('scheduled');
   const estimate = order.arrivals?.destination?.estimate;

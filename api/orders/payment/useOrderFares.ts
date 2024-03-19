@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
 export const useOrderFares = (
   order: WithId<Order> | null | undefined,
   defaultPaymentMethod: PayableWith | null | undefined,
-  fleetsIds: string[] | undefined
+  fleetsIds: string[] | undefined,
+  enabled = false
 ) => {
   // context
   const api = useContextApi();
@@ -28,6 +29,8 @@ export const useOrderFares = (
     if (!created) return;
     if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
+    if (fulfillment === 'delivery' && !fleetsIds) return;
+    if (!enabled) return;
     // setFares(undefined);
     console.log(
       'useOrderFares -> update',
@@ -68,6 +71,7 @@ export const useOrderFares = (
     fleetsIds,
     coupon,
     numberOfItems,
+    enabled,
   ]);
   // result
   return { fares, loading };

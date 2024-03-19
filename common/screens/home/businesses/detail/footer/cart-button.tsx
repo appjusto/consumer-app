@@ -11,7 +11,7 @@ import { ActivityIndicator, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   order: Order | undefined | null;
-  variant: 'business' | 'checkout' | 'place-order';
+  variant: 'business' | 'products' | 'checkout' | 'place-order';
   disabled: boolean;
   onPress: () => void;
 }
@@ -20,15 +20,16 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
   // context
   // UI
   if (!order) return null;
-  const total = variant === 'business' ? getOrderItemsTotal(order) : getOrderTotalCost(order);
+  const products = variant === 'business' || variant === 'products';
+  const total = products ? getOrderItemsTotal(order) : getOrderTotalCost(order);
   const totalLabel = order.fare?.courier?.value
-    ? variant === 'business'
+    ? products
       ? 'sem a entrega'
       : 'com a entrega'
     : '';
   const totalItems = order.items?.length ? order.items.length : 0;
   const itemsLabel = totalItems ? ` / ${totalItems} ite${totalItems > 1 ? 'ns' : 'm'}` : null;
-  if (variant === 'business' && !total) return null;
+  if (products && !total) return null;
   return (
     <View style={[{}, style]} {...props}>
       <HRShadow />

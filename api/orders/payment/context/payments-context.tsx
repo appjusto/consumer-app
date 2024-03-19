@@ -68,7 +68,7 @@ export const PaymentsProvider = ({ children }: Props) => {
       );
     } else {
       setAcceptedOnOrder(
-        acceptedByPlatform.filter((value) => business.acceptedPaymentMethods?.includes(value))
+        acceptedByPlatform.filter((value) => business?.acceptedPaymentMethods?.includes(value))
       );
     }
   }, [profile, acceptedByPlatform, business]);
@@ -78,10 +78,10 @@ export const PaymentsProvider = ({ children }: Props) => {
     if (!cards) return;
     setAcceptedCardsOnOrder(
       cards.filter((card) => {
-        if (card.processor === 'iugu' && acceptedOnOrder.includes('credit_card')) return true;
+        if (card.processor === 'iugu' && acceptedOnOrder?.includes('credit_card')) return true;
         if (card.processor === 'vr') {
           const vrCard = card as WithId<VRCard>;
-          return acceptedOnOrder.includes(vrCard.type);
+          return acceptedOnOrder?.includes(vrCard.type);
         }
         return false;
       })

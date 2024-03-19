@@ -22,7 +22,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   } = useContextPayments();
   // state
   // UI
-  console.log(acceptedOnOrder);
+  // console.log(acceptedOnOrder);
   const acceptsPix = acceptedOnOrder?.includes('pix');
   return (
     <View style={[{}, style]} {...props}>

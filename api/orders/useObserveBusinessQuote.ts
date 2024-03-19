@@ -1,10 +1,12 @@
 import { Order, WithId } from '@appjusto/types';
+import { useGlobalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { useContextApi } from '../ApiContext';
 import { ObserveOrdersOptions } from './types';
 
-export const useObserveBusinessQuote = (businessId?: string, enabled = true) => {
+export const useObserveBusinessQuote = (enabled = true) => {
   // context
+  const { businessId } = useGlobalSearchParams<{ businessId: string }>();
   const api = useContextApi();
   // refs
   const optionsRef = useRef<ObserveOrdersOptions>({ statuses: ['quote'], limit: 1 });
@@ -24,6 +26,8 @@ export const useObserveBusinessQuote = (businessId?: string, enabled = true) => 
     else if (orders.length === 0) setOrderQuote(null);
     else setOrderQuote(orders[0]);
   }, [orders]);
+  // logs
+  // console.log('useObserveBusinessQuote', businessId);
   // result
   return orderQuote;
 };

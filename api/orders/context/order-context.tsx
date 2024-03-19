@@ -1,6 +1,6 @@
-import { useContextBusiness } from '@/api/business/context/business-context';
+import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { Fare, Order, PublicBusiness, WithId } from '@appjusto/types';
-import { useGlobalSearchParams, usePathname } from 'expo-router';
+import { useGlobalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
@@ -25,19 +25,23 @@ interface Value {
 
 export const OrderProvider = ({ children }: Props) => {
   // context
-  const business = useContextBusiness();
-  const businessId = business?.id;
   const { paymentMethod } = useContextPayments();
   // params
   const params = useGlobalSearchParams<{ orderId: string }>();
-  const pathname = usePathname();
   // state
   const [order, setOrder] = useState<WithId<Order> | null>();
   const orderWithId = useObserveOrder(params.orderId);
-  const businessQuote = useObserveBusinessQuote(businessId);
-  const packageQuote = useObservePackageQuote(pathname.startsWith('/encomendas'));
+  const businessQuote = useObserveBusinessQuote();
+  const business = useObserveBusiness(order?.business?.id);
+  const packageQuote = useObservePackageQuote();
   const options = useOrderOptions();
-  const { fares, loading } = useOrderFares(order, paymentMethod, options.fleetsIds);
+  const { fares, loading } = useOrderFares(
+    order,
+    paymentMethod,
+    options.fleetsIds,
+    Boolean(params.orderId)
+  );
+  // console.log('paymentMethod', paymentMethod);
   // console.log('order-context', order?.id, orderWithId?.id, businessQuote?.id, packageQuote?.id);
   // side effects
   useEffect(() => {

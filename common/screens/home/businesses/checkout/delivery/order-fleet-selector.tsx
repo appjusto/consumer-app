@@ -1,5 +1,9 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextOrder, useContextOrderFares } from '@/api/orders/context/order-context';
+import {
+  useContextOrder,
+  useContextOrderFares,
+  useContextOrderOptions,
+} from '@/api/orders/context/order-context';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -9,6 +13,7 @@ import paddings from '@/common/styles/paddings';
 import { Fare } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {}
@@ -18,7 +23,13 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
   const showToast = useShowToast();
   const api = useContextApi();
   const order = useContextOrder();
+  const options = useContextOrderOptions();
   const { fares } = useContextOrderFares();
+  // side effects
+  useEffect(() => {
+    if (!options) return;
+    if (!options.fleetsIds) options.setFleetsIds([]);
+  }, [options]);
   // handlers
   const updateFare = (fare: Fare) => {
     if (!order) return;
@@ -73,7 +84,7 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
                   </DefaultText>
                 </View>
                 <DefaultText size="md" color="black">
-                  {formatCurrency(fare.courier?.netValue ?? 0)}
+                  {formatCurrency(fare.courier?.value ?? 0)}
                 </DefaultText>
               </View>
             </RadioCardButton>

@@ -9,7 +9,6 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
-import { OrderTotalBreakdown } from '@/common/screens/orders/breakdown/order-total-breakdown';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -77,13 +76,12 @@ export default function OrderCheckoutScreen() {
             </LinkButton>
           </View>
         </View>
-        <OrderTotalBreakdown style={{ padding: paddings.lg }} order={quote} />
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       <CartButton
         order={quote}
-        variant="checkout"
-        disabled={!quote.fare}
+        variant="products"
+        disabled={!quote}
         onPress={() =>
           router.navigate({
             pathname: '/(logged)/checkout/[orderId]/delivery',
