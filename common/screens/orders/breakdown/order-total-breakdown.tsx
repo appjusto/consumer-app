@@ -43,7 +43,8 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
   const insuranceFee = fare.courier?.insurance ?? 0;
   const fees = deliveryFees + insuranceFee;
   const credits = fare.credits ?? 0;
-  const total = fare.total - credits;
+  const discount = fare.discount ?? 0;
+  const total = fare.total - credits - discount;
   // UI
   return (
     <View style={[{ borderWidth: 0 }, style]} {...props}>
@@ -58,6 +59,7 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
       ) : null}
       {fees ? <Item title={`Taxas${insuranceFee ? ' + Seguro Iza' : ''}`} value={fees} /> : null}
       {credits ? <Item title="Créditos" value={credits} color="primary900" /> : null}
+      {discount ? <Item title="Cupom" value={discount} color="primary900" /> : null}
       {total ? <Item title="Total" value={total} color="black" /> : null}
       <OrderTotalBreakdownFees order={order} />
     </View>

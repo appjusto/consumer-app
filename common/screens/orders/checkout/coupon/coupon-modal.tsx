@@ -1,6 +1,6 @@
 import { useContextApi } from '@/api/ApiContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
+import { PatternInput } from '@/common/components/inputs/pattern/PatternInput';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
@@ -73,15 +73,18 @@ export const CouponModal = ({ order, visible, onCancel, ...props }: Props) => {
                 <DefaultText style={{ marginTop: paddings.lg }} color="black">
                   Código do cupom
                 </DefaultText>
-                <DefaultInput
+                <PatternInput
                   inputStyle={{ textAlignVertical: 'top' }}
                   placeholder="Digite o código do cupom"
+                  pattern="coupon"
                   value={code}
+                  maxLength={14}
                   error={feedback !== DefaultFeedback}
                   onChangeText={(value) => {
                     setCode(value);
                     setFeedback(DefaultFeedback);
                   }}
+                  onBlur={() => setCode((value) => value.toUpperCase())}
                 />
                 <DefaultText
                   style={{ marginTop: paddings.xs }}
@@ -93,7 +96,7 @@ export const CouponModal = ({ order, visible, onCancel, ...props }: Props) => {
               <DefaultButton
                 style={{ marginVertical: paddings.lg }}
                 title="Aplicar cupom"
-                disabled={!code}
+                disabled={code.length < 7}
                 loading={loading}
                 onPress={updateCupomHandler}
               />

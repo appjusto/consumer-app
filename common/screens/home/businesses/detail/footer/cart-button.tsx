@@ -1,13 +1,13 @@
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
+import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
 import { formatCurrency } from '@/common/formatters/currency';
-import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order } from '@appjusto/types';
-import { ActivityIndicator, View, ViewProps } from 'react-native';
+import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   order: Order | undefined | null;
@@ -21,7 +21,7 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
   // UI
   if (!order) return null;
   const products = variant === 'business' || variant === 'products';
-  const total = products ? getOrderItemsTotal(order) : getOrderTotalCost(order);
+  const total = products ? getOrderItemsTotal(order, true) : getOrderTotalCost(order);
   const totalLabel = order.fare?.courier?.value
     ? products
       ? 'sem a entrega'
@@ -29,28 +29,24 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
     : '';
   const totalItems = order.items?.length ? order.items.length : 0;
   const itemsLabel = totalItems ? ` / ${totalItems} ite${totalItems > 1 ? 'ns' : 'm'}` : null;
-  if (products && !total) return null;
+  if (isOrderEmpty(order)) return null;
   return (
     <View style={[{}, style]} {...props}>
       <HRShadow />
       <View style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
-        {total ? (
-          <View>
-            <DefaultText size="xs" color="neutral700">
-              {`Total ${totalLabel}`}
-            </DefaultText>
-            <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
-              <DefaultText size="md">{formatCurrency(total)}</DefaultText>
-              {itemsLabel ? (
-                <DefaultText style={{ marginLeft: paddings.xs }} size="xs" color="neutral700">
-                  {itemsLabel}
-                </DefaultText>
-              ) : null}
-            </View>
+        <View>
+          <DefaultText size="xs" color="neutral700">
+            {`Total ${totalLabel}`}
+          </DefaultText>
+          <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
+            <DefaultText size="md">{formatCurrency(total)}</DefaultText>
+            {itemsLabel ? (
+              <DefaultText style={{ marginLeft: paddings.xs }} size="xs" color="neutral700">
+                {itemsLabel}
+              </DefaultText>
+            ) : null}
           </View>
-        ) : (
-          <ActivityIndicator size={12} color={colors.black} />
-        )}
+        </View>
         <DefaultButton
           title={
             variant === 'business'
@@ -60,7 +56,7 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
               : 'Continuar'
           }
           size="lg"
-          disabled={disabled || !total}
+          disabled={disabled}
           onPress={onPress}
         />
       </View>

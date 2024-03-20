@@ -12,6 +12,11 @@ export const numbersOnlyParser = (value: string | undefined) => {
   return value.replace(/[^0-9]/g, '');
 };
 
+export const couponParser = (value: string | undefined) => {
+  if (!value) return '';
+  return value.replace(/[^0-9A-Za-z]/g, '');
+};
+
 export default {
   phone: {
     mask: '(11) 99999-9999',
@@ -67,5 +72,10 @@ export default {
     mask: '0000 0000 0000 0000',
     parser: numbersOnlyParser,
     formatter: cardFormatter,
+  },
+  coupon: {
+    parser: couponParser,
+    mask: undefined,
+    formatter: undefined,
   },
 };
