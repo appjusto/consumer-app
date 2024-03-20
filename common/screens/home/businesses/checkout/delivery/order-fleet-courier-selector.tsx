@@ -1,6 +1,7 @@
 import { useContextOrder, useContextOrderFares } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { Loading } from '@/common/components/views/Loading';
+import screens from '@/common/styles/screens';
 import { useState } from 'react';
 import { View, ViewProps } from 'react-native';
 import { OrderCourierSelector } from './order-courier-selector';
@@ -24,7 +25,11 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
         onSelect={setSelectedIndex}
       />
       {selectedIndex === 0 ? <OrderFleetSelector /> : <OrderCourierSelector />}
-      {!fares ? <Loading /> : null}
+      {!fares ? (
+        <View style={{ ...screens.centered }}>
+          <Loading size="small" />
+        </View>
+      ) : null}
     </View>
   );
 };

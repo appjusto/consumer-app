@@ -6,9 +6,10 @@ import { Pressable, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   business: OrderBusiness | undefined | null;
+  editable?: boolean;
 }
 
-export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
+export const BusinessCartHeader = ({ business, editable = true, style, ...props }: Props) => {
   // UI
   if (!business) return null;
   return (
@@ -26,16 +27,18 @@ export const BusinessCartHeader = ({ business, style, ...props }: Props) => {
             {business.name}
           </DefaultText>
         </View>
-        <Pressable
-          onPress={() =>
-            router.navigate({
-              pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
-              params: { businessId: business.id },
-            })
-          }
-        >
-          <DefaultText color="black">Adicionar itens</DefaultText>
-        </Pressable>
+        {editable ? (
+          <Pressable
+            onPress={() =>
+              router.navigate({
+                pathname: '/(logged)/(tabs)/(home)/r/[businessId]/',
+                params: { businessId: business.id },
+              })
+            }
+          >
+            <DefaultText color="black">Adicionar itens</DefaultText>
+          </Pressable>
+        ) : null}
       </View>
       {/* <HR style={{ marginVertical: paddings.xl }} /> */}
     </View>

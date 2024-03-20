@@ -1,4 +1,3 @@
-import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
@@ -21,7 +20,6 @@ import { Pressable, View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
   // context
-  const api = useContextApi();
   const quote = useContextOrder();
   // state
   const [additionalInfo, setAdditionalInfo] = useState('');
@@ -30,7 +28,6 @@ export default function OrderCheckoutScreen() {
   useTrackScreenView('Checkout: sacola', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
   // useBackWhenOrderExpires();
-
   // logs
   console.log('checkout/[orderId]/index', typeof quote, quote?.id);
   // UI

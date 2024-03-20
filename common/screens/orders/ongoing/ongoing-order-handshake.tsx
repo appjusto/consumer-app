@@ -5,7 +5,6 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
-import { HelpButton } from './buttons/help-button';
 
 interface Props extends ViewProps {
   order: WithId<Order>;
@@ -45,7 +44,6 @@ export const OngoingOrderHandshake = ({ order, style, ...props }: Props) => {
           {confirmation.handshakeChallenge}
         </DefaultText>
       </View>
-      <HelpButton onPress={() => null} />
     </View>
   );
 };

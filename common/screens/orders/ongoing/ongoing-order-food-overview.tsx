@@ -7,6 +7,7 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
+import { router } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
 import { Pressable, View, ViewProps } from 'react-native';
 import { OrderSelectedPayment } from '../checkout/confirmation/order-selected-payment';
@@ -19,6 +20,13 @@ export const OngoingOrderFoodOverview = ({ order, style, ...props }: Props) => {
   const { business, code, paymentMethod } = order;
   // state
   const card = useObserveOrderCard(paymentMethod !== 'pix' ? order.id : undefined);
+  // handlers
+  const detailHandler = () => {
+    router.navigate({
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/detail',
+      params: { orderId: order.id },
+    });
+  };
   // UI
   if (!business?.id) return null;
   return (
@@ -35,7 +43,7 @@ export const OngoingOrderFoodOverview = ({ order, style, ...props }: Props) => {
       {...props}
     >
       {/* header */}
-      <Pressable>
+      <Pressable onPress={detailHandler}>
         <View
           style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
         >

@@ -19,9 +19,10 @@ import { ProductImage } from '../detail/product-image';
 
 interface Props extends ViewProps {
   item: OrderItem;
+  editable?: boolean;
 }
 
-export const BusinessCartItem = ({ item, style, ...props }: Props) => {
+export const BusinessCartItem = ({ item, editable = true, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   const quote = useContextOrder();
@@ -46,22 +47,24 @@ export const BusinessCartItem = ({ item, style, ...props }: Props) => {
     <View style={[{}, style]} {...props}>
       <View style={[{ flexDirection: 'row', borderWidth: 0 }]} {...props}>
         <Pressable
-          onPress={() =>
+          onPress={() => {
             router.navigate({
               pathname: '/(logged)/(tabs)/(home)/r/[businessId]/p/[productId]',
               params: { businessId, productId: item.product.id, itemId: item.id },
-            })
-          }
+            });
+          }}
         >
           <View>
             <ProductImage url={url} size={48} />
-            <OnlyIconButton
-              style={{ position: 'absolute', right: -14, top: -14 }}
-              icon={<Pencil size={14} color={colors.black} />}
-              variant="circle"
-              size={32}
-              onPress={() => null}
-            />
+            {editable ? (
+              <OnlyIconButton
+                style={{ position: 'absolute', right: -14, top: -14 }}
+                icon={<Pencil size={14} color={colors.black} />}
+                variant="circle"
+                size={32}
+                onPress={() => null}
+              />
+            ) : null}
           </View>
         </Pressable>
         <View style={{ flex: 1, marginLeft: paddings.xl }}>
@@ -95,12 +98,14 @@ export const BusinessCartItem = ({ item, style, ...props }: Props) => {
             }}
           >
             <DefaultText color="neutral800">{formatCurrency(getItemTotal(item))}</DefaultText>
-            <QuantityButton
-              quantity={item.quantity}
-              minValue={0}
-              onIncrement={() => updateQuantity(1)}
-              onDecrement={() => updateQuantity(-1)}
-            />
+            {editable ? (
+              <QuantityButton
+                quantity={item.quantity}
+                minValue={0}
+                onIncrement={() => updateQuantity(1)}
+                onDecrement={() => updateQuantity(-1)}
+              />
+            ) : null}
           </View>
         </View>
       </View>

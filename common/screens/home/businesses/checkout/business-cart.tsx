@@ -7,14 +7,16 @@ import { Pressable, View, ViewProps } from 'react-native';
 import { BusinessCartHeader } from './business-cart-header';
 import { BusinessCartItem } from './business-cart-item';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  editable?: boolean;
+}
 
-export const BusinessCart = ({ style, ...props }: Props) => {
+export const BusinessCart = ({ style, editable = true, ...props }: Props) => {
   // context
   const api = useContextApi();
   const quote = useContextOrder();
   const orderId = quote?.id;
-  const clearable = quote?.items?.length && quote.items.length > 0;
+  const clearable = editable && quote?.items?.length && quote.items.length > 0;
   // handlers
   const deleteOrder = async () => {
     if (!orderId) return;
@@ -35,10 +37,19 @@ export const BusinessCart = ({ style, ...props }: Props) => {
             ) : null,
         }}
       />
-      <BusinessCartHeader style={{ padding: paddings.lg }} business={quote.business} />
+      <BusinessCartHeader
+        style={{ padding: paddings.lg }}
+        business={quote.business}
+        editable={editable}
+      />
       <View style={{ marginTop: paddings.sm, paddingHorizontal: paddings.lg }}>
         {(quote.items ?? []).map((item) => (
-          <BusinessCartItem style={{ marginTop: paddings.lg }} key={item.id} item={item} />
+          <BusinessCartItem
+            style={{ marginTop: paddings.lg }}
+            key={item.id}
+            item={item}
+            editable={editable}
+          />
         ))}
       </View>
     </View>
