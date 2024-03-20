@@ -1,3 +1,4 @@
+import { PaymentsHandledByBusiness } from '@/api/orders/payment';
 import { useObserveOrderCard } from '@/api/orders/payment/useObserveOrderCard';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -19,7 +20,9 @@ interface Props extends ViewProps {
 export const OngoingOrderFoodOverview = ({ order, style, ...props }: Props) => {
   const { business, code, paymentMethod } = order;
   // state
-  const card = useObserveOrderCard(paymentMethod !== 'pix' ? order.id : undefined);
+  const paidWithCard =
+    paymentMethod && paymentMethod !== 'pix' && !PaymentsHandledByBusiness.includes(paymentMethod);
+  const card = useObserveOrderCard(business?.id && paidWithCard ? order.id : undefined);
   // handlers
   const detailHandler = () => {
     router.navigate({

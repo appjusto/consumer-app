@@ -1,6 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderStage } from '@/api/orders/status';
+import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import colors from '@/common/styles/colors';
@@ -28,14 +28,12 @@ export default function OngoingOrderScreen() {
     if (!status) return;
     if (!type) return;
     if (!orderId) return;
-    const stage = getOrderStage(status, type);
-    if (stage === 'completed') {
+    const path = getOrderPath(status, type, 'ongoing');
+    if (path) {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+        pathname: path,
         params: { orderId },
       });
-    } else if (stage !== 'ongoing') {
-      // router.back();
     }
   }, [orderId, status, type]);
   // UI

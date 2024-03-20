@@ -9,6 +9,7 @@ import { Loading } from '@/common/components/views/Loading';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { CancelOrderModal } from '@/common/screens/incident/cancel-modal';
 import { SelectIssueModal } from '@/common/screens/incident/select-issue-modal';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -26,9 +27,16 @@ export default function IncidentScreen() {
   const orderId = order?.id;
   // state
   const issueType = issueTypeForOrder(order);
+  const cancelIssueType =
+    order?.type === 'food'
+      ? 'consumer-cancel-food-with-payment'
+      : order?.type === 'p2p'
+      ? 'consumer-cancel-p2p-with-payment'
+      : undefined;
   const phone = useObserveBusiness(order?.business?.id)?.phone;
   const [loading, setLoading] = useState(false);
   const [reportIssueModalShown, setReportIssueModalShown] = useState(false);
+  const [cancelModalShown, setCancelModalShown] = useState(false);
   // tracking
   useTrackScreenView('Ajuda com pedido', { orderId });
   // handlers
@@ -46,6 +54,21 @@ export default function IncidentScreen() {
         setLoading(false);
       });
   };
+  const cancelHandler = (acknowledgedCosts: number, issue: Issue, comment: string) => {
+    if (!orderId) return;
+    trackEvent('Relatou problema');
+    setLoading(true);
+    api
+      .orders()
+      .cancelOrder(orderId, acknowledgedCosts, issue, comment)
+      .catch((error: unknown) => {
+        if (error instanceof Error) showToast(error.message, 'error');
+      })
+      .finally(() => {
+        setCancelModalShown(false);
+        setLoading(false);
+      });
+  };
   // UI
   if (!order || !issueType) return <Loading backgroundColor="neutral50" />;
   return (
@@ -58,6 +81,14 @@ export default function IncidentScreen() {
         onConfirm={createIncident}
         loading={loading}
         onDismiss={() => setReportIssueModalShown(false)}
+      />
+      <CancelOrderModal
+        title="Por que você está cancelando o seu pedido?"
+        issueType={cancelIssueType}
+        visible={cancelModalShown}
+        onConfirm={cancelHandler}
+        loading={loading}
+        onDismiss={() => setCancelModalShown(false)}
       />
       <View style={{ flex: 1, padding: paddings.lg }}>
         {phone ? (
@@ -77,7 +108,17 @@ export default function IncidentScreen() {
             <DefaultCard
               icon={<DefaultCardIcon iconName="alert" variant="warning" />}
               title="Estou com um problema"
-              subtitle="Abrir uma ocrrência para relatar algum problema com o pedido"
+              subtitle="Abrir uma ocorrência para relatar algum problema com o pedido"
+            />
+          )}
+        </Pressable>
+        <Pressable onPress={() => setCancelModalShown(true)}>
+          {() => (
+            <DefaultCard
+              style={{ marginTop: paddings.lg }}
+              icon={<DefaultCardIcon iconName="cancel" variant="destructive" />}
+              title="Cancelar pedido"
+              subtitle="Quero cancelar meu pedido"
             />
           )}
         </Pressable>

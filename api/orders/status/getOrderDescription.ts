@@ -1,7 +1,7 @@
 import { Order } from '@appjusto/types';
 import { getDispatchingStateAsText } from '../dispatching-state/getDispatchingStateAsText';
 
-export const getOngoingOrderDescription = (order: Order) => {
+export const getOrderDescription = (order: Order) => {
   const { status, type, dispatchingStatus, dispatchingState, fulfillment } = order;
   if (status === 'scheduled') return 'Seu pedido foi realizado e será entregue na data agendada';
   if (status === 'preparing') {
@@ -37,6 +37,12 @@ export const getOngoingOrderDescription = (order: Order) => {
   }
   if (status === 'confirmed') {
     if (type === 'p2p') return 'Procurando uma pessoa para realizar a sua entrega.';
+  }
+  if (status === 'delivered') {
+    return 'Seu pedido foi finalizado com sucesso!';
+  }
+  if (status === 'canceled') {
+    return 'Seu pedido foi cancelado';
   }
   return '';
 };

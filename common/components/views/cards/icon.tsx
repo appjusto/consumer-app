@@ -39,7 +39,7 @@ export type IconName =
   | 'thumbs-down'
   | 'package';
 
-type Variant = 'lighter' | 'darker' | 'dark' | 'warning' | 'neutral' | 'white';
+type Variant = 'lighter' | 'darker' | 'dark' | 'warning' | 'neutral' | 'white' | 'destructive';
 export interface DefaultIconProps extends ViewProps {
   iconName: IconName;
   variant?: Variant;
@@ -53,6 +53,7 @@ const getIcon = (name: IconName, variant?: Variant) => {
   if (variant === 'darker') color = colors.primary900;
   else if (variant === 'dark') color = colors.black;
   else if (variant === 'warning') color = colors.warning500;
+  else if (variant === 'destructive') color = colors.error500;
   else if (variant === 'neutral') color = colors.neutral700;
 
   if (name === 'approval') {
@@ -117,6 +118,7 @@ export const DefaultCardIcon = ({
   if (variant === 'darker') backgroundColor = colors.primary300;
   else if (variant === 'dark') backgroundColor = colors.primary300;
   else if (variant === 'warning') backgroundColor = colors.warning100;
+  else if (variant === 'destructive') backgroundColor = colors.error100;
   else if (variant === 'neutral') backgroundColor = colors.neutral50;
   else if (variant === 'white') backgroundColor = colors.white;
   return (

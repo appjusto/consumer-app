@@ -1,6 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderStage } from '@/api/orders/status';
+import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
 import { Loading } from '@/common/components/views/Loading';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
@@ -19,20 +19,10 @@ export default function OrderScreen() {
     if (!status) return;
     if (!type) return;
     if (!orderId) return;
-    const stage = getOrderStage(status, type);
-    if (stage === 'placing') {
+    const path = getOrderPath(status, type, 'ongoing');
+    if (path) {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/confirming',
-        params: { orderId },
-      });
-    } else if (stage === 'ongoing') {
-      router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
-        params: { orderId },
-      });
-    } else if (stage === 'completed') {
-      router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+        pathname: path,
         params: { orderId },
       });
     } else {

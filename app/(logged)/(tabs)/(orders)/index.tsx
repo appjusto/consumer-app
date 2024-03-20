@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { getOrderStage } from '@/api/orders/status';
+import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
 import { useObserveOrdersFromPeriod } from '@/api/orders/useObserveOrdersFromPeriod';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -39,30 +39,13 @@ export default function OrdersIndex() {
   );
   const handleClick = (order: WithId<Order>) => {
     const { status, type } = order;
-    const stage = getOrderStage(status, type);
-    console.log(order.id, stage);
-    if (stage === 'placing') {
+    const path = getOrderPath(status, type);
+    if (path) {
       router.navigate({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/confirming',
-        params: { orderId: order.id },
-      });
-    } else if (stage === 'ongoing') {
-      router.navigate({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
-        params: { orderId: order.id },
-      });
-    } else if (stage === 'completed') {
-      router.navigate({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
+        pathname: path,
         params: { orderId: order.id },
       });
     }
-    // @ts-ignore
-    // navigation.navigate('(orders)', {
-    //   screen: `[orderId]/${screen}`,
-    //   params: { orderId: order.id },
-    //   initial: false,
-    // });
   };
   const title = 'Meus pedidos';
   if (!orders) return <Loading title={title} />;

@@ -16,11 +16,11 @@ export const AllOrdersStatuses: OrderStatus[] = OngoingOrdersStatuses.concat([
   'delivered',
 ]);
 
-export const FailedOrdersStatuses: OrderStatus[] = ['expired'];
+export const FailedOrdersStatuses: OrderStatus[] = ['canceled', 'rejected', 'declined'];
 
 export const isOrderOngoing = (status: OrderStatus) => OngoingOrdersStatuses.includes(status);
 
-type OrderStage = 'quote' | 'placing' | 'ongoing' | 'expired' | 'completed';
+type OrderStage = 'quote' | 'placing' | 'ongoing' | 'expired' | 'canceled' | 'delivered';
 export const getOrderStage = (status: OrderStatus, type: OrderType): OrderStage => {
   if (status === 'quote') return 'quote';
   if (status === 'expired') return 'expired';
@@ -31,5 +31,6 @@ export const getOrderStage = (status: OrderStatus, type: OrderType): OrderStage 
     return 'ongoing';
   }
   if (isOrderOngoing(status)) return 'ongoing';
-  return 'completed';
+  if (FailedOrdersStatuses.includes(status)) return 'canceled';
+  return 'delivered';
 };

@@ -1,7 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderStage } from '@/api/orders/status';
+import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
@@ -35,10 +35,10 @@ export default function OrderConfirmingScreen() {
     if (!status) return;
     if (!type) return;
     // console.log('OrderConfirmingScreen', orderId, status, waitingAcceptance);
-    const stage = getOrderStage(status, type);
-    if (stage === 'ongoing') {
+    const pathname = getOrderPath(status, type, 'confirming');
+    if (pathname) {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
+        pathname,
         params: { orderId },
       });
     }
@@ -52,7 +52,7 @@ export default function OrderConfirmingScreen() {
   const problemHandler = () => {
     if (!orderId) return;
     router.push({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/incident',
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/help',
       params: { orderId },
     });
   };

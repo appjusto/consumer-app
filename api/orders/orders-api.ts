@@ -4,8 +4,11 @@ import { getAppVersion } from '@/common/version';
 import { getFirebaseRegion } from '@/extra';
 import {
   Fare,
+  GetCancellationInfoResult,
   GetOrderQuotesPayload,
+  Issue,
   Order,
+  OrderCancellation,
   OrderConfirmation,
   OrderCourierLocationLog,
   OrderItem,
@@ -33,6 +36,8 @@ const region = getFirebaseRegion();
 const getOrderQuotes = firebase.app().functions(region).httpsCallable('getOrderQuotes');
 const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
 const updateOrderCoupon = firebase.app().functions(region).httpsCallable('updateOrderCoupon');
+const getCancellationInfo = firebase.app().functions(region).httpsCallable('getCancellationInfo');
+const cancelOrder = firebase.app().functions(region).httpsCallable('cancelOrder');
 
 // firestore
 const ordersRef = () => firestore().collection('orders');
@@ -87,19 +92,6 @@ export default class OrdersApi {
         console.error(error);
       }
     );
-    // return query.onSnapshot(
-    //   {
-    //     includeMetadataChanges: commitedOnly,
-    //   },
-    //   {
-    //     error: (e) => console.error('observeOrder', e),
-    //     next: (snapshot) => {
-    //       if (!commitedOnly || !snapshot.metadata.fromCache) {
-    //         resultHandler(snapshot.exists ? documentAs<Order>(snapshot) : null);
-    //       }
-    //     },
-    //   }
-    // );
   }
 
   async createFoodOrder(
@@ -292,6 +284,46 @@ export default class OrdersApi {
         reviewedOn: serverTimestamp(),
       } as OrderReview,
       { merge: true }
+    );
+  }
+
+  // cancellation
+
+  async getCancellationInfo(orderId: string) {
+    console.log('getCancellationInfo', orderId);
+    const response = await getCancellationInfo({
+      orderId,
+      meta: { version: getAppVersion() },
+    });
+    return response.data as GetCancellationInfoResult;
+  }
+
+  async cancelOrder(
+    orderId: string,
+    acknowledgedCosts: number,
+    cancellation?: WithId<Issue>,
+    comment?: string
+  ) {
+    console.log('cancelOrder', orderId);
+    await cancelOrder({
+      orderId,
+      acknowledgedCosts,
+      cancellation,
+      comment,
+      meta: { version: getAppVersion() },
+    });
+  }
+
+  observeCancellation(orderId: string, resultHandler: (payment: OrderCancellation | null) => void) {
+    cancellationRef(orderId).onSnapshot(
+      (snapshot) => {
+        if (snapshot.exists) resultHandler(snapshot.data() as OrderCancellation);
+        else resultHandler(null);
+      },
+      (error) => {
+        console.error(error);
+        crashlytics().recordError(error);
+      }
     );
   }
 }

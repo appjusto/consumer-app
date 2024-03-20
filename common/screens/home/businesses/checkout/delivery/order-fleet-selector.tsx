@@ -54,8 +54,10 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
         Frotas são a forma que o appjusto desenvolveu para que os entregadores possam se organizar
         coletivamente e defiinir o valor e as condições do seu trabalho.
       </DefaultText>
-      {fares.map((fare) =>
-        fare.fleet?.id ? (
+      {fares.map((fare) => {
+        if (!fare.fleet?.id) return null;
+        const value = Math.max(0, (fare.courier?.value ?? 0) - (fare.courier?.discount ?? 0));
+        return (
           <View key={fare.fleet?.id} style={{ flex: 1, marginTop: paddings.lg }}>
             <RadioCardButton
               onPress={() => updateFare(fare)}
@@ -80,13 +82,13 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
                   </DefaultText>
                 </View>
                 <DefaultText size="md" color="black">
-                  {formatCurrency(fare.courier?.value ?? 0)}
+                  {formatCurrency(value)}
                 </DefaultText>
               </View>
             </RadioCardButton>
           </View>
-        ) : null
-      )}
+        );
+      })}
       <DefaultButton
         style={{ marginTop: paddings.lg }}
         title="Escolher outra frota"

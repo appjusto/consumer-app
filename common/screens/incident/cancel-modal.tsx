@@ -1,4 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useGetCancellationInfo } from '@/api/orders/cancellation/useGetCancellationInfo';
 import { useIssues } from '@/api/platform/issues/useIssues';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { RadioButton } from '@/common/components/buttons/radio/radio-button';
@@ -7,6 +8,8 @@ import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
+import { MessageBox } from '@/common/components/views/MessageBox';
+import { formatCurrency } from '@/common/formatters/currency';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -17,12 +20,12 @@ import { Modal, ModalProps, Pressable, View } from 'react-native';
 
 interface Props extends ModalProps {
   title: string;
-  issueType: IssueType | null;
+  issueType: IssueType | null | undefined;
   loading?: boolean;
-  onConfirm: (issue: Issue, comment: string) => void;
+  onConfirm: (acknowledgedCosts: number, issue: Issue, comment: string) => void;
   onDismiss: () => void;
 }
-export const SelectIssueModal = ({
+export const CancelOrderModal = ({
   title,
   issueType,
   loading,
@@ -32,13 +35,14 @@ export const SelectIssueModal = ({
   ...props
 }: Props) => {
   // state
+  const costs = useGetCancellationInfo()?.costs;
   const [selectedIssue, setSelectedIssue] = useState<Issue>();
   const issues = useIssues(issueType);
   const [comment, setComment] = useState('');
   // tracking
-  useTrackScreenView('Relatar Problema', { issueType }, visible);
+  useTrackScreenView('Cancelar pedido', { issueType }, visible);
   // UI
-  if (!issues) return <Loading />;
+  if (!issues || costs === undefined) return <Loading />;
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
       <Pressable style={{ flex: 1 }} onPress={onDismiss}>
@@ -53,6 +57,14 @@ export const SelectIssueModal = ({
             >
               <View style={{ flex: 0.8, padding: paddings.lg, backgroundColor: colors.white }}>
                 <ModalHandle style={{ marginTop: paddings.xl }} />
+                {costs > 0 ? (
+                  <MessageBox
+                    style={{ marginTop: paddings.xl }}
+                    variant="warning"
+                  >{`Como o seu pedido já foi iniciado, o valor de ${formatCurrency(
+                    costs
+                  )} não será reembolsado.`}</MessageBox>
+                ) : null}
                 <DefaultText style={{ marginTop: paddings.xl }} size="lg">
                   {title}
                 </DefaultText>
@@ -94,7 +106,7 @@ export const SelectIssueModal = ({
                   disabled={!selectedIssue || loading}
                   loading={loading}
                   onPress={() => {
-                    if (selectedIssue) onConfirm(selectedIssue, comment);
+                    if (selectedIssue) onConfirm(costs, selectedIssue, comment);
                   }}
                 />
               </View>
