@@ -47,7 +47,7 @@ export default function BusinessDetailScreen() {
       <FlashList
         data={products}
         keyExtractor={(item) => (typeof item === 'string' ? item : item.id)}
-        ListHeaderComponent={<BusinessHeader businessId={businessId} />}
+        ListHeaderComponent={<BusinessHeader business={business} />}
         renderItem={({ item, index }) => {
           if (typeof item === 'string')
             return (

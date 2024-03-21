@@ -1,6 +1,6 @@
 // import { shouldBusinessBeOpen } from '@appjusto/dates';
 import { Dayjs, dateWithUpdatedTime, getDaySchedule, parseScheduleHour } from '@appjusto/dates';
-import { BusinessAlgolia, BusinessSchedule } from '@appjusto/types';
+import { BusinessAlgolia, BusinessSchedule, PublicBusiness } from '@appjusto/types';
 import { isEmpty } from 'lodash';
 
 export const shouldBeOpened = (
@@ -33,12 +33,12 @@ export const shouldBeOpened = (
 export type BusinessAvailability = 'open' | 'schedule-required' | 'closed';
 
 export const getBusinessAvailability = (
-  business: BusinessAlgolia,
-  now: Date
+  business: BusinessAlgolia | PublicBusiness,
+  at: Date
 ): BusinessAvailability => {
   // const isOpen = shouldBusinessBeOpen(business.schedules, now);
   // const isOpen = shouldBeOpened(business.schedules, now);
-  const isOpen = business.opened;
+  const isOpen = 'opened' in business ? business.opened : shouldBeOpened(business.schedules, at);
   // console.log('isOpen', isOpen);
   const acceptsSchedule = business.preparationModes?.includes('scheduled');
   if (!isOpen) {

@@ -62,7 +62,7 @@ export const BusinessList = ({ style, children, ...props }: Props) => {
             {({ pressed }) => (
               <View style={{}}>
                 <BusinessListItem
-                  item={item}
+                  business={item}
                   recyclingKey={item.objectID}
                   // breaks recycling but it's okay with this list
                   key={item.objectID}

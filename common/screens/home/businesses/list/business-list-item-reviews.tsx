@@ -1,17 +1,15 @@
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { BusinessAlgolia } from '@appjusto/types';
 import { ThumbsDown, ThumbsUp } from 'lucide-react-native';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
-  item: BusinessAlgolia;
+  positive: number;
+  negative: number;
 }
 
-export const BusinessListItemReview = ({ item, style, ...props }: Props) => {
-  const positive = item.reviews?.positiveReviews ?? 0;
-  const negative = item.reviews?.negativeReviews ?? 0;
+export const BusinessListItemReview = ({ positive, negative, style, ...props }: Props) => {
   const isNew = positive + negative < 5;
   // UI
   return (
