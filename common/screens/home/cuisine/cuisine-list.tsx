@@ -15,7 +15,7 @@ export const CuisineList = ({ style, ...props }: Props) => {
   const cuisines = useCuisines() ?? [null, null, null, null];
   // UI
   return (
-    <View style={[{}, style]} {...props}>
+    <View style={[{ borderWidth: 0 }, style]} {...props}>
       <FlashList
         horizontal
         showsHorizontalScrollIndicator={false}

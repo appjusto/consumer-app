@@ -5,7 +5,6 @@ import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { issueTypeForOrder } from '@/api/incidents/issueTypeForOrder';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
-import { Loading } from '@/common/components/views/Loading';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
@@ -70,7 +69,7 @@ export default function IncidentScreen() {
       });
   };
   // UI
-  if (!order || !issueType) return <Loading backgroundColor="neutral50" />;
+  if (!order) return null;
   return (
     <DefaultScrollView style={{ ...screens.default, backgroundColor: colors.neutral50 }}>
       <Stack.Screen options={{ title: 'Ajuda' }} />

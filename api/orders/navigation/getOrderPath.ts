@@ -12,7 +12,7 @@ export const getOrderPath = (
   } else if (stage === 'ongoing') {
     if (from !== 'ongoing') return '/(logged)/(tabs)/(orders)/[orderId]/ongoing';
   } else if (stage === 'delivered') {
-    if (from === 'confirming') return '/(logged)/(tabs)/(orders)/[orderId]/delivered';
+    if (from === 'ongoing') return '/(logged)/(tabs)/(orders)/[orderId]/delivered';
     else return '/(logged)/(tabs)/(orders)/[orderId]/completed';
   } else if (stage === 'canceled') {
     return '/(logged)/(tabs)/(orders)/[orderId]/completed';
