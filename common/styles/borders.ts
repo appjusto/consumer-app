@@ -19,7 +19,7 @@ export default {
   },
   badge: {
     borderWidth: 1,
-    borderRadius: 32,
+    borderRadius: 4,
     borderColor: colors.black,
   },
 };

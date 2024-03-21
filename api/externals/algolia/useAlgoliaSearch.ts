@@ -78,6 +78,7 @@ export const useAlgoliaSearch = <T extends object>(
           const hits = responseByPage
             .get(key)!
             .hits.map((item) => ({ ...item, id: item.objectID }));
+          // console.log(hits);
           return [...result, ...hits];
         }, [] as WithId<T>[])
       );
@@ -95,7 +96,12 @@ export const useAlgoliaSearch = <T extends object>(
 
   const refetch = () => {
     if (query === undefined) return;
-    return search(query);
+    return api
+      .algolia()
+      .clearCache()
+      .then(() => {
+        search(query);
+      });
   };
 
   return { results, isLoading: loading, search, refetch, fetchNextPage };
