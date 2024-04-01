@@ -6,6 +6,7 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { PublicBusiness, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
 import { AppJustoOnlyIcon } from '../../icons/appjusto-only-icon';
@@ -24,7 +25,12 @@ export const BusinessHeader = ({ business, style, ...props }: Props) => {
   const appjustoOnly = business.tags?.includes('appjusto-only');
   const coverUrl = useImageURL(getBusinessCoverStoragePath(business.id));
   // handlers
-  const detailHandler = () => {};
+  const detailHandler = () => {
+    router.navigate({
+      pathname: '/(logged)/(tabs)/(home)/r/[businessId]/about',
+      params: { businessId: business.id },
+    });
+  };
   // UI
   return (
     <View style={[{}, style]} {...props}>

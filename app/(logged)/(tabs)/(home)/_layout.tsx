@@ -13,10 +13,10 @@ export default function HomeLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Restaurantes' }} />
-      {/* <Stack.Screen
-        name="checkout/confirming"
-        options={{ presentation: 'modal', headerShown: false }}
-      /> */}
+      <Stack.Screen
+        name="r/[businessId]/about"
+        options={{ headerShown: false, presentation: 'modal' }}
+      />
     </Stack>
   );
 }
