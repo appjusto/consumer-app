@@ -1,5 +1,6 @@
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
+import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, ScrollViewProps, View } from 'react-native';
 import { DefaultText } from '../../texts/DefaultText';
 
@@ -12,18 +13,46 @@ export interface HorizontalSelectorItem {
 interface Props extends ScrollViewProps {
   data: HorizontalSelectorItem[];
   selectedIndex: number;
+  size?: 'default' | 'sm';
   onSelect: (index: number) => void;
 }
 
-export const HorizontalSelector = ({ data, selectedIndex, onSelect, style, ...props }: Props) => {
+export const HorizontalSelector = ({
+  data,
+  selectedIndex,
+  size = 'default',
+  onSelect,
+  style,
+  ...props
+}: Props) => {
+  // refs
+  const scroll = useRef<ScrollView>(null);
+  const positions = useRef<Map<number, number>>(new Map());
+  // state
+  // side effects
+  useEffect(() => {
+    const x = positions.current?.get(selectedIndex) ?? 0;
+    scroll.current?.scrollTo({ x });
+  }, [selectedIndex]);
+  // UI
   return (
     <View style={[{}, style]}>
-      <ScrollView {...props} horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView ref={scroll} {...props} horizontal showsHorizontalScrollIndicator={false}>
         {data.map((value, index) => (
-          <Pressable onPress={() => onSelect(index)} key={value.title}>
+          <Pressable
+            onPress={() => onSelect(index)}
+            key={value.title}
+            onLayout={(ev) => {
+              console.log(index, value, ev.nativeEvent.layout.x);
+              positions.current?.set(index, ev.nativeEvent.layout.x);
+            }}
+          >
             <View style={{ borderWidth: 0, marginLeft: index > 0 ? paddings.xs : 0 }}>
               <View style={{ padding: paddings.sm }}>
-                <DefaultText style={{ textAlign: 'center' }} size="md">
+                <DefaultText
+                  style={{ textAlign: 'center' }}
+                  size={size === 'default' ? 'md' : 'sm'}
+                >
                   {value.title}
                 </DefaultText>
                 {value.subtitle ? (

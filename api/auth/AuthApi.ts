@@ -39,8 +39,7 @@ export default class AuthApi {
   }
 
   getUserId() {
-    const id = this.getCurrentUser()?.uid;
-    return id;
+    return this.getCurrentUser()?.uid ?? '';
   }
 
   getEmail() {

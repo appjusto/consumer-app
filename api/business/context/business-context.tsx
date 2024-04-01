@@ -15,6 +15,7 @@ interface Props {
 interface Value {
   business?: WithId<PublicBusiness> | null;
   products?: (string | WithId<Product>)[];
+  categories?: string[];
   getProduct?: (produtId: string) => WithId<Product> | undefined;
   getProductCategory?: (produtId: string) => WithId<Category> | undefined;
 }
@@ -36,6 +37,14 @@ export const BusinessProvider = ({ children }: Props) => {
         : undefined,
     [loaded, categoriesWithProducts]
   );
+  const categories = useMemo(
+    () =>
+      (products ?? []).reduce(
+        (r, item) => r.concat(typeof item === 'string' ? item : []),
+        [] as string[]
+      ),
+    [products]
+  );
   const getProduct = memoize((productId: string) => {
     const product = products?.find((value) => typeof value === 'object' && value.id === productId);
     if (typeof product !== 'object') return undefined;
@@ -54,6 +63,7 @@ export const BusinessProvider = ({ children }: Props) => {
       value={{
         business,
         products,
+        categories,
         getProduct,
         getProductCategory,
       }}
@@ -67,6 +77,12 @@ export const useContextBusiness = () => {
   const value = React.useContext(BusinessContext);
   if (!value) return null;
   return value.business;
+};
+
+export const useContextBusinessCategories = () => {
+  const value = React.useContext(BusinessContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.categories;
 };
 
 export const useContextBusinessProducts = () => {

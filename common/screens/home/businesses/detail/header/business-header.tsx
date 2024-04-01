@@ -1,6 +1,7 @@
 import { getBusinessCoverStoragePath } from '@/api/business/business-api';
 import { useImageURL } from '@/api/storage/useImageURL';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
+import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -15,15 +16,28 @@ import { BusinessItemInfo } from '../../list/item/business-info';
 import { BusinessLogo } from '../../logo/business-logo';
 interface Props extends ViewProps {
   business: WithId<PublicBusiness>;
+  hidden: boolean;
+  categories: string[] | undefined;
+  categoryIndex: number;
+  onCategorySelect: (index: number) => void;
 }
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = 150;
 
-export const BusinessHeader = ({ business, style, ...props }: Props) => {
+export const BusinessHeader = ({
+  business,
+  hidden,
+  categories,
+  categoryIndex,
+  onCategorySelect,
+  style,
+  ...props
+}: Props) => {
   // state
   const appjustoOnly = business.tags?.includes('appjusto-only');
   const coverUrl = useImageURL(getBusinessCoverStoragePath(business.id));
+
   // handlers
   const detailHandler = () => {
     router.navigate({
@@ -32,6 +46,7 @@ export const BusinessHeader = ({ business, style, ...props }: Props) => {
     });
   };
   // UI
+  if (hidden) return null;
   return (
     <View style={[{}, style]} {...props}>
       {appjustoOnly ? (
@@ -93,6 +108,15 @@ export const BusinessHeader = ({ business, style, ...props }: Props) => {
             <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
               {business.description}
             </DefaultText>
+          ) : null}
+          {categories?.length && categories?.length > 1 ? (
+            <HorizontalSelector
+              style={{ marginTop: paddings.lg }}
+              data={categories.map((value) => ({ title: value }))}
+              selectedIndex={categoryIndex}
+              size="sm"
+              onSelect={onCategorySelect}
+            />
           ) : null}
         </View>
       </Skeleton.Group>
