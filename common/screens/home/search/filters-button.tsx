@@ -8,7 +8,7 @@ interface Props extends ViewProps {
   onPress: () => void;
 }
 
-export const FiltersButton = ({ style, onPress, ...props }: Props) => {
+export const FiltersButton = ({ onPress, ...props }: Props) => {
   return (
     <RoundedToggleButton
       title="Filtros"
