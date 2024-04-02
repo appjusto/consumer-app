@@ -40,15 +40,15 @@ export const HorizontalSelector = ({
       <ScrollView ref={scroll} {...props} horizontal showsHorizontalScrollIndicator={false}>
         {data.map((value, index) => (
           <Pressable
+            style={{ borderWidth: 0 }}
             onPress={() => onSelect(index)}
             key={value.title}
             onLayout={(ev) => {
-              console.log(index, value, ev.nativeEvent.layout.x);
               positions.current?.set(index, ev.nativeEvent.layout.x);
             }}
           >
             <View style={{ borderWidth: 0, marginLeft: index > 0 ? paddings.xs : 0 }}>
-              <View style={{ padding: paddings.sm }}>
+              <View style={{ padding: paddings.sm, borderWidth: 0 }}>
                 <DefaultText
                   style={{ textAlign: 'center' }}
                   size={size === 'default' ? 'md' : 'sm'}

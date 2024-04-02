@@ -1,4 +1,5 @@
 import { useDebounce } from '@/common/functions/useDebounce';
+import { useUniqState } from '@/common/react/useUniqState';
 import { SearchResponse } from '@algolia/client-search';
 import { LatLng, WithId } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -10,7 +11,7 @@ export const useAlgoliaSearch = <T extends object>(
   enabled: boolean,
   kind: SearchKind,
   order: SearchOrder,
-  filterArray: SearchFilter[] | undefined,
+  filters: SearchFilter[] | undefined,
   aroundLatLng: LatLng | undefined | null,
   query: string = ''
 ) => {
@@ -22,6 +23,7 @@ export const useAlgoliaSearch = <T extends object>(
     useState<Map<number | undefined, SearchResponse<T>>>();
   const [results, setResults] = useState<WithId<T>[]>();
   const [loading, setLoading] = useState(enabled);
+  const filterArray = useUniqState(filters);
   // handlers
   const search = useCallback(
     async (input: string, page?: number) => {

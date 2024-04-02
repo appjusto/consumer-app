@@ -15,6 +15,7 @@ export default function HomeScreen() {
   const orderId = params.orderId;
   // context
   const currentPlace = useContextCurrentPlace();
+
   // side effects
   useCreatePlace();
   // tracking

@@ -1,25 +1,37 @@
-import { SearchFilter, SearchKind } from './types';
+import { SearchFilter, SearchFilterType, SearchKind } from './types';
 
 export const createFilters = (kind: SearchKind, filters?: SearchFilter[]) => {
-  const businessEnabledFilter =
-    kind === 'restaurant' ? 'enabled:true' : '(enabled:true AND business.enabled:true)';
-  if (!filters || filters.length === 0) return businessEnabledFilter;
+  if (kind === 'restaurant') return createBusinessesFilters(filters);
+  if (kind === 'product') return createProductsFilters(filters);
+  return '';
+};
+
+const createBusinessesFilters = (filters: SearchFilter[] = []) => {
+  let result = 'enabled:true';
+  if (!filters.length) return result;
+  result += reduce(filters, 'tags');
+  result += reduce(filters, 'cuisine');
+  result += reduce(filters, 'acceptedPaymentMethods');
+  const discount = filters.find((filter) => filter.type === 'discount');
+  if (discount) result += ` AND averageDiscount>=${discount.value}`;
+  console.log(result);
+  return result;
+};
+
+const createProductsFilters = (filters: SearchFilter[] = []) => {
+  let result = 'enabled:true AND business.enabled:true';
+  result += reduce(filters, 'classification');
+  console.log(result);
+  return result;
+};
+
+const reduce = (filters: SearchFilter[], type: SearchFilterType) => {
+  const selected = filters.filter((filter) => filter.type === type);
+  if (!selected.length) return '';
   return (
-    businessEnabledFilter +
     ' AND (' +
-    filters
-      .reduce<string[]>((result, filter) => {
-        if (filter.type === 'cuisine') {
-          return [...result, `cuisine:${filter.value}`];
-        } else if (filter.type === 'classification') {
-          return [...result, `classifications:"${filter.value}"`];
-        } else if (filter.type === 'tag') {
-          return [...result, `tags:${filter.value}`];
-        } else if (filter.type === 'paymentMethod') {
-          // TODO:
-        }
-        return result;
-      }, [])
+    selected
+      .reduce<string[]>((r, filter) => [...r, `${filter.type}:${filter.value}`], [])
       .join(' OR ') +
     ')'
   );

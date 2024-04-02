@@ -6,7 +6,16 @@ export type SearchOrder =
   | 'popularity'
   | 'average-discount'
   | 'reviews';
+export type SearchFilterType =
+  | 'cuisine'
+  | 'classification'
+  | 'tags'
+  | 'preparationModes'
+  | 'acceptedPaymentMethods'
+  | 'fulfillment'
+  | 'discount';
+
 export type SearchFilter = {
-  type: 'cuisine' | 'classification' | 'tag' | 'paymentMethod';
+  type: SearchFilterType;
   value: string;
 };
