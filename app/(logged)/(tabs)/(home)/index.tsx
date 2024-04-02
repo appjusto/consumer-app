@@ -4,6 +4,7 @@ import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
 import { BusinessList } from '@/common/screens/home/businesses/list/business-list';
 import { useCreatePlace } from '@/common/screens/orders/checkout/places/useCreatePlace';
+import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
@@ -15,7 +16,6 @@ export default function HomeScreen() {
   const orderId = params.orderId;
   // context
   const currentPlace = useContextCurrentPlace();
-
   // side effects
   useCreatePlace();
   // tracking
@@ -43,7 +43,7 @@ export default function HomeScreen() {
     <View style={{ ...screens.default }}>
       <DefaultView style={screens.headless}>
         <AdreessBar />
-        <BusinessList />
+        <BusinessList style={{ marginLeft: paddings.lg }} mode="home" />
       </DefaultView>
     </View>
   );

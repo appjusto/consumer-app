@@ -2,6 +2,7 @@ import { useObserveLastPlace } from '@/api/consumer/places/useObserveLastPlace';
 import { useTemporaryPlace } from '@/api/consumer/places/useTemporaryPlace';
 import { Place, WithId } from '@appjusto/types';
 import React from 'react';
+import { LatLng } from 'react-native-maps';
 interface Props {
   children: React.ReactNode;
 }
@@ -13,6 +14,8 @@ interface Value {
 }
 
 const PreferencesContext = React.createContext<Value | undefined>(undefined);
+
+const DEFAULT_LOCATION: LatLng = { latitude: -23.541516, longitude: -46.655214 };
 
 export const PreferencesProvider = (props: Props) => {
   // state
@@ -31,6 +34,12 @@ export const useContextCurrentPlace = () => {
   const value = React.useContext(PreferencesContext);
   if (!value) throw new Error('Api fora de contexto.');
   return value.currentPlace;
+};
+
+export const useContextCurrentLocation = () => {
+  const value = React.useContext(PreferencesContext);
+  if (!value) throw new Error('Api fora de contexto.');
+  return value.currentPlace?.location ?? DEFAULT_LOCATION;
 };
 
 export const useContextTemporaryPlace = () => {
