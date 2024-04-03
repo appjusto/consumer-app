@@ -27,7 +27,6 @@ export const useAlgoliaSearch = <T extends object>(
   // handlers
   const search = useCallback(
     async (input: string, page?: number) => {
-      if (!enabled) return;
       if (kind !== 'fleet' && !aroundLatLng) return;
       setLastResponse(undefined);
       setLoading(true);
@@ -44,18 +43,15 @@ export const useAlgoliaSearch = <T extends object>(
       }
       setLoading(false);
     },
-    [api, enabled, aroundLatLng, kind, order, filterArray]
+    [api, aroundLatLng, kind, order, filterArray]
   );
   // side effects
   // clearing cache
   useEffect(() => {
     api.algolia().clearCache();
   }, [api]);
-  useEffect(() => {
-    search(query);
-  }, [aroundLatLng, query, search]);
   // debounced search
-  useDebounce(query, search, query.length > 3);
+  useDebounce(query, search, enabled);
   // update responseByPage
   useEffect(() => {
     if (!lastResponse) {

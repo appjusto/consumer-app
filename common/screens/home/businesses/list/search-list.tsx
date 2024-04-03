@@ -28,8 +28,8 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   const [orderModalShown, setOrderModalShown] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
-  const { results, isLoading, refetch } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
-    query.length >= (mode === 'home' ? 0 : 4) || filters.length > 0,
+  const { results, refetch } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
+    query.length >= (mode === 'home' ? 0 : 3) || filters.length > 0,
     kind,
     order,
     filters,

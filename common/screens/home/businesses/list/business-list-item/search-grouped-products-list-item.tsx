@@ -30,7 +30,7 @@ export const SearchGroupedProductsListItem = ({
   const appjustoOnly = business.tags?.includes('appjusto-only');
   // UI
   return (
-    <View>
+    <View style={{ marginBottom: paddings.xl }}>
       <Pressable
         onPress={() =>
           router.navigate({
@@ -65,12 +65,16 @@ export const SearchGroupedProductsListItem = ({
       </Pressable>
       <View>
         <ScrollView
-          style={{ marginTop: paddings.lg }}
+          style={{ marginTop: paddings.sm }}
           horizontal
           showsHorizontalScrollIndicator={false}
         >
           {products.map((product) => (
-            <ProductItem key={product.objectID} product={product} />
+            <ProductItem
+              style={{ marginRight: paddings.lg }}
+              key={product.objectID}
+              product={product}
+            />
           ))}
         </ScrollView>
       </View>
@@ -82,7 +86,8 @@ interface PProps extends ViewProps {
   product: ProductAlgolia;
 }
 
-const ProductItem = ({ product }: PProps) => {
+const ProductItem = ({ product, ...props }: PProps) => {
+  // console.log('ProductItem', product);
   const productId = product.objectID;
   const businessId = product.business.id;
   const url = useProductImageURI(businessId, product);
@@ -99,6 +104,7 @@ const ProductItem = ({ product }: PProps) => {
           params: { businessId, productId },
         });
       }}
+      {...props}
     >
       <View
         style={{
@@ -111,8 +117,8 @@ const ProductItem = ({ product }: PProps) => {
         }}
       >
         <ProductImage style={{ marginLeft: paddings.sm }} url={url} size={50} recyclingKey={url} />
-        <View style={{ marginLeft: paddings.sm }}>
-          <DefaultText>{product.name}</DefaultText>
+        <View style={{ margin: paddings.sm }}>
+          <DefaultText style={{}}>{product.name}</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm }} color="primary900">
             {formatCurrency(product.price)}
           </DefaultText>
