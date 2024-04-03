@@ -13,6 +13,12 @@ import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
+const AboutSections = [
+  { title: 'Formas de pagmento' },
+  { title: 'Horário de funcionamento' },
+  { title: 'Outras informações' },
+];
+
 export default function BusinessAboutScreen() {
   // params
   const params = useLocalSearchParams<{ businessId: string }>();
@@ -32,11 +38,7 @@ export default function BusinessAboutScreen() {
       </DefaultText>
       <HorizontalSelector
         style={{ marginVertical: paddings.lg }}
-        data={[
-          { title: 'Formas de pagmento' },
-          { title: 'Horário de funcionamento' },
-          { title: 'Outras informações' },
-        ]}
+        data={AboutSections}
         selectedIndex={selectedIndex}
         onSelect={setSelectedIndex}
       />

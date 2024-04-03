@@ -11,8 +11,8 @@ import { router } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
 import { AppJustoOnlyIcon } from '../../icons/appjusto-only-icon';
-import { BusinessBadges } from '../../list/item/business-badges';
-import { BusinessItemInfo } from '../../list/item/business-info';
+import { BusinessBadges } from '../../list/business-list-item/business-badges';
+import { BusinessItemInfo } from '../../list/business-list-item/business-info';
 import { BusinessLogo } from '../../logo/business-logo';
 interface Props extends ViewProps {
   business: WithId<PublicBusiness>;

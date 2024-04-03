@@ -1,4 +1,6 @@
+import { SearchKind } from '@/api/externals/algolia/types';
 import { RoundedToggleButton } from '@/common/components/buttons/toggle/rounded-toggle-button';
+import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
@@ -9,12 +11,18 @@ import { FiltersButton } from '../../search/filters-button';
 
 export type SearchMode = 'stub' | 'in-place';
 
+const AboutSections = [
+  { title: 'Lojas', kind: 'restaurant' as SearchKind },
+  { title: 'Produtos', kind: 'product' as SearchKind },
+];
 interface Props extends ViewProps {
   showFiltersModal: () => void;
   showOrderModal: () => void;
   searchMode: SearchMode;
   query?: string;
   setQuery?: (value: string) => void;
+  kind?: SearchKind;
+  setKind?: (value: SearchKind) => void;
   openSearch?: () => void;
 }
 
@@ -24,6 +32,8 @@ export const SearchHeader = ({
   searchMode,
   query,
   setQuery,
+  kind,
+  setKind,
   openSearch,
   style,
   ...props
@@ -35,6 +45,17 @@ export const SearchHeader = ({
       ) : (
         <DefaultText size="lg">Restaurantes</DefaultText>
       )}
+      {searchMode === 'in-place' ? (
+        <HorizontalSelector
+          style={{ marginVertical: paddings.lg }}
+          data={AboutSections}
+          selectedIndex={AboutSections.findIndex((item) => kind === item.kind)}
+          onSelect={(index) => {
+            if (!setKind) return;
+            setKind(AboutSections[index].kind);
+          }}
+        />
+      ) : null}
       <View
         style={{
           marginVertical: searchMode === 'stub' ? paddings.sm : paddings.lg,

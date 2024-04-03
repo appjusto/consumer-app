@@ -3,7 +3,7 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { BusinessAlgolia, PublicBusiness } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
-import { BusinessListItemReview } from '../business-list-item-reviews';
+import { BusinessListItemReview } from './business-list-item-reviews';
 
 interface Props extends ViewProps {
   business: BusinessAlgolia | PublicBusiness;

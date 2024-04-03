@@ -1,11 +1,10 @@
+import { SearchKind } from '@/api/externals/algolia/types';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
 import { BannerList } from '../../banners/banner-list';
 import { CuisineList } from '../../cuisine/cuisine-list';
 import { HomeOngoingOrders } from '../../ongoing-orders/home-ongoing-orders';
 import { SearchHeader } from './search-header';
-
-// SearchListHeader
 
 export type SearchListMode = 'home' | 'search';
 
@@ -16,15 +15,19 @@ interface Props extends ViewProps {
   openSearch?: () => void;
   query?: string;
   setQuery?: (value: string) => void;
+  kind?: SearchKind;
+  setKind?: (value: SearchKind) => void;
 }
 
-export const BusinessListHeader = ({
+export const SearchListHeader = ({
   mode,
   showFiltersModal,
   showOrderModal,
   openSearch,
   query,
   setQuery,
+  kind,
+  setKind,
   style,
   ...props
 }: Props) => {
@@ -45,6 +48,8 @@ export const BusinessListHeader = ({
         searchMode={mode === 'home' ? 'stub' : 'in-place'}
         query={query}
         setQuery={setQuery}
+        kind={kind}
+        setKind={setKind}
       />
     </View>
   );
