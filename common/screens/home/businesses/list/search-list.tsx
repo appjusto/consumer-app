@@ -1,10 +1,12 @@
+import { filtersFromParams } from '@/api/externals/algolia/filtersFromParams';
 import { groupProducts } from '@/api/externals/algolia/groupProducts';
 import { SearchFilter, SearchKind, SearchOrder } from '@/api/externals/algolia/types';
 import { useAlgoliaSearch } from '@/api/externals/algolia/useAlgoliaSearch';
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
+import { useInitialState } from '@/common/react/useInitialState';
 import { BusinessAlgolia, ProductAlgolia } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, ViewProps } from 'react-native';
 import { SearchFiltersModal } from '../../search/search-filters-modal';
@@ -23,13 +25,18 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   // state
   const [kind, setKind] = useState<SearchKind>('restaurant');
   const [order, setOrder] = useState<SearchOrder>('distance');
-  const [filters, setFilters] = useState<SearchFilter[]>([]);
+  const initialFilters = useInitialState(
+    filtersFromParams(useLocalSearchParams())
+  ) as SearchFilter[];
+  const [filters, setFilters] = useState<SearchFilter[]>(initialFilters);
   const [filtersModalShown, setFiltersModalShown] = useState(false);
   const [orderModalShown, setOrderModalShown] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
+  const enabled = query.length >= (mode === 'home' ? 0 : 3) || filters.length > 0;
+  // console.log(mode, filters, enabled);
   const { results, refetch } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
-    query.length >= (mode === 'home' ? 0 : 3) || filters.length > 0,
+    enabled,
     kind,
     order,
     filters,
@@ -40,7 +47,6 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   // side effects
   useEffect(() => {
     setOrder('distance');
-    setFilters([]);
   }, [kind]);
   useEffect(() => {
     if (!results) return;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 export const useDebounce = <T>(
   value: T,
@@ -6,14 +6,12 @@ export const useDebounce = <T>(
   enabled = true,
   delay = 1000
 ) => {
-  // refs
-  const callbackRef = useRef(callback);
   // side effects
   useEffect(() => {
     if (!enabled) return;
     let isMounted = true;
     const timeout = setTimeout(() => {
-      if (isMounted) callbackRef.current(value);
+      if (isMounted) callback(value);
     }, delay);
     return () => {
       isMounted = false;

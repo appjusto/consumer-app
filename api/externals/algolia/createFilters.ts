@@ -9,9 +9,10 @@ export const createFilters = (kind: SearchKind, filters?: SearchFilter[]) => {
 const createBusinessesFilters = (filters: SearchFilter[] = []) => {
   let result = 'enabled:true';
   if (!filters.length) return result;
+  result += reduce(filters, 'acceptedPaymentMethods');
   result += reduce(filters, 'tags');
   result += reduce(filters, 'cuisine');
-  result += reduce(filters, 'acceptedPaymentMethods');
+  result += reduce(filters, 'fulfillment');
   const discount = filters.find((filter) => filter.type === 'discount');
   if (discount) result += ` AND averageDiscount>=${discount.value}`;
   console.log(result);

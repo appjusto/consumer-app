@@ -2,7 +2,8 @@ import { useBanners } from '@/api/banners/useBanners';
 import paddings from '@/common/styles/paddings';
 import { Banner, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
-import { Pressable, View, ViewProps } from 'react-native';
+import { router } from 'expo-router';
+import { Linking, Pressable, View, ViewProps } from 'react-native';
 import { BANNER_ITEM_WIDTH, BannerListItem } from './banner-list-item';
 
 interface Props extends ViewProps {}
@@ -23,7 +24,13 @@ export const BannerList = ({ style, ...props }: Props) => {
         data={banners}
         renderItem={({ item, index }) => {
           return (
-            <Pressable onPress={() => {}}>
+            <Pressable
+              onPress={() => {
+                if (!item?.link) return;
+                if (item.link.startsWith('https://')) Linking.openURL(item.link);
+                else router.navigate(item.link);
+              }}
+            >
               {() => (
                 <View style={{ marginLeft: index > 0 ? paddings.lg : 0 }}>
                   <BannerListItem
