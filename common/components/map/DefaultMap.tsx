@@ -1,4 +1,5 @@
 import colors, { ColorName } from '@/common/styles/colors';
+import { isLargeScreen } from '@/common/version/device';
 import { LatLng } from '@appjusto/types';
 import { RefObject, forwardRef, useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
@@ -8,6 +9,8 @@ import { DestinationMarker } from './markers/destination-marker';
 import { LocationMarker } from './markers/location-marker';
 import { PackageMarker } from './markers/package-marker';
 import { NavigationIcons } from './navigation-icons/navigation-icons';
+
+const SIZE = isLargeScreen() ? 300 : 200;
 
 interface Props extends MapViewProps {
   location?: LatLng | null;
@@ -68,7 +71,7 @@ export const DefaultMap = forwardRef(
       <View style={{ flex: 1 }}>
         <MapView
           ref={ref}
-          style={[{ flex: 1, minHeight: 300, minWidth: 30 }, style]}
+          style={[{ flex: 1, minHeight: SIZE, minWidth: 30 }, style]}
           provider={PROVIDER_GOOGLE}
           initialRegion={
             origin

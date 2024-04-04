@@ -1,4 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextUser } from '@/common/auth/AuthContext';
 import { CircledView } from '@/common/components/containers/CircledView';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -10,6 +11,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { router } from 'expo-router';
 import { MapPin, XCircle } from 'lucide-react-native';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 const restrictions = [
@@ -20,8 +22,14 @@ const restrictions = [
 ];
 
 export default function P2PIndex() {
+  // context
+  const isAnonymous = useContextUser()?.isAnonymous === true;
   // tracking
   useTrackScreenView('Encomendas');
+  // side effects
+  useEffect(() => {
+    if (isAnonymous) router.push('/sign-in');
+  }, [isAnonymous]);
   // handlers
   const newOrderHandler = () => {
     router.navigate({ pathname: '/encomendas/new' });
