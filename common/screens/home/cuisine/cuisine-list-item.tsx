@@ -22,7 +22,14 @@ export const CuisineListItem = ({ style, item, recyclingKey, ...props }: Props) 
   return (
     <View>
       <Skeleton.Group show={!url}>
-        <View style={{ height: SIZE, width: SIZE, borderRadius: 8, overflow: 'hidden' }}>
+        <View
+          style={{
+            height: SIZE,
+            width: SIZE,
+            overflow: 'hidden',
+            borderRadius: 8,
+          }}
+        >
           <Skeleton colors={[colors.neutral50, colors.neutral100]} width={SIZE} height={SIZE}>
             {url ? (
               <View>

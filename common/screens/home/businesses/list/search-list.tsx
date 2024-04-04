@@ -33,8 +33,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   const [orderModalShown, setOrderModalShown] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
-  const enabled = query.length >= (mode === 'home' ? 0 : 3) || filters.length > 0;
-  // console.log(mode, filters, enabled);
+  const enabled = mode === 'home' || query.length >= 3 || filters.length > 0;
   const { results, refetch } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
     enabled,
     kind,
@@ -58,7 +57,8 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   };
   // logs
   // console.log(query);
-  // console.log(filters);
+  // console.log(mode, filters, enabled);
+  console.log('SearchList', filters);
   // UI
   return (
     <View style={{ flex: 1 }}>
@@ -102,6 +102,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
               setQuery={setQuery}
               kind={kind}
               setKind={setKind}
+              filters={filters}
             />
           }
           refreshing={refreshing}

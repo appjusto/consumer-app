@@ -1,4 +1,4 @@
-import { SearchKind } from '@/api/externals/algolia/types';
+import { SearchFilter, SearchKind } from '@/api/externals/algolia/types';
 import { RoundedToggleButton } from '@/common/components/buttons/toggle/rounded-toggle-button';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
@@ -6,7 +6,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { ChevronDown, Search } from 'lucide-react-native';
-import { Pressable, View, ViewProps } from 'react-native';
+import { Pressable, ScrollView, View, ViewProps } from 'react-native';
 import { FiltersButton } from '../../search/filters-button';
 
 export type SearchMode = 'stub' | 'in-place';
@@ -24,6 +24,7 @@ interface Props extends ViewProps {
   kind?: SearchKind;
   setKind?: (value: SearchKind) => void;
   openSearch?: () => void;
+  filters?: SearchFilter[];
 }
 
 export const SearchHeader = ({
@@ -35,6 +36,7 @@ export const SearchHeader = ({
   kind,
   setKind,
   openSearch,
+  filters,
   style,
   ...props
 }: Props) => {
@@ -59,41 +61,54 @@ export const SearchHeader = ({
       <View
         style={{
           marginVertical: searchMode === 'stub' ? paddings.sm : paddings.lg,
-          flexDirection: 'row',
         }}
       >
-        {searchMode === 'stub' ? (
-          <View style={{ marginRight: paddings.lg }}>
-            <Pressable onPress={openSearch}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingHorizontal: paddings.lg,
-                  paddingVertical: paddings.md,
-                  borderRadius: 4,
-                  borderColor: colors.neutral200,
-                  borderWidth: 1,
-                }}
-              >
-                <DefaultText style={{ marginRight: paddings['2xl'] }} size="md" color="neutral700">
-                  Buscar
-                </DefaultText>
-                <Search size={20} color={colors.neutral800} />
-              </View>
-            </Pressable>
-          </View>
-        ) : null}
-        <FiltersButton style={{ marginRight: paddings.sm }} onPress={showFiltersModal} />
-        <RoundedToggleButton
-          title="Ordenação"
-          toggled={false}
-          onPress={showOrderModal}
-          rightView={
-            <ChevronDown style={{ marginLeft: paddings.sm }} size={16} color={colors.neutral900} />
-          }
-          {...props}
-        />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {searchMode === 'stub' ? (
+            <View style={{ marginRight: paddings.lg }}>
+              <Pressable onPress={openSearch}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: paddings.lg,
+                    paddingVertical: paddings.md,
+                    borderRadius: 4,
+                    borderColor: colors.neutral200,
+                    borderWidth: 1,
+                  }}
+                >
+                  <DefaultText
+                    style={{ marginRight: paddings['2xl'] }}
+                    size="md"
+                    color="neutral700"
+                  >
+                    Buscar
+                  </DefaultText>
+                  <Search size={20} color={colors.neutral800} />
+                </View>
+              </Pressable>
+            </View>
+          ) : null}
+          <FiltersButton
+            total={filters?.length ?? 0}
+            style={{ marginRight: paddings.sm }}
+            onPress={showFiltersModal}
+          />
+          <RoundedToggleButton
+            title="Ordenação"
+            toggled={false}
+            onPress={showOrderModal}
+            rightView={
+              <ChevronDown
+                style={{ marginLeft: paddings.sm }}
+                size={16}
+                color={colors.neutral900}
+              />
+            }
+            {...props}
+          />
+        </ScrollView>
       </View>
     </View>
   );

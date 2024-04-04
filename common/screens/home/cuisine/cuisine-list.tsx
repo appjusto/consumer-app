@@ -2,6 +2,7 @@ import { useCuisines } from '@/api/platform/cuisines/useCuisines';
 import paddings from '@/common/styles/paddings';
 import { Cuisine, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
+import { router } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 import { CuisineListItem } from './cuisine-list-item';
 
@@ -23,17 +24,19 @@ export const CuisineList = ({ style, ...props }: Props) => {
         data={cuisines}
         renderItem={({ item, index }) => {
           return (
-            <Pressable onPress={() => {}}>
-              {() => (
-                <View style={{ marginLeft: index > 0 ? paddings.lg : 0 }}>
-                  <CuisineListItem
-                    // breaks recycling but it's okay with this list
-                    key={keyExtractor(item, index)}
-                    item={item}
-                    recyclingKey={keyExtractor(item, index)}
-                  />
-                </View>
-              )}
+            <Pressable onPress={() => router.navigate(`/search?cuisine=${item?.name}`)}>
+              {() => {
+                return (
+                  <View style={{ marginLeft: index > 0 ? paddings.lg : 0 }}>
+                    <CuisineListItem
+                      // breaks recycling but it's okay with this list
+                      key={keyExtractor(item, index)}
+                      item={item}
+                      recyclingKey={keyExtractor(item, index)}
+                    />
+                  </View>
+                );
+              }}
             </Pressable>
           );
         }}

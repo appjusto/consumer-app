@@ -30,7 +30,7 @@ export const RoundedToggleButton = ({
             borderColor: toggled ? colors.primary100 : colors.neutral400,
           }}
         >
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <DefaultText color={toggled ? 'primary900' : 'neutral900'}>{title}</DefaultText>
             {rightView}
           </View>

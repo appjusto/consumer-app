@@ -23,8 +23,8 @@ export default function Index() {
     if (!router) return;
     if (!logged) return;
     // console.log('index', isAnonymous, situation);
-    // if (isAnonymous) router.replace('/(unlogged)/welcome');
-    if (isAnonymous) router.replace('/(logged)/(tabs)/(home)/');
+    // if (isAnonymous) router.replace('/(logged)/(tabs)/(home)/');
+    if (isAnonymous) router.replace('/(unlogged)/welcome');
     else if (situation === 'approved') router.replace('/(logged)/(tabs)/(home)/');
   }, [situation, logged, isAnonymous, router]);
   // UI

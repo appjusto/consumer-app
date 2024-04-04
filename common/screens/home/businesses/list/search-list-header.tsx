@@ -1,4 +1,4 @@
-import { SearchKind } from '@/api/externals/algolia/types';
+import { SearchFilter, SearchKind } from '@/api/externals/algolia/types';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
 import { BannerList } from '../../banners/banner-list';
@@ -17,6 +17,7 @@ interface Props extends ViewProps {
   setQuery?: (value: string) => void;
   kind?: SearchKind;
   setKind?: (value: SearchKind) => void;
+  filters?: SearchFilter[];
 }
 
 export const SearchListHeader = ({
@@ -28,9 +29,11 @@ export const SearchListHeader = ({
   setQuery,
   kind,
   setKind,
+  filters,
   style,
   ...props
 }: Props) => {
+  // UI
   return (
     <View style={[{}, style]} {...props}>
       {mode === 'home' ? (
@@ -50,6 +53,7 @@ export const SearchListHeader = ({
         setQuery={setQuery}
         kind={kind}
         setKind={setKind}
+        filters={filters}
       />
     </View>
   );
