@@ -1,5 +1,6 @@
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { router } from 'expo-router';
@@ -11,7 +12,7 @@ interface Props extends ViewProps {}
 export const AdreessBar = ({ style, ...props }: Props) => {
   // context
   const currentPlace = useContextCurrentPlace();
-  if (!currentPlace) return null;
+  // if (!currentPlace) return null;
   // UI
   return (
     <Pressable onPress={() => router.push('/places')}>
@@ -28,10 +29,20 @@ export const AdreessBar = ({ style, ...props }: Props) => {
         ]}
         {...props}
       >
-        <DefaultText style={{ textAlign: 'center' }} color="black">
-          {currentPlace.address?.main ?? ''}
-        </DefaultText>
-        <ChevronDown style={{ marginLeft: paddings.sm }} color={colors.black} size={16} />
+        {currentPlace ? (
+          <>
+            <DefaultText style={{ textAlign: 'center' }} color="black">
+              {currentPlace.address?.main ?? ''}
+            </DefaultText>
+            <ChevronDown style={{ marginLeft: paddings.sm }} color={colors.black} size={16} />
+          </>
+        ) : (
+          <Pressable onPress={() => router.navigate({ pathname: '/places/new' })}>
+            <MessageBox variant="warning">
+              Usando sua localização aproximada. Clique para definir o endereço de entrega
+            </MessageBox>
+          </Pressable>
+        )}
       </View>
     </Pressable>
   );

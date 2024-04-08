@@ -12,6 +12,7 @@ import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { useAddOrderItem } from '@/api/orders/items/useAddOrderItem';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextProfile } from '@/common/auth/AuthContext';
+import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -121,14 +122,22 @@ export default function ProductDetailScreen() {
           }
         />
       </DefaultScrollView>
-      <AddProductToOrder
-        quantity={quantity}
-        total={getItemTotal(getOrderItem())}
-        editing={Boolean(itemId)}
-        disabled={addToOrderDisabled}
-        onSetQuantity={(value) => setQuantity(value)}
-        onAddItemToOrder={updateOrder}
-      />
+      {!currentPlace ? (
+        <DefaultButton
+          style={{ margin: paddings.lg }}
+          title="Definir local de entrega"
+          onPress={() => router.navigate({ pathname: '/places/new' })}
+        />
+      ) : (
+        <AddProductToOrder
+          quantity={quantity}
+          total={getItemTotal(getOrderItem())}
+          editing={Boolean(itemId)}
+          disabled={addToOrderDisabled}
+          onSetQuantity={(value) => setQuantity(value)}
+          onAddItemToOrder={updateOrder}
+        />
+      )}
     </View>
   );
 }

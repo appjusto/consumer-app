@@ -24,7 +24,7 @@ export default function HomeScreen() {
   useEffect(() => {
     if (currentPlace === undefined) return;
     if (currentPlace === null) {
-      router.push('/places/new');
+      // router.push('/places/new');
     }
   }, [currentPlace]);
   useEffect(() => {
