@@ -9,6 +9,7 @@ import { useContextOrder } from '@/api/orders/context/order-context';
 import { addItemToOrder } from '@/api/orders/items/addItemToOrder';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
+import { useAddItemIssues } from '@/api/orders/items/useAddItemIssues';
 import { useAddOrderItem } from '@/api/orders/items/useAddOrderItem';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextProfile } from '@/common/auth/AuthContext';
@@ -16,6 +17,7 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { ProductComplements } from '@/common/screens/home/businesses/detail/complement/product-complements';
 import { AddProductToOrder } from '@/common/screens/home/businesses/detail/product/add-product-to-order';
 import colors from '@/common/styles/colors';
@@ -58,6 +60,7 @@ export default function ProductDetailScreen() {
   } = useAddOrderItem(productId, itemId);
   const url = useProductImageURI(businessId, product);
   const orderItem = getOrderItem();
+  const issues = useAddItemIssues();
   // tracking
   useTrackScreenView('Produto', { businessId, productId });
   // handlers
@@ -77,7 +80,8 @@ export default function ProductDetailScreen() {
     }
     router.back();
   };
-  const addToOrderDisabled = !profile || !currentPlace || !business || !orderItem || !canAddItem;
+  const addToOrderDisabled =
+    issues.length > 0 || !profile || !currentPlace || !business || !orderItem || !canAddItem;
   // console.log(!profile, !currentPlace, !business, !orderItem, !canAddItem);
   // UI
   // console.log('product', product);
@@ -121,6 +125,11 @@ export default function ProductDetailScreen() {
             toggleComplement(group, complement, added)
           }
         />
+        {issues.length ? (
+          <MessageBox variant="error" style={{ margin: paddings.lg }}>
+            {issues[0].description}
+          </MessageBox>
+        ) : null}
       </DefaultScrollView>
       {!currentPlace ? (
         <DefaultButton

@@ -53,7 +53,7 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
         >{`Distância: ${formatDistance(order.route.distance)}`}</RoundedText>
       ) : null}
       {order.route?.issue ? (
-        <MessageBox style={{ marginTop: paddings.md }} variant="warning">
+        <MessageBox style={{ marginTop: paddings.md }} variant="error">
           {order.route.issue}
         </MessageBox>
       ) : null}

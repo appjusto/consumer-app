@@ -1,6 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { checkoutHasIssue } from '@/api/orders/checkout/checkoutHasIssue';
 import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
@@ -9,6 +10,7 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { HRShadow } from '@/common/components/views/hr-shadow';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
@@ -112,6 +114,11 @@ export default function OrderCheckoutDeliveryScreen() {
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
+      {issues.length ? (
+        <MessageBox variant="error" style={{ margin: paddings.lg }}>
+          {issues[0].description}
+        </MessageBox>
+      ) : null}
       <View>
         <HRShadow />
         <View
@@ -133,7 +140,7 @@ export default function OrderCheckoutDeliveryScreen() {
                 loading={loading}
               />
             ) : null}
-            {issues.includes('profile-incomplete') ? (
+            {checkoutHasIssue(issues, 'profile-incomplete') ? (
               <DefaultButton title="Finalizar cadastro" onPress={completeProfileHandler} />
             ) : null}
           </View>

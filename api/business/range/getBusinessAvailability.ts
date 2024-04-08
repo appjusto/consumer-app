@@ -11,7 +11,7 @@ export const shouldBeOpened = (
   if (!schedule) return false;
   // hacky to deal with https://github.com/iamkun/dayjs/issues/1377
   const date = Dayjs(at).subtract(3, 'h');
-  console.log(at, date);
+  // console.log(at, date);
   const daySchedule = getDaySchedule(schedule, date);
   if (!daySchedule || !daySchedule.checked) return false;
   if (isEmpty(daySchedule.schedule)) return true;
