@@ -48,14 +48,6 @@ export const getComplementImageStoragePath = (businessId: string, complementId: 
   `${getComplementsStoragePath(businessId)}/${complementId}_288x288.jpg`;
 
 export default class BusinessApi {
-  async fetchBusiness(value: string) {
-    const r = /^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{7}$/.exec(value);
-    const fieldPath = !r ? 'slug' : 'code';
-    const query = publicBusinessesRef().where(fieldPath, '==', value).limit(1);
-    const snapshot = await query.get();
-    if (snapshot.empty) return null;
-    return documentAs<PublicBusiness>(snapshot.docs[0]);
-  }
   async fetchBusinessById(id: string) {
     const query = publicBusinessesRef().doc(id);
     const snapshot = await query.get();
