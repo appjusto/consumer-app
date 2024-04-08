@@ -11,7 +11,7 @@ import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   order: Order | undefined | null;
-  variant: 'business' | 'products' | 'checkout' | 'place-order';
+  variant: 'business' | 'products' | 'checkout';
   disabled: boolean;
   onPress: () => void;
 }
@@ -48,13 +48,7 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
           </View>
         </View>
         <DefaultButton
-          title={
-            variant === 'business'
-              ? 'Ver sacola'
-              : variant === 'place-order'
-              ? 'Confirmar pedido'
-              : 'Continuar'
-          }
+          title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
           size="lg"
           disabled={disabled}
           onPress={onPress}

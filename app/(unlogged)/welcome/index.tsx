@@ -74,7 +74,7 @@ export default function Welcome() {
           key="3"
         />
       </PagerView>
-      <View style={{ padding: paddings.lg, marginBottom: 0 }}>
+      <View style={{ padding: paddings.lg, marginBottom: paddings.lg }}>
         <View
           style={{
             flexDirection: 'row',

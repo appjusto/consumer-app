@@ -8,7 +8,7 @@ interface Props extends ViewProps {
   order: WithId<Order>;
 }
 
-export const OrderListItem = ({ order, style, ...props }: Props) => {
+export const OrderListItem = ({ order, ...props }: Props) => {
   const { type, status } = order;
   if (type === 'food') {
     if (isOrderOngoing(status)) return <HomeOngoingBusinessOrder order={order} {...props} />;

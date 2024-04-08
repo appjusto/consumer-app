@@ -42,6 +42,7 @@ export const CancelOrderModal = ({
   // tracking
   useTrackScreenView('Cancelar pedido', { issueType }, visible);
   // UI
+  if (!visible) return null;
   if (!issues || costs === undefined) return <Loading />;
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>

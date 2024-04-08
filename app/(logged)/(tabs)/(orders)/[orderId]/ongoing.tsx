@@ -1,12 +1,11 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
+import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Stack, router } from 'expo-router';
-import { useEffect } from 'react';
+import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { OngoingOrderCourier } from '../../../../../common/screens/orders/ongoing/ongoing-order-courier';
 import { OngoingOrderDeliveryAddress } from '../../../../../common/screens/orders/ongoing/ongoing-order-delivery-address';
@@ -20,22 +19,10 @@ export default function OngoingOrderScreen() {
   const order = useContextOrder();
   const orderId = order?.id;
   const status = order?.status;
-  const type = order?.type;
   // tracking
   useTrackScreenView('Pedido em andamento', { orderId, status });
   // side effects
-  useEffect(() => {
-    if (!status) return;
-    if (!type) return;
-    if (!orderId) return;
-    const path = getOrderPath(status, type, 'ongoing');
-    if (path) {
-      router.replace({
-        pathname: path,
-        params: { orderId },
-      });
-    }
-  }, [orderId, status, type]);
+  useOrderRoute('ongoing');
   // UI
   if (!order) return <Loading title="" />;
   return (

@@ -1,10 +1,10 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
-import { getOrderStage } from '@/api/orders/status';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -20,7 +20,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, router, useNavigation } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -29,10 +29,9 @@ export default function OrderCheckoutDeliveryScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrder();
-  const orderId = quote?.id;
-  const status = quote?.status;
-  const type = quote?.type;
   const { paymentMethod, selectedCard } = useContextPayments();
+  // state
+  const issues = useCheckoutIssues();
   const placeOptions = usePlaceOrderOptions();
   // state
   const [loading, setLoading] = useState(false);
@@ -41,17 +40,9 @@ export default function OrderCheckoutDeliveryScreen() {
     businessId: quote?.business?.id,
     orderId: quote?.id,
   });
-  // side effects
-  useEffect(() => {
-    if (!status) return;
-    if (!type) return;
-    const stage = getOrderStage(status, type);
-    if (stage === 'placing') {
-    }
-  }, [navigation, orderId, status, type]);
   useBackWhenOrderExpires(!loading);
   // handlers
-  const canPlaceOrder = Boolean(placeOptions);
+  const canPlaceOrder = Boolean(placeOptions) && !issues.length;
   const placeOrder = () => {
     if (!placeOptions) return;
     setLoading(true);
@@ -64,7 +55,8 @@ export default function OrderCheckoutDeliveryScreen() {
         router.navigate('/(logged)/(tabs)/(home)/');
         // @ts-ignore
         navigation.navigate('(orders)', {
-          screen: '[orderId]/confirming',
+          screen:
+            '[orderId]/confirming' + (placeOptions.payment.payableWith === 'pix' ? '-pix' : ''),
           params: { orderId: placeOptions.orderId },
           initial: false,
         });
@@ -78,11 +70,19 @@ export default function OrderCheckoutDeliveryScreen() {
         }
       });
   };
+  const completeProfileHandler = () => {
+    if (!quote) return;
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/profile',
+      params: { orderId: quote.id },
+    });
+  };
+  // logs
   console.log('checkout/[orderId]/confirmation', typeof quote, quote?.id);
+  // console.log(placeOptions);
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';
-  console.log(placeOptions);
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>
@@ -125,12 +125,17 @@ export default function OrderCheckoutDeliveryScreen() {
             <DefaultButton title="Alterar pedido" variant="outline" onPress={() => null} />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
-            <DefaultButton
-              title="Confirmar pedido"
-              onPress={placeOrder}
-              disabled={!canPlaceOrder || loading}
-              loading={loading}
-            />
+            {issues.length === 0 ? (
+              <DefaultButton
+                title="Confirmar pedido"
+                onPress={placeOrder}
+                disabled={!canPlaceOrder || loading}
+                loading={loading}
+              />
+            ) : null}
+            {issues.includes('profile-incomplete') ? (
+              <DefaultButton title="Finalizar cadastro" onPress={completeProfileHandler} />
+            ) : null}
           </View>
         </View>
       </View>

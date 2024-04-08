@@ -39,10 +39,10 @@ export default function OrdersIndex() {
   );
   const handleClick = (order: WithId<Order>) => {
     const { status, type } = order;
-    const path = getOrderPath(status, type);
-    if (path) {
+    const pathname = getOrderPath(status, type);
+    if (pathname) {
       router.navigate({
-        pathname: path,
+        pathname,
         params: { orderId: order.id },
       });
     }

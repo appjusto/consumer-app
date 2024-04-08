@@ -38,13 +38,13 @@ export const OrderList = ({
   return (
     <View style={[{ padding: paddings.lg }, style]} {...props}>
       {ongoingOrders.length ? (
-        <View style={{ marginBottom: paddings.xl }}>
+        <View style={{ marginBottom: paddings.lg }}>
           <DefaultText style={{ marginBottom: paddings.lg }} size="md">
             Pedidos em aberto
           </DefaultText>
           {ongoingOrders.map((order) => (
             <Pressable key={order.id} onPress={() => onPress(order)}>
-              <OrderListItem order={order} />
+              <OrderListItem style={{ marginBottom: paddings.lg }} order={order} />
             </Pressable>
           ))}
         </View>

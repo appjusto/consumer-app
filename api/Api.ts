@@ -22,6 +22,7 @@ import LedgerApi from './ledger/LedgerApi';
 import MapsApi from './maps/MapsApi';
 import CouriersApi from './orders/courier/couriers-api';
 import OrdersApi from './orders/orders-api';
+import PaymentsApi from './orders/payment/payments-api';
 import PlatformApi from './platform/PlatformApi';
 import ProfileApi from './profile/ProfileApi';
 
@@ -38,6 +39,7 @@ export default class Api {
   private _fleets: FleetsApi;
   private _algolia: AlgoliaApi;
   private _orders: OrdersApi;
+  private _payments: PaymentsApi;
   private _ledger: LedgerApi;
   private _maps: MapsApi;
   private _chat: ChatsApi;
@@ -81,6 +83,7 @@ export default class Api {
     this._banner = new BannerApi();
     this._fleets = new FleetsApi(this._profile);
     this._orders = new OrdersApi(this._auth);
+    this._payments = new PaymentsApi(this._auth);
     this._ledger = new LedgerApi(this._auth);
     this._maps = new MapsApi();
     this._algolia = new AlgoliaApi();
@@ -123,6 +126,10 @@ export default class Api {
 
   orders() {
     return this._orders;
+  }
+
+  payments() {
+    return this._payments;
   }
 
   ledger() {

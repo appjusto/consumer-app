@@ -1,7 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
+import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
@@ -11,7 +11,6 @@ import screens from '@/common/styles/screens';
 import { Image } from 'expo-image';
 import { Stack, router } from 'expo-router';
 import { AlertOctagon, Phone } from 'lucide-react-native';
-import { useEffect } from 'react';
 import { Dimensions, Linking, View } from 'react-native';
 
 const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
@@ -23,26 +22,13 @@ export default function OrderConfirmingScreen() {
   const order = useContextOrder();
   const orderId = order?.id;
   const status = order?.status;
-  const type = order?.type;
   const waitingAcceptance = status === 'confirmed';
   // state
   const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
   // tracking
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects
-  useEffect(() => {
-    if (!orderId) return;
-    if (!status) return;
-    if (!type) return;
-    // console.log('OrderConfirmingScreen', orderId, status, waitingAcceptance);
-    const pathname = getOrderPath(status, type, 'confirming');
-    if (pathname) {
-      router.replace({
-        pathname,
-        params: { orderId },
-      });
-    }
-  }, [orderId, status, type]);
+  useOrderRoute('confirming');
   // handlers
   const callBusinessHandler = () => {
     Linking.openURL(`tel:${businessPhone}`)

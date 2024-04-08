@@ -48,7 +48,7 @@ export default function OrderCheckoutDeliveryScreen() {
       <CartButton
         order={quote}
         variant="checkout"
-        disabled={!quote.fare}
+        disabled={!quote.fare || Boolean(quote.route?.issue)}
         onPress={checkoutHandler}
       />
     </View>

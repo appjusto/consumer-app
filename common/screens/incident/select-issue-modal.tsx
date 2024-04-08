@@ -38,6 +38,7 @@ export const SelectIssueModal = ({
   // tracking
   useTrackScreenView('Relatar Problema', { issueType }, visible);
   // UI
+  if (!visible) return null;
   if (!issues) return <Loading />;
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>

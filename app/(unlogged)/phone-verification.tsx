@@ -2,6 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { CodeInput } from '@/common/components/inputs/code-input/CodeInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -19,7 +20,7 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { SafeAreaView, TextInput, View } from 'react-native';
 
 type ScreenState = 'default' | 'access-code';
 
@@ -143,63 +144,67 @@ export default function PhoneVerification() {
   if (!state) return <Loading />;
   const canSubmit = code.trim().length === 6;
   return (
-    <View
-      style={{
-        ...screens.default,
-        padding: paddings.lg,
-      }}
-    >
-      <Stack.Screen options={{ title: 'Confirmação de número' }} />
-      <RequestCodeModal
-        visible={requestCodeModalShown}
-        timer={timer}
-        onRequest={requestAccessCode}
-        onDismiss={() => setRequestCodeModalShown(false)}
-      />
-      <DefaultText size="xl" style={{ marginVertical: paddings.lg }}>
-        Confirme seu celular
-      </DefaultText>
-      <DefaultText style={{ ...lineHeight.md }}>
-        {`Enviamos um código SMS para o número +${countryCode} ${phoneFormatter(
-          phone
-        )}. Você deverá recebê-lo nos próximos segundos. Ao receber, informe o código abaixo:`}
-      </DefaultText>
-      <CodeInput
-        value={code}
-        onChange={setCode}
-        length={6}
-        style={{ marginVertical: paddings.xl }}
-      />
-
-      <MessageBox variant={error ? 'error' : 'info'}>
-        {error
-          ? error
-          : `Se você não receber o código em alguns segundos, verifique seu número e a caixa de SPAM do seu aplicativo de mensagens.`}
-      </MessageBox>
-      <View style={{ flex: 1 }} />
-      {state !== 'access-code' ? (
-        <View>
-          <DefaultButton
-            title="Verificar"
-            disabled={!canSubmit}
-            loading={loading}
-            onPress={verifyHandler}
-          />
-          <DefaultButton
-            style={{ marginTop: paddings.lg }}
-            title="Não recebi o código"
-            variant="outline"
-            onPress={() => setRequestCodeModalShown(true)}
-          />
-        </View>
-      ) : (
-        <DefaultButton
-          title="Verificar"
-          disabled={!canSubmit}
-          loading={loading}
-          onPress={loginWithAccessCode}
+    <DefaultKeyboardAwareScrollView>
+      <View
+        style={{
+          ...screens.default,
+          padding: paddings.lg,
+        }}
+      >
+        <Stack.Screen options={{ title: 'Confirmação de número' }} />
+        <RequestCodeModal
+          visible={requestCodeModalShown}
+          timer={timer}
+          onRequest={requestAccessCode}
+          onDismiss={() => setRequestCodeModalShown(false)}
         />
-      )}
-    </View>
+        <DefaultText size="xl" style={{ marginVertical: paddings.lg }}>
+          Confirme seu celular
+        </DefaultText>
+        <DefaultText style={{ ...lineHeight.md }}>
+          {`Enviamos um código SMS para o número +${countryCode} ${phoneFormatter(
+            phone
+          )}. Você deverá recebê-lo nos próximos segundos. Ao receber, informe o código abaixo:`}
+        </DefaultText>
+        <CodeInput
+          value={code}
+          onChange={setCode}
+          length={6}
+          style={{ marginVertical: paddings.xl }}
+        />
+
+        <MessageBox variant={error ? 'error' : 'info'}>
+          {error
+            ? error
+            : `Se você não receber o código em alguns segundos, verifique seu número e a caixa de SPAM do seu aplicativo de mensagens.`}
+        </MessageBox>
+        <View style={{ flex: 1 }} />
+        <SafeAreaView>
+          {state !== 'access-code' ? (
+            <View>
+              <DefaultButton
+                title="Verificar"
+                disabled={!canSubmit}
+                loading={loading}
+                onPress={verifyHandler}
+              />
+              <DefaultButton
+                style={{ marginTop: paddings.lg }}
+                title="Não recebi o código"
+                variant="outline"
+                onPress={() => setRequestCodeModalShown(true)}
+              />
+            </View>
+          ) : (
+            <DefaultButton
+              title="Verificar"
+              disabled={!canSubmit}
+              loading={loading}
+              onPress={loginWithAccessCode}
+            />
+          )}
+        </SafeAreaView>
+      </View>
+    </DefaultKeyboardAwareScrollView>
   );
 }

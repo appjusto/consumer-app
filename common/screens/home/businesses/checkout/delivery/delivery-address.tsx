@@ -2,6 +2,7 @@ import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { RoundedText } from '@/common/components/texts/RoundedText';
 import { HR } from '@/common/components/views/HR';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { formatDistance } from '@/common/formatters/distance';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -50,6 +51,11 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
         <RoundedText
           style={{ marginTop: paddings.md, backgroundColor: colors.neutral50 }}
         >{`Distância: ${formatDistance(order.route.distance)}`}</RoundedText>
+      ) : null}
+      {order.route?.issue ? (
+        <MessageBox style={{ marginTop: paddings.md }} variant="warning">
+          {order.route.issue}
+        </MessageBox>
       ) : null}
       <HR style={{ marginTop: paddings.xl }} />
     </View>

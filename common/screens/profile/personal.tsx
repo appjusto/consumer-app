@@ -44,7 +44,6 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   const [surname, setSurname] = useState<string>();
   const [cpf, setCpf] = useState<string>();
   const [phone, setPhone] = useState(api.auth().getPhoneNumber(true) ?? undefined);
-  const [birthday, setBirthday] = useState<string>();
   const [isLoading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   // helpers
@@ -55,10 +54,10 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
     surname: (surname ?? '').trim(),
     cpf,
     phone,
-    birthday,
     countryCode,
   };
-  const canUpdateProfile = isProfileValid(updatedUser);
+  const canUpdateProfile =
+    profile?.situation === 'approved' && (!isProfileValid(profile) || editing);
   // effects
   useEffect(() => {
     if (!profile) return;
@@ -66,9 +65,8 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
     if (profile.name && name === undefined) setName(profile.name);
     if (profile.surname && surname === undefined) setSurname(profile.surname);
     if (profile.cpf && cpf === undefined) setCpf(profile.cpf);
-    if (profile.birthday && birthday === undefined) setBirthday(profile.birthday);
     if (profile.phone && phone === undefined) setPhone(profile.phone);
-  }, [api, profile, email, name, surname, cpf, birthday, phone]);
+  }, [api, profile, email, name, surname, cpf, phone]);
   // handlers
   const handleError = (error: unknown) => {
     if (error instanceof Error) crashlytics().recordError(error);
@@ -107,7 +105,6 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
       if (surname !== profile.surname) changes.surname = surname;
       if (cpf !== profile.cpf) changes.cpf = cpf;
       if (phone !== profile.phone) changes.phone = phone;
-      if (birthday !== profile.birthday) changes.birthday = birthday;
       if (isEmpty(changes)) {
         showToast('Nenhuma alteração solicitada.', 'warning');
         return;
@@ -132,9 +129,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
     <DefaultKeyboardAwareScrollView style={{ ...screens.default, padding: paddings.lg }}>
       <SafeAreaView>
         <DefaultText size="lg">
-          {profileState.includes('approved')
-            ? 'Seus dados pessoais'
-            : 'Preencha seus dados pessoais'}
+          {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
         </DefaultText>
         <DefaultInput
           style={{ marginTop: paddings.lg }}
@@ -144,7 +139,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           returnKeyType="next"
           autoCapitalize="none"
           value={email}
-          editable={!profileState.includes('approved') || editing}
+          editable={canUpdateProfile}
           blurOnSubmit={false}
           autoCorrect={false}
           onChangeText={setEmail}
@@ -159,7 +154,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           keyboardType="default"
           returnKeyType="next"
           autoCapitalize="words"
-          editable={!profileState.includes('approved') || editing}
+          editable={canUpdateProfile}
           blurOnSubmit={false}
           onChangeText={setName}
           onSubmitEditing={() => surnameRef.current?.focus()}
@@ -173,7 +168,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           keyboardType="default"
           returnKeyType="next"
           autoCapitalize="words"
-          editable={!profileState.includes('approved') || editing}
+          editable={canUpdateProfile}
           blurOnSubmit={false}
           onChangeText={setSurname}
           onSubmitEditing={() => cpfRef.current?.focus()}
@@ -187,23 +182,11 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
             placeholder="000.000.000-00"
             keyboardType="number-pad"
             returnKeyType="next"
-            editable={!profileState.includes('approved') || editing}
+            editable={canUpdateProfile}
             blurOnSubmit={false}
             value={cpf}
             onChangeText={setCpf}
             onSubmitEditing={() => birthdayRef.current?.focus()}
-          />
-          <PatternInput
-            ref={birthdayRef}
-            style={{ marginLeft: paddings.lg, flex: 1 }}
-            pattern="fulldate"
-            title="Data de nascimento"
-            placeholder="00/00/0000"
-            keyboardType="number-pad"
-            returnKeyType="done"
-            editable={!profileState.includes('approved') || !profile?.birthday || editing}
-            value={birthday}
-            onChangeText={setBirthday}
           />
         </View>
         <PatternInput
@@ -217,7 +200,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           value={phone}
           onChangeText={setPhone}
         />
-        {profileState.includes('approved') ? (
+        {profileState.includes('approved') && isProfileValid(profile) ? (
           <MessageBox style={{ marginTop: paddings.lg }}>
             {hasPendingChange
               ? 'Sua solicitação foi enviada para o nosso time e será revisada em breve.'

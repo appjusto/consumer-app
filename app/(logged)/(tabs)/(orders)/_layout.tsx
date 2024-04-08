@@ -12,10 +12,6 @@ export default function OrdersLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Pedidos' }} />
-      {/* <Stack.Screen
-        name="checkout/confirming"
-        options={{ presentation: 'modal', headerShown: false }}
-      /> */}
     </Stack>
   );
 }
