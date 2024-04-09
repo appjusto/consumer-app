@@ -17,7 +17,7 @@ import { Product, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 export default function BusinessDetailScreen() {
   // params
@@ -52,9 +52,9 @@ export default function BusinessDetailScreen() {
   };
   // scroll handling
   // showing/hiding header
-  const scrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setHeaderHidden(event.nativeEvent.contentOffset.y > 300);
-  };
+  // const scrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  //   setHeaderHidden(event.nativeEvent.contentOffset.y > 300);
+  // };
   // scolling product list to right section
   const categoryHandler = (index: number) => {
     if (!categories) return;
@@ -69,7 +69,7 @@ export default function BusinessDetailScreen() {
   return (
     <View style={{ ...screens.default }}>
       <Stack.Screen options={{ title: business.name }} />
-      {headerHidden && categories?.length && categories?.length > 1 ? (
+      {headerHidden && categories?.length && categories.length > 1 ? (
         <HorizontalSelector
           style={{ margin: paddings.lg }}
           data={categories.map((value) => ({ title: value }))}
@@ -91,8 +91,11 @@ export default function BusinessDetailScreen() {
             onCategorySelect={categoryHandler}
           />
         }
-        onScroll={scrollHandler}
-        onMomentumScrollEnd={() => setCategoryIndex(nextCategoryIndex)}
+        // onScroll={scrollHandler}
+        onMomentumScrollEnd={(ev) => {
+          setCategoryIndex(nextCategoryIndex);
+          // scrollHandler(ev);
+        }}
         onViewableItemsChanged={(info) => {
           const item = info.changed.slice().find((v) => v.isViewable && typeof v.item === 'string');
           if (item?.item) {

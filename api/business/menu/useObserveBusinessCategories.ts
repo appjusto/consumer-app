@@ -9,7 +9,11 @@ export const useObserveBusinessCategories = (businessId?: string) => {
   const [categories, setCategories] = React.useState<WithId<Category>[]>();
   // side effects
   React.useEffect(() => {
-    if (!businessId) return;
+    if (!businessId) {
+      setCategories(undefined);
+      return;
+    }
+    // console.log('useObserveBusinessCategories', businessId);
     return api.business().observeCategories(businessId, setCategories);
   }, [api, businessId]);
   // result

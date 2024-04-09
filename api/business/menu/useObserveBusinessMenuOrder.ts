@@ -9,7 +9,11 @@ export const useObserveBusinessMenuOrder = (businessId?: string, menuId?: string
   const [ordering, setOrdering] = React.useState<Ordering>();
   // side effects
   React.useEffect(() => {
-    if (!businessId) return;
+    if (!businessId) {
+      setOrdering(undefined);
+      return;
+    }
+    // console.log('useObserveBusinessMenuOrder', businessId, menuId);
     return api.business().observeMenuOrder(businessId, setOrdering, menuId);
   }, [api, businessId, menuId]);
   // result

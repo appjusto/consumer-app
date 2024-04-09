@@ -70,6 +70,7 @@ export default class BusinessApi {
 
   // menu
   observeCategories(businessId: string, resultHandler: (categories: WithId<Category>[]) => void) {
+    // console.log('observeCategories', businessId);
     return businessCategoriesRef(businessId)
       .where('enabled', '==', true)
       .onSnapshot(

@@ -9,7 +9,11 @@ export const useObserveBusinessProducts = (businessId?: string) => {
   const [products, setProducts] = React.useState<WithId<Product>[]>();
   // side effects
   React.useEffect(() => {
-    if (!businessId) return;
+    if (!businessId) {
+      setProducts(undefined);
+      return;
+    }
+    // console.log('useObserveBusinessProducts', businessId);
     return api.business().observeProducts(businessId, setProducts);
   }, [api, businessId]);
   // result

@@ -1,7 +1,6 @@
 import { Category, Product, PublicBusiness, WithId } from '@appjusto/types';
 import { useGlobalSearchParams } from 'expo-router';
-import { memoize } from 'lodash';
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
 import { useObserveBusiness } from '../useObserveBusiness';
 
@@ -18,6 +17,7 @@ interface Value {
   categories?: string[];
   getProduct?: (produtId: string) => WithId<Product> | undefined;
   getProductCategory?: (produtId: string) => WithId<Category> | undefined;
+  loaded?: boolean;
 }
 
 export const BusinessProvider = ({ children }: Props) => {
@@ -27,25 +27,28 @@ export const BusinessProvider = ({ children }: Props) => {
   const business = useObserveBusiness(businessId);
   const { categoriesWithProducts, loaded, groupsWithComplements, getProductCategory } =
     useObserveBusinessMenu(businessId);
-  const products = useMemo(
-    () =>
-      loaded
-        ? categoriesWithProducts.reduce(
-            (r, category) => [...r, category.name, ...category.items],
-            [] as (string | WithId<Product>)[]
-          )
-        : undefined,
-    [loaded, categoriesWithProducts]
-  );
-  const categories = useMemo(
-    () =>
-      (products ?? []).reduce(
-        (r, item) => r.concat(typeof item === 'string' ? item : []),
-        [] as string[]
-      ),
-    [products]
-  );
-  const getProduct = memoize((productId: string) => {
+  const [products, setProducts] = useState<(string | WithId<Product>)[]>();
+  const [categories, setCategories] = useState<string[]>();
+  // side effects
+  useEffect(() => {
+    setProducts(undefined);
+    setCategories(undefined);
+  }, [businessId]);
+  useEffect(() => {
+    if (!loaded) return;
+    const categoryList: string[] = [];
+    setProducts(
+      categoriesWithProducts.reduce(
+        (r, category) => {
+          categoryList.push(category.name);
+          return [...r, category.name, ...(category.items ?? [])];
+        },
+        [] as (string | WithId<Product>)[]
+      )
+    );
+    setCategories(categoryList);
+  }, [categoriesWithProducts, loaded]);
+  const getProduct = (productId: string) => {
     const product = products?.find((value) => typeof value === 'object' && value.id === productId);
     if (typeof product !== 'object') return undefined;
     if (!product.complementsEnabled) return product;
@@ -56,7 +59,9 @@ export const BusinessProvider = ({ children }: Props) => {
         ({ id }) => product.complementsGroupsIds?.includes(id)
       ),
     } as WithId<Product>;
-  });
+  };
+  // logs
+  // console.log('typeof products', typeof products);
   // result
   return (
     <BusinessContext.Provider
@@ -66,6 +71,7 @@ export const BusinessProvider = ({ children }: Props) => {
         categories,
         getProduct,
         getProductCategory,
+        loaded,
       }}
     >
       {children}
