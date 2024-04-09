@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextSetTemporaryPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import { PlaceDetail } from '@/common/screens/places/complement/place-detail';
 import screens from '@/common/styles/screens';
@@ -38,7 +38,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
     address: { description, main, secondary, googlePlaceId },
     location: { latitude: latlng[0], longitude: latlng[1] },
   };
-  const [loadind, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // tracking
   useTrackScreenView('Novo endereço: complemento');
   console.log('complement', params);
@@ -78,9 +78,9 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   // UI
   if (!place) return null;
   return (
-    <DefaultScrollView style={{ ...screens.default }}>
+    <DefaultKeyboardAwareScrollView style={{ ...screens.default }}>
       <Stack.Screen options={{ title: 'Complemento' }} />
       <PlaceDetail place={place} onSave={saveHandler} />
-    </DefaultScrollView>
+    </DefaultKeyboardAwareScrollView>
   );
 };

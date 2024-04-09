@@ -5,6 +5,7 @@ import { HorizontalSelector } from '@/common/components/containers/horizontal-se
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
+import { percentOfWidth } from '@/common/version/device';
 import { PublicBusiness, WithId } from '@appjusto/types';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -97,7 +98,10 @@ export const BusinessHeader = ({
               marginTop: 40,
             }}
           >
-            <DefaultText size="lg">{business.name}</DefaultText>
+            <DefaultText
+              style={{ flexWrap: 'wrap', maxWidth: percentOfWidth(80) }}
+              size="lg"
+            >{`${business.name}`}</DefaultText>
             <LinkButton variant="ghost" onPress={detailHandler}>
               Saber mais
             </LinkButton>

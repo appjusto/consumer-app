@@ -8,7 +8,7 @@ import paddings from '@/common/styles/paddings';
 import { Place } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useEffect, useState } from 'react';
-import { View, ViewProps } from 'react-native';
+import { SafeAreaView, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   place: Partial<Place>;
@@ -47,25 +47,27 @@ export const PlaceDetail = ({ place, onSave, style, ...props }: Props) => {
         </DefaultText>
       </View>
       <DefaultView style={{ flex: 1, marginTop: paddings.sm, padding: paddings.lg }}>
-        <DefaultInput
-          title="Complemento"
-          placeholder="Apto, bloco, casa, etc."
-          value={additionalInfo}
-          onChangeText={setAdditionalInfo}
-        />
-        <DefaultInput
-          title="Observações"
-          style={{ marginTop: paddings.lg }}
-          placeholder="Alguma observação ou ponto de referência"
-          value={instructions}
-          onChangeText={setInstructions}
-        />
-        <View style={{ flex: 1 }} />
-        <DefaultButton
-          style={{ marginBottom: paddings.xl }}
-          title="Salvar endereço"
-          onPress={() => onSave(additionalInfo, instructions)}
-        />
+        <SafeAreaView>
+          <DefaultInput
+            title="Complemento"
+            placeholder="Apto, bloco, casa, etc."
+            value={additionalInfo}
+            onChangeText={setAdditionalInfo}
+          />
+          <DefaultInput
+            title="Observações"
+            style={{ marginTop: paddings.lg }}
+            placeholder="Alguma observação ou ponto de referência"
+            value={instructions}
+            onChangeText={setInstructions}
+          />
+          <View style={{ flex: 1 }} />
+          <DefaultButton
+            style={{ marginVertical: paddings.xl }}
+            title="Salvar endereço"
+            onPress={() => onSave(additionalInfo, instructions)}
+          />
+        </SafeAreaView>
       </DefaultView>
     </View>
   );

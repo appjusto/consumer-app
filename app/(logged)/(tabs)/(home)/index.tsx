@@ -1,5 +1,4 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useLocation } from '@/api/location/useLocation';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
@@ -18,7 +17,6 @@ export default function HomeScreen() {
   // context
   const currentPlace = useContextCurrentPlace();
   // side effects
-  useLocation();
   useCreatePlace();
   // tracking
   useTrackScreenView('Início');

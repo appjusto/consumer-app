@@ -3,6 +3,7 @@ import { groupProducts } from '@/api/externals/algolia/groupProducts';
 import { SearchFilter, SearchKind, SearchOrder } from '@/api/externals/algolia/types';
 import { useAlgoliaSearch } from '@/api/externals/algolia/useAlgoliaSearch';
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
+import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { useInitialState } from '@/common/react/useInitialState';
 import { BusinessAlgolia, ProductAlgolia } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
@@ -21,6 +22,7 @@ interface Props extends ViewProps {
 
 export const SearchList = ({ style, mode, children, ...props }: Props) => {
   // context
+  const isAnonymous = useContextIsUserAnonymous();
   const location = useContextCurrentLocation();
   // state
   const [kind, setKind] = useState<SearchKind>('restaurant');
@@ -34,7 +36,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [query, setQuery] = useState('');
   const enabled = mode === 'home' || query.length >= 3 || filters.length > 0;
-  const { results, refetch } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
+  const { results, refetch, fetchNextPage } = useAlgoliaSearch<BusinessAlgolia | ProductAlgolia>(
     enabled,
     kind,
     order,
@@ -58,7 +60,8 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   // logs
   // console.log(query);
   // console.log(mode, filters, enabled);
-  console.log('SearchList', filters);
+  // console.log('SearchList', filters);
+  // console.log('results.length', results?.length);
   // UI
   return (
     <View style={{ flex: 1 }}>
@@ -115,6 +118,9 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
             />
           )}
           estimatedItemSize={78}
+          onEndReached={() => {
+            if (!isAnonymous) fetchNextPage();
+          }}
         />
       ) : null}
       {kind === 'product' ? (
@@ -150,6 +156,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
             />
           )}
           estimatedItemSize={78}
+          onEndReached={fetchNextPage}
         />
       ) : null}
     </View>

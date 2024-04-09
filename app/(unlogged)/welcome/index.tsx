@@ -1,4 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextUpdateLocationEnabled } from '@/api/preferences/context/PreferencesContext';
 import { ArrowRightIconButton } from '@/common/components/buttons/icon/ArrowRightIconButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { BulletsSteps } from '@/common/screens/unlogged/welcome/BulletsSteps';
@@ -15,6 +16,8 @@ import PagerView from 'react-native-pager-view';
 import { WelcomeStep } from '../../../common/screens/unlogged/welcome/WelcomeStep';
 
 export default function Welcome() {
+  // context
+  const updateLocationEnabled = useContextUpdateLocationEnabled();
   // refs
   const pagerViewRef = useRef<PagerView>(null);
   // state
@@ -91,6 +94,7 @@ export default function Welcome() {
               if (step + 1 < steps) {
                 pagerViewRef?.current?.setPage(step + 1);
               } else {
+                updateLocationEnabled(true);
                 router.replace('/(logged)/(tabs)/(home)/');
               }
             }}

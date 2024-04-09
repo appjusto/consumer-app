@@ -28,7 +28,7 @@ export const useAlgoliaSearch = <T extends object>(
   const search = useCallback(
     async (input: string, page?: number) => {
       if (kind !== 'fleet' && !aroundLatLng) return;
-      setLastResponse(undefined);
+      // setLastResponse(undefined);
       setLoading(true);
       try {
         console.log('searching...');
@@ -61,6 +61,8 @@ export const useAlgoliaSearch = <T extends object>(
     }
     setResponseByPage((current) => {
       const value = current ? new Map(current.entries()) : new Map();
+      // if (current) console.log('current entries', Array.from(current.entries()).length);
+      // console.log('last response:', lastResponse.page);
       value.set(lastResponse.page, lastResponse);
       return value;
     });
@@ -68,6 +70,7 @@ export const useAlgoliaSearch = <T extends object>(
   // update results when response changes
   useEffect(() => {
     if (!responseByPage) return;
+    // console.log('responseByPage.keys()', Array.from(responseByPage.keys()));
     const keys = Array.from(responseByPage.keys()).sort();
     if (!keys.length) setResults([]);
     else {
@@ -84,7 +87,7 @@ export const useAlgoliaSearch = <T extends object>(
   }, [responseByPage]);
   // result
   const fetchNextPage = useCallback(() => {
-    console.log('fetchNextPage', lastResponse, query);
+    // console.log('fetchNextPage', query);
     if (!lastResponse) return;
     const hasNextPage = lastResponse.page + 1 < lastResponse.nbPages;
     // console.log('hasNextPage', hasNextPage);

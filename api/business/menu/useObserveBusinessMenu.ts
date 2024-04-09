@@ -37,6 +37,8 @@ export const useObserveBusinessMenu = (businessId?: string): BusinessMenuResult 
   // inital state
   useEffect(() => {
     setLoaded(false);
+    setCategoriesWithProducts(undefined);
+    setGroupsWithComplements(undefined);
     setResult(InitialState);
   }, [businessId]);
   // set categoriesWithProducts

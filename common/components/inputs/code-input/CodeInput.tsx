@@ -34,6 +34,7 @@ export const CodeInput = ({ value, length = 3, style, digitStyle, onChange, ...p
   };
   React.useEffect(() => {
     refs.find(() => true)?.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // UI
   return (
