@@ -27,6 +27,10 @@ export const ProfileCode = ({ style, ...props }: Props) => {
   const [editing, setEditing] = useState(false);
   // handlers
   const updateCodeHandler = () => {
+    if (code.length < 5) {
+      showToast('Seu código precisa ter pelo menos 5 e no máximo 14 letras.', 'error');
+      return;
+    }
     setEditing(false);
     api
       .profile()
@@ -77,7 +81,7 @@ export const ProfileCode = ({ style, ...props }: Props) => {
             ) : (
               <DefaultInput
                 ref={codeRef}
-                placeholder="6 a 14 letras"
+                placeholder="5 a 14 letras"
                 value={code}
                 maxLength={14}
                 onChangeText={setCode}
