@@ -150,11 +150,12 @@ export default class ProfileApi {
   // functions
   async updateCode(code: string) {
     console.log('updateCode', code);
-    await updateCode({
+    const response = await updateCode({
       code,
       flavor: 'consumer',
       meta: { version: getAppVersion() },
     } as UpdateCodePayload);
+    if ('error' in response.data) throw new Error(response.data.error);
   }
 
   // storage
