@@ -51,10 +51,10 @@ export default function Welcome() {
       >
         <WelcomeStep
           icon={<WelcomeStep1Image />}
-          header={['Só é bom quando é bom pra todos']}
+          header={['Só é bom quando é bom pra todos!']}
           text={[
-            'O appjusto é um negócio social que cobra taxas baixas do restaurantes para que eles não precisem aumentar seus preços no delivery.',
-            'Você paga menos pela sua comida e ainda valoriza o trabalho de quem está fazendo sua entrega',
+            'O appjusto é um negócio social que cobra taxas baixas dos restaurantes para que eles não precisem aumentar seus preços no delivery.',
+            'Você paga menos pela sua comida e ainda valoriza o trabalho de quem está fazendo sua entrega.',
           ]}
           key="1"
         />
@@ -62,14 +62,14 @@ export default function Welcome() {
           icon={<WelcomeStep4Image />}
           header={['A melhor plataforma para quem entrega']}
           text={[
-            'No appjusto o valor mínimo por corrida é R$ 10 e o valor fica liberado em no máximo 1 dia após a entrega.',
-            'Através das frotas, as pessoas quem entregam podem se juntar e definir suas condições de trabalho, inclusive o valor da corrida!',
+            'No appjusto o valor mínimo por corrida é R$ 10 e é liberado em no máximo 1 dia após a entrega.',
+            'Através das frotas, as pessoas quem entregam podem se juntar e definir suas condições de trabalho, inclusive o valor que vão receber pela entrega!',
           ]}
           key="2"
         />
         <WelcomeStep
           icon={<WelcomeStep2Image />}
-          header={['Todos contra o monopólio.']}
+          header={['Todos contra o monopólio']}
           text={[
             'O monopólio prejudica a todos. Restaurantes e pessoas que entregam precisam se sujeitar às taxas abusivas e, no final, fica mais caro para quem pede.',
             'Peça no appjusto e chame seu restaurante favorito para fazer parte!',

@@ -13,6 +13,7 @@ export default function HomeLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Restaurantes' }} />
+      <Stack.Screen name="r/[businessId]/index" options={{ title: 'Detalhes' }} />
       <Stack.Screen
         name="r/[businessId]/about"
         options={{ headerShown: false, presentation: 'modal' }}

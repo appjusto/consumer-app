@@ -53,7 +53,7 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
         {review === null ? (
           <View style={{ marginTop: paddings.lg }}>
             <DefaultButton
-              title="Avaliar corrida"
+              title="Avaliar pedido"
               onPress={() =>
                 router.navigate({
                   pathname: '/(logged)/(tabs)/(orders)/[orderId]/delivered',
