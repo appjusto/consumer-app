@@ -15,7 +15,7 @@ interface Props extends ViewProps {
   platformReview: ReviewType | undefined;
   nps?: number;
   disabled?: boolean;
-  setCourierReview: (type: ReviewType) => void;
+  setCourierReview?: (type: ReviewType) => void;
   setBusinessReview?: (type: ReviewType) => void;
   setPlatformReview: (type: ReviewType) => void;
   setNPS: (value: number) => void;
@@ -41,7 +41,7 @@ export const OrderReviewView = ({
   // side effects
   useEffect(() => {
     if (!review) return;
-    if (review.consumerReview) setCourierReview(review.consumerReview.rating);
+    if (review.courier && setCourierReview) setCourierReview(review.courier.rating);
     if (review.business && setBusinessReview) setBusinessReview(review.business.rating);
     if (review.platform) setPlatformReview(review.platform.rating);
     if (review.nps) setNPS(review.nps);
@@ -66,7 +66,7 @@ export const OrderReviewView = ({
           {...props}
         >
           <DefaultText size="lg">Avalie sua experiência</DefaultText>
-          {!review || courierReview ? (
+          {(!review && setCourierReview) || courierReview ? (
             <AspectReview
               style={{ marginTop: paddings.lg }}
               label="Entregador/a"

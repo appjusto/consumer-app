@@ -70,21 +70,23 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
               marginTop: paddings.lg,
             }}
           >
-            {/* consumer */}
-            <View style={{ alignItems: 'center' }}>
-              {review?.consumerReview?.rating === 'positive' ? (
-                <DefaultCardIcon iconName="thumbs-up" />
-              ) : null}
-              {review?.consumerReview?.rating === 'negative' ? (
-                <DefaultCardIcon iconName="thumbs-down" variant="warning" />
-              ) : null}
-              {!review?.consumerReview?.rating ? (
-                <DefaultCardIcon iconName="thumbs-up" variant="neutral" />
-              ) : null}
-              <DefaultText style={{ marginTop: paddings.xs }} size="xs" color="neutral700">
-                Consumidor
-              </DefaultText>
-            </View>
+            {/* courier */}
+            {order.courier?.id ? (
+              <View style={{ alignItems: 'center' }}>
+                {review?.courier?.rating === 'positive' ? (
+                  <DefaultCardIcon iconName="thumbs-up" />
+                ) : null}
+                {review?.courier?.rating === 'negative' ? (
+                  <DefaultCardIcon iconName="thumbs-down" variant="warning" />
+                ) : null}
+                {!review?.courier?.rating ? (
+                  <DefaultCardIcon iconName="thumbs-up" variant="neutral" />
+                ) : null}
+                <DefaultText style={{ marginTop: paddings.xs }} size="xs" color="neutral700">
+                  Entregador/a
+                </DefaultText>
+              </View>
+            ) : null}
             {/* business */}
             {order.type === 'food' ? (
               <View style={{ alignItems: 'center' }}>

@@ -42,7 +42,7 @@ export const TipControl = ({ order, tip, style, onChange, ...props }: Props) => 
   const api = useContextApi();
   const showToast = useShowToast();
   // helpers
-  const { paymentMethod } = order;
+  const { paymentMethod, courier } = order;
   const alreadyTipped = Boolean(order.tip?.value);
   const data = getTipValues(fees);
   const selectedTip =
@@ -60,6 +60,7 @@ export const TipControl = ({ order, tip, style, onChange, ...props }: Props) => 
       });
   };
   // UI
+  if (!courier?.id) return null;
   if (!paymentMethod) return null;
   if (PaymentsHandledByBusiness.includes(paymentMethod)) return null;
   if (paymentMethod === 'pix') return null;

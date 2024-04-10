@@ -95,16 +95,20 @@ export default function OrderDeliveredScreen() {
           padding: paddings.lg,
         }}
       >
-        <TipControl order={order} tip={tip} onChange={setTip} />
+        <TipControl
+          style={{ marginBottom: paddings.lg }}
+          order={order}
+          tip={tip}
+          onChange={setTip}
+        />
         <OrderReviewView
-          style={{ marginTop: paddings.lg }}
           courierReview={courierReview}
           businessReview={businessReview}
           platformReview={platformReview}
           nps={nps}
           disabled={!order}
           orderId={orderId}
-          setCourierReview={setCourierReview}
+          setCourierReview={order.courier?.id ? setCourierReview : undefined}
           setBusinessReview={order.business?.id ? setBusinessReview : undefined}
           setPlatformReview={setPlatformReview}
           setNPS={setNPS}
