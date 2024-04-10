@@ -2,7 +2,7 @@ import { documentAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { Fleet, WithId } from '@appjusto/types';
 import firestore from '@react-native-firebase/firestore';
-import ProfileApi from '../profile/ProfileApi';
+import ProfileApi from '../profile/profile-api';
 
 const fleetsRef = () => firestore().collection('fleets');
 const fleetRef = (id: string) => fleetsRef().doc(id);

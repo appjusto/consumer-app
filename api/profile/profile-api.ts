@@ -2,19 +2,29 @@ import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { getInstallationId } from '@/common/security/getInstallationId';
 import { getAppVersion } from '@/common/version';
-import { ConsumerProfile, ProfileChange, UserProfile, WithId } from '@appjusto/types';
+import { getFirebaseRegion } from '@/extra';
+import {
+  ConsumerProfile,
+  ProfileChange,
+  UpdateCodePayload,
+  UserProfile,
+  WithId,
+} from '@appjusto/types';
+import firebase from '@react-native-firebase/app';
 import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { hash } from 'geokit';
 import { Platform } from 'react-native';
 import AuthApi from '../auth/AuthApi';
+
+// functions
+const region = getFirebaseRegion();
+const updateCode = firebase.app().functions(region).httpsCallable('updateCode');
 
 // firestore
 const profileRef = (id: string) => firestore().collection('consumers').doc(id);
 const usersRef = () => firestore().collection('users');
 const usersSubcollectionsRef = () => usersRef().doc('subcollections');
 const usersChangesRef = () => usersSubcollectionsRef().collection('changes');
-
-// storage
 
 export default class ProfileApi {
   constructor(
@@ -136,6 +146,18 @@ export default class ProfileApi {
       }
     );
   }
+
+  // functions
+  async updateCode(code: string) {
+    console.log('updateCode', code);
+    await updateCode({
+      code,
+      flavor: 'consumer',
+      meta: { version: getAppVersion() },
+    } as UpdateCodePayload);
+  }
+
+  // storage
 
   getSelfiePath(size?: string, consumerId?: string) {
     return `consumers/${consumerId ?? this.auth.getUserId()}/selfie${

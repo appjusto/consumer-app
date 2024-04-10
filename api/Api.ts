@@ -24,7 +24,7 @@ import CouriersApi from './orders/courier/couriers-api';
 import OrdersApi from './orders/orders-api';
 import PaymentsApi from './orders/payment/payments-api';
 import PlatformApi from './platform/PlatformApi';
-import ProfileApi from './profile/ProfileApi';
+import ProfileApi from './profile/profile-api';
 
 const extra = getManifestExtra();
 
