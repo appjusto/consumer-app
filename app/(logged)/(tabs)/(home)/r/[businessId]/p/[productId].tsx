@@ -71,7 +71,9 @@ export default function ProductDetailScreen() {
     if (!orderItem?.id) return;
     if (!quote) {
       // create order
-      await api.orders().createFoodOrder(business, [orderItem], currentPlace as Place);
+      await api
+        .orders()
+        .createFoodOrder(business, { items: [orderItem], destination: currentPlace as Place });
     } else {
       // update order
       const updatedOrder =

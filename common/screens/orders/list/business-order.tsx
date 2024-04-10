@@ -1,6 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { getOrderTimestamp } from '@/api/orders/timestamp/getOrderTime';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
+import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
@@ -11,6 +12,7 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, Place, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
+import { pick } from 'lodash';
 import { View, ViewProps } from 'react-native';
 import { OrderStatusBadge } from '../status/order-status-badge';
 
@@ -24,16 +26,20 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
+  const currentPlace = useContextCurrentPlace();
   // handlers
   const createOrderHandler = () => {
-    console.log(business);
+    // console.log(business);
     if (!business) return;
     api
       .business()
       .fetchBusinessById(business.id)
       .then((value) => {
         if (!value) throw new Error('Restaurante indisponível');
-        return api.orders().createFoodOrder(value, order.items ?? [], order.destination as Place);
+        return api.orders().createFoodOrder(value, {
+          ...pick(order, ['items', 'destination', 'fulfillment']),
+          destination: order.destination ?? (currentPlace as WithId<Place>) ?? null,
+        });
       })
       .then((orderId) => {
         showToast('Pedido criado com sucesso!', 'success');

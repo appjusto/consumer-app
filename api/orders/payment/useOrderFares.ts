@@ -23,11 +23,11 @@ export const useOrderFares = (
   const coupon = order?.coupon?.code;
   const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
   // side effects
-  // console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod);
+  console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod);
   useEffect(() => {
     if (!orderId) return;
     if (!created) return;
-    if (!distance) return;
+    // if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
     // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;

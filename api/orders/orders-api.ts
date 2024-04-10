@@ -11,7 +11,6 @@ import {
   OrderCancellation,
   OrderConfirmation,
   OrderCourierLocationLog,
-  OrderItem,
   OrderPayments,
   OrderReview,
   PayableWith,
@@ -94,11 +93,7 @@ export default class OrdersApi {
     );
   }
 
-  async createFoodOrder(
-    business: WithId<PublicBusiness>,
-    items: OrderItem[] = [],
-    destination: Place
-  ) {
+  async createFoodOrder(business: WithId<PublicBusiness>, order: Partial<Order>) {
     const payload = addBusinessToOrder(
       {
         type: 'food',
@@ -110,9 +105,8 @@ export default class OrdersApi {
         consumer: {
           id: this.auth.getUserId()!,
         },
-        destination,
         createdOn: serverTimestamp(),
-        items,
+        ...order,
       },
       business
     );
