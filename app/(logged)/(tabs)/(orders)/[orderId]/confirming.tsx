@@ -8,12 +8,14 @@ import { HRShadow } from '@/common/components/views/hr-shadow';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Image } from 'expo-image';
 import { Stack, router } from 'expo-router';
 import { AlertOctagon, Phone } from 'lucide-react-native';
 import { Dimensions, Linking, View } from 'react-native';
 
-const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
+import LottieView from 'lottie-react-native';
+
+// const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
+const ConfirmingJSON = require('../../../../../assets/images/order/confirming.lottie.json');
 
 const SIZE = Dimensions.get('screen').width - 100;
 
@@ -46,10 +48,11 @@ export default function OrderConfirmingScreen() {
   return (
     <View style={{ ...screens.centered }}>
       <Stack.Screen options={{ title: 'Criando pedido', headerShown: true }} />
-      <View style={{ flex: 1 }} />
+      <View style={{ flex: 0.5 }} />
       <View style={{ flex: 1, borderWidth: 0 }}>
-        <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} />
-        <View style={{ flex: 1 }} />
+        {/* <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} /> */}
+        <LottieView autoPlay style={{ width: SIZE, height: SIZE }} source={ConfirmingJSON} />
+        {/* <View style={{ flex: 1 }} /> */}
         <DefaultText style={{ textAlign: 'center' }} size="md">
           {waitingAcceptance ? 'Aguardando aceite do restaurante...' : 'Criando o seu pedido...'}
         </DefaultText>

@@ -32,15 +32,15 @@ export const useOrderFares = (
     // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;
     // setFares(undefined);
-    console.log(
-      'useOrderFares -> update',
-      orderId,
-      created,
-      distance,
-      fulfillment,
-      defaultPaymentMethod,
-      fleetsIds
-    );
+    // console.log(
+    //   'useOrderFares -> update',
+    //   orderId,
+    //   created,
+    //   distance,
+    //   fulfillment,
+    //   defaultPaymentMethod,
+    //   fleetsIds
+    // );
     setLoading(true);
     api
       .orders()
