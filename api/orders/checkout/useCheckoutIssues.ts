@@ -7,7 +7,6 @@ import {
 } from '@/api/platform/context/platform-context';
 import { useIsDuringWorkingHours } from '@/api/platform/time/useIsDuringWorkingHours';
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
-import { useContextProfile } from '@/common/auth/AuthContext';
 import { useContextOrder, useContextOrderBusiness } from '../context/order-context';
 
 export type CheckoutIssueType =
@@ -28,7 +27,6 @@ export const useCheckoutIssues = () => {
   const access = useContextPlatformAccess();
   const isDuringWorkingHours = useIsDuringWorkingHours();
   const quote = useContextOrder();
-  const profile = useContextProfile();
   const currentLocation = useContextCurrentLocation();
   const business = useContextBusiness();
   const orderBusiness = useContextOrderBusiness();
@@ -79,12 +77,19 @@ export const useCheckoutIssues = () => {
   }
   availability = orderBusiness ? getBusinessAvailability(orderBusiness, getServerTime()) : null;
   if (orderBusiness) {
-    console.log('availability', availability, quote.scheduledTo);
-    if (availability === 'schedule-required' && !quote.scheduledTo) {
-      issues.push({
-        type: 'schedule-required',
-        description: 'No momento, o restaurante só está aceitando pedidos agendados.',
-      });
+    if (!quote.scheduledTo) {
+      console.log('availability', availability, quote.scheduledTo);
+      if (availability === 'schedule-required-always') {
+        issues.push({
+          type: 'schedule-required',
+          description: 'Agende um horário para pedir neste restaurante.',
+        });
+      } else if (availability === 'schedule-required') {
+        issues.push({
+          type: 'schedule-required',
+          description: 'No momento, este restaurante só está aceitando pedidos agendados.',
+        });
+      }
     }
   }
 

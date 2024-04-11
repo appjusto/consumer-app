@@ -1,10 +1,12 @@
 import { Link, Tabs } from 'expo-router';
 import { Pressable, View, ViewProps, useColorScheme } from 'react-native';
 
+import { DefaultText } from '@/common/components/texts/DefaultText';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
+import { isLargeScreen } from '@/common/version/device';
 import { Home, InfoIcon, Package, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
@@ -35,9 +37,15 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { height: '10%' },
+        tabBarStyle: { height: isLargeScreen() ? 90 : 70 },
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
+        tabBarItemStyle: {
+          // paddingVertical: paddings.lg,
+          // marginBottom: paddings.lg,
+        },
+        // tabBarShowLabel: false,
+        tabBarLabel: ({ children }) => <DefaultText size="xs">{children}</DefaultText>,
       }}
     >
       <Tabs.Screen

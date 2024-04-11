@@ -30,20 +30,21 @@ export const shouldBeOpened = (
   );
 };
 
-export type BusinessAvailability = 'open' | 'schedule-required' | 'closed';
+export type BusinessAvailability =
+  | 'open'
+  | 'schedule-required'
+  | 'schedule-required-always'
+  | 'closed';
 
 export const getBusinessAvailability = (
   business: BusinessAlgolia | PublicBusiness,
   at: Date
 ): BusinessAvailability => {
-  // const isOpen = shouldBusinessBeOpen(business.schedules, now);
-  // const isOpen = shouldBeOpened(business.schedules, now);
+  if (!business.preparationModes?.includes('realtime')) return 'schedule-required-always';
   const isOpen = 'opened' in business ? business.opened : shouldBeOpened(business.schedules, at);
   // console.log('isOpen', isOpen);
+  if (isOpen) return 'open';
   const acceptsSchedule = business.preparationModes?.includes('scheduled');
-  if (!isOpen) {
-    if (acceptsSchedule) return 'schedule-required';
-    return 'closed';
-  }
-  return 'open';
+  if (acceptsSchedule) return 'schedule-required';
+  return 'closed';
 };
