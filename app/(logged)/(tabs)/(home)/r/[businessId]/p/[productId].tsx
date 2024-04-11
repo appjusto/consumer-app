@@ -15,6 +15,7 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
@@ -50,6 +51,8 @@ export default function ProductDetailScreen() {
   const {
     canAddItem,
     quantity,
+    notes,
+    setNotes,
     setQuantity,
     canAddComplement,
     getTotalComplements,
@@ -126,6 +129,18 @@ export default function ProductDetailScreen() {
           onComplementToggle={(group, complement, added) =>
             toggleComplement(group, complement, added)
           }
+        />
+        <DefaultInput
+          inputStyle={{ minHeight: 60 }}
+          title="Informações adicionais"
+          placeholder="Tem alguma observação? Por exemplo: sem molho, sem cebola, ponto da carne, etc"
+          style={{ margin: paddings.lg }}
+          multiline
+          textAlignVertical="top"
+          value={notes}
+          onChangeText={setNotes}
+          blurOnSubmit
+          returnKeyType="done"
         />
         {issues.length ? (
           <MessageBox variant="warning" style={{ margin: paddings.lg }}>

@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextOrder, useContextOrderOptions } from '@/api/orders/context/order-context';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -21,8 +21,8 @@ import { Pressable, View } from 'react-native';
 export default function OrderCheckoutScreen() {
   // context
   const quote = useContextOrder();
+  const { additionalInfo, setAdditionalInfo } = useContextOrderOptions() ?? {};
   // state
-  const [additionalInfo, setAdditionalInfo] = useState('');
   const [couponModalVisible, setCouponModalVisible] = useState(false);
   // tracking
   useTrackScreenView('Checkout: sacola', { businessId: quote?.business?.id, orderId: quote?.id });
@@ -45,10 +45,15 @@ export default function OrderCheckoutScreen() {
         <BusinessCart />
         <DefaultInput
           style={{ padding: paddings.lg }}
+          inputStyle={{ minHeight: 60 }}
           title="Informações adicionais"
           placeholder="Adicione observações do pedido"
           value={additionalInfo}
           onChangeText={setAdditionalInfo}
+          multiline
+          textAlignVertical="top"
+          blurOnSubmit
+          returnKeyType="done"
         />
         {/* coupon */}
         <Pressable onPress={() => setCouponModalVisible(true)}>

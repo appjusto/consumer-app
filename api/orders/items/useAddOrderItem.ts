@@ -110,6 +110,8 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
     canAddItem,
     quantity,
     setQuantity,
+    notes,
+    setNotes,
     canAddComplement,
     updateComplementQuantity,
     toggleComplement,
