@@ -6,7 +6,6 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
-import { isLargeScreen } from '@/common/version/device';
 import { Home, InfoIcon, Package, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
@@ -37,7 +36,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { height: isLargeScreen() ? 90 : 70 },
+        tabBarStyle: { height: 70 },
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
         tabBarItemStyle: {

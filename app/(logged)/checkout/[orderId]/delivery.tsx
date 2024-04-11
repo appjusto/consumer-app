@@ -18,7 +18,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // context
   const quote = useContextOrder();
   // state
-  const issues = useCheckoutIssues();
+  const issues = useCheckoutIssues(true, false);
   // tracking
   useTrackScreenView('Checkout: entrega', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects

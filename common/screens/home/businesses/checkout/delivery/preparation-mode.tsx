@@ -29,7 +29,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
   const business = useContextOrderBusiness();
   const getServerTime = useContextGetServerTime();
   // state
-  const issues = useCheckoutIssues();
+  const issues = useCheckoutIssues(true, false);
   // handlers
   const updateToRealtime = () => {
     api
@@ -103,7 +103,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
         </View>
       ) : null}
       {checkoutHasIssue(issues, 'schedule-required') ? (
-        <MessageBox style={{ marginTop: paddings.lg }} variant="error">
+        <MessageBox style={{ marginTop: paddings.lg }} variant="warning">
           {issues.find((issue) => issue.type === 'schedule-required')?.description}
         </MessageBox>
       ) : null}

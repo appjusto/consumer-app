@@ -60,7 +60,7 @@ export default function ProductDetailScreen() {
   } = useAddOrderItem(productId, itemId);
   const url = useProductImageURI(businessId, product);
   const orderItem = getOrderItem();
-  const issues = useCheckoutIssues();
+  const issues = useCheckoutIssues(false, false);
   // tracking
   useTrackScreenView('Produto', { businessId, productId });
   // handlers
@@ -128,7 +128,7 @@ export default function ProductDetailScreen() {
           }
         />
         {issues.length ? (
-          <MessageBox variant="error" style={{ margin: paddings.lg }}>
+          <MessageBox variant="warning" style={{ margin: paddings.lg }}>
             {issues[0].description}
           </MessageBox>
         ) : null}
