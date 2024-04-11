@@ -24,6 +24,9 @@ export default function ProfileCardListScreen() {
   // tracking
   useTrackScreenView('Perfil: seus cartões');
   // handlers
+  const addCardHandler = () => {
+    router.push('/profile/cards/add');
+  };
   const deleteCardHandler = () => {
     if (!optionsCard) return;
     if (loading) return;
@@ -35,7 +38,7 @@ export default function ProfileCardListScreen() {
         setLoading(false);
         setOptionsCard(undefined);
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       });
   };
@@ -76,12 +79,7 @@ export default function ProfileCardListScreen() {
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       <View style={{ padding: paddings.lg }}>
-        <DefaultButton
-          title="Adicionar cartão"
-          onPress={() => {
-            // TODO: /cards/add
-          }}
-        />
+        <DefaultButton title="Adicionar cartão" onPress={addCardHandler} />
       </View>
     </View>
   );

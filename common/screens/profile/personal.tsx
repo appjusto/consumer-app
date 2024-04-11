@@ -122,68 +122,68 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   if (!profile) return <Loading backgroundColor="neutral50" title={title} />;
   return (
     <DefaultKeyboardAwareScrollView style={{ ...screens.default, padding: paddings.lg }}>
+      <DefaultText size="lg">
+        {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
+      </DefaultText>
+      <DefaultInput
+        style={{ marginTop: paddings.lg }}
+        title="E-mail"
+        placeholder="Digite seu e-mail"
+        keyboardType="email-address"
+        returnKeyType="next"
+        autoCapitalize="none"
+        value={email}
+        editable={editable}
+        blurOnSubmit={false}
+        autoCorrect={false}
+        onChangeText={setEmail}
+        onSubmitEditing={() => nameRef.current?.focus()}
+      />
+      <DefaultInput
+        ref={nameRef}
+        style={{ marginTop: paddings.lg }}
+        title="Nome"
+        placeholder="Digite seu nome"
+        value={name}
+        keyboardType="default"
+        returnKeyType="next"
+        autoCapitalize="words"
+        editable={editable}
+        blurOnSubmit={false}
+        onChangeText={setName}
+        onSubmitEditing={() => surnameRef.current?.focus()}
+      />
+      <DefaultInput
+        ref={surnameRef}
+        style={{ marginTop: paddings.lg }}
+        title="Sobrenome"
+        placeholder="Digite seu sobrenome"
+        value={surname}
+        keyboardType="default"
+        returnKeyType="next"
+        autoCapitalize="words"
+        editable={editable}
+        blurOnSubmit={false}
+        onChangeText={setSurname}
+        onSubmitEditing={() => cpfRef.current?.focus()}
+      />
+      <View style={{ flexDirection: 'row', marginTop: paddings.lg }}>
+        <PatternInput
+          style={{ flex: 1 }}
+          ref={cpfRef}
+          pattern="cpf"
+          title="CPF"
+          placeholder="000.000.000-00"
+          keyboardType="number-pad"
+          returnKeyType="next"
+          editable={editable}
+          blurOnSubmit={false}
+          value={cpf}
+          onChangeText={setCpf}
+          onSubmitEditing={() => birthdayRef.current?.focus()}
+        />
+      </View>
       <SafeAreaView>
-        <DefaultText size="lg">
-          {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
-        </DefaultText>
-        <DefaultInput
-          style={{ marginTop: paddings.lg }}
-          title="E-mail"
-          placeholder="Digite seu e-mail"
-          keyboardType="email-address"
-          returnKeyType="next"
-          autoCapitalize="none"
-          value={email}
-          editable={editable}
-          blurOnSubmit={false}
-          autoCorrect={false}
-          onChangeText={setEmail}
-          onSubmitEditing={() => nameRef.current?.focus()}
-        />
-        <DefaultInput
-          ref={nameRef}
-          style={{ marginTop: paddings.lg }}
-          title="Nome"
-          placeholder="Digite seu nome"
-          value={name}
-          keyboardType="default"
-          returnKeyType="next"
-          autoCapitalize="words"
-          editable={editable}
-          blurOnSubmit={false}
-          onChangeText={setName}
-          onSubmitEditing={() => surnameRef.current?.focus()}
-        />
-        <DefaultInput
-          ref={surnameRef}
-          style={{ marginTop: paddings.lg }}
-          title="Sobrenome"
-          placeholder="Digite seu sobrenome"
-          value={surname}
-          keyboardType="default"
-          returnKeyType="next"
-          autoCapitalize="words"
-          editable={editable}
-          blurOnSubmit={false}
-          onChangeText={setSurname}
-          onSubmitEditing={() => cpfRef.current?.focus()}
-        />
-        <View style={{ flexDirection: 'row', marginTop: paddings.lg }}>
-          <PatternInput
-            style={{ flex: 1 }}
-            ref={cpfRef}
-            pattern="cpf"
-            title="CPF"
-            placeholder="000.000.000-00"
-            keyboardType="number-pad"
-            returnKeyType="next"
-            editable={editable}
-            blurOnSubmit={false}
-            value={cpf}
-            onChangeText={setCpf}
-            onSubmitEditing={() => birthdayRef.current?.focus()}
-          />
-        </View>
         <PatternInput
           ref={phoneRef}
           style={{ marginTop: paddings.lg }}

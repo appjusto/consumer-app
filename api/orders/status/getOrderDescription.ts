@@ -44,5 +44,8 @@ export const getOrderDescription = (order: Order) => {
   if (status === 'canceled') {
     return 'Seu pedido foi cancelado';
   }
+  if (status === 'declined') {
+    return 'Tivemos um problema ao processar o seu pagamento.';
+  }
   return '';
 };

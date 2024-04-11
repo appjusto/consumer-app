@@ -39,7 +39,9 @@ export const PaymentsProvider = ({ children }: Props) => {
   const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
-  const selectedCard = acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId);
+  const selectedCard =
+    acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId) ??
+    acceptedCardsOnOrder?.find(() => true);
   // side effects
   // set default payment
   useEffect(() => {

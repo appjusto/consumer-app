@@ -2,6 +2,7 @@ import { useContextOrderOptions } from '@/api/orders/context/order-context';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { FullDate, formatTimestamp } from '@/common/formatters/timestamp';
 import Selfie from '@/common/screens/profile/images/selfie';
 import borders from '@/common/styles/borders';
@@ -119,6 +120,11 @@ export const OrderCourierSelector = ({ style, ...props }: Props) => {
             ) : null}
           </View>
         </View>
+      ) : null}
+      {courier === null ? (
+        <MessageBox style={{ marginTop: paddings.lg }} variant="warning">
+          Entregador/a não encontrado/a. Verifque o código e tente novmente.
+        </MessageBox>
       ) : null}
     </View>
   );

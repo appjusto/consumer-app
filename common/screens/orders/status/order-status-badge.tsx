@@ -15,11 +15,15 @@ export const OrderStatusBadge = ({ type, status, style, ...props }: Props) => {
   const backgroundColor = () => {
     if (status === 'delivered') return colors.success100;
     else if (status === 'canceled') return colors.error100;
+    else if (status === 'rejected') return colors.error100;
+    else if (status === 'declined') return colors.error100;
     return colors.info100;
   };
   const textColor = (): ColorName => {
     if (status === 'delivered') return 'success900';
     else if (status === 'canceled') return 'error900';
+    else if (status === 'rejected') return 'error900';
+    else if (status === 'declined') return 'error900';
     return 'info900';
   };
   return (
