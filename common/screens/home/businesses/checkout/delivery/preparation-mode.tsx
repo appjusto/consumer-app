@@ -1,8 +1,13 @@
 import { useContextApi } from '@/api/ApiContext';
+import { getBusinessAvailability } from '@/api/business/range/getBusinessAvailability';
+import { checkoutHasIssue } from '@/api/orders/checkout/checkoutHasIssue';
+import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrderBusiness } from '@/api/orders/context/order-context';
+import { useContextGetServerTime } from '@/api/platform/context/platform-context';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { timestampWithETA } from '@/common/formatters/timestamp';
 import paddings from '@/common/styles/paddings';
@@ -22,6 +27,9 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
   const api = useContextApi();
   const showToast = useShowToast();
   const business = useContextOrderBusiness();
+  const getServerTime = useContextGetServerTime();
+  // state
+  const issues = useCheckoutIssues();
   // handlers
   const updateToRealtime = () => {
     api
@@ -40,10 +48,22 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
     });
   };
   // UI
-  // console.log('PreparationMode', business);
-  const realtime = order.type === 'p2p' || business?.preparationModes?.includes('realtime');
-  const scheduled = order.type === 'p2p' || business?.preparationModes?.includes('scheduled');
+  const businessRealtime =
+    business &&
+    business.preparationModes?.includes('realtime') === true &&
+    getBusinessAvailability(business, getServerTime()) === 'open';
+  const businessScheduled = business?.preparationModes?.includes('scheduled') === true;
+  const realtime = order.type === 'p2p' || businessRealtime;
+  const scheduled = order.type === 'p2p' || businessScheduled;
   const estimate = order.arrivals?.destination?.estimate;
+  // logs
+  // console.log(issues);
+  // console.log('PreparationMode', 'business?.preparationModes', business?.preparationModes);
+  // console.log('PreparationMode', 'business?.preparationModes', realtime, scheduled);
+  // console.log(
+  //   'PreparationMode',
+  //   getBusinessAvailability(business, getServerTime())
+  // );
   return (
     <View style={[{}, style]} {...props}>
       <DefaultText size="lg">Horário da entrega</DefaultText>
@@ -81,6 +101,11 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
             </Pressable>
           </RadioCardButton>
         </View>
+      ) : null}
+      {checkoutHasIssue(issues, 'schedule-required') ? (
+        <MessageBox style={{ marginTop: paddings.lg }} variant="error">
+          {issues.find((issue) => issue.type === 'schedule-required')?.description}
+        </MessageBox>
       ) : null}
       <HR style={{ marginTop: paddings.xl }} />
     </View>

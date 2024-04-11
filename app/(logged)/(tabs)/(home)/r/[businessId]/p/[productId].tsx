@@ -5,11 +5,11 @@ import {
   useContextBusinessProduct,
 } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
+import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { addItemToOrder } from '@/api/orders/items/addItemToOrder';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
-import { useAddItemIssues } from '@/api/orders/items/useAddItemIssues';
 import { useAddOrderItem } from '@/api/orders/items/useAddOrderItem';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextProfile } from '@/common/auth/AuthContext';
@@ -60,7 +60,7 @@ export default function ProductDetailScreen() {
   } = useAddOrderItem(productId, itemId);
   const url = useProductImageURI(businessId, product);
   const orderItem = getOrderItem();
-  const issues = useAddItemIssues();
+  const issues = useCheckoutIssues();
   // tracking
   useTrackScreenView('Produto', { businessId, productId });
   // handlers

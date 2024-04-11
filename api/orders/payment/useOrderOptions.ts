@@ -23,7 +23,7 @@ export const useOrderOptions = (): OrderOptions => {
   const [invoiceWithCPF, setInvoiceWithCPF] = useState(false);
   const [wantToShareData, setWantToShareData] = useState(false);
   const [fleetsIds, setFleetsIds] = useState<string[]>();
-  const courier = useFetchCourier(courierCode);
+  const courier = useFetchCourier(courierCode?.toUpperCase());
   const options = useMemo<OrderOptions>(
     () => ({
       courierCode,

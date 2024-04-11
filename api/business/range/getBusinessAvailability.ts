@@ -9,8 +9,8 @@ export const shouldBeOpened = (
   tz: string = 'America/Sao_Paulo'
 ) => {
   if (!schedule) return false;
-  // hacky to deal with https://github.com/iamkun/dayjs/issues/1377
-  const date = Dayjs(at).subtract(3, 'h');
+  // hack to deal with https://github.com/iamkun/dayjs/issues/1377
+  const date = Dayjs(at);
   // console.log(at, date);
   const daySchedule = getDaySchedule(schedule, date);
   if (!daySchedule || !daySchedule.checked) return false;

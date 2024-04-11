@@ -1,6 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DeliveryAddress } from '@/common/screens/home/businesses/checkout/delivery/delivery-address';
 import { FulfillmentSelector } from '@/common/screens/home/businesses/checkout/delivery/fulfillment-selector';
@@ -16,6 +17,8 @@ import { View } from 'react-native';
 export default function OrderCheckoutDeliveryScreen() {
   // context
   const quote = useContextOrder();
+  // state
+  const issues = useCheckoutIssues();
   // tracking
   useTrackScreenView('Checkout: entrega', { businessId: quote?.business?.id, orderId: quote?.id });
   // side effects
@@ -35,7 +38,7 @@ export default function OrderCheckoutDeliveryScreen() {
   if (!quote) return null;
   return (
     <View style={{ ...screens.default }}>
-      <DefaultScrollView>
+      <DefaultKeyboardAwareScrollView>
         <Stack.Screen options={{ title: 'Entrega' }} />
         <DefaultView style={{ padding: paddings.lg }}>
           <FulfillmentSelector order={quote} />
@@ -43,12 +46,12 @@ export default function OrderCheckoutDeliveryScreen() {
           <PreparationMode style={{ marginTop: paddings.xl }} order={quote} />
           <OrderFleetCourierSelector style={{ marginTop: paddings.xl }} />
         </DefaultView>
-      </DefaultScrollView>
+      </DefaultKeyboardAwareScrollView>
       <View style={{ flex: 1 }} />
       <CartButton
         order={quote}
         variant="checkout"
-        disabled={!quote.fare || Boolean(quote.route?.issue)}
+        disabled={!quote.fare || Boolean(quote.route?.issue) || Boolean(issues.length)}
         onPress={checkoutHandler}
       />
     </View>

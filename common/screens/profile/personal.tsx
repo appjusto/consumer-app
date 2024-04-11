@@ -56,8 +56,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
     phone,
     countryCode,
   };
-  const canUpdateProfile =
-    profile?.situation === 'approved' && (!isProfileValid(profile) || editing);
+  const editable = !hasPendingChange && (!isProfileValid(profile) || editing);
   // effects
   useEffect(() => {
     if (!profile) return;
@@ -76,12 +75,8 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   };
   const updateProfileHandler = () => {
     if (!profile?.id) return;
-    if (
-      !editing &&
-      !hasPendingChange &&
-      profileState.includes('approved') &&
-      profile.birthday?.length === 8
-    ) {
+    if (hasPendingChange) return;
+    if (!editing && isProfileValid(profile)) {
       setEditing(true);
       return;
     }
@@ -139,7 +134,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           returnKeyType="next"
           autoCapitalize="none"
           value={email}
-          editable={canUpdateProfile}
+          editable={editable}
           blurOnSubmit={false}
           autoCorrect={false}
           onChangeText={setEmail}
@@ -154,7 +149,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           keyboardType="default"
           returnKeyType="next"
           autoCapitalize="words"
-          editable={canUpdateProfile}
+          editable={editable}
           blurOnSubmit={false}
           onChangeText={setName}
           onSubmitEditing={() => surnameRef.current?.focus()}
@@ -168,7 +163,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           keyboardType="default"
           returnKeyType="next"
           autoCapitalize="words"
-          editable={canUpdateProfile}
+          editable={editable}
           blurOnSubmit={false}
           onChangeText={setSurname}
           onSubmitEditing={() => cpfRef.current?.focus()}
@@ -182,7 +177,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
             placeholder="000.000.000-00"
             keyboardType="number-pad"
             returnKeyType="next"
-            editable={canUpdateProfile}
+            editable={editable}
             blurOnSubmit={false}
             value={cpf}
             onChangeText={setCpf}
@@ -211,13 +206,9 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
         <DefaultButton
           style={{ marginTop: paddings.lg, marginBottom: paddings.xl }}
           title={
-            profileState.includes('approved')
-              ? editing
-                ? 'Salvar'
-                : 'Atualizar dados'
-              : 'Salvar e avançar'
+            isProfileValid(profile) ? (editing ? 'Salvar' : 'Atualizar dados') : 'Salvar e avançar'
           }
-          disabled={isLoading || hasPendingChange || !canUpdateProfile}
+          disabled={isLoading || hasPendingChange}
           onPress={updateProfileHandler}
         />
       </SafeAreaView>

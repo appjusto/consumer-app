@@ -57,10 +57,10 @@ export const PaymentsProvider = ({ children }: Props) => {
   }, [defaultPaymentMethodId, paymentMethodId]);
   // select payments accepted on order according with current context
   useEffect(() => {
-    // if (!profile?.tags?.includes('safe')) {
-    //   setAcceptedOnOrder(['pix']);
-    //   return;
-    // }
+    if (profile?.tags?.includes('unsafe')) {
+      setAcceptedOnOrder(['pix']);
+      return;
+    }
     if (!acceptedByPlatform) return;
     if (!business) {
       setAcceptedOnOrder(

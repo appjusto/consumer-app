@@ -32,12 +32,6 @@ export default function ProfileSettings() {
       />
       <View style={{ flex: 1 }}>
         <DefaultListItem
-          title="Escolha sua frota"
-          subtitles={['Na frota é onde as condições de participação são definidas']}
-          rightView={<ChevronRight size={16} color={colors.neutral800} />}
-          onPress={() => router.push('/fleets/')}
-        />
-        <DefaultListItem
           title="Notificações"
           subtitles={['Escolha as notificações que você quer receber']}
           leftView={<Bell color={colors.black} size={20} />}

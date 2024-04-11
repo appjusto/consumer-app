@@ -1,11 +1,11 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { checkoutHasIssue } from '@/api/orders/checkout/checkoutHasIssue';
 import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
+import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -13,6 +13,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import { HRShadow } from '@/common/components/views/hr-shadow';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { isProfileValid } from '@/common/profile/isProfileValid';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
@@ -31,6 +32,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrder();
+  const profile = useContextProfile();
   const { paymentMethod, selectedCard } = useContextPayments();
   // state
   const issues = useCheckoutIssues();
@@ -132,7 +134,7 @@ export default function OrderCheckoutDeliveryScreen() {
             <DefaultButton title="Alterar pedido" variant="outline" onPress={() => null} />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
-            {issues.length === 0 ? (
+            {issues.length === 0 && isProfileValid(profile) ? (
               <DefaultButton
                 title="Confirmar pedido"
                 onPress={placeOrder}
@@ -140,7 +142,7 @@ export default function OrderCheckoutDeliveryScreen() {
                 loading={loading}
               />
             ) : null}
-            {checkoutHasIssue(issues, 'profile-incomplete') ? (
+            {!isProfileValid(profile) ? (
               <DefaultButton title="Finalizar cadastro" onPress={completeProfileHandler} />
             ) : null}
           </View>
