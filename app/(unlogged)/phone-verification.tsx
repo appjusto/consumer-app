@@ -173,7 +173,7 @@ export default function PhoneVerification() {
           style={{ marginVertical: paddings.xl }}
         />
 
-        <MessageBox variant={error ? 'error' : 'info'}>
+        <MessageBox style={{ marginVertical: paddings.lg }} variant={error ? 'error' : 'info'}>
           {error
             ? error
             : `Se você não receber o código em alguns segundos, verifique seu número e a caixa de SPAM do seu aplicativo de mensagens.`}

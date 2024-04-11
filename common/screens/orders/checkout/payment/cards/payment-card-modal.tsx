@@ -29,6 +29,7 @@ export const PaymentCardModal = ({
   if (!card) return null;
   // UI
   const type = getCardType(card);
+  if (!type) return null;
   return (
     <Modal transparent animationType="slide" {...props}>
       <Pressable style={{ flex: 1 }} onPress={onDismiss}>

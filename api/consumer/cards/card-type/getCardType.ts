@@ -4,7 +4,8 @@ import { SupportedCardType } from './types';
 export const getCardType = (card: Card): SupportedCardType | null => {
   if (card.processor === 'iugu') {
     const iuguCard = card as IuguCard;
-    const brand = iuguCard.token?.data.brand?.toLowerCase();
+    if (!iuguCard.token?.data?.brand) return null;
+    const brand = iuguCard.token.data.brand.toLowerCase();
     if (brand === 'master') return 'mastercard';
     return brand as SupportedCardType;
   }

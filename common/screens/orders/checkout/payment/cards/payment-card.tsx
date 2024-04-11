@@ -29,6 +29,7 @@ export const PaymentCard = ({
   ...props
 }: Props) => {
   const type = getCardType(card);
+  if (!type) return null;
   // UI
   return (
     <View style={[{}, style]} {...props}>
