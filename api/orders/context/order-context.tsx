@@ -39,6 +39,7 @@ export const OrderProvider = ({ children }: Props) => {
     order,
     paymentMethod,
     options.fleetsIds,
+    options.findersFee,
     Boolean(params.orderId)
   );
   // console.log('paymentMethod', paymentMethod);

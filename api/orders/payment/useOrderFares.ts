@@ -7,6 +7,7 @@ export const useOrderFares = (
   order: WithId<Order> | null | undefined,
   defaultPaymentMethod: PayableWith | null | undefined,
   fleetsIds: string[] | undefined,
+  findersFee: number,
   enabled = false
 ) => {
   // context
@@ -23,7 +24,7 @@ export const useOrderFares = (
   const coupon = order?.coupon?.code;
   const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
   // side effects
-  // console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod);
+  console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod, enabled);
   useEffect(() => {
     if (!orderId) return;
     if (!created) return;
@@ -44,7 +45,7 @@ export const useOrderFares = (
     setLoading(true);
     api
       .orders()
-      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', fleetsIds)
+      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', findersFee, fleetsIds)
       .then((fares) => {
         setFares(fares);
         api
@@ -71,6 +72,7 @@ export const useOrderFares = (
     fleetsIds,
     coupon,
     numberOfItems,
+    findersFee,
     enabled,
   ]);
   // result

@@ -149,6 +149,7 @@ export default class OrdersApi {
   async getOrderQuotes(
     orderId: string,
     paymentMethod: PayableWith,
+    findersFee: number,
     fleetsIds: string[] | undefined
   ) {
     console.log('getOrderQuotes', {
@@ -161,6 +162,7 @@ export default class OrdersApi {
         paymentMethod,
         useCredits: true,
         fleetsIds,
+        findersFee,
         meta: { version: getAppVersion() },
       } as GetOrderQuotesPayload);
       const fares = response.data as Fare[];

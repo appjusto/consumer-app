@@ -82,7 +82,7 @@ export default function OrderCheckoutDeliveryScreen() {
   };
   // logs
   console.log('checkout/[orderId]/confirmation', typeof quote, quote?.id);
-  // console.log(placeOptions);
+  console.log(placeOptions);
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';

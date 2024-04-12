@@ -34,19 +34,23 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
     <View style={[{}, style]} {...props}>
       <HRShadow />
       <View style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View>
-          <DefaultText size="xs" color="neutral700">
-            {`Total ${totalLabel}`}
-          </DefaultText>
-          <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
-            <DefaultText size="md">{formatCurrency(total)}</DefaultText>
-            {itemsLabel ? (
-              <DefaultText style={{ marginLeft: paddings.xs }} size="xs" color="neutral700">
-                {itemsLabel}
-              </DefaultText>
-            ) : null}
+        {total > 0 ? (
+          <View>
+            <DefaultText size="xs" color="neutral700">
+              {`Total ${totalLabel}`}
+            </DefaultText>
+            <View style={{ marginTop: paddings.xs, flexDirection: 'row', alignItems: 'center' }}>
+              <DefaultText size="md">{formatCurrency(total)}</DefaultText>
+              {itemsLabel ? (
+                <DefaultText style={{ marginLeft: paddings.xs }} size="xs" color="neutral700">
+                  {itemsLabel}
+                </DefaultText>
+              ) : null}
+            </View>
           </View>
-        </View>
+        ) : (
+          <View />
+        )}
         <DefaultButton
           title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
           size="lg"

@@ -29,7 +29,7 @@
   "dependencies": {
     "@appjusto/dates": "^2.0.0",
     "@appjusto/menu": "^1.0.1",
-    "@appjusto/types": "^23.14.7",
+    "@appjusto/types": "^23.14.10",
     "@expo/react-native-action-sheet": "^4.0.1",
     "@expo/vector-icons": "^14.0.0",
     "@fnando/cnpj": "^1.0.2",
@@ -83,6 +83,7 @@
     "geokit": "^1.1.0",
     "i18n-js": "^4.3.2",
     "lodash": "^4.17.21",
+    "lottie-react-native": "6.5.1",
     "lucide-react-native": "^0.320.0",
     "marked": "4.0.12",
     "moti": "^0.26.0",
@@ -101,8 +102,7 @@
     "react-native-svg": "14.1.0",
     "react-native-view-shot": "3.8.0",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "13.6.4",
-    "lottie-react-native": "6.5.1"
+    "react-native-webview": "13.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

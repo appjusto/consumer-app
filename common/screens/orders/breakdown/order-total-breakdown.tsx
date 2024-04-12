@@ -44,12 +44,15 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
   const fees = deliveryFees + insuranceFee;
   const credits = fare.credits ?? 0;
   const discount = fare.discount ?? 0;
+  const findersFee = fare.findersFee ?? 0;
   const total = fare.total - credits - discount;
   // UI
   return (
     <View style={[{ borderWidth: 0 }, style]} {...props}>
       {/* p2p fee */}
-      {platformFee ? <Item title="Serviço" value={platformFee} /> : null}
+      {platformFee ? <Item title="Serviço appjusto" value={platformFee} /> : null}
+      {/* finders fee */}
+      {findersFee ? <Item title="Comissão" value={findersFee} /> : null}
       {/* food items */}
       {itemsTotal ? <Item title="Itens do pedido" value={itemsTotal} /> : null}
       {/* food items */}
@@ -61,7 +64,7 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
       {credits ? <Item title="Créditos" value={credits} color="primary900" /> : null}
       {discount ? <Item title="Cupom" value={discount} color="primary900" /> : null}
       {total ? <Item title="Total" value={total} color="black" /> : null}
-      <OrderTotalBreakdownFees order={order} />
+      <OrderTotalBreakdownFees style={{ marginTop: paddings.lg }} order={order} />
     </View>
   );
 };

@@ -48,7 +48,13 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
   return (
     <View
       style={[
-        { paddingHorizontal: paddings.lg, paddingVertical: paddings.xl, borderWidth: 0 },
+        {
+          paddingHorizontal: paddings.lg,
+          paddingVertical: paddings.xl,
+          borderWidth: 1,
+          borderRadius: 8,
+          borderColor: colors.neutral100,
+        },
         style,
       ]}
       {...props}
@@ -120,10 +126,10 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
             {highDemandFee ? (
               <View style={{ marginTop: paddings.lg }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <DefaultText size="md" color="black">
+                  <DefaultText size="md" color="neutral900">
                     Taxa de alta demanda
                   </DefaultText>
-                  <DefaultText color="black">{formatCurrency(highDemandFee)}</DefaultText>
+                  <DefaultText color="neutral900">{formatCurrency(highDemandFee)}</DefaultText>
                 </View>
                 <DefaultText
                   style={{ marginTop: paddings.sm, ...lineHeight.sm }}

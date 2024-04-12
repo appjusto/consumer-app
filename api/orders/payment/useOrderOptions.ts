@@ -14,6 +14,8 @@ export interface OrderOptions {
   setInvoiceWithCPF: (value: boolean) => void;
   wantToShareData: boolean;
   setWantToShareData: (value: boolean) => void;
+  findersFee: number;
+  setFindersFee: (value: number) => void;
 }
 
 export const useOrderOptions = (): OrderOptions => {
@@ -23,6 +25,7 @@ export const useOrderOptions = (): OrderOptions => {
   const [invoiceWithCPF, setInvoiceWithCPF] = useState(false);
   const [wantToShareData, setWantToShareData] = useState(false);
   const [fleetsIds, setFleetsIds] = useState<string[]>();
+  const [findersFee, setFindersFee] = useState<number>(0);
   const courier = useFetchCourier(courierCode?.toUpperCase());
   const options = useMemo<OrderOptions>(
     () => ({
@@ -37,8 +40,10 @@ export const useOrderOptions = (): OrderOptions => {
       setInvoiceWithCPF,
       wantToShareData,
       setWantToShareData,
+      findersFee,
+      setFindersFee,
     }),
-    [additionalInfo, courier, courierCode, fleetsIds, invoiceWithCPF, wantToShareData]
+    [additionalInfo, courier, courierCode, fleetsIds, invoiceWithCPF, wantToShareData, findersFee]
   );
   // select fleetsIds
   useEffect(() => {

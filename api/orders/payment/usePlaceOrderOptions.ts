@@ -1,3 +1,4 @@
+import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
 import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
 import { useEffect, useState } from 'react';
 import { useContextOrder, useContextOrderOptions } from '../context/order-context';
@@ -6,6 +7,7 @@ import { useContextPayments } from './context/payments-context';
 
 export const usePlaceOrderOptions = () => {
   // context
+  const location = useContextCurrentLocation();
   const quote = useContextOrder();
   const { paymentMethod, selectedCard } = useContextPayments();
   const options = useContextOrderOptions();
@@ -47,10 +49,10 @@ export const usePlaceOrderOptions = () => {
       additionalInfo: options.additionalInfo,
       invoiceWithCPF: options.invoiceWithCPF,
       wantToShareData: options.wantToShareData,
-      // TODO:
-      // coordinates: null
+      findersFee: options.findersFee,
+      coordinates: location,
     });
-  }, [quote, payment, options]);
+  }, [quote, payment, options, location]);
   // result
   return placeOptions;
 };
