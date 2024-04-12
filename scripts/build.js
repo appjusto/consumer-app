@@ -9,7 +9,8 @@ const { ENV, PLATFORM, PROFILE, REMOTE } = process.env;
 // ENV=dev PROFILE=debug npm run build
 // ENV=dev PROFILE=devclient PLATFORM=ios REMOTE=true npm run build
 // adhoc
-// ENV=dev PROFILE=adhoc REMOTE=true npm run build
+// ENV=dev PROFILE=adhoc npm run build
+// ENV=staging PROFILE=adhoc npm run build
 // ENV=dev PLATFORM=ios PROFILE=testflight npm run build
 // internal
 // ENV=live PROFILE=internal npm run build

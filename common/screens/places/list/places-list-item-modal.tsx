@@ -5,7 +5,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Place } from '@appjusto/types';
-import { Pencil, Trash2 } from 'lucide-react-native';
+import { Trash2 } from 'lucide-react-native';
 import { Modal, ModalProps, Pressable, View } from 'react-native';
 
 interface Props extends ModalProps {
@@ -51,7 +51,7 @@ export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...prop
                     onPress={onDelete}
                   />
                 </View>
-                <View style={{ flex: 1, marginLeft: paddings.lg }}>
+                {/* <View style={{ flex: 1, marginLeft: paddings.lg }}>
                   <DefaultButton
                     title="Editar"
                     variant="outline"
@@ -60,7 +60,7 @@ export const PlaceListItemModal = ({ place, onDismiss, onDelete, onEdit, ...prop
                     }
                     onPress={onEdit}
                   />
-                </View>
+                </View> */}
               </View>
               <LinkButton
                 style={{ marginVertical: paddings['2xl'] }}

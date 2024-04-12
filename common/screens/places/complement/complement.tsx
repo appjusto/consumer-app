@@ -78,7 +78,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   // UI
   if (!place) return null;
   return (
-    <DefaultKeyboardAwareScrollView style={{ ...screens.default }}>
+    <DefaultKeyboardAwareScrollView contentContainerStyle={{ ...screens.default }}>
       <Stack.Screen options={{ title: 'Complemento' }} />
       <PlaceDetail place={place} onSave={saveHandler} />
     </DefaultKeyboardAwareScrollView>

@@ -121,7 +121,9 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   const title = 'Dados pessoais';
   if (!profile) return <Loading backgroundColor="neutral50" title={title} />;
   return (
-    <DefaultKeyboardAwareScrollView style={{ ...screens.default, padding: paddings.lg }}>
+    <DefaultKeyboardAwareScrollView
+      contentContainerStyle={{ ...screens.default, padding: paddings.lg }}
+    >
       <DefaultText size="lg">
         {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
       </DefaultText>
