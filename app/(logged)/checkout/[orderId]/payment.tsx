@@ -56,7 +56,7 @@ export default function OrderCheckoutDeliveryScreen() {
       <View style={{ flex: 1 }} />
       <CartButton
         order={quote}
-        variant="checkout"
+        variant="total-order"
         disabled={disabled}
         onPress={() =>
           router.navigate({

@@ -1,6 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
-import { useContextOrder } from '@/api/orders/context/order-context';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { updateOrderItemQuantity } from '@/api/orders/items/updateOrderItemQuantity';
@@ -11,7 +10,7 @@ import { HR } from '@/common/components/views/HR';
 import { formatCurrency } from '@/common/formatters/currency';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { OrderItem } from '@appjusto/types';
+import { Order, OrderItem, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
 import { Pencil } from 'lucide-react-native';
 import { Pressable, View, ViewProps } from 'react-native';
@@ -19,27 +18,27 @@ import { ProductImage } from '../detail/product-image';
 
 interface Props extends ViewProps {
   item: OrderItem;
+  order: WithId<Order>;
   editable?: boolean;
 }
 
-export const BusinessCartItem = ({ item, editable = true, style, ...props }: Props) => {
+export const BusinessCartItem = ({ item, order, editable = true, style, ...props }: Props) => {
   // context
   const api = useContextApi();
-  const quote = useContextOrder();
-  const businessId = quote?.business?.id as string;
+  const businessId = order?.business?.id as string;
   // state
-  const url = useProductImageURI(quote?.business?.id, item);
+  const url = useProductImageURI(order?.business?.id, item);
   // side effects
   const updateQuantity = (delta: number) => {
-    if (!quote) return;
+    if (!order) return;
     const quantity = item.quantity + delta;
     const updatedOrder =
       quantity > 0
-        ? updateOrderItemQuantity(quote, item.id, quantity)
-        : removeItemFromOrder(quote, item.id);
+        ? updateOrderItemQuantity(order, item.id, quantity)
+        : removeItemFromOrder(order, item.id);
     api
       .orders()
-      .updateOrder(quote.id, updatedOrder)
+      .updateOrder(order.id, updatedOrder)
       .catch(() => null);
   };
   // UI

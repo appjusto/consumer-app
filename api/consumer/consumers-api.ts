@@ -71,8 +71,8 @@ export default class ConsumersApi {
     } as Place);
     return ref.id;
   }
-  async updatePlace(place: WithId<Place>) {
-    await placeRef(place.id).update({
+  async updatePlace(placeId: string, place: Partial<Place> = {}) {
+    await placeRef(placeId).update({
       ...place,
       updatedAt: serverTimestamp(),
     } as Place);

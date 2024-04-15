@@ -51,20 +51,29 @@ export default function OrderCompletedScreen() {
   useTrackScreenView('Detalhe do Pedido', { orderId });
   // handlers
   const createOrderHandler = () => {
+    if (!order) return;
     // console.log(business);
-    if (!business) return;
     setCreateEnabled(false);
-    api
-      .business()
-      .fetchBusinessById(business.id)
+    const promise = business
+      ? api.business().fetchBusinessById(business.id)
+      : Promise.resolve(null);
+    promise
       .then((value) => {
-        if (!value) throw new Error('Restaurante indisponível');
-        const newOrder: Partial<Order> = {
-          ...pick(order, ['items', 'destination', 'fulfillment']),
-          destination: order.destination ?? (currentPlace as WithId<Place>) ?? null,
-        };
-        if (declined) newOrder.paymentMethod = 'pix';
-        return api.orders().createFoodOrder(value, newOrder);
+        if (order.type === 'food') {
+          if (!value) throw new Error('Restaurante indisponível');
+          const newOrder: Partial<Order> = {
+            ...pick(order, ['items', 'destination', 'fulfillment']),
+            destination: order.destination ?? (currentPlace as WithId<Place>) ?? null,
+          };
+          if (declined) newOrder.paymentMethod = 'pix';
+          return api.orders().createFoodOrder(value, newOrder);
+        } else {
+          const newOrder: Partial<Order> = {
+            ...pick(order, ['origin', 'destination']),
+          };
+          if (declined) newOrder.paymentMethod = 'pix';
+          return api.orders().createP2POrder(newOrder);
+        }
       })
       .then((orderId) => {
         router.navigate({
@@ -105,7 +114,7 @@ export default function OrderCompletedScreen() {
         <DefaultButton
           style={{ marginTop: paddings.lg }}
           title="Refazer pedido"
-          disabled={!createEnabled}
+          disabled={!order || !createEnabled}
           onPress={createOrderHandler}
         />
       </DefaultView>

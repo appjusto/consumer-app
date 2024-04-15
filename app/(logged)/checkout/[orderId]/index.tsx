@@ -20,29 +20,29 @@ import { Pressable, View } from 'react-native';
 
 export default function OrderCheckoutScreen() {
   // context
-  const quote = useContextOrder();
+  const order = useContextOrder();
   const { additionalInfo, setAdditionalInfo } = useContextOrderOptions() ?? {};
   // state
   const [couponModalVisible, setCouponModalVisible] = useState(false);
   // tracking
-  useTrackScreenView('Checkout: sacola', { businessId: quote?.business?.id, orderId: quote?.id });
+  useTrackScreenView('Checkout: sacola', { businessId: order?.business?.id, orderId: order?.id });
   // side effects
   // useBackWhenOrderExpires();
   // logs
-  console.log('checkout/[orderId]/index', typeof quote, quote?.id);
+  console.log('checkout/[orderId]/index', typeof order, order?.id);
   // UI
-  if (!quote || isOrderEmpty(quote)) return <EmptyCart />;
-  const coupon = quote.coupon?.discount ?? 0;
+  if (!order || isOrderEmpty(order)) return <EmptyCart />;
+  const coupon = order.coupon?.discount ?? 0;
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>
         <Stack.Screen options={{ title: 'Sua sacola' }} />
         <CouponModal
-          order={quote}
+          order={order}
           visible={couponModalVisible}
           onCancel={() => setCouponModalVisible(false)}
         />
-        <BusinessCart />
+        <BusinessCart order={order} />
         <DefaultInput
           style={{ padding: paddings.lg }}
           inputStyle={{ minHeight: 60 }}
@@ -102,13 +102,13 @@ export default function OrderCheckoutScreen() {
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       <CartButton
-        order={quote}
-        variant="products"
-        disabled={!quote}
+        order={order}
+        variant="total-products"
+        disabled={!order}
         onPress={() =>
           router.navigate({
             pathname: '/(logged)/checkout/[orderId]/delivery',
-            params: { orderId: quote.id },
+            params: { orderId: order.id },
           })
         }
       />

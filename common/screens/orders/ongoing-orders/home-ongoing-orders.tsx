@@ -1,18 +1,21 @@
 import { getOrderStage } from '@/api/orders/status';
 import { useObserveOngoingOrders } from '@/api/orders/useObserveOngoingOrders';
 import paddings from '@/common/styles/paddings';
-import { Order, WithId } from '@appjusto/types';
+import { Order, OrderType, WithId } from '@appjusto/types';
 import { useNavigation } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 import { HomeOngoingBusinessOrder } from './home-ongoing-business-order';
+import { HomeOngoingP2POrder } from './home-ongoing-p2p-order';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  type: OrderType;
+}
 
-export const HomeOngoingOrders = ({ style, ...props }: Props) => {
+export const OngoingOrders = ({ type, style, ...props }: Props) => {
   // context
   const navigation = useNavigation();
   // state
-  const orders = useObserveOngoingOrders();
+  const orders = useObserveOngoingOrders(type);
   // handlers
   const orderHandler = (order: WithId<Order>) => {
     const stage = getOrderStage(order.status, order.type);
@@ -27,7 +30,7 @@ export const HomeOngoingOrders = ({ style, ...props }: Props) => {
   // UI
   if (!orders?.length) return null;
   return (
-    <View style={[{ paddingHorizontal: paddings.lg }, style]} {...props}>
+    <View style={[{}, style]} {...props}>
       {orders.map((order) => {
         return (
           <Pressable
@@ -36,6 +39,7 @@ export const HomeOngoingOrders = ({ style, ...props }: Props) => {
             onPress={() => orderHandler(order)}
           >
             {order.type === 'food' ? <HomeOngoingBusinessOrder order={order} /> : null}
+            {order.type === 'p2p' ? <HomeOngoingP2POrder order={order} /> : null}
           </Pressable>
         );
       })}

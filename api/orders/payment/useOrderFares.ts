@@ -18,42 +18,42 @@ export const useOrderFares = (
   const [loading, setLoading] = useState(false);
   // helpers
   const orderId = order?.id;
-  const created = order?.status === 'quote' && Boolean(order?.timestamps?.quote);
   const distance = order?.route?.distance;
   const fulfillment = order?.fulfillment;
   const coupon = order?.coupon?.code;
   const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
   // side effects
-  console.log('useOrderFares', orderId, created, distance, defaultPaymentMethod, enabled);
+  console.log('useOrderFares', orderId, distance, defaultPaymentMethod, enabled);
   useEffect(() => {
     if (!orderId) return;
-    if (!created) return;
     // if (!distance) return;
     if (defaultPaymentMethod === undefined) return;
     // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;
     // setFares(undefined);
-    // console.log(
-    //   'useOrderFares -> update',
-    //   orderId,
-    //   created,
-    //   distance,
-    //   fulfillment,
-    //   defaultPaymentMethod,
-    //   fleetsIds
-    // );
+    console.log(
+      'useOrderFares -> update',
+      orderId,
+      distance,
+      fulfillment,
+      defaultPaymentMethod,
+      fleetsIds
+    );
     setLoading(true);
     api
       .orders()
       .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', findersFee, fleetsIds)
       .then((fares) => {
         setFares(fares);
-        api
-          .orders()
-          .updateOrder(orderId, { fare: fares[0] })
-          .catch(() => {
-            console.error('Erro ao atualizar fare');
-          });
+        const fare = fares[0];
+        if (fare) {
+          api
+            .orders()
+            .updateOrder(orderId, { fare })
+            .catch(() => {
+              console.error('Erro ao atualizar fare');
+            });
+        }
       })
       .catch((error) => {
         if (error instanceof Error) showToast(error.message, 'error');
@@ -65,7 +65,6 @@ export const useOrderFares = (
     api,
     showToast,
     orderId,
-    created,
     distance,
     fulfillment,
     defaultPaymentMethod,

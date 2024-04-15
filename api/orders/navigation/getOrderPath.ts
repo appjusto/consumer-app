@@ -6,7 +6,7 @@ export type FromScreen = 'confirming' | 'confirming-pix' | 'ongoing';
 export const getOrderPath = (
   status: OrderStatus,
   type: OrderType,
-  paymentMethod: PayableWith,
+  paymentMethod?: PayableWith,
   from?: FromScreen
 ) => {
   const stage = getOrderStage(status, type);

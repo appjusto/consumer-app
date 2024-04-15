@@ -11,7 +11,7 @@ import {
 } from '@appjusto/types';
 import { nanoid } from 'nanoid/non-secure';
 import { useEffect, useState } from 'react';
-import { useContextOrder } from '../context/order-context';
+import { useContextBusinessQuote } from '../context/order-context';
 import { hasSatisfiedAllGroups } from './complements/hasSatisfiedAllGroups';
 import { toOrderItemComplement } from './complements/toOrderItemComplement';
 import { totalComplements } from './complements/totalComplements';
@@ -20,7 +20,7 @@ export const useAddOrderItem = (productId: string, itemId?: string) => {
   // context
   const product = useContextBusinessProduct(productId);
   const category = useContextBusinessProductCategory(productId);
-  const quote = useContextOrder();
+  const quote = useContextBusinessQuote();
   // state
   const [quantity, setQuantity] = useState(1);
   const [complements, setComplements] = useState<OrderItemComplement[]>([]);

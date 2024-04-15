@@ -50,6 +50,7 @@ export const useCreatePlace = () => {
       additionalInfo,
       instructions,
     };
+    console.log('useCreatePlace', destination);
     api
       .consumers()
       .createPlace(destination)

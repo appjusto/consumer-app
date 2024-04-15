@@ -23,7 +23,7 @@ export default function OrderDetailScreen() {
     <DefaultScrollView style={{ ...screens.default }}>
       <Stack.Screen options={{ title: `Pedido #${code}` }} />
       <DefaultView style={{ padding: paddings.lg }}>
-        <BusinessCart editable={false} />
+        <BusinessCart order={order} editable={false} />
       </DefaultView>
     </DefaultScrollView>
   );

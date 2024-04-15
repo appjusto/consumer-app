@@ -1,10 +1,11 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextUser } from '@/common/auth/AuthContext';
+import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { CircledView } from '@/common/components/containers/CircledView';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { MessageBox } from '@/common/components/views/MessageBox';
+import { OngoingOrders } from '@/common/screens/orders/ongoing-orders/home-ongoing-orders';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -23,7 +24,7 @@ const restrictions = [
 
 export default function P2PIndex() {
   // context
-  const isAnonymous = useContextUser()?.isAnonymous === true;
+  const isAnonymous = useContextIsUserAnonymous();
   // tracking
   useTrackScreenView('Encomendas');
   // side effects
@@ -52,6 +53,7 @@ export default function P2PIndex() {
               flexDirection: 'row',
               alignItems: 'center',
               marginTop: paddings.lgg,
+              marginBottom: paddings.lg,
               paddingHorizontal: paddings.lg,
               paddingVertical: paddings.sm,
               borderColor: colors.neutral200,
@@ -65,8 +67,10 @@ export default function P2PIndex() {
             </DefaultText>
           </View>
         </Pressable>
+        {/* ongoing */}
+        <OngoingOrders style={{ marginBottom: paddings.sm }} type="p2p" />
         {/* restrictions */}
-        <MessageBox style={{ marginTop: paddings.lg }}>
+        <MessageBox style={{}}>
           As medidas do pacote devem respeitar as dimensões e pesos máximos: 36cm de altura, 44cm de
           largura, 42cm de comprimento e 20kg de peso.
         </MessageBox>

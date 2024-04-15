@@ -70,21 +70,23 @@ export default function OrderConfirmingPixScreen() {
             }}
           >
             {/* <DefaultText style={{ textAlign: 'center' }}>Válido por 30 minutos</DefaultText> */}
-            <View style={{ padding: paddings.lg }}>
-              {pix?.qrcode ? (
-                <Image source={{ uri: pix.qrcode }} style={{ height: 150, width: 150 }} />
-              ) : (
-                <ActivityIndicator size="small" color={colors.black} />
-              )}
-            </View>
-            <DefaultButton
-              title="Copiar código Pix"
-              variant="outline"
-              onPress={copyToClipboard}
-              rightView={
-                <Copy style={{ marginLeft: paddings.xs }} color={colors.black} size={16} />
-              }
-            />
+            {pix?.qrcode ? (
+              <View>
+                <View style={{ padding: paddings.lg }}>
+                  <Image source={{ uri: pix.qrcode }} style={{ height: 150, width: 150 }} />
+                </View>
+                <DefaultButton
+                  title="Copiar código Pix"
+                  variant="outline"
+                  onPress={copyToClipboard}
+                  rightView={
+                    <Copy style={{ marginLeft: paddings.xs }} color={colors.black} size={16} />
+                  }
+                />
+              </View>
+            ) : (
+              <ActivityIndicator size="small" color={colors.black} />
+            )}
           </View>
           {/* warning */}
           <MessageBox variant="info">

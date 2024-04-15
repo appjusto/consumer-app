@@ -3,6 +3,7 @@ import { useContextOrder } from '@/api/orders/context/order-context';
 import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
+import { OngoingOrderPickupAddress } from '@/common/screens/orders/ongoing/ongoing-order-pickup-address';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Stack } from 'expo-router';
@@ -32,6 +33,7 @@ export default function OngoingOrderScreen() {
       <OngoingOrderMapInfo order={order} />
       <View style={{ padding: paddings.lg, marginBottom: paddings.xl, borderWidth: 0 }}>
         <OngoingOrderCourier order={order} />
+        <OngoingOrderPickupAddress order={order} />
         <OngoingOrderDeliveryAddress order={order} />
         <OngoingOrderHandshake order={order} />
         <OngoingOrderFoodOverview order={order} />

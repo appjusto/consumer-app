@@ -51,8 +51,8 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
   return (
     <View style={[{}, style]} {...props}>
       <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
-        Frotas são a forma que o appjusto desenvolveu para que os entregadores possam se organizar
-        coletivamente e defiinir o valor e as condições do seu trabalho.
+        Frotas é a forma que o appjusto criou para permitir que entregadores/as possam definir o
+        valor e as condições de prestação de serviço.
       </DefaultText>
       {fares.map((fare) => {
         if (!fare.fleet?.id) return null;

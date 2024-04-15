@@ -11,7 +11,7 @@ import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   order: Order | undefined | null;
-  variant: 'business' | 'products' | 'checkout';
+  variant: 'total-products' | 'total-order' | 'none';
   disabled: boolean;
   onPress: () => void;
 }
@@ -20,13 +20,18 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
   // context
   // UI
   if (!order) return null;
-  const products = variant === 'business' || variant === 'products';
-  const total = products ? getOrderItemsTotal(order, true) : getOrderTotalCost(order);
-  const totalLabel = order.fare?.courier?.value
-    ? products
+  const total =
+    variant === 'total-products'
+      ? getOrderItemsTotal(order, true)
+      : variant === 'total-order'
+      ? getOrderTotalCost(order)
+      : 0;
+  const totalLabel =
+    variant === 'total-products'
       ? 'sem a entrega'
-      : 'com a entrega'
-    : '';
+      : variant === 'total-order'
+      ? 'com a entrega'
+      : '';
   const totalItems = order.items?.length ? order.items.length : 0;
   const itemsLabel = totalItems ? ` / ${totalItems} ite${totalItems > 1 ? 'ns' : 'm'}` : null;
   if (isOrderEmpty(order)) return null;
@@ -52,7 +57,7 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
           <View />
         )}
         <DefaultButton
-          title={variant === 'business' ? 'Ver sacola' : 'Continuar'}
+          title={variant === 'total-products' ? 'Ver sacola' : 'Continuar'}
           size="lg"
           disabled={disabled}
           onPress={onPress}

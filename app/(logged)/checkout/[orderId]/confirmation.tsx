@@ -32,7 +32,6 @@ export default function OrderCheckoutDeliveryScreen() {
   const showToast = useShowToast();
   const quote = useContextOrder();
   const { paymentMethod, selectedCard } = useContextPayments();
-
   // state
   const issues = useCheckoutIssues(true, true);
   const placeOptions = usePlaceOrderOptions();
@@ -55,7 +54,11 @@ export default function OrderCheckoutDeliveryScreen() {
       .then(() => {
         trackEvent('Pedido feito');
         console.log(placeOptions);
-        router.navigate('/(logged)/(tabs)/(home)/');
+        if (quote?.type === 'food') {
+          router.navigate('/(logged)/(tabs)/(home)/');
+        } else {
+          router.navigate('/(logged)/(tabs)/encomendas');
+        }
         // @ts-ignore
         navigation.navigate('(orders)', {
           screen:
@@ -130,7 +133,16 @@ export default function OrderCheckoutDeliveryScreen() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <DefaultButton title="Alterar pedido" variant="outline" onPress={() => null} />
+            <DefaultButton
+              title="Alterar pedido"
+              variant="outline"
+              onPress={() =>
+                router.navigate({
+                  pathname: '/(logged)/checkout/[orderId]/delivery',
+                  params: { orderId: quote.id },
+                })
+              }
+            />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
             {issues.length === 0 ? (

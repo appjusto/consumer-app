@@ -4,7 +4,7 @@ import {
   useContextBusinessCategories,
   useContextBusinessProducts,
 } from '@/api/business/context/business-context';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextBusinessQuote } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -27,7 +27,7 @@ export default function BusinessDetailScreen() {
   const business = useContextBusiness();
   const categories = useContextBusinessCategories();
   const products = useContextBusinessProducts();
-  const quote = useContextOrder();
+  const quote = useContextBusinessQuote();
   const orderId = quote?.id;
   // refs
   const ref = useRef<FlashList<WithId<Product> | string>>(null);
@@ -118,7 +118,12 @@ export default function BusinessDetailScreen() {
         }}
         estimatedItemSize={78}
       />
-      <CartButton order={quote} variant="business" disabled={!quote} onPress={checkoutHandler} />
+      <CartButton
+        order={quote}
+        variant="total-products"
+        disabled={!quote}
+        onPress={checkoutHandler}
+      />
     </View>
   );
 }

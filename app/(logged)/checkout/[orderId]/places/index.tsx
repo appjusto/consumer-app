@@ -30,7 +30,7 @@ export default function CheckoutChangeDestinationScreen() {
     setLoading(true);
     api
       .consumers()
-      .updatePlace(selectedPlace)
+      .updatePlace(selectedPlace.id)
       .then(() => api.orders().updateOrder(orderId, { destination: selectedPlace }))
       .then(() => {
         setLoading(false);

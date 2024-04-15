@@ -20,7 +20,7 @@ export default function PlacesScreen() {
   const selectPlaceHandler = (place: WithId<Place>) => {
     api
       .consumers()
-      .updatePlace(place)
+      .updatePlace(place.id)
       .then(() => router.back());
   };
   const newAddressHandler = () => {

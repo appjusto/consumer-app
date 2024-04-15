@@ -14,7 +14,6 @@ import {
   OrderPayments,
   OrderReview,
   PayableWith,
-  Place,
   PublicBusiness,
   UpdateOrderCouponPayload,
   WithId,
@@ -115,7 +114,7 @@ export default class OrdersApi {
     return ref.id;
   }
 
-  async createP2POrder(origin: Place) {
+  async createP2POrder(order: Partial<Order>) {
     console.log('createP2POrder');
     const payload: Partial<Order> = {
       type: 'p2p',
@@ -127,8 +126,8 @@ export default class OrdersApi {
       consumer: {
         id: this.auth.getUserId()!,
       },
-      origin,
       createdOn: serverTimestamp(),
+      ...order,
     };
     const ref = ordersRef().doc();
     await ref.set(payload);

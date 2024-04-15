@@ -9,7 +9,7 @@ import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Stack, router } from 'expo-router';
-import { AlertOctagon, Phone } from 'lucide-react-native';
+import { AlertOctagon, MessageSquareText, Phone } from 'lucide-react-native';
 import { Dimensions, Linking, View } from 'react-native';
 
 import LottieView from 'lottie-react-native';
@@ -26,7 +26,9 @@ export default function OrderConfirmingScreen() {
   const status = order?.status;
   const waitingAcceptance = status === 'confirmed';
   // state
-  const businessPhone = useObserveBusiness(order?.business?.id)?.phone;
+  const business = useObserveBusiness(order?.business?.id);
+  const businessPhone = business?.phone;
+  const businessWhatsapp = business?.whatsapp;
   // tracking
   useTrackScreenView('Checkout: confirmando pedido', { orderId });
   // side effects
@@ -34,6 +36,11 @@ export default function OrderConfirmingScreen() {
   // handlers
   const callBusinessHandler = () => {
     Linking.openURL(`tel:${businessPhone}`)
+      .then(() => null)
+      .catch((error) => console.error(error));
+  };
+  const whatsappBusinessHandler = () => {
+    Linking.openURL(`https://wa.me/55${businessWhatsapp}`)
       .then(() => null)
       .catch((error) => console.error(error));
   };
@@ -71,6 +78,22 @@ export default function OrderConfirmingScreen() {
               onPress={callBusinessHandler}
             >
               Ligar para restaurante
+            </LinkButton>
+          ) : null}
+          {businessWhatsapp ? (
+            <LinkButton
+              style={{ marginBottom: paddings.lg }}
+              variant="ghost"
+              leftView={
+                <MessageSquareText
+                  style={{ marginRight: paddings.sm }}
+                  size={16}
+                  color={colors.black}
+                />
+              }
+              onPress={whatsappBusinessHandler}
+            >
+              Enviar mensagem
             </LinkButton>
           ) : null}
           <LinkButton

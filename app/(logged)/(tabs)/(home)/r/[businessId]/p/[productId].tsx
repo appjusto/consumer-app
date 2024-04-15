@@ -6,7 +6,7 @@ import {
 } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
 import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextBusinessQuote } from '@/api/orders/context/order-context';
 import { addItemToOrder } from '@/api/orders/items/addItemToOrder';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
@@ -44,7 +44,7 @@ export default function ProductDetailScreen() {
   const api = useContextApi();
   const profile = useContextProfile();
   const currentPlace = useContextCurrentPlace();
-  const quote = useContextOrder();
+  const quote = useContextBusinessQuote();
   const business = useContextBusiness();
   // state
   const product = useContextBusinessProduct(productId);

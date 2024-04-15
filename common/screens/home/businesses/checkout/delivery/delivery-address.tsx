@@ -1,10 +1,5 @@
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { RoundedText } from '@/common/components/texts/RoundedText';
-import { HR } from '@/common/components/views/HR';
-import { MessageBox } from '@/common/components/views/MessageBox';
-import { formatDistance } from '@/common/formatters/distance';
-import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
@@ -47,17 +42,6 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
           Trocar
         </LinkButton>
       </View>
-      {order.route?.distance ? (
-        <RoundedText
-          style={{ marginTop: paddings.md, backgroundColor: colors.neutral50 }}
-        >{`Distância: ${formatDistance(order.route.distance)}`}</RoundedText>
-      ) : null}
-      {order.route?.issue ? (
-        <MessageBox style={{ marginTop: paddings.md }} variant="error">
-          {order.route.issue}
-        </MessageBox>
-      ) : null}
-      <HR style={{ marginTop: paddings.xl }} />
     </View>
   );
 };

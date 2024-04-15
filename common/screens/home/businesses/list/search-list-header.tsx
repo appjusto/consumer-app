@@ -1,9 +1,9 @@
 import { SearchFilter, SearchKind } from '@/api/externals/algolia/types';
 import paddings from '@/common/styles/paddings';
 import { View, ViewProps } from 'react-native';
+import { OngoingOrders } from '../../../orders/ongoing-orders/home-ongoing-orders';
 import { BannerList } from '../../banners/banner-list';
 import { CuisineList } from '../../cuisine/cuisine-list';
-import { HomeOngoingOrders } from '../../ongoing-orders/home-ongoing-orders';
 import { SearchHeader } from './search-header';
 
 export type SearchListMode = 'home' | 'search';
@@ -42,7 +42,7 @@ export const SearchListHeader = ({
       {mode === 'home' ? (
         <BannerList style={{ marginBottom: paddings.lg, marginLeft: paddings.lg }} />
       ) : null}
-      {mode === 'home' ? <HomeOngoingOrders /> : null}
+      {mode === 'home' ? <OngoingOrders type="food" /> : null}
       <SearchHeader
         style={mode === 'home' ? { marginLeft: paddings.lg } : {}}
         showFiltersModal={showFiltersModal}

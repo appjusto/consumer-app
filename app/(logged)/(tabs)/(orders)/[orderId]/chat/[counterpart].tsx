@@ -95,7 +95,7 @@ export default function ChatScreen() {
   // console.log(JSON.stringify(chat));
   // UI
   return (
-    <DefaultKeyboardAwareScrollView>
+    <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
       <DefaultView
         style={{
           flex: 1,
@@ -181,7 +181,7 @@ export default function ChatScreen() {
           <View
             style={{
               padding: paddings.lg,
-              marginBottom: paddings.lg,
+              // marginBottom: paddings.lg,
               backgroundColor: colors.white,
               flexDirection: 'row',
               justifyContent: 'space-between',

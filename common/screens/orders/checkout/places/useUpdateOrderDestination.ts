@@ -14,7 +14,7 @@ export const useUpdateOrderDestination = () => {
   // side effects
   // update order destination
   useEffect(() => {
-    // console.log('useEffect', orderId, place);
+    // console.log('useUpdateOrderDestination', orderId, place);
     if (!orderId) return;
     if (!place) return;
     api

@@ -48,6 +48,11 @@ export const OngoingOrderDeliveryAddress = ({ order, style, ...props }: Props) =
               {place.additionalInfo}
             </DefaultText>
           ) : null}
+          {place?.instructions ? (
+            <DefaultText style={{ marginTop: paddings.sm }} size="xs" color="neutral800">
+              {place.instructions}
+            </DefaultText>
+          ) : null}
         </View>
       </View>
       {deliveredByAppJusto || outsourced ? (

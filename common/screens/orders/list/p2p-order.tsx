@@ -1,7 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
+import { isOrderOngoing } from '@/api/orders/status';
 import { getOrderTimestamp } from '@/api/orders/timestamp/getOrderTime';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
-import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
@@ -10,7 +10,7 @@ import { formatCurrency } from '@/common/formatters/currency';
 import { formatTimestamp } from '@/common/formatters/timestamp';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Order, Place, WithId } from '@appjusto/types';
+import { Order, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
 import { pick } from 'lodash';
 import { View, ViewProps } from 'react-native';
@@ -20,26 +20,18 @@ interface Props extends ViewProps {
   order: WithId<Order>;
 }
 
-export const BusinessOrder = ({ order, style, ...props }: Props) => {
+export const P2POrder = ({ order, style, ...props }: Props) => {
   // params
-  const { code, status, business } = order;
+  const { type, code, status } = order;
   // context
   const api = useContextApi();
   const showToast = useShowToast();
-  const currentPlace = useContextCurrentPlace();
   // handlers
   const createOrderHandler = () => {
-    // console.log(business);
-    if (!business) return;
     api
-      .business()
-      .fetchBusinessById(business.id)
-      .then((value) => {
-        if (!value) throw new Error('Restaurante indisponível');
-        return api.orders().createFoodOrder(value, {
-          ...pick(order, ['items', 'destination', 'fulfillment']),
-          destination: order.destination ?? (currentPlace as WithId<Place>) ?? null,
-        });
+      .orders()
+      .createP2POrder({
+        ...pick(order, ['origin', 'destination']),
       })
       .then((orderId) => {
         showToast('Pedido criado com sucesso!', 'success');
@@ -76,21 +68,27 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
             {`#${code}`}
           </DefaultText>
           <DefaultText style={{ marginTop: paddings.xs }} size="md" color="neutral900">
-            {business?.name}
+            Encomenda
           </DefaultText>
         </View>
         <View>
-          <OrderStatusBadge type="food" status={status} />
+          <OrderStatusBadge type={type} status={status} />
         </View>
       </View>
       {/* products */}
       <View style={{ marginTop: paddings.lg }}>
-        {(order.items ?? []).map((item) => (
-          <DefaultText
-            key={item.id}
-            color="neutral700"
-          >{`${item.quantity} ${item.product.name}`}</DefaultText>
-        ))}
+        <View style={{ flexDirection: 'row' }}>
+          <DefaultText color="neutral800">Origem</DefaultText>
+          <DefaultText style={{ marginLeft: paddings.lg }}>
+            {order.origin?.address.main}
+          </DefaultText>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: paddings.md }}>
+          <DefaultText color="neutral800">Destino</DefaultText>
+          <DefaultText style={{ marginLeft: paddings.lg }}>
+            {order.destination?.address.main}
+          </DefaultText>
+        </View>
       </View>
       <HR style={{ marginTop: paddings.lg }} />
       {/* time & price */}
@@ -109,21 +107,25 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
           {formatCurrency(getOrderTotalCost(order))}
         </DefaultText>
       </View>
-      <HR />
       {/* controls */}
-      <View
-        style={{
-          // flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: paddings.md,
-          // borderWidth: 1,
-        }}
-      >
-        <LinkButton variant="ghost" onPress={createOrderHandler}>
-          Pedir novamente
-        </LinkButton>
-      </View>
+      {!isOrderOngoing(status) ? (
+        <View>
+          <HR />
+          <View
+            style={{
+              // flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: paddings.md,
+              // borderWidth: 1,
+            }}
+          >
+            <LinkButton variant="ghost" onPress={createOrderHandler}>
+              Pedir novamente
+            </LinkButton>
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 };

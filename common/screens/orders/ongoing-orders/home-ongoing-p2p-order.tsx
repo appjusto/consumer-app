@@ -1,7 +1,7 @@
 import { useOrderDeliveryEstimate } from '@/api/orders/estimate/useOrderDeliveryEstimate';
 import { getOrderStatusAsText } from '@/api/orders/status/getOrderStatusAsText';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Time, formatTimestamp, timestampWithETA } from '@/common/formatters/timestamp';
+import { timestampWithETA } from '@/common/formatters/timestamp';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Order, WithId } from '@appjusto/types';
@@ -13,13 +13,11 @@ interface Props extends ViewProps {
   order: WithId<Order>;
 }
 
-export const HomeOngoingBusinessOrder = ({ order, style, ...props }: Props) => {
+export const HomeOngoingP2POrder = ({ order, style, ...props }: Props) => {
   // context
   const navigation = useNavigation();
   // helpers
-  const { fulfillment, code, status, type, dispatchingState, business } = order;
-  const delivery = fulfillment === 'delivery';
-  const estimateLabel = delivery ? 'Previsão de entrega' : 'Previsão de preparo';
+  const { code, status, type, dispatchingState, courier } = order;
   const estimate = useOrderDeliveryEstimate(order);
   // UI
   return (
@@ -39,10 +37,6 @@ export const HomeOngoingBusinessOrder = ({ order, style, ...props }: Props) => {
     >
       <Pressable
         onPress={() => {
-          // router.navigate({
-          //   pathname: '/(logged)/(tabs)/(orders)/[orderId]/ongoing',
-          //   params: { orderId: order.id },
-          // });
           // @ts-ignore
           navigation.navigate('(orders)', {
             screen: '[orderId]/ongoing',
@@ -95,19 +89,19 @@ export const HomeOngoingBusinessOrder = ({ order, style, ...props }: Props) => {
               color="black"
               numberOfLines={1}
               ellipsizeMode="tail"
-            >{`${business?.name}`}</DefaultText>
+            >{`${courier?.name ?? 'Aguardando'}`}</DefaultText>
           </View>
           {estimate ? (
             <View style={{ flex: 1, justifyContent: 'flex-end', borderWidth: 0 }}>
               <DefaultText style={{ alignSelf: 'flex-end' }} size="xs" color="neutral700">
-                {estimateLabel}
+                Previsão de entrega
               </DefaultText>
               <DefaultText
                 style={{ marginTop: paddings.sm, alignSelf: 'flex-end' }}
                 size="md"
                 color="black"
               >
-                {delivery ? timestampWithETA(estimate) : formatTimestamp(estimate, Time)}
+                {timestampWithETA(estimate)}
               </DefaultText>
             </View>
           ) : null}

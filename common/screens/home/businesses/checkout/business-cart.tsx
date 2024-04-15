@@ -1,22 +1,22 @@
 import { useContextApi } from '@/api/ApiContext';
-import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
+import { Order, WithId } from '@appjusto/types';
 import { Stack, router } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 import { BusinessCartHeader } from './business-cart-header';
 import { BusinessCartItem } from './business-cart-item';
 
 interface Props extends ViewProps {
+  order: WithId<Order>;
   editable?: boolean;
 }
 
-export const BusinessCart = ({ style, editable = true, ...props }: Props) => {
+export const BusinessCart = ({ order, editable = true, style, ...props }: Props) => {
   // context
   const api = useContextApi();
-  const quote = useContextOrder();
-  const orderId = quote?.id;
-  const clearable = editable && quote?.items?.length && quote.items.length > 0;
+  const orderId = order?.id;
+  const clearable = editable && order?.items?.length && order.items.length > 0;
   // handlers
   const deleteOrder = async () => {
     if (!orderId) return;
@@ -24,7 +24,7 @@ export const BusinessCart = ({ style, editable = true, ...props }: Props) => {
     router.back();
   };
   // UI
-  if (!quote?.business) return null;
+  if (!order?.business?.id) return null;
   return (
     <View style={[{}, style]} {...props}>
       <Stack.Screen
@@ -39,14 +39,15 @@ export const BusinessCart = ({ style, editable = true, ...props }: Props) => {
       />
       <BusinessCartHeader
         style={{ padding: paddings.lg }}
-        business={quote.business}
+        business={order.business}
         editable={editable}
       />
       <View style={{ marginTop: paddings.sm, paddingHorizontal: paddings.lg }}>
-        {(quote.items ?? []).map((item) => (
+        {(order.items ?? []).map((item) => (
           <BusinessCartItem
             style={{ marginTop: paddings.lg }}
             key={item.id}
+            order={order}
             item={item}
             editable={editable}
           />

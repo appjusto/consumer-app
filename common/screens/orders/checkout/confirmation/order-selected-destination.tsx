@@ -30,6 +30,11 @@ export const OrderSelectedDestination = ({ style, ...props }: Props) => {
       <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">{`${
         place.address.secondary
       }${place.additionalInfo ? ` \u00B7 ${place.additionalInfo}` : ''}`}</DefaultText>
+      {place.instructions ? (
+        <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
+          {place.instructions}
+        </DefaultText>
+      ) : null}
     </View>
   );
 };
