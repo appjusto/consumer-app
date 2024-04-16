@@ -36,6 +36,7 @@ const placeOrder = firebase.app().functions(region).httpsCallable('placeOrder');
 const updateOrderCoupon = firebase.app().functions(region).httpsCallable('updateOrderCoupon');
 const getCancellationInfo = firebase.app().functions(region).httpsCallable('getCancellationInfo');
 const cancelOrder = firebase.app().functions(region).httpsCallable('cancelOrder');
+const completeDelivery = firebase.app().functions(region).httpsCallable('completeDelivery');
 
 // firestore
 const ordersRef = () => firestore().collection('orders');
@@ -192,6 +193,14 @@ export default class OrdersApi {
       // payment: {
       //   payableWith: 'cash',
       // },
+      meta: { version: getAppVersion() },
+    });
+  }
+
+  async completeDelivery(orderId: string) {
+    console.log('completeDelivery', orderId);
+    await placeOrder({
+      orderId,
       meta: { version: getAppVersion() },
     });
   }

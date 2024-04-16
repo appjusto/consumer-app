@@ -4,6 +4,7 @@ import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import { OngoingOrderPickupAddress } from '@/common/screens/orders/ongoing/ongoing-order-pickup-address';
+import { OngoingOrderShareLink } from '@/common/screens/orders/ongoing/ongoing-order-share-link';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Stack } from 'expo-router';
@@ -35,6 +36,7 @@ export default function OngoingOrderScreen() {
         <OngoingOrderCourier order={order} />
         <OngoingOrderPickupAddress order={order} />
         <OngoingOrderDeliveryAddress order={order} />
+        <OngoingOrderShareLink order={order} />
         <OngoingOrderHandshake order={order} />
         <OngoingOrderFoodOverview order={order} />
       </View>

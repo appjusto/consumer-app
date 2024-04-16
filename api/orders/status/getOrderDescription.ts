@@ -12,9 +12,7 @@ export const getOrderDescription = (order: Order) => {
     }
   }
   if (status === 'ready') {
-    if (dispatchingStatus === 'matching') {
-      return 'Estamos procurando uma pessoa para fazer a sua entrega';
-    } else if (dispatchingStatus === 'outsourced') {
+    if (dispatchingStatus === 'outsourced') {
       return 'Sua estrega será feita por uma empresa parceira. Lembre-se que seu pedido já foi pago 💰';
     } else if (dispatchingState && dispatchingState !== 'idle') {
       const person = order.courier?.name ? `${order.courier?.name},` : 'A pessoa';
@@ -23,6 +21,7 @@ export const getOrderDescription = (order: Order) => {
         dispatchingState
       ).toLocaleLowerCase()}`;
     }
+    return 'Estamos procurando uma pessoa para fazer a sua entrega';
   }
   if (status === 'dispatching') {
     if (dispatchingStatus === 'outsourced') {

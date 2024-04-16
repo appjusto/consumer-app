@@ -81,7 +81,7 @@ export default function ProfileScreen() {
                   color="success900"
                   backgroundColor="success100"
                   borderColor="success100"
-                ></DefaultBadge>
+                />
                 <ChevronRight
                   style={{ marginLeft: paddings.sm }}
                   size={16}
