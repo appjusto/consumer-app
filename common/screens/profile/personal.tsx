@@ -13,7 +13,6 @@ import { handleErrorMessage } from '@/common/firebase/errors';
 import { getProfileState } from '@/common/profile/getProfileState';
 import { isProfileValid } from '@/common/profile/isProfileValid';
 import paddings from '@/common/styles/paddings';
-import screens from '@/common/styles/screens';
 import { ProfileChange, UserProfile } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { isEmpty, omit } from 'lodash';
@@ -121,9 +120,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   const title = 'Dados pessoais';
   if (!profile) return <Loading backgroundColor="neutral50" title={title} />;
   return (
-    <DefaultKeyboardAwareScrollView
-      contentContainerStyle={{ ...screens.default, padding: paddings.lg }}
-    >
+    <DefaultKeyboardAwareScrollView contentContainerStyle={{ padding: paddings.lg }}>
       <DefaultText size="lg">
         {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
       </DefaultText>

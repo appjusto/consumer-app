@@ -2,6 +2,7 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
 import { useObservePendingPayment } from '@/api/orders/payment/useObservePendingPayment';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -47,6 +48,7 @@ export default function OrderConfirmingPixScreen() {
   // tracking
   useTrackScreenView('Checkout: confirmando pix', { orderId });
   if (!order) return null;
+  const value = pendingPayment?.value ?? getOrderTotalCost(order);
   // UI
   return (
     <View style={{ ...screens.default }}>
@@ -103,7 +105,7 @@ export default function OrderConfirmingPixScreen() {
             Aguardando pagamento
           </DefaultText>
           <DefaultText size="md" color="black">
-            {formatCurrency(order.fare?.total ?? 0)}
+            {formatCurrency(value)}
           </DefaultText>
         </View>
       </View>

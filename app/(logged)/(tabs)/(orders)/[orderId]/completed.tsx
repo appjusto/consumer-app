@@ -50,6 +50,18 @@ export default function OrderCompletedScreen() {
   // tracking
   useTrackScreenView('Detalhe do Pedido', { orderId });
   // handlers
+  const editOrderHandler = () => {
+    if (!order) return;
+    api
+      .orders()
+      .updateOrder(order.id, { status: 'quote' })
+      .then(() => {
+        router.navigate({
+          pathname: '/(logged)/checkout/[orderId]/',
+          params: { orderId: order.id },
+        });
+      });
+  };
   const createOrderHandler = () => {
     if (!order) return;
     // console.log(business);
@@ -109,14 +121,21 @@ export default function OrderCompletedScreen() {
             <DefaultText size="md" style={{ marginTop: paddings.lg }}>
               Você pode tentar novamente com outra forma de pagamento.
             </DefaultText>
+            <DefaultButton
+              style={{ marginTop: paddings.lg }}
+              title="Alterar forma de pagamento"
+              disabled={!order}
+              onPress={editOrderHandler}
+            />
           </View>
-        ) : null}
-        <DefaultButton
-          style={{ marginTop: paddings.lg }}
-          title="Refazer pedido"
-          disabled={!order || !createEnabled}
-          onPress={createOrderHandler}
-        />
+        ) : (
+          <DefaultButton
+            style={{ marginTop: paddings.lg }}
+            title="Refazer pedido"
+            disabled={!order || !createEnabled}
+            onPress={createOrderHandler}
+          />
+        )}
       </DefaultView>
     </DefaultScrollView>
   );

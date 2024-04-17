@@ -18,7 +18,7 @@ export const useOrderFares = (
   const [loading, setLoading] = useState(false);
   // helpers
   const orderId = order?.id;
-  const distance = order?.route?.distance;
+  const distance = order?.fulfillment === 'delivery' ? order?.route?.distance : 0;
   const fulfillment = order?.fulfillment;
   const coupon = order?.coupon?.code;
   const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
@@ -26,7 +26,7 @@ export const useOrderFares = (
   console.log('useOrderFares', orderId, distance, defaultPaymentMethod, enabled);
   useEffect(() => {
     if (!orderId) return;
-    // if (!distance) return;
+    if (distance === undefined) return;
     if (defaultPaymentMethod === undefined) return;
     // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;

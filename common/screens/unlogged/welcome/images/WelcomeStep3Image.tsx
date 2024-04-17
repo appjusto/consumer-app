@@ -4,7 +4,7 @@ import { Image, ImageProps } from 'expo-image';
 interface Props extends ImageProps {}
 
 const IMAGE = require('./step_03.png');
-const SIZE = isLargeScreen() ? 360 : 220;
+const SIZE = isLargeScreen() ? 360 : 180;
 
 export const WelcomeStep3Image = ({ style, ...props }: Props) => {
   return <Image source={IMAGE} style={[{ width: SIZE, height: SIZE }, style]} />;

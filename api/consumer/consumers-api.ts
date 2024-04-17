@@ -11,6 +11,7 @@ import * as Crypto from 'expo-crypto';
 import { trim } from 'lodash';
 import AuthApi from '../auth/AuthApi';
 import IuguApi from '../externals/iugu/iugu-api';
+import Geohash from '../location/Geohash';
 import { CardInfo } from './cards/types';
 
 const extra = getManifestExtra();
@@ -65,6 +66,9 @@ export default class ConsumersApi {
     console.log('createPlace', ref.id, place);
     await ref.set({
       ...place,
+      geohash: place.location
+        ? Geohash.encode(place.location.latitude, place.location.longitude)
+        : null,
       accountId: this.auth.getUserId(),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
