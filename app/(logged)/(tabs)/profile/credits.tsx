@@ -1,5 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { totalApproved } from '@/api/ledger/useEntriesSummary';
+import { totalApproved } from '@/api/ledger/totalApproved';
 import { useObserveEntries } from '@/api/ledger/useObserveEntries';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
