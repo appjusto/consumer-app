@@ -1,12 +1,12 @@
 import { FullDate, formatTimestamp } from '@/common/formatters/timestamp';
-import { Order } from '@appjusto/types';
+import { PublicCourier } from '@appjusto/types';
 
-export const aboutCourier = (order: Order) => {
-  if (order.courier?.about) {
-    return order.courier.about;
+export const aboutCourier = (courier: PublicCourier) => {
+  if (courier?.about) {
+    return courier.about;
   }
-  if (order.courier?.joined) {
-    return `Na rede appjusto desde ${formatTimestamp(order.courier.joined, FullDate)}`;
+  if (courier?.createdAt) {
+    return `Na rede appjusto desde ${formatTimestamp(courier.createdAt, FullDate)}`;
   }
   return '';
 };

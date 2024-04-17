@@ -6,6 +6,7 @@ import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
+import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -114,6 +115,7 @@ export default function OrderCheckoutDeliveryScreen() {
             style={{ marginTop: paddings.lg }}
             paymentMethod={paymentMethod}
             card={selectedCard}
+            value={getOrderTotalCost(quote)}
           />
         </DefaultView>
       </DefaultScrollView>

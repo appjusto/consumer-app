@@ -56,7 +56,7 @@ export const ReviewP2POrderPlace = ({
           </Pressable>
         ) : null}
       </View>
-      {instructions && setInstructions ? (
+      {setInstructions ? (
         <View>
           <DefaultInput
             style={{ marginTop: paddings.md }}

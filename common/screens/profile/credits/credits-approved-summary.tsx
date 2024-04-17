@@ -36,7 +36,7 @@ export const CreditsApprovedSummary = ({ total, style, ...props }: Props) => {
         <LedgerEntryStatusBadge status="approved" />
       </View>
       <MessageBox style={{ marginTop: paddings.md }}>
-        Os créditos são liberados 30 dias após o pedido entregue.
+        Os créditos são liberados em até 30 dias após o pedido entregue.
       </MessageBox>
     </View>
   );

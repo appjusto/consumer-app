@@ -4,6 +4,7 @@ import { getCardType } from '@/api/consumer/cards/card-type/getCardType';
 import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { formatCurrency } from '@/common/formatters/currency';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Card, WithId } from '@appjusto/types';
@@ -15,6 +16,7 @@ interface Props extends ViewProps {
   card: WithId<Card>;
   variant?: 'default' | 'ongoing';
   checked?: boolean;
+  value?: number;
   onPress?: () => void;
   onSelectOptions?: () => void;
 }
@@ -23,6 +25,7 @@ export const PaymentCard = ({
   card,
   variant,
   checked,
+  value,
   style,
   onPress,
   onSelectOptions,
@@ -59,6 +62,11 @@ export const PaymentCard = ({
               }
               onPress={onSelectOptions}
             />
+          ) : null}
+          {value ? (
+            <DefaultText size="md" color="black">
+              {formatCurrency(value)}
+            </DefaultText>
           ) : null}
         </View>
       </RadioCardButton>

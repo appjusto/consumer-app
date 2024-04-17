@@ -199,7 +199,7 @@ export default class OrdersApi {
 
   async completeDelivery(orderId: string) {
     console.log('completeDelivery', orderId);
-    await placeOrder({
+    await completeDelivery({
       orderId,
       meta: { version: getAppVersion() },
     });

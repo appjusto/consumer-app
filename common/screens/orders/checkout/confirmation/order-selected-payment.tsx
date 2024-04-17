@@ -7,14 +7,15 @@ interface Props extends ViewProps {
   paymentMethod: PayableWith | null | undefined;
   card: WithId<Card> | null | undefined;
   variant?: 'default' | 'ongoing';
+  value?: number;
 }
 
-export const OrderSelectedPayment = ({ paymentMethod, card, variant, style, ...props }: Props) => {
+export const OrderSelectedPayment = ({ paymentMethod, card, style, ...props }: Props) => {
   // UI
   if (paymentMethod === 'pix') {
-    return <OrderPaymentPix style={style} variant={variant} {...props} />;
+    return <OrderPaymentPix style={style} {...props} />;
   } else if (card) {
-    return <PaymentCard style={style} card={card} variant={variant} {...props} />;
+    return <PaymentCard style={style} card={card} {...props} />;
   }
   return null;
 };

@@ -11,10 +11,11 @@ import { OrderTotalBreakdownFees } from './order-total-breakdown-fees';
 interface ItemProps extends ViewProps {
   title: string;
   value: number;
+  negative?: boolean;
   color?: ColorName;
 }
 
-const Item = ({ title, value, color = 'neutral800', style, ...props }: ItemProps) => (
+const Item = ({ title, value, color = 'neutral800', negative, style, ...props }: ItemProps) => (
   <View
     style={[
       { flexDirection: 'row', justifyContent: 'space-between', marginTop: paddings.xs },
@@ -23,7 +24,7 @@ const Item = ({ title, value, color = 'neutral800', style, ...props }: ItemProps
     {...props}
   >
     <DefaultText color={color}>{title}</DefaultText>
-    <DefaultText color={color}>{formatCurrency(value)}</DefaultText>
+    <DefaultText color={color}>{`${negative ? '- ' : ''}${formatCurrency(value)}`}</DefaultText>
   </View>
 );
 
@@ -61,8 +62,8 @@ export const OrderTotalBreakdown = ({ order, style, ...props }: Props) => {
         <Item title="Taxa de alta demanda" value={deliveryHighDemandFee} />
       ) : null}
       {fees ? <Item title={`Taxas${insuranceFee ? ' + Seguro Iza' : ''}`} value={fees} /> : null}
-      {credits ? <Item title="Créditos" value={credits} color="primary900" /> : null}
-      {discount ? <Item title="Cupom" value={discount} color="primary900" /> : null}
+      {credits ? <Item title="Créditos" value={credits} color="primary900" negative /> : null}
+      {discount ? <Item title="Cupom" value={discount} color="primary900" negative /> : null}
       {total ? <Item title="Total" value={total} color="black" /> : null}
       <OrderTotalBreakdownFees style={{ marginTop: paddings.lg }} order={order} />
     </View>

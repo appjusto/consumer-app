@@ -39,7 +39,8 @@ export const AdreessBar = ({ style, ...props }: Props) => {
         ) : (
           <Pressable onPress={() => router.navigate({ pathname: '/places/new' })}>
             <MessageBox variant="warning">
-              Usando sua localização aproximada. Clique para definir o endereço de entrega
+              Usando sua localização aproximada. Faça login ou clique para definir o endereço de
+              entrega
             </MessageBox>
           </Pressable>
         )}

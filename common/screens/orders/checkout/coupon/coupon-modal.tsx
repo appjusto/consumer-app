@@ -96,7 +96,7 @@ export const CouponModal = ({ order, visible, onCancel, ...props }: Props) => {
               <DefaultButton
                 style={{ marginVertical: paddings.lg }}
                 title="Aplicar cupom"
-                disabled={code.length < 7}
+                disabled={code.length < 5}
                 loading={loading}
                 onPress={updateCupomHandler}
               />

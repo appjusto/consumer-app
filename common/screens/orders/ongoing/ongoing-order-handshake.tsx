@@ -38,7 +38,7 @@ export const OngoingOrderHandshake = ({ order, style, ...props }: Props) => {
     >
       <View>
         <DefaultText size="sm" color="neutral700">
-          Código da entrega
+          Código de confirmação
         </DefaultText>
         <DefaultText style={{ paddingTop: paddings.sm }} size="lg" color="black">
           {confirmation.handshakeChallenge}
