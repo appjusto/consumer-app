@@ -134,8 +134,8 @@ export const SearchFiltersModal = ({
                     <RoundedToggleButton
                       style={{ marginTop: paddings.sm, marginRight: paddings.sm }}
                       title="20% de desconto"
-                      onPress={() => setFilters((current) => toggleDiscount(current, '15'))}
-                      toggled={discountAdded(filters, '15')}
+                      onPress={() => setFilters((current) => toggleDiscount(current, '20'))}
+                      toggled={discountAdded(filters, '20')}
                     />
                   </View>
                 </View>

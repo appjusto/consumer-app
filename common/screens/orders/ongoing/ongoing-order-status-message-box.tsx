@@ -63,7 +63,7 @@ export const OngoingOrderStatusMessageBox = ({ order, style, ...props }: Props) 
         <View>{icon()}</View>
         <View style={{ marginLeft: paddings.lg }}>
           <DefaultText style={{ marginBottom: paddings.xs }} size="md" color="black">
-            {`Pedido ${getOrderStatusAsText(type, status, dispatchingState).toLocaleLowerCase()}`}
+            {getOrderStatusAsText(type, status)}
           </DefaultText>
 
           <DefaultText

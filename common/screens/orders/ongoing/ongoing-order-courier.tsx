@@ -29,7 +29,7 @@ export const OngoingOrderCourier = ({ order, style, ...props }: Props) => {
   };
   // UI
   if (fulfillment !== 'delivery') return null;
-  if (status !== 'dispatching') return null;
+  if (status !== 'ready' && status !== 'dispatching') return null;
   if (courier?.id) {
     return (
       <CourierCard

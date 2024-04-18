@@ -10,8 +10,8 @@ interface Props extends ViewProps {
 
 export const OngoingOrderMapInfo = ({ order, style, ...props }: Props) => {
   // UI
-  const visible = order.status === 'dispatching';
-  // const visible = order.status === 'dispatching' || order.status === 'ready';
+  const visible =
+    Boolean(order.courier?.id) && (order.status === 'dispatching' || order.status === 'ready');
   return (
     <View
       style={[

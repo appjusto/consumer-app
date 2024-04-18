@@ -38,7 +38,7 @@ export const OrderStatusBadge = ({ type, status, style, ...props }: Props) => {
       ]}
       {...props}
     >
-      <DefaultText color={textColor()}>{getOrderStatusAsText(type, status, null)}</DefaultText>
+      <DefaultText color={textColor()}>{getOrderStatusAsText(type, status)}</DefaultText>
     </View>
   );
 };

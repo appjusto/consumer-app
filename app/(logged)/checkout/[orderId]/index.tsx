@@ -34,9 +34,8 @@ export default function OrderCheckoutScreen() {
   if (!order || isOrderEmpty(order)) return <EmptyCart />;
   const coupon = order.coupon;
   const couponLabel = (() => {
-    if (!coupon) return '';
-    if (coupon.type === 'delivery-free') return `Entrega grátis`;
-    if (coupon.discount) {
+    if (coupon?.type === 'delivery-free') return `Entrega grátis`;
+    if (coupon?.discount) {
       if (coupon.type === 'food-discount')
         return `${formatCurrency(coupon.discount)} de desconto nos produtos`;
       if (coupon.type === 'delivery-discount')

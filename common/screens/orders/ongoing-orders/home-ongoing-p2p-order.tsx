@@ -63,11 +63,7 @@ export const HomeOngoingP2POrder = ({ order, style, ...props }: Props) => {
             <CheckCircle2 color={colors.info500} size={16} />
             <View style={{ flexDirection: 'row' }}>
               <DefaultText style={{ marginLeft: paddings.xs }} color="info900">
-                {`Pedido ${getOrderStatusAsText(
-                  type,
-                  status,
-                  dispatchingState
-                ).toLocaleLowerCase()}`}
+                {getOrderStatusAsText(type, status)}
               </DefaultText>
             </View>
           </View>

@@ -17,7 +17,7 @@ interface Props extends ViewProps {
 
 export const OngoingOrderOutsourcedCourier = ({ order, style, ...props }: Props) => {
   // params
-  const { courier } = order;
+  const { courier, fare } = order;
   // context
   const api = useContextApi();
   const showToast = useShowToast();
@@ -43,6 +43,11 @@ export const OngoingOrderOutsourcedCourier = ({ order, style, ...props }: Props)
   };
   // UI
   if (!courier) return null;
+  if (order.status !== 'dispatching') return null;
+  const title =
+    fare?.courier?.payee === 'platform'
+      ? 'Entrega realizada por empresa parceira'
+      : 'Entrega realizada pelo restaurante';
   return (
     <View
       style={[
@@ -57,7 +62,7 @@ export const OngoingOrderOutsourcedCourier = ({ order, style, ...props }: Props)
       ]}
       {...props}
     >
-      <SimpleBadge variant="warning">Entrega realizada por empresa parceira</SimpleBadge>
+      <SimpleBadge variant="warning">{title}</SimpleBadge>
       {courier.name ? (
         <DefaultText style={{ marginTop: paddings.lg }} size="md" color="black">
           {courier.name}

@@ -24,6 +24,7 @@ export const OngoingOrderShareLink = ({ order, style, ...props }: Props) => {
     });
   };
   // UI
+  if (order.fulfillment !== 'delivery') return null;
   return (
     <View
       style={[

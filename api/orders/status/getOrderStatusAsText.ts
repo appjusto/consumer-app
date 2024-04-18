@@ -1,11 +1,6 @@
-import { DispatchingState, OrderStatus, OrderType } from '@appjusto/types';
-import { getDispatchingStateAsText } from '../dispatching-state/getDispatchingStateAsText';
+import { OrderStatus, OrderType } from '@appjusto/types';
 
-export const getOrderStatusAsText = (
-  type: OrderType,
-  status: OrderStatus,
-  dispatchingState: DispatchingState | null
-) => {
+export const getOrderStatusAsText = (type: OrderType, status: OrderStatus) => {
   if (status === 'quote') return 'Cotação';
   if (status === 'confirming') return 'Confirmando';
   if (status === 'declined') return 'Recusado';
@@ -19,10 +14,7 @@ export const getOrderStatusAsText = (
   if (status === 'preparing') return 'Em preparo';
   if (status === 'ready') return 'Pronto';
   if (status === 'delivered') return 'Entregue';
-  if (status === 'dispatching') {
-    if (dispatchingState) return getDispatchingStateAsText(type, dispatchingState);
-    return 'A caminho';
-  }
+  if (status === 'dispatching') return 'A caminho';
   if (status === 'canceled') return 'Cancelado';
   if (status === 'expired') return 'Expirado';
   return '';

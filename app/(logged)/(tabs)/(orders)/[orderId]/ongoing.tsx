@@ -34,10 +34,10 @@ export default function OngoingOrderScreen() {
       <OngoingOrderMapInfo order={order} />
       <View style={{ padding: paddings.lg, marginBottom: paddings.xl, borderWidth: 0 }}>
         <OngoingOrderCourier order={order} />
+        <OngoingOrderHandshake order={order} />
+        <OngoingOrderShareLink order={order} />
         <OngoingOrderPickupAddress order={order} />
         <OngoingOrderDeliveryAddress order={order} />
-        <OngoingOrderShareLink order={order} />
-        <OngoingOrderHandshake order={order} />
         <OngoingOrderFoodOverview order={order} />
       </View>
     </DefaultScrollView>
