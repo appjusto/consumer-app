@@ -1,7 +1,7 @@
 import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { Fare, Order, PublicBusiness, WithId } from '@appjusto/types';
 import { useGlobalSearchParams, useSegments } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContextPayments } from '../payment/context/payments-context';
 import { useOrderFares } from '../payment/useOrderFares';
 import { OrderOptions, useOrderOptions } from '../payment/useOrderOptions';
@@ -27,14 +27,14 @@ interface Value {
 
 export const OrderProvider = ({ children }: Props) => {
   // context
-  const { paymentMethod } = useContextPayments();
-  const segments = useSegments();
-  const confirming = segments.findLast(() => true)?.startsWith('confirming');
+  const { paymentMethod, setBusiness } = useContextPayments();
+  const confirming = useSegments()
+    .findLast(() => true)
+    ?.startsWith('confirming');
   // params
   const params = useGlobalSearchParams<{ orderId: string }>();
   const orderId = params.orderId;
   // state
-  // const [order, setOrder] = useState<WithId<Order> | null>();
   const orderWithId = useObserveOrder(orderId);
   const businessQuote = useObserveBusinessQuote();
   const businessId = orderWithId?.business?.id ?? businessQuote?.business?.id;
@@ -53,17 +53,10 @@ export const OrderProvider = ({ children }: Props) => {
     options.findersFee,
     faresEnabled
   );
-  // console.log('paymentMethod', paymentMethod);
-  // console.log('order-context', order?.id, orderWithId?.id, businessQuote?.id, packageQuote?.id);
   // side effects
-  // useEffect(() => {
-  //   if (orderWithId) setOrder(orderWithId);
-  //   else if (businessQuote) setOrder(businessQuote);
-  //   else if (packageQuote) setOrder(packageQuote);
-  //   else setOrder(null);
-  // }, [order, businessQuote, orderWithId, packageQuote]);
-  // logs
-  // console.log('OrderProvider', pathname, params, useSegments());
+  useEffect(() => {
+    if (setBusiness) setBusiness(business);
+  }, [business, setBusiness]);
   // result
   return (
     <OrderContext.Provider

@@ -1,8 +1,7 @@
-import { useContextBusiness } from '@/api/business/context/business-context';
 import { useCards } from '@/api/consumer/cards/useCards';
 import { useContextPlatformParams } from '@/api/platform/context/platform-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
-import { Card, PayableWith, VRCard, WithId } from '@appjusto/types';
+import { Card, PayableWith, PublicBusiness, VRCard, WithId } from '@appjusto/types';
 import React, { useEffect, useState } from 'react';
 
 const PaymentsContext = React.createContext<Value>({});
@@ -23,6 +22,7 @@ interface Value {
   setPaymentMethod?: (value: PayableWith) => void;
   paymentMethodId?: string | null;
   setPaymentMethodId?: (value: string) => void;
+  setBusiness?: (value: PublicBusiness | undefined | null) => void;
 }
 
 export const PaymentsProvider = ({ children }: Props) => {
@@ -32,9 +32,9 @@ export const PaymentsProvider = ({ children }: Props) => {
   const acceptedByPlatform = platformParams?.acceptedPaymentMethods;
   const defaultPaymentMethod = profile ? profile.defaultPaymentMethod ?? null : undefined;
   const defaultPaymentMethodId = profile?.defaultPaymentMethodId;
-  const business = useContextBusiness();
   // states
   const cards = useCards();
+  const [business, setBusiness] = useState<PublicBusiness | null>();
   const [acceptedOnOrder, setAcceptedOnOrder] = useState<PayableWith[]>();
   const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
@@ -110,6 +110,7 @@ export const PaymentsProvider = ({ children }: Props) => {
         setPaymentMethod,
         paymentMethodId,
         setPaymentMethodId,
+        setBusiness,
       }}
     >
       {children}
