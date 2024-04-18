@@ -11,21 +11,17 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import { router } from 'expo-router';
 import { View, ViewProps } from 'react-native';
 
-interface Props extends ViewProps {}
+interface Props extends ViewProps {
+  businessLogistics: boolean;
+}
 
-export const OrderFleetSelector = ({ style, ...props }: Props) => {
+export const OrderFleetSelector = ({ businessLogistics, style, ...props }: Props) => {
   // context
   const showToast = useShowToast();
   const api = useContextApi();
   const order = useContextOrder();
   // const options = useContextOrderOptions();
   const { fares } = useContextOrderFares();
-  // side effects
-  // if
-  // useEffect(() => {
-  //   if (!options) return;
-  //   if (!options.fleetsIds) options.setFleetsIds([]);
-  // }, [options]);
   // handlers
   const updateFare = (fare: Fare) => {
     if (!order) return;
@@ -48,11 +44,13 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
   // UI
   if (!order) return null;
   if (!fares) return null;
+  const title = businessLogistics
+    ? 'Sua entrega será feita pelo próprio restaurante'
+    : 'Frotas é a forma que o appjusto criou para permitir que entregadores/as possam definir o valor e as condições de prestação de serviço.';
   return (
     <View style={[{}, style]} {...props}>
       <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
-        Frotas é a forma que o appjusto criou para permitir que entregadores/as possam definir o
-        valor e as condições de prestação de serviço.
+        {title}
       </DefaultText>
       {fares.map((fare) => {
         if (!fare.fleet?.id) return null;
@@ -82,19 +80,21 @@ export const OrderFleetSelector = ({ style, ...props }: Props) => {
                   </DefaultText>
                 </View>
                 <DefaultText size="md" color="black">
-                  {formatCurrency(value)}
+                  {value ? formatCurrency(value) : 'Grátis'}
                 </DefaultText>
               </View>
             </RadioCardButton>
           </View>
         );
       })}
-      <DefaultButton
-        style={{ marginTop: paddings.lg }}
-        title="Escolher outra frota"
-        variant="outline"
-        onPress={selectFleet}
-      />
+      {!businessLogistics ? (
+        <DefaultButton
+          style={{ marginTop: paddings.lg }}
+          title="Escolher outra frota"
+          variant="outline"
+          onPress={selectFleet}
+        />
+      ) : null}
     </View>
   );
 };
