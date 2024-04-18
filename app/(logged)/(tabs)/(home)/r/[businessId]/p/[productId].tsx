@@ -12,7 +12,7 @@ import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { useAddOrderItem } from '@/api/orders/items/useAddOrderItem';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
-import { useContextProfile } from '@/common/auth/AuthContext';
+import { useContextIsUserAnonymous, useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
@@ -42,6 +42,7 @@ export default function ProductDetailScreen() {
   const itemId = params.itemId;
   // context
   const api = useContextApi();
+  const isAnonymous = useContextIsUserAnonymous();
   const profile = useContextProfile();
   const currentPlace = useContextCurrentPlace();
   const quote = useContextBusinessQuote();
@@ -130,18 +131,20 @@ export default function ProductDetailScreen() {
             toggleComplement(group, complement, added)
           }
         />
-        <DefaultInput
-          inputStyle={{ minHeight: 60 }}
-          title="Informações adicionais"
-          placeholder="Tem alguma observação? Por exemplo: sem molho, sem cebola, ponto da carne, etc"
-          style={{ margin: paddings.lg }}
-          multiline
-          textAlignVertical="top"
-          value={notes}
-          onChangeText={setNotes}
-          blurOnSubmit
-          returnKeyType="done"
-        />
+        {!isAnonymous ? (
+          <DefaultInput
+            inputStyle={{ minHeight: 60 }}
+            title="Informações adicionais"
+            placeholder="Tem alguma observação? Por exemplo: sem molho, sem cebola, ponto da carne, etc"
+            style={{ margin: paddings.lg }}
+            multiline
+            textAlignVertical="top"
+            value={notes}
+            onChangeText={setNotes}
+            blurOnSubmit
+            returnKeyType="done"
+          />
+        ) : null}
         {issues.length ? (
           <MessageBox variant="warning" style={{ margin: paddings.lg }}>
             {issues[0].description}
