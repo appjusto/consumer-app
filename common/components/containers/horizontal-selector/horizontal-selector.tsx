@@ -47,8 +47,8 @@ export const HorizontalSelector = ({
               positions.current?.set(index, ev.nativeEvent.layout.x);
             }}
           >
-            <View style={{ borderWidth: 0, marginLeft: index > 0 ? paddings.xs : 0 }}>
-              <View style={{ padding: paddings.sm, borderWidth: 0 }}>
+            <View style={{ borderWidth: 0, marginLeft: index > 0 ? paddings.md : 0 }}>
+              <View style={{ padding: paddings.sm, paddingLeft: 0, borderWidth: 0 }}>
                 <DefaultText
                   style={{ textAlign: 'center' }}
                   size={size === 'default' ? 'md' : 'sm'}

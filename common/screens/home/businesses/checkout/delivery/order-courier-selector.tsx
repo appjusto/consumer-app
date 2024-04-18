@@ -1,4 +1,5 @@
 import { useContextOrderOptions } from '@/api/orders/context/order-context';
+import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -27,7 +28,8 @@ export const OrderCourierSelector = ({ style, ...props }: Props) => {
   return (
     <View style={[{}, style]} {...props}>
       <DefaultText style={{ marginTop: paddings.sm }} color="neutral700">
-        Você também pode enviar uma corrida diretamente para um entregador ou entregadora.
+        Você também pode enviar uma corrida diretamente para um entregador ou entregadora. Verifique
+        a disponibilidade da pessoa antes de realizar o pedido.
       </DefaultText>
       <SafeAreaView>
         <DefaultText style={{ marginTop: paddings.lg }} color="black">
@@ -48,6 +50,14 @@ export const OrderCourierSelector = ({ style, ...props }: Props) => {
         <MessageBox style={{ marginTop: paddings.lg }} variant="warning">
           Entregador/a não encontrado/a. Verifque o código e tente novmente.
         </MessageBox>
+      ) : null}
+      {courier && setCourierCode ? (
+        <DefaultButton
+          style={{ marginTop: paddings.sm }}
+          title="Remover"
+          size="sm"
+          onPress={() => setCourierCode('')}
+        />
       ) : null}
     </View>
   );
