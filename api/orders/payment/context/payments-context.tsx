@@ -89,12 +89,13 @@ export const PaymentsProvider = ({ children }: Props) => {
       })
     );
   }, [acceptedOnOrder, cards]);
+  // logs
+  // console.log('acceptedPaymentMethods', business?.acceptedPaymentMethods);
   // result
   const acceptsCards =
     acceptedOnOrder?.includes('credit_card') ||
     acceptedOnOrder?.includes('vr-alimentação') ||
     acceptedOnOrder?.includes('vr-refeição');
-  // result
   return (
     <PaymentsContext.Provider
       value={{

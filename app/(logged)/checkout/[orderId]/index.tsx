@@ -32,7 +32,18 @@ export default function OrderCheckoutScreen() {
   console.log('checkout/[orderId]/index', typeof order, order?.id);
   // UI
   if (!order || isOrderEmpty(order)) return <EmptyCart />;
-  const coupon = order.coupon?.discount ?? 0;
+  const coupon = order.coupon;
+  const couponLabel = (() => {
+    if (!coupon) return '';
+    if (coupon.type === 'delivery-free') return `Entrega grátis`;
+    if (coupon.discount) {
+      if (coupon.type === 'food-discount')
+        return `${formatCurrency(coupon.discount)} de desconto nos produtos`;
+      if (coupon.type === 'delivery-discount')
+        return `${formatCurrency(coupon.discount)} de desconto na entrega`;
+    }
+    return 'Adicione um cupom ao pedido';
+  })();
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>
@@ -84,11 +95,7 @@ export default function OrderCheckoutScreen() {
                 <CouponIcon />
                 <View style={{ marginLeft: paddings.lg }}>
                   <DefaultText size="md">Cupom</DefaultText>
-                  <DefaultText size="sm">
-                    {coupon
-                      ? `${formatCurrency(coupon)} de desconto`
-                      : 'Adicione um cupom ao pedido'}
-                  </DefaultText>
+                  <DefaultText size="sm">{couponLabel}</DefaultText>
                 </View>
               </View>
               <View>
