@@ -28,22 +28,26 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   // params
   const params = useGlobalSearchParams<Params>();
   const { description, main, secondary, googlePlaceId = '', location } = params;
+  console.log(params);
   // context
   const api = useContextApi();
   const isAnonymous = useContextIsUserAnonymous();
   const setTemporaryPlace = useContextSetTemporaryPlace();
   // state
-  const latlng = location.split(',').map((v) => parseFloat(v));
-  const place: Partial<Place> = {
-    address: { description, main, secondary, googlePlaceId },
-    location: { latitude: latlng[0], longitude: latlng[1] },
-  };
+  const latlng = location ? location.split(',').map((v) => parseFloat(v)) : null;
+  const place = latlng
+    ? ({
+        address: { description, main, secondary, googlePlaceId },
+        location: { latitude: latlng[0], longitude: latlng[1] },
+      } as Partial<Place>)
+    : null;
   const [loading, setLoading] = useState(false);
   // tracking
   useTrackScreenView('Novo endereço: complemento');
   console.log('complement', params);
   // handlers
   const saveHandler = (additionalInfo: string, instructions: string) => {
+    if (!place) return;
     const updatedPlace: Partial<Place> = {
       ...place,
       additionalInfo: isEmpty(additionalInfo) ? null : additionalInfo,
