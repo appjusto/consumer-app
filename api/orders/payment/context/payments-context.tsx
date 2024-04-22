@@ -40,8 +40,12 @@ export const PaymentsProvider = ({ children }: Props) => {
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
   const selectedCard =
-    acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId) ??
-    acceptedCardsOnOrder?.find(() => true);
+    paymentMethod === 'credit_card' ||
+    paymentMethod === 'vr-alimentação' ||
+    paymentMethod === 'vr-refeição'
+      ? acceptedCardsOnOrder?.find((card) => card.id === paymentMethodId) ??
+        acceptedCardsOnOrder?.find(() => true)
+      : undefined;
   // side effects
   // set default payment
   useEffect(() => {
@@ -59,20 +63,19 @@ export const PaymentsProvider = ({ children }: Props) => {
   }, [defaultPaymentMethodId, paymentMethodId]);
   // select payments accepted on order according with current context
   useEffect(() => {
-    if (profile?.tags?.includes('unsafe')) {
-      setAcceptedOnOrder(['pix']);
-      return;
-    }
     if (!acceptedByPlatform) return;
+    let accepted = acceptedByPlatform;
     if (!business) {
-      setAcceptedOnOrder(
-        acceptedByPlatform.filter((value) => value !== 'vr-alimentação' && value !== 'vr-refeição')
-      );
+      accepted = accepted.filter((value) => value !== 'vr-alimentação' && value !== 'vr-refeição');
     } else {
-      setAcceptedOnOrder(
-        acceptedByPlatform.filter((value) => business?.acceptedPaymentMethods?.includes(value))
+      accepted = accepted.filter((value) => business.acceptedPaymentMethods?.includes(value));
+    }
+    if (profile?.tags?.includes('unsafe')) {
+      accepted = accepted.filter(
+        (value) => value !== 'credit_card' && value !== 'vr-alimentação' && value !== 'vr-refeição'
       );
     }
+    setAcceptedOnOrder(accepted);
   }, [profile, acceptedByPlatform, business]);
   // set accepted cards on order according with current context
   useEffect(() => {
@@ -91,6 +94,7 @@ export const PaymentsProvider = ({ children }: Props) => {
   }, [acceptedOnOrder, cards]);
   // logs
   // console.log('acceptedPaymentMethods', business?.acceptedPaymentMethods);
+  // console.log('paymentMethod', paymentMethod);
   // result
   const acceptsCards =
     acceptedOnOrder?.includes('credit_card') ||

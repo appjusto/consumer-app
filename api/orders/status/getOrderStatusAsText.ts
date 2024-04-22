@@ -5,7 +5,7 @@ export const getOrderStatusAsText = (type: OrderType, status: OrderStatus) => {
   if (status === 'confirming') return 'Confirmando';
   if (status === 'declined') return 'Recusado';
   if (status === 'rejected') return 'Rejeitado';
-  if (status === 'charged') return 'Pago';
+  if (status === 'charged') return 'Confirmando';
   if (status === 'confirmed') {
     if (type === 'food') return 'Aguardando restaurante';
     return 'Aguardando entregador/a';

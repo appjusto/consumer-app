@@ -114,6 +114,7 @@ export default function OrderCheckoutOfflinePaymentScreen() {
               pattern="currency"
               value={change}
               onChangeText={setChange}
+              onFocus={() => setPaymentMethod('cash')}
             />
           </PaymentMethod>
         ) : null}

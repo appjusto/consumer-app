@@ -11,11 +11,13 @@ interface Props extends ViewProps {
 }
 
 export const OngoingOrderHandshake = ({ order, style, ...props }: Props) => {
-  const { dispatchingStatus, fulfillment } = order;
+  const { dispatchingStatus, fulfillment, fare } = order;
   const delivery = fulfillment === 'delivery';
+  const deliveredByBusiness = fare?.courier?.payee === 'business';
   const confirmation = useObserveOrderConfirmation(order?.id);
   // UI
   if (!delivery) return null;
+  if (deliveredByBusiness) return null;
   if (dispatchingStatus === 'outsourced') return null;
   if (!confirmation) return null;
   return (

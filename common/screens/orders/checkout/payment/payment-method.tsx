@@ -47,7 +47,7 @@ export const PaymentMethod = ({
             </DefaultText>
           ) : null}
         </View>
-        {checked ? children : null}
+        {children}
       </RadioCardButton>
     </View>
   );

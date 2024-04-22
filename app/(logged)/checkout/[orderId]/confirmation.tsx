@@ -117,6 +117,14 @@ export default function OrderCheckoutDeliveryScreen() {
             card={selectedCard}
             value={getOrderTotalCost(quote)}
           />
+          {placeOptions?.additionalInfo ? (
+            <View style={{ marginTop: paddings.lg }}>
+              <DefaultText size="lg">Observações</DefaultText>
+              <DefaultText style={{ marginTop: paddings.lg }}>
+                {placeOptions.additionalInfo}
+              </DefaultText>
+            </View>
+          ) : null}
         </DefaultView>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />

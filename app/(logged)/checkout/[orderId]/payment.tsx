@@ -32,14 +32,6 @@ export default function OrderCheckoutDeliveryScreen() {
   });
   // side effects
   useBackWhenOrderExpires();
-  // handlers
-  const completeProfileHandler = () => {
-    if (!quote) return;
-    router.navigate({
-      pathname: '/(logged)/checkout/[orderId]/profile',
-      params: { orderId: quote.id },
-    });
-  };
   // logs
   console.log(
     'r/[businessId]/checkout/payment',

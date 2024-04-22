@@ -25,7 +25,13 @@ export const usePlaceOrderOptions = () => {
         payableWith: 'pix',
         useCredits: true,
       });
-    } else if (selectedCard?.processor === 'iugu') {
+    } else if (
+      paymentMethod === 'business-credit-card' ||
+      paymentMethod === 'business-debit-card' ||
+      paymentMethod === 'cash'
+    ) {
+      setPayment({ payableWith: paymentMethod });
+    } else if (paymentMethod === 'credit_card' && selectedCard?.processor === 'iugu') {
       setPayment({
         payableWith: 'credit_card',
         useCredits: true,
@@ -39,6 +45,7 @@ export const usePlaceOrderOptions = () => {
       });
     }
   }, [paymentMethod, selectedCard]);
+  // console.log('payment', payment);
   useEffect(() => {
     if (!quote) return;
     if (!payment) return;

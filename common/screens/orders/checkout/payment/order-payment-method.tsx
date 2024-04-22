@@ -35,7 +35,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
       params: { orderId },
     });
   // logs
-  // console.log(acceptedOnOrder);
+  // console.log('acceptedOnOrder', acceptedOnOrder);
   // UI
   if (isAnonymous || !setPaymentMethod || !setPaymentMethodId) return null;
   const acceptsPix = acceptedOnOrder?.includes('pix');
