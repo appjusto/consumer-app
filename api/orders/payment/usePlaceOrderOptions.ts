@@ -1,5 +1,7 @@
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
+import { formatCurrency } from '@/common/formatters/currency';
 import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
+import { toNumber } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useContextOrder, useContextOrderOptions } from '../context/order-context';
 import { PlaceOrderOptions } from '../types';
@@ -41,12 +43,16 @@ export const usePlaceOrderOptions = () => {
     if (!quote) return;
     if (!payment) return;
     if (!options) return;
+    let additionalInfo = options.change
+      ? `Troco para ${formatCurrency(toNumber(options.change))}. `
+      : '';
+    if (options.additionalInfo) additionalInfo += options.additionalInfo;
     setOptions({
       orderId: quote.id,
       payment,
       fleetId: quote.fare?.fleet?.id,
       courierId: options.courier?.id,
-      additionalInfo: options.additionalInfo,
+      additionalInfo,
       invoiceWithCPF: options.invoiceWithCPF,
       wantToShareData: options.wantToShareData,
       findersFee: options.findersFee,

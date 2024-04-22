@@ -21,6 +21,7 @@ export const PaymentMethod = ({
   value,
   style,
   onPress,
+  children,
   ...props
 }: PaymentMethodProps) => {
   // UI
@@ -46,6 +47,7 @@ export const PaymentMethod = ({
             </DefaultText>
           ) : null}
         </View>
+        {checked ? children : null}
       </RadioCardButton>
     </View>
   );

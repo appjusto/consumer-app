@@ -49,7 +49,7 @@ export default {
     formatter: dateFormatter,
   },
   currency: {
-    mask: 'R$ 0000,00',
+    mask: 'R$ 000,00',
     parser: numbersOnlyParser,
     formatter: formatCurrency,
   },
