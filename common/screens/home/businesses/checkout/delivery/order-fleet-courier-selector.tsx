@@ -25,6 +25,7 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
   // UI
   if (order?.fulfillment !== 'delivery') return null;
   const businessLogistics = order.type === 'food' && !business?.logistics;
+  // console.log('fares', fares);
   return (
     <View style={[{}, style]} {...props}>
       {!businessLogistics ? (

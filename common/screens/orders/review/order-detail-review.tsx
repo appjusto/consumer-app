@@ -36,7 +36,7 @@ export const OrderDetailReview = ({ order, style, ...props }: Props) => {
     >
       <View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <DefaultText size="md">Avaliação da corrida</DefaultText>
+          <DefaultText size="md">Avaliação da entrega</DefaultText>
           <View
             style={{
               backgroundColor: review ? colors.success100 : colors.warning100,

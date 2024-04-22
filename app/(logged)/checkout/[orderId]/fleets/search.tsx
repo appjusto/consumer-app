@@ -33,8 +33,10 @@ export default function FleetsSearch() {
       <Stack.Screen options={{ title }} />
       <DefaultText size="lg">Frotas disponíveis</DefaultText>
       <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
-        Você pode escolhar a frota que deseja fazer parte. Frotas com mais participantes tem mais
-        chances de corridas melhores.
+        Você pode escolher a frota que vai fazer a sua entrega.{' '}
+        <DefaultText style={{ marginTop: paddings.lg }} color="neutral700" bold>
+          O número de participantes online indica quantas pessoas da frota estão disponíveis agora.
+        </DefaultText>
       </DefaultText>
       <DefaultInput
         style={{ marginTop: paddings.lg }}

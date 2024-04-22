@@ -23,7 +23,7 @@ export const useOrderFares = (
   const coupon = order?.coupon?.code;
   const numberOfItems = (order?.items ?? []).reduce((r, i) => r + i.quantity, 0);
   // side effects
-  console.log('useOrderFares', orderId, distance, defaultPaymentMethod, enabled);
+  // console.log('useOrderFares', orderId, distance, defaultPaymentMethod, enabled);
   useEffect(() => {
     if (!orderId) return;
     if (distance === undefined) return;
@@ -31,14 +31,14 @@ export const useOrderFares = (
     // if (fulfillment === 'delivery' && !fleetsIds) return;
     if (!enabled) return;
     // setFares(undefined);
-    console.log(
-      'useOrderFares -> update',
-      orderId,
-      distance,
-      fulfillment,
-      defaultPaymentMethod,
-      fleetsIds
-    );
+    // console.log(
+    //   'useOrderFares -> update',
+    //   orderId,
+    //   distance,
+    //   fulfillment,
+    //   defaultPaymentMethod,
+    //   fleetsIds
+    // );
     setLoading(true);
     api
       .orders()

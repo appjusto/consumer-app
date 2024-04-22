@@ -114,8 +114,6 @@ export default function OrderCompletedScreen() {
             {refundText}
           </MessageBox>
         ) : null}
-        <OngoingOrderFoodOverview style={{ marginTop: paddings.lg }} order={order} />
-        <OrderDetailReview style={{ marginTop: paddings.lg }} order={order} />
         {declined ? (
           <View>
             <DefaultText size="md" style={{ marginTop: paddings.lg }}>
@@ -132,10 +130,13 @@ export default function OrderCompletedScreen() {
           <DefaultButton
             style={{ marginTop: paddings.lg }}
             title="Refazer pedido"
+            variant="outline"
             disabled={!order || !createEnabled}
             onPress={createOrderHandler}
           />
         )}
+        <OngoingOrderFoodOverview style={{ marginTop: paddings.lg }} order={order} />
+        <OrderDetailReview style={{ marginTop: paddings.lg }} order={order} />
       </DefaultView>
     </DefaultScrollView>
   );

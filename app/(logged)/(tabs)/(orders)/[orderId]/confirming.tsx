@@ -12,12 +12,13 @@ import { Stack, router } from 'expo-router';
 import { AlertOctagon, MessageSquareText, Phone } from 'lucide-react-native';
 import { Dimensions, Linking, View } from 'react-native';
 
+import { isLargeScreen } from '@/common/version/device';
 import LottieView from 'lottie-react-native';
 
 // const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
 const ConfirmingJSON = require('../../../../../assets/images/order/confirming.lottie.json');
 
-const SIZE = Dimensions.get('screen').width - 100;
+const SIZE = Dimensions.get('screen').width - (isLargeScreen() ? 100 : 200);
 
 export default function OrderConfirmingScreen() {
   // context

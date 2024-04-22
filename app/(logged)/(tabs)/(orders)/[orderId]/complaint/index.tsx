@@ -65,7 +65,10 @@ export default function ComplaintScreen() {
           createdAt: serverTimestamp(),
         });
         trackEvent('Realizou denúncia');
-        router.replace('/complaint/feedback');
+        router.replace({
+          pathname: '/(logged)/(tabs)/(orders)/[orderId]/complaint/feedback',
+          params: { orderId },
+        });
       } catch (error) {
         console.log(error);
         setLoading(false);

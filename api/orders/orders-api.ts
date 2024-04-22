@@ -155,6 +155,7 @@ export default class OrdersApi {
     console.log('getOrderQuotes', {
       orderId,
       paymentMethod,
+      fleetsIds,
     });
     try {
       const response = await getOrderQuotes({

@@ -82,7 +82,11 @@ export default function OrderDeliveredScreen() {
     }
   };
   const supportHandler = () => () => openWhatsAppSupportURL('Pedido entregue');
-  const complaintHandler = () => router.replace('/complaint/');
+  const complaintHandler = () =>
+    router.navigate({
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/complaint',
+      params: { orderId },
+    });
   // UI
   if (!order) return <Loading title="Pedido entregue!" />;
   return (
@@ -124,7 +128,7 @@ export default function OrderDeliveredScreen() {
           }}
         >
           <View style={{ marginTop: paddings.lg }}>
-            <DefaultText size="lg">Teve algum problema com a corrida?</DefaultText>
+            <DefaultText size="lg">Teve algum problema com o pedido?</DefaultText>
             <DefaultText style={{ marginTop: paddings.xs }}>
               Fale com um de nossos atendentes ou realize uma denúncia
             </DefaultText>
