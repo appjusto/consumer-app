@@ -77,7 +77,7 @@ export const NewPlace = ({ basePathname }: Props) => {
   // tracking
   useTrackScreenView('Novo endereço');
   // logs
-  console.log('/places/new');
+  // console.log('/places/new');
   // UI
   return (
     <DefaultScrollView style={{ ...screens.default }}>

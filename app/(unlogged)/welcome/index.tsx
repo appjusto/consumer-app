@@ -5,7 +5,7 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { BulletsSteps } from '@/common/screens/unlogged/welcome/BulletsSteps';
 import { WelcomeStep1Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep1Image';
 import { WelcomeStep2Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep2Image';
-import { WelcomeStep4Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep4Image';
+import { WelcomeStep3Image } from '@/common/screens/unlogged/welcome/images/WelcomeStep3Image';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -59,7 +59,7 @@ export default function Welcome() {
           key="1"
         />
         <WelcomeStep
-          icon={<WelcomeStep4Image />}
+          icon={<WelcomeStep3Image />}
           header={['A melhor plataforma para quem entrega']}
           text={[
             'No appjusto o valor mínimo por corrida é R$ 10 e é liberado em no máximo 1 dia após a entrega.',

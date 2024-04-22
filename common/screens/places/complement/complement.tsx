@@ -44,6 +44,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   const [loading, setLoading] = useState(false);
   // tracking
   useTrackScreenView('Novo endereço: complemento');
+  console.log('location', location);
   console.log('complement', params);
   // handlers
   const saveHandler = (additionalInfo: string, instructions: string) => {
@@ -55,7 +56,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
     };
     if (isAnonymous) {
       setTemporaryPlace(updatedPlace);
-      router.replace('/');
+      router.replace('/(logged)/(tabs)/(home)/');
     } else {
       setLoading(true);
       api
