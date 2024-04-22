@@ -30,7 +30,7 @@ export const SearchGroupedProductsListItem = ({
   const appjustoOnly = business.tags?.includes('appjusto-only');
   // UI
   return (
-    <View style={{ marginBottom: paddings.xl }}>
+    <View style={{ marginBottom: paddings.xl }} {...props}>
       <Pressable
         onPress={() =>
           router.navigate({
@@ -87,7 +87,7 @@ interface PProps extends ViewProps {
 }
 
 const ProductItem = ({ product, ...props }: PProps) => {
-  // console.log('ProductItem', product);
+  // console.log('ProductItem', product.objectID);
   const productId = product.objectID;
   const businessId = product.business.id;
   const url = useProductImageURI(businessId, product);

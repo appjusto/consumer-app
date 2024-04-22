@@ -1,17 +1,11 @@
-import { SearchOrder } from '@/api/externals/algolia/types';
+import { SearchKind, SearchOrder } from '@/api/externals/algolia/types';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Modal, ModalProps, Pressable, View } from 'react-native';
 
-interface Props extends ModalProps {
-  order: SearchOrder;
-  onUpdateOrder: (filters: SearchOrder) => void;
-  onDismiss: () => void;
-}
-
-const items = [
+const BusinessSearchOrdering = [
   {
     order: 'distance' as SearchOrder,
     title: 'Distância',
@@ -23,9 +17,32 @@ const items = [
   // { order: 'popularity', title: 'Popularidade' },
 ];
 
-export const SearchOrderModal = ({ order, visible, onUpdateOrder, onDismiss, ...props }: Props) => {
+const ProductSearchOrdering = [
+  {
+    order: 'distance' as SearchOrder,
+    title: 'Distância',
+  },
+  { order: 'price' as SearchOrder, title: 'Preço' },
+  { order: 'popularity' as SearchOrder, title: 'Popularidade' },
+];
+
+interface Props extends ModalProps {
+  order: SearchOrder;
+  kind: SearchKind;
+  onUpdateOrder: (filters: SearchOrder) => void;
+  onDismiss: () => void;
+}
+
+export const SearchOrderModal = ({
+  order,
+  kind,
+  visible,
+  onUpdateOrder,
+  onDismiss,
+  ...props
+}: Props) => {
   // state
-  // handlers
+  const items = kind === 'restaurant' ? BusinessSearchOrdering : ProductSearchOrdering;
   // UI
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>

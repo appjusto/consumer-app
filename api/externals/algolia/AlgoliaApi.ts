@@ -14,17 +14,10 @@ interface SearchOptions {
 }
 
 export default class AlgoliaApi {
-  async search<T>({
-    kind,
-    order,
-    filterArray,
-    aroundLatLng,
-    query = '',
-    page,
-    hitsPerPage = 50,
-  }: SearchOptions) {
+  async search<T>({ kind, order, filterArray, aroundLatLng, query = '', page }: SearchOptions) {
     const index = getSearchIndex(kind, order);
     if (!index) throw new Error('Invalid index');
+    const hitsPerPage = kind === 'restaurant' ? 50 : kind === 'product' ? 20 : 10;
     const options =
       kind === 'fleet'
         ? { page, filters: 'type:public', hitsPerPage }

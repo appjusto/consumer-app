@@ -76,6 +76,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
       />
       <SearchOrderModal
         order={order}
+        kind={kind}
         visible={orderModalShown}
         onDismiss={() => setOrderModalShown(false)}
         onUpdateOrder={(value) => {
@@ -117,7 +118,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
               key={item.objectID}
             />
           )}
-          estimatedItemSize={78}
+          estimatedItemSize={60}
           onEndReached={() => {
             if (!isAnonymous) fetchNextPage();
           }}
@@ -126,7 +127,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
       {kind === 'product' ? (
         <FlashList
           {...props}
-          keyExtractor={(item) => item[0].objectID}
+          keyExtractor={(item) => item[0].business.id}
           data={products}
           onRefresh={() => {
             setRefreshing(true);
@@ -150,13 +151,17 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           renderItem={({ item, index }) => (
             <SearchGroupedProductsListItem
               products={item}
-              recyclingKey={item[0].objectID}
+              recyclingKey={item[0].business.id}
               // breaks recycling but it's okay with this list
-              key={item[0].objectID}
+              key={item[0].business.id}
             />
           )}
-          estimatedItemSize={78}
-          onEndReached={fetchNextPage}
+          estimatedItemSize={150}
+          onEndReached={() => {
+            console.log('onEndReached');
+            // if (!isAnonymous) fetchNextPage();
+            // fetchNextPage();
+          }}
         />
       ) : null}
     </View>
