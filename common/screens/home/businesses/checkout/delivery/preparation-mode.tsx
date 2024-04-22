@@ -64,7 +64,7 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
   //   getBusinessAvailability(business, getServerTime())
   // );
   return (
-    <View style={[{}, style]} {...props}>
+    <View style={[{ marginBottom: paddings.xl }, style]} {...props}>
       <DefaultText size="lg">Horário da entrega</DefaultText>
       {realtime ? (
         <View style={{ marginTop: paddings.lg }}>

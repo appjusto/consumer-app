@@ -22,9 +22,9 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
   const place = order.fulfillment === 'delivery' ? order.destination : order.origin;
   const address = place?.address;
   return (
-    <View style={[{}, style]} {...props}>
+    <View style={[{ marginBottom: paddings.xl }, style]} {...props}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <View>
+        <View style={{}}>
           <DefaultText color="neutral700">
             {order.fulfillment === 'delivery' ? 'Entregar em' : 'Retirar em'}
           </DefaultText>
@@ -38,9 +38,11 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
             place?.additionalInfo ? ` \u00B7 ${place.additionalInfo}` : ''
           }`}</DefaultText>
         </View>
-        <LinkButton variant="ghost" onPress={changeHandler}>
-          Trocar
-        </LinkButton>
+        {order.fulfillment === 'delivery' ? (
+          <LinkButton variant="ghost" onPress={changeHandler}>
+            Trocar
+          </LinkButton>
+        ) : null}
       </View>
     </View>
   );

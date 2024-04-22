@@ -55,14 +55,16 @@ export default function OrderCheckoutDeliveryScreen() {
   // side effects
   useEffect(() => {
     if (!quote) return;
+    let accepted = acceptedFulfillments;
     if (!business?.fulfillment?.length) {
-      setAcceptedFulfillments(['delivery']);
-    } else if (!isEqual(acceptedFulfillments, business.fulfillment)) {
-      setAcceptedFulfillments(business.fulfillment);
+      accepted = ['delivery'];
+    } else {
+      accepted = business.fulfillment;
       if (quote.fulfillment && !business.fulfillment.includes(quote.fulfillment)) {
         updateFulfillment(business.fulfillment[0]);
       }
     }
+    if (!isEqual(acceptedFulfillments, accepted)) setAcceptedFulfillments(accepted);
   }, [quote, business, acceptedFulfillments, updateFulfillment]);
   // handlers
   const checkoutHandler = () => {
@@ -86,11 +88,11 @@ export default function OrderCheckoutDeliveryScreen() {
             acceptedFulfillments={acceptedFulfillments}
             onSelectFulfillment={updateFulfillment}
           />
-          <DeliveryAddress style={{ marginTop: paddings.xl }} order={quote} />
+          <DeliveryAddress order={quote} />
           <RouteDetails order={quote} />
-          <HR style={{ marginTop: paddings.xl }} />
-          <PreparationMode style={{ marginTop: paddings.xl }} order={quote} />
-          <OrderFleetCourierSelector style={{ marginTop: paddings.xl }} />
+          <HR style={{ marginBottom: paddings.xl }} />
+          <PreparationMode order={quote} />
+          <OrderFleetCourierSelector />
         </DefaultView>
       </DefaultKeyboardAwareScrollView>
       <View style={{ flex: 1 }} />

@@ -61,7 +61,7 @@ export const HorizontalSelector = ({
                   </DefaultText>
                 ) : null}
               </View>
-              {index === selectedIndex ? (
+              {index === selectedIndex && data.length > 1 ? (
                 <View style={{ height: 2, backgroundColor: colors.black }} />
               ) : null}
             </View>

@@ -1,7 +1,7 @@
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
+import paddings from '@/common/styles/paddings';
 import { Fulfillment, Order, WithId } from '@appjusto/types';
 
-import { useEffect } from 'react';
 import { View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -35,12 +35,10 @@ export const FulfillmentSelector = ({
     if (!fulfillment || fulfillment === updatedFulfillment) return;
     onSelectFulfillment(updatedFulfillment);
   };
-  // side effects
-  useEffect(() => {}, []);
   // UI
-  if (!acceptedFulfillments.length || !fulfillment) return null;
+  if (acceptedFulfillments.length <= 1 || !fulfillment) return null;
   return (
-    <View style={[{}, style]} {...props}>
+    <View style={[{ marginBottom: paddings.lg }, style]} {...props}>
       <HorizontalSelector
         data={fulfillmentSelectorData}
         selectedIndex={fulfillmentSelectorIndex}
