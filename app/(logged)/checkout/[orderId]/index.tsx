@@ -1,11 +1,13 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder, useContextOrderOptions } from '@/api/orders/context/order-context';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
+import { useContextProfile } from '@/common/auth/AuthContext';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { formatCurrency } from '@/common/formatters/currency';
+import { isProfileValid } from '@/common/profile/isProfileValid';
 import { BusinessCart } from '@/common/screens/home/businesses/checkout/business-cart';
 import { EmptyCart } from '@/common/screens/home/businesses/checkout/empty-cart';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
@@ -21,6 +23,7 @@ import { Pressable, View } from 'react-native';
 export default function OrderCheckoutScreen() {
   // context
   const order = useContextOrder();
+  const profile = useContextProfile();
   const { additionalInfo, setAdditionalInfo } = useContextOrderOptions() ?? {};
   // state
   const [couponModalVisible, setCouponModalVisible] = useState(false);
@@ -28,6 +31,21 @@ export default function OrderCheckoutScreen() {
   useTrackScreenView('Checkout: sacola', { businessId: order?.business?.id, orderId: order?.id });
   // side effects
   // useBackWhenOrderExpires();
+  // handlers
+  const nextHandler = () => {
+    if (!order?.id) return;
+    if (!isProfileValid(profile)) {
+      router.navigate({
+        pathname: '/(logged)/checkout/[orderId]/profile',
+        params: { orderId: order.id },
+      });
+    } else {
+      router.navigate({
+        pathname: '/(logged)/checkout/[orderId]/delivery',
+        params: { orderId: order.id },
+      });
+    }
+  };
   // logs
   console.log('checkout/[orderId]/index', typeof order, order?.id);
   // UI
@@ -107,17 +125,7 @@ export default function OrderCheckoutScreen() {
         </Pressable>
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
-      <CartButton
-        order={order}
-        variant="total-products"
-        disabled={!order}
-        onPress={() =>
-          router.navigate({
-            pathname: '/(logged)/checkout/[orderId]/delivery',
-            params: { orderId: order.id },
-          })
-        }
-      />
+      <CartButton order={order} variant="total-products" disabled={!order} onPress={nextHandler} />
     </View>
   );
 }

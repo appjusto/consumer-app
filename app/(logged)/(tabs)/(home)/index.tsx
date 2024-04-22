@@ -3,7 +3,6 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
 import { SearchList } from '@/common/screens/home/businesses/list/search-list';
-import { useCreatePlace } from '@/common/screens/orders/checkout/places/useCreatePlace';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -17,7 +16,6 @@ export default function HomeScreen() {
   // context
   const currentPlace = useContextCurrentPlace();
   // side effects
-  useCreatePlace();
   // tracking
   useTrackScreenView('Início');
   // side effects

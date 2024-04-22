@@ -135,6 +135,7 @@ export default class ConsumersApi {
         hash,
         meta: { version: getAppVersion() },
       } as SaveIuguCardPayload);
+      if ('error' in result.data) throw new Error(result.data.error);
       const cardId = result.data.id as string;
       return cardId;
     } else if (processor === 'vr') {

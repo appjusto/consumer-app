@@ -121,7 +121,7 @@ export default function OrderCheckoutDeliveryScreen() {
       </DefaultScrollView>
       <View style={{ flex: 1 }} />
       {issues.length ? (
-        <MessageBox variant="warning" style={{ margin: paddings.lg }}>
+        <MessageBox variant="warning" style={{ margin: paddings.lg, marginTop: 0 }}>
           {issues[0].description}
         </MessageBox>
       ) : null}

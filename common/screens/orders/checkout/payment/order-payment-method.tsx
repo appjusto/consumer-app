@@ -1,6 +1,7 @@
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { PaymentsHandledByBusiness } from '@/api/orders/payment';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
+import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import paddings from '@/common/styles/paddings';
 import { router } from 'expo-router';
@@ -16,6 +17,7 @@ interface Props extends ViewProps {
 export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   // context
   const quote = useContextOrder();
+  const isAnonymous = useContextIsUserAnonymous();
   const orderId = quote?.id;
   const {
     acceptedOnOrder,
@@ -35,7 +37,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   // logs
   // console.log(acceptedOnOrder);
   // UI
-  if (!setPaymentMethod || !setPaymentMethodId) return null;
+  if (isAnonymous || !setPaymentMethod || !setPaymentMethodId) return null;
   const acceptsPix = acceptedOnOrder?.includes('pix');
   const acceptsOfflinePayment = PaymentsHandledByBusiness.some(
     (value) => acceptedOnOrder?.includes(value)

@@ -10,7 +10,6 @@ import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { handleErrorMessage } from '@/common/firebase/errors';
-import { getProfileState } from '@/common/profile/getProfileState';
 import { isProfileValid } from '@/common/profile/isProfileValid';
 import paddings from '@/common/styles/paddings';
 import { ProfileChange, UserProfile } from '@appjusto/types';
@@ -27,7 +26,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   // context
   const api = useContextApi();
   const profile = useContextProfile();
-  const profileState = getProfileState(profile);
+  const profileValid = isProfileValid(profile);
   const showToast = useShowToast();
   // refs
   const nameRef = useRef<TextInput>(null);
@@ -55,7 +54,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
     phone,
     countryCode,
   };
-  const editable = !hasPendingChange && (!isProfileValid(profile) || editing);
+  const editable = !hasPendingChange && (!profileValid || editing);
   // effects
   useEffect(() => {
     if (!profile) return;
@@ -75,7 +74,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   const updateProfileHandler = () => {
     if (!profile?.id) return;
     if (hasPendingChange) return;
-    if (!editing && isProfileValid(profile)) {
+    if (!editing && profileValid) {
       setEditing(true);
       return;
     }
@@ -122,7 +121,9 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
   return (
     <DefaultKeyboardAwareScrollView contentContainerStyle={{ padding: paddings.lg }}>
       <DefaultText size="lg">
-        {isProfileValid(profile) ? 'Seus dados pessoais' : 'Preencha seus dados pessoais'}
+        {profileValid
+          ? 'Seus dados pessoais'
+          : 'Preencha seus dados pessoais para fazer seu primeiro pedido'}
       </DefaultText>
       <DefaultInput
         style={{ marginTop: paddings.lg }}
@@ -194,7 +195,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           value={phone}
           onChangeText={setPhone}
         />
-        {profileState.includes('approved') && isProfileValid(profile) ? (
+        {profileValid ? (
           <MessageBox style={{ marginTop: paddings.lg }}>
             {hasPendingChange
               ? 'Sua solicitação foi enviada para o nosso time e será revisada em breve.'
@@ -204,9 +205,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
         <View style={{ flex: 1 }} />
         <DefaultButton
           style={{ marginTop: paddings.lg, marginBottom: paddings.xl }}
-          title={
-            isProfileValid(profile) ? (editing ? 'Salvar' : 'Atualizar dados') : 'Salvar e avançar'
-          }
+          title={profileValid ? (editing ? 'Salvar' : 'Atualizar dados') : 'Salvar e avançar'}
           disabled={isLoading || hasPendingChange}
           onPress={updateProfileHandler}
         />

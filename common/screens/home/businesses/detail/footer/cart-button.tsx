@@ -2,10 +2,12 @@ import { getOrderDiscounts } from '@/api/orders/total/getOrderDiscounts';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
+import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HRShadow } from '@/common/components/views/hr-shadow';
 import { formatCurrency } from '@/common/formatters/currency';
+import { isProfileValid } from '@/common/profile/isProfileValid';
 import paddings from '@/common/styles/paddings';
 import { Order } from '@appjusto/types';
 import { View, ViewProps } from 'react-native';
@@ -19,6 +21,7 @@ interface Props extends ViewProps {
 
 export const CartButton = ({ order, variant, disabled, onPress, style, ...props }: Props) => {
   // context
+  const profile = useContextProfile();
   // UI
   if (!order) return null;
   const total =
@@ -58,7 +61,9 @@ export const CartButton = ({ order, variant, disabled, onPress, style, ...props 
           <View />
         )}
         <DefaultButton
-          title={variant === 'total-products' ? 'Ver sacola' : 'Continuar'}
+          title={
+            variant === 'total-products' && isProfileValid(profile) ? 'Ver sacola' : 'Continuar'
+          }
           size="lg"
           disabled={disabled}
           onPress={onPress}

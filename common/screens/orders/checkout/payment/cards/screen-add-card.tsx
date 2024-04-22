@@ -3,7 +3,7 @@ import { getCardTypeByNumber } from '@/api/consumer/cards/card-type/getCardTypeB
 import { CardInfo } from '@/api/consumer/cards/types';
 import useAxiosCancelToken from '@/api/externals/useAxiosCancelToken';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { PatternInput } from '@/common/components/inputs/pattern/PatternInput';
@@ -14,7 +14,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { toNumber } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { Keyboard, View, ViewProps } from 'react-native';
+import { Keyboard, SafeAreaView, View, ViewProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { CardsAccepted } from '../icons/cards-accepted';
 
@@ -94,7 +94,7 @@ export const AddCardScreenView = ({ onComplete, style, ...props }: Props) => {
   // UI
   return (
     <View style={{ ...screens.default }}>
-      <DefaultScrollView>
+      <DefaultKeyboardAwareScrollView>
         <DefaultView style={{ padding: paddings.lg }}>
           <DefaultText size="lg" color="neutral900">
             Preencha os dados do cartão
@@ -140,21 +140,23 @@ export const AddCardScreenView = ({ onComplete, style, ...props }: Props) => {
                 onSubmitEditing={() => nameRef.current?.focus()}
               />
             </View>
-            <DefaultInput
-              ref={nameRef}
-              style={{ marginTop: paddings.lg }}
-              title="Nome do titular"
-              placeholder="Conforme o cartão"
-              value={name}
-              keyboardType="default"
-              returnKeyType="next"
-              autoCapitalize="words"
-              blurOnSubmit
-              onChangeText={setName}
-            />
+            <SafeAreaView>
+              <DefaultInput
+                ref={nameRef}
+                style={{ marginTop: paddings.lg }}
+                title="Nome do titular"
+                placeholder="Conforme o cartão"
+                value={name}
+                keyboardType="default"
+                returnKeyType="done"
+                autoCapitalize="words"
+                blurOnSubmit
+                onChangeText={setName}
+              />
+            </SafeAreaView>
           </View>
         </DefaultView>
-      </DefaultScrollView>
+      </DefaultKeyboardAwareScrollView>
       <View style={{ flex: 1 }} />
       <View>
         <HRShadow />

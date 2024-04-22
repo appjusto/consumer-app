@@ -1,16 +1,19 @@
 import { useContextApi } from '@/api/ApiContext';
+import { useFetchPlace } from '@/api/consumer/places/useFetchPlace';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { useCreatePlace } from './useCreatePlace';
 
 export const useUpdateOrderDestination = () => {
+  // params
+  const params = useLocalSearchParams<{ placeId: string }>();
   // context
   const api = useContextApi();
   const showToast = useShowToast();
   const orderId = useContextOrder()?.id;
   // state
-  const { place, setPlace } = useCreatePlace();
+  const place = useFetchPlace(params.placeId);
   // side effects
   // update order destination
   useEffect(() => {
@@ -20,12 +23,9 @@ export const useUpdateOrderDestination = () => {
     api
       .orders()
       .updateOrder(orderId, { destination: place })
-      .then(() => {
-        setPlace(undefined);
-      })
       .catch((error) => {
         console.log(error);
         showToast('Não foi possível salvar seu endereço. Tente novamente.', 'error');
       });
-  }, [api, showToast, place, orderId, setPlace]);
+  }, [api, showToast, place, orderId]);
 };
