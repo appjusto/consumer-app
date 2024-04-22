@@ -11,17 +11,21 @@ import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
+import DefaultCard from '@/common/components/views/cards/DefaultCard';
+import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportURL';
 import { OngoingOrderFoodOverview } from '@/common/screens/orders/ongoing/ongoing-order-food-overview';
 import { OngoingOrderStatusMessageBox } from '@/common/screens/orders/ongoing/ongoing-order-status-message-box';
 import { OrderDetailReview } from '@/common/screens/orders/review/order-detail-review';
+import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Order, Place, WithId } from '@appjusto/types';
 import { Stack, router } from 'expo-router';
 import { pick } from 'lodash';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 export default function OrderCompletedScreen() {
   // context
@@ -98,6 +102,12 @@ export default function OrderCompletedScreen() {
         showToast(message, 'error');
       });
   };
+  const supportHandler = () => openWhatsAppSupportURL('Pedido entregue');
+  const complaintHandler = () =>
+    router.navigate({
+      pathname: '/(logged)/(tabs)/(orders)/[orderId]/complaint',
+      params: { orderId },
+    });
   // logs
   // console.log('cancellation', cancellation);
   // console.log('productsRefunded', productsRefunded);
@@ -137,6 +147,39 @@ export default function OrderCompletedScreen() {
         )}
         <OngoingOrderFoodOverview style={{ marginTop: paddings.lg }} order={order} />
         <OrderDetailReview style={{ marginTop: paddings.lg }} order={order} />
+        <View
+          style={{
+            backgroundColor: colors.white,
+            marginTop: paddings.lg,
+            padding: paddings.lg,
+            borderRadius: 8,
+            borderColor: colors.neutral100,
+            borderWidth: 1,
+          }}
+        >
+          <View style={{ marginTop: 0 }}>
+            <DefaultText size="lg">Teve algum problema com o pedido?</DefaultText>
+            <DefaultText style={{ marginTop: paddings.xs }}>
+              Fale com um de nossos atendentes ou realize uma denúncia
+            </DefaultText>
+            <Pressable onPress={supportHandler}>
+              <DefaultCard
+                style={{ marginTop: paddings.lg }}
+                icon={<DefaultCardIcon iconName="chat" />}
+                title="Suporte appjusto"
+                subtitle="Fale com a gente através do nosso WhatsApp"
+              />
+            </Pressable>
+            <Pressable onPress={complaintHandler}>
+              <DefaultCard
+                style={{ marginTop: paddings.sm }}
+                icon={<DefaultCardIcon iconName="alert" variant="warning" />}
+                title="Denunciar"
+                subtitle="Realize uma denúncia através do appjusto"
+              />
+            </Pressable>
+          </View>
+        </View>
       </DefaultView>
     </DefaultScrollView>
   );

@@ -3,12 +3,8 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
-import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
-import DefaultCard from '@/common/components/views/cards/DefaultCard';
-import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
-import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportURL';
 import { TipControl } from '@/common/screens/orders/delivered/tip/tip-control';
 import { OrderReviewView } from '@/common/screens/orders/review/order-review-view';
 import colors from '@/common/styles/colors';
@@ -19,7 +15,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import { Stack, router } from 'expo-router';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function OrderDeliveredScreen() {
   // context
@@ -81,12 +77,7 @@ export default function OrderDeliveredScreen() {
         });
     }
   };
-  const supportHandler = () => () => openWhatsAppSupportURL('Pedido entregue');
-  const complaintHandler = () =>
-    router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/complaint',
-      params: { orderId },
-    });
+
   // UI
   if (!order) return <Loading title="Pedido entregue!" />;
   return (
@@ -117,41 +108,9 @@ export default function OrderDeliveredScreen() {
           setPlatformReview={setPlatformReview}
           setNPS={setNPS}
         />
-        <View
-          style={{
-            backgroundColor: colors.white,
-            marginTop: paddings.lg,
-            padding: paddings.lg,
-            borderRadius: 8,
-            borderColor: colors.neutral100,
-            borderWidth: 1,
-          }}
-        >
-          <View style={{ marginTop: paddings.lg }}>
-            <DefaultText size="lg">Teve algum problema com o pedido?</DefaultText>
-            <DefaultText style={{ marginTop: paddings.xs }}>
-              Fale com um de nossos atendentes ou realize uma denúncia
-            </DefaultText>
-            <Pressable onPress={supportHandler}>
-              <DefaultCard
-                style={{ marginTop: paddings.lg }}
-                icon={<DefaultCardIcon iconName="chat" />}
-                title="Suporte appjusto"
-                subtitle="Fale com a gente através do nosso WhatsApp"
-              />
-            </Pressable>
-            <Pressable onPress={complaintHandler}>
-              <DefaultCard
-                style={{ marginTop: paddings.sm }}
-                icon={<DefaultCardIcon iconName="alert" variant="warning" />}
-                title="Denunciar"
-                subtitle="Realize uma denúncia através do appjusto"
-              />
-            </Pressable>
-          </View>
-        </View>
+        <View style={{ flex: 1 }} />
         <DefaultButton
-          style={{ marginVertical: paddings.xl }}
+          // style={{ marginVertical: paddings.sm }}
           title="Finalizar"
           disabled={!order || loading}
           onPress={setReviewHandler}
