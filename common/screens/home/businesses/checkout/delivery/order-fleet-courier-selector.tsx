@@ -5,6 +5,7 @@ import {
 } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { HR } from '@/common/components/views/HR';
 import { Loading } from '@/common/components/views/Loading';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -28,6 +29,7 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
   // console.log('fares', fares);
   return (
     <View style={[{}, style]} {...props}>
+      <HR style={{ marginBottom: paddings.xl }} />
       {!businessLogistics ? (
         <HorizontalSelector
           data={[{ title: 'Escolher Frota' }, { title: 'Escolher entregador(a)' }]}

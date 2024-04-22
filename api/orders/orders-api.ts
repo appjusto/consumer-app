@@ -99,7 +99,7 @@ export default class OrdersApi {
         type: 'food',
         placedFrom: 'mobile',
         status: 'quote',
-        fulfillment: 'delivery',
+        fulfillment: business.fulfillment?.includes('delivery') ? 'delivery' : 'take-away',
         dispatchingStatus: 'idle',
         dispatchingState: null,
         consumer: {

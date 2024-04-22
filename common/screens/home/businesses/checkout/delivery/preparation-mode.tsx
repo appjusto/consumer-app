@@ -6,7 +6,6 @@ import { useContextOrderBusiness } from '@/api/orders/context/order-context';
 import { useContextGetServerTime } from '@/api/platform/context/platform-context';
 import { RadioCardButton } from '@/common/components/buttons/radio/radio-card-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { HR } from '@/common/components/views/HR';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { timestampWithETA } from '@/common/formatters/timestamp';
@@ -107,7 +106,6 @@ export const PreparationMode = ({ order, style, ...props }: Props) => {
           {issues.find((issue) => issue.type === 'schedule-required')?.description}
         </MessageBox>
       ) : null}
-      <HR style={{ marginTop: paddings.xl }} />
     </View>
   );
 };
