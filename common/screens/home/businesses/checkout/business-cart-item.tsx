@@ -44,7 +44,7 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
   // UI
   return (
     <View style={[{}, style]} {...props}>
-      <View style={[{ flexDirection: 'row', borderWidth: 0 }]} {...props}>
+      <View style={[{ flexDirection: 'row', alignItems: 'center', borderWidth: 0 }]} {...props}>
         <Pressable
           onPress={() => {
             router.navigate({
@@ -97,16 +97,16 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
             }}
           >
             <DefaultText color="neutral800">{formatCurrency(getItemTotal(item))}</DefaultText>
-            {editable ? (
-              <QuantityButton
-                quantity={item.quantity}
-                minValue={0}
-                onIncrement={() => updateQuantity(1)}
-                onDecrement={() => updateQuantity(-1)}
-              />
-            ) : null}
           </View>
         </View>
+        {editable ? (
+          <QuantityButton
+            quantity={item.quantity}
+            minValue={0}
+            onIncrement={() => updateQuantity(1)}
+            onDecrement={() => updateQuantity(-1)}
+          />
+        ) : null}
       </View>
       <HR style={{ marginTop: paddings.lg }} />
     </View>

@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { router, useSegments } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Linking } from 'react-native';
-import { useContextProfile, useContextUser } from '../auth/AuthContext';
+import { useContextProfile } from '../auth/AuthContext';
 import { processURL } from '../deeplink/processURL';
 import {
   useContextDeeplink,
@@ -23,10 +23,8 @@ export const RoutesProvider = (props: Props) => {
   const api = useContextApi();
   const deeplink = useContextDeeplink();
   const setDeeplink = useContextSetDeeplink();
-  const isAnonymous = useContextUser()?.isAnonymous === true;
   const profile = useContextProfile();
   const segments = useSegments();
-  const restricted = segments[0] === '(logged)';
   const situation = profile === null ? null : profile?.situation;
   // state
   const [bootstrapped, setBootstrapped] = useState(false);
@@ -53,9 +51,7 @@ export const RoutesProvider = (props: Props) => {
   useEffect(() => {
     // console.log('routes', isAnonymous, situation);
     if (situation === undefined) return;
-    if (isAnonymous) {
-      if (restricted) router.replace('/sign-in');
-    } else if (situation === 'approved') {
+    if (situation === 'approved') {
       if (!bootstrapped) {
         router.replace('/(logged)/(tabs)/(home)/');
         setBootstrapped(true);
@@ -68,7 +64,7 @@ export const RoutesProvider = (props: Props) => {
     } else if (situation === 'blocked2') {
       router.replace('/blocked');
     }
-  }, [isAnonymous, situation, restricted, api, bootstrapped]);
+  }, [situation, api, bootstrapped]);
   // logs
   console.log(segments);
   // result

@@ -99,7 +99,7 @@ export const BusinessHeader = ({
             }}
           >
             <DefaultText
-              style={{ flexWrap: 'wrap', maxWidth: percentOfWidth(80) }}
+              style={{ flexWrap: 'wrap', maxWidth: percentOfWidth(70) }}
               size="lg"
             >{`${business.name}`}</DefaultText>
             <LinkButton variant="ghost" onPress={detailHandler}>

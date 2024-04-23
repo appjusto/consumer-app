@@ -19,7 +19,6 @@ export const AdreessBar = ({ style, ...props }: Props) => {
     isAnonymous
       ? router.navigate({ pathname: '/sign-in' })
       : router.navigate({ pathname: '/places' });
-  const newPlaceHandler = () => router.navigate({ pathname: '/places/new' });
   // UI
   return (
     <Pressable onPress={placesHandler}>
@@ -44,12 +43,11 @@ export const AdreessBar = ({ style, ...props }: Props) => {
             <ChevronDown style={{ marginLeft: paddings.sm }} color={colors.black} size={16} />
           </>
         ) : (
-          <Pressable onPress={newPlaceHandler}>
-            <MessageBox variant="warning">
-              Usando sua localização aproximada. Clique para fazer login e definir seu endereço de
-              entrega
-            </MessageBox>
-          </Pressable>
+          <MessageBox variant="warning">
+            {`Usando sua localização aproximada. Clique para ${
+              isAnonymous ? 'fazer login e ' : ''
+            }definir seu endereço de entrega`}
+          </MessageBox>
         )}
       </View>
     </Pressable>

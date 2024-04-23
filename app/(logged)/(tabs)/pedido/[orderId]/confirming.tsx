@@ -18,7 +18,7 @@ import LottieView from 'lottie-react-native';
 // const ConfirmingGif = require('../../../../../assets/images/order/confirming.gif');
 const ConfirmingJSON = require('../../../../../assets/images/order/confirming.lottie.json');
 
-const SIZE = Dimensions.get('screen').width - (isLargeScreen() ? 100 : 200);
+const SIZE = Dimensions.get('screen').width - (isLargeScreen() ? 100 : 150);
 
 export default function OrderConfirmingScreen() {
   // context
@@ -56,16 +56,22 @@ export default function OrderConfirmingScreen() {
   return (
     <View style={{ ...screens.centered }}>
       <Stack.Screen options={{ title: 'Criando pedido', headerShown: true }} />
-      <View style={{ flex: 0.5 }} />
-      <View style={{ flex: 1, borderWidth: 0 }}>
+      <View
+        style={{
+          flex: 1,
+          borderWidth: 0,
+          marginTop: isLargeScreen() ? 100 : 0,
+          alignItems: 'center',
+        }}
+      >
         {/* <Image style={{ width: SIZE, height: SIZE }} contentFit="cover" source={ConfirmingGif} /> */}
         <LottieView autoPlay style={{ width: SIZE, height: SIZE }} source={ConfirmingJSON} />
         {/* <View style={{ flex: 1 }} /> */}
         <DefaultText style={{ textAlign: 'center' }} size="md">
-          {waitingAcceptance ? 'Aguardando aceite do restaurante...' : 'Criando o seu pedido...'}
+          {waitingAcceptance ? 'Aguardando aceite do restaurante...' : 'Criando seu pedido...'}
         </DefaultText>
       </View>
-      <View style={{ flex: 1 }} />
+      {/* <View style={{ flex: 1 }} /> */}
       <HRShadow />
       <View>
         <View style={{ padding: paddings.lg, alignItems: 'center' }}>

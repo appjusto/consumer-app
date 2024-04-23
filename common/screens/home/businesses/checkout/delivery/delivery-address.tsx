@@ -1,6 +1,7 @@
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import paddings from '@/common/styles/paddings';
+import { percentOfWidth } from '@/common/version/device';
 import { Order, WithId } from '@appjusto/types';
 import { router } from 'expo-router';
 import { View, ViewProps } from 'react-native';
@@ -28,11 +29,14 @@ export const DeliveryAddress = ({ order, style, ...props }: Props) => {
           <DefaultText color="neutral700">
             {order.fulfillment === 'delivery' ? 'Entregar em' : 'Retirar em'}
           </DefaultText>
-          <DefaultText style={{ marginTop: paddings.sm }} size="md">
+          <DefaultText
+            style={{ marginTop: paddings.sm, flexWrap: 'wrap', maxWidth: percentOfWidth(70) }}
+            size="md"
+          >
             {address?.main}
           </DefaultText>
           <DefaultText
-            style={{ marginTop: paddings.sm }}
+            style={{ marginTop: paddings.sm, flexWrap: 'wrap', maxWidth: percentOfWidth(70) }}
             color="neutral700"
           >{`${address?.secondary}${
             place?.additionalInfo ? ` \u00B7 ${place.additionalInfo}` : ''
