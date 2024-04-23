@@ -22,9 +22,10 @@ interface Value {
 
 export const BusinessProvider = ({ children }: Props) => {
   // params
-  const { businessId } = useGlobalSearchParams<{ businessId: string }>();
+  const params = useGlobalSearchParams<{ businessId: string }>();
   // state
-  const business = useObserveBusiness(businessId);
+  const business = useObserveBusiness(params.businessId);
+  const businessId = business?.id;
   const { categoriesWithProducts, loaded, groupsWithComplements, getProductCategory } =
     useObserveBusinessMenu(businessId);
   const [products, setProducts] = useState<(string | WithId<Product>)[]>();

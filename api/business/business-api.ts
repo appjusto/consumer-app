@@ -56,16 +56,38 @@ export default class BusinessApi {
     return business;
   }
 
-  observeBusiness(businessId: string, resultHandler: (business: WithId<PublicBusiness>) => void) {
+  observeBusiness(
+    businessId: string,
+    resultHandler: (business: WithId<PublicBusiness> | null) => void
+  ) {
     console.log('observeBusiness', businessId);
     return publicBusinessRef(businessId).onSnapshot(
       (snapshot) => {
         if (snapshot.exists) resultHandler(documentAs<PublicBusiness>(snapshot));
+        else resultHandler(null);
       },
       (error) => {
         console.log('observeBusiness', error);
       }
     );
+  }
+
+  observeBusinessBySlug(
+    slug: string,
+    resultHandler: (business: WithId<PublicBusiness> | null) => void
+  ) {
+    console.log('observeBusinessBySlug', slug);
+    return publicBusinessesRef()
+      .where('slug', '==', slug)
+      .onSnapshot(
+        (snapshot) => {
+          if (!snapshot.empty) resultHandler(documentAs<PublicBusiness>(snapshot.docs[0]));
+          else resultHandler(null);
+        },
+        (error) => {
+          console.log('observeBusiness', error);
+        }
+      );
   }
 
   // menu

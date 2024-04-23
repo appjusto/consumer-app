@@ -3,6 +3,7 @@ const ignoredWarnings = [
   'The `redirect` prop on <Screen /> is deprecated and will be removed. Please use `router.redirect` instead',
   // https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir
   '`new NativeEventEmitter()` was called',
+  'The navigation state parsed',
 ];
 
 const realWarn = console.warn;

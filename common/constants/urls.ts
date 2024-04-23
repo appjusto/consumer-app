@@ -1,6 +1,7 @@
 import { getEnv, isLive } from '@/extra';
 
-export const getDomain = () => (isLive() ? '' : `${getEnv()}.`) + 'appjusto.com.br';
+export const getAppjustoDomain = () => (isLive() ? '' : `${getEnv()}.`) + 'appjusto.com.br';
+export const getAppjustoURL = (path: string = '') => `https://${getAppjustoDomain()}${path}`;
 
 export const URL_APPJUSTO_SITE = 'https://appjusto.com.br';
 export const URL_APPJUSTO_FAIRWORK_SITE = 'https://appjusto.com.br/trabalho-decente';
