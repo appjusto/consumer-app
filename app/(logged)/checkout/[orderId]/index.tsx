@@ -54,13 +54,17 @@ export default function OrderCheckoutScreen() {
   const couponLabel = (() => {
     if (coupon?.type === 'delivery-free') return `Entrega grátis`;
     if (coupon?.discount) {
-      if (coupon.type === 'food-discount')
+      if (coupon.type === 'food-discount') {
         return `${formatCurrency(coupon.discount)} de desconto nos produtos`;
-      if (coupon.type === 'delivery-discount')
+      }
+      if (coupon.type === 'delivery-discount') {
         return `${formatCurrency(coupon.discount)} de desconto na entrega`;
+      }
+      return `${formatCurrency(coupon.discount)} de desconto`;
     }
     return 'Adicione um cupom ao pedido';
   })();
+  console.log(coupon);
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>
