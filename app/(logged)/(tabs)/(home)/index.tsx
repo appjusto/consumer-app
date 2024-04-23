@@ -28,7 +28,7 @@ export default function HomeScreen() {
   useEffect(() => {
     if (orderId) {
       router.replace({
-        pathname: '/(logged)/(tabs)/(orders)/',
+        pathname: '/(logged)/(tabs)/pedido/',
         params: { orderId },
       });
       router.setParams({ orderId: '' });

@@ -63,7 +63,7 @@ export default function ChatPickerScreen() {
   // handlers
   const openChat = (counterpartId: string) =>
     router.replace({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat/[counterpart]',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/chat/[counterpart]',
       params: { orderId, counterpart: counterpartId },
     });
   // UI

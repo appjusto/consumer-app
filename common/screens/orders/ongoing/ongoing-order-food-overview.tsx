@@ -26,7 +26,7 @@ export const OngoingOrderFoodOverview = ({ order, style, ...props }: Props) => {
   // handlers
   const detailHandler = () => {
     router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/detail',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/detail',
       params: { orderId: order.id },
     });
   };

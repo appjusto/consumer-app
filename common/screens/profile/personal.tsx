@@ -108,7 +108,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
         .then(() => {
           setLoading(false);
           setEditing(false);
-          showToast('As alterações foram solcitadas com sucesso!', 'success');
+          showToast('As alterações foram solicitadas com sucesso!', 'success');
         })
         .catch((error) => {
           handleError(error);

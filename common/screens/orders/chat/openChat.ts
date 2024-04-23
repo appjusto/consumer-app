@@ -19,12 +19,12 @@ export const openChat = (
   }
   if (counterpartId) {
     router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat/[counterpart]',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/chat/[counterpart]',
       params: { orderId: order.id, counterpart: counterpartId },
     });
   } else {
     router.navigate({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat-picker',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/chat-picker',
       params: {
         orderId: order.id,
         courierId: order.courier?.id ?? '',

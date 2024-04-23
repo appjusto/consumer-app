@@ -12,20 +12,20 @@ export const getOrderPath = (
   const stage = getOrderStage(status, type);
   if (stage === 'placing') {
     if (from === 'confirming-pix') {
-      if (status === 'confirmed') return '/(logged)/(tabs)/(orders)/[orderId]/confirming';
+      if (status === 'confirmed') return '/(logged)/(tabs)/pedido/[orderId]/confirming';
     } else {
       if (from !== 'confirming') {
-        if (paymentMethod === 'pix') return '/(logged)/(tabs)/(orders)/[orderId]/confirming-pix';
-        return '/(logged)/(tabs)/(orders)/[orderId]/confirming';
+        if (paymentMethod === 'pix') return '/(logged)/(tabs)/pedido/[orderId]/confirming-pix';
+        return '/(logged)/(tabs)/pedido/[orderId]/confirming';
       }
     }
   } else if (stage === 'ongoing') {
-    if (from !== 'ongoing') return '/(logged)/(tabs)/(orders)/[orderId]/ongoing';
+    if (from !== 'ongoing') return '/(logged)/(tabs)/pedido/[orderId]/ongoing';
   } else if (stage === 'delivered') {
-    if (from === 'ongoing') return '/(logged)/(tabs)/(orders)/[orderId]/delivered';
-    else return '/(logged)/(tabs)/(orders)/[orderId]/completed';
+    if (from === 'ongoing') return '/(logged)/(tabs)/pedido/[orderId]/delivered';
+    else return '/(logged)/(tabs)/pedido/[orderId]/completed';
   } else if (stage === 'canceled') {
-    return '/(logged)/(tabs)/(orders)/[orderId]/completed';
+    return '/(logged)/(tabs)/pedido/[orderId]/completed';
   }
   return null;
 };

@@ -61,7 +61,7 @@ export default function OrderCheckoutDeliveryScreen() {
           router.navigate('/(logged)/(tabs)/encomendas');
         }
         // @ts-ignore
-        navigation.navigate('(orders)', {
+        navigation.navigate('pedido', {
           screen:
             '[orderId]/confirming' + (placeOptions.payment.payableWith === 'pix' ? '-pix' : ''),
           params: { orderId: placeOptions.orderId },

@@ -48,7 +48,7 @@ export default function OrderConfirmingScreen() {
   const problemHandler = () => {
     if (!orderId) return;
     router.push({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/help',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/help',
       params: { orderId },
     });
   };

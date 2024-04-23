@@ -84,7 +84,7 @@ export default function OrderSupportScreen() {
           <Pressable
             onPress={() => {
               router.navigate({
-                pathname: '/(logged)/(tabs)/(orders)/[id]/chat/[counterpart]',
+                pathname: '/(logged)/(tabs)/pedido/[id]/chat/[counterpart]',
                 params: { id: orderId, counterpart: businessId },
               });
             }}

@@ -21,7 +21,7 @@ export const OngoingOrders = ({ type, style, ...props }: Props) => {
     const stage = getOrderStage(order.status, order.type);
     const screen = stage === 'placing' ? 'confirming' : 'ongoing';
     // @ts-ignore
-    navigation.navigate('(orders)', {
+    navigation.navigate('pedido', {
       screen: `[orderId]/${screen}`,
       params: { orderId: order.id },
       initial: false,

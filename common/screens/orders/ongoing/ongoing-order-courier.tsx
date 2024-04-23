@@ -23,7 +23,7 @@ export const OngoingOrderCourier = ({ order, style, ...props }: Props) => {
   const openChatHandler = () => {
     if (!order.courier?.id) return;
     router.replace({
-      pathname: '/(logged)/(tabs)/(orders)/[orderId]/chat/[counterpart]',
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/chat/[counterpart]',
       params: { orderId: order.id, counterpart: order.courier.id },
     });
   };
