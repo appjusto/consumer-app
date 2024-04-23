@@ -1,4 +1,5 @@
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
+import { safeNumber } from '@/api/utils/numbers';
 import { formatCurrency } from '@/common/formatters/currency';
 import { PlaceOrderPayloadPayment, VRPayableWith } from '@appjusto/types';
 import { toNumber } from 'lodash';
@@ -62,7 +63,7 @@ export const usePlaceOrderOptions = () => {
       additionalInfo,
       invoiceWithCPF: options.invoiceWithCPF,
       wantToShareData: options.wantToShareData,
-      findersFee: options.findersFee,
+      findersFee: safeNumber(options.findersFee),
       coordinates: location,
     });
   }, [quote, payment, options, location]);

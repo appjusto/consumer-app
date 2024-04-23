@@ -1,21 +1,30 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useFetchPlace } from '@/api/consumer/places/useFetchPlace';
-import { useContextP2PQuote } from '@/api/orders/context/order-context';
+import { useContextOrderOptions, useContextP2PQuote } from '@/api/orders/context/order-context';
+import { useFetchCourierById } from '@/api/orders/courier/useFetchCourierById';
+import { useContextUserId } from '@/common/auth/AuthContext';
+import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
+import { DefaultText } from '@/common/components/texts/DefaultText';
 import { MessageBox } from '@/common/components/views/MessageBox';
+import { formatCurrency } from '@/common/formatters/currency';
 import { useUniqState } from '@/common/react/useUniqState';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
+import { FindersFeeModal } from '@/common/screens/orders/finders-fee/finders-fee-modal';
 import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
 import { getPlaceTitle } from '@/common/screens/orders/places/label';
 import { PlaceKey } from '@/common/screens/orders/places/types';
+import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { useIsFocused } from '@react-navigation/native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { isEmpty, toNumber } from 'lodash';
+import { CircleDollarSign } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 type State = 'new' | 'waiting-origin' | 'creating' | 'waiting-destination' | 'done';
 
@@ -30,7 +39,9 @@ export default function NewPackageOrderScreen() {
   // context
   const api = useContextApi();
   const quote = useContextP2PQuote();
+  const userId = useContextUserId();
   const focused = useIsFocused();
+  const { findersFee } = useContextOrderOptions() ?? {};
   // state
   const [state, setState] = useState<State>(() => {
     if (!quote) return 'new';
@@ -44,6 +55,8 @@ export default function NewPackageOrderScreen() {
   const destination = useFetchPlace(destinationId);
   const [originInstructions, setOriginInstructions] = useState<string>();
   const [destinationInstructions, setDestinationInstructions] = useState<string>();
+  const courier = useFetchCourierById(userId);
+  const [findersFeeModalVisible, setFindersFeeModalVisible] = useState(false);
   // tracking
   useTrackScreenView('Encomendas: novo');
   // helpers
@@ -196,6 +209,11 @@ export default function NewPackageOrderScreen() {
   return (
     <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
       <Stack.Screen options={{ title: 'Entrega' }} />
+      <FindersFeeModal
+        order={quote}
+        visible={findersFeeModalVisible}
+        onDismiss={() => setFindersFeeModalVisible(false)}
+      />
       <DefaultView style={{ ...screens.default, padding: paddings.lg }}>
         <ReviewP2POrder
           quote={quote}
@@ -209,6 +227,52 @@ export default function NewPackageOrderScreen() {
           <MessageBox style={{ marginVertical: paddings.lg }} variant="warning">
             Escreva as instruções para coleta e entrega da encomenda.
           </MessageBox>
+        ) : null}
+        {/* courier finders fee */}
+        {quote && courier ? (
+          <Pressable onPress={() => setFindersFeeModalVisible(true)}>
+            <View
+              style={{
+                marginTop: paddings.lg,
+                borderRadius: 8,
+                borderColor: findersFee ? colors.primary900 : colors.neutral100,
+                backgroundColor: findersFee ? colors.primary100 : colors.neutral100,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingVertical: paddings.lgg,
+                  paddingHorizontal: paddings.lg,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    // justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <CircleDollarSign color={colors.black} size={16} />
+                  <View style={{ marginLeft: paddings.lg }}>
+                    <DefaultText size="md">Comissão</DefaultText>
+                    <DefaultText style={{}} size="sm">
+                      {isEmpty(findersFee)
+                        ? 'Adicione uma comissão'
+                        : `Comissão adicionada: ${formatCurrency(toNumber(findersFee))}`}
+                    </DefaultText>
+                  </View>
+                </View>
+                <View>
+                  <LinkButton variant="ghost" onPress={() => setFindersFeeModalVisible(true)}>
+                    {findersFee ? 'Alterar' : 'Adicionar'}
+                  </LinkButton>
+                </View>
+              </View>
+            </View>
+          </Pressable>
         ) : null}
         <View style={{ flex: 1 }} />
         <CartButton order={quote} variant="none" disabled={disabled} onPress={checkoutHandler} />

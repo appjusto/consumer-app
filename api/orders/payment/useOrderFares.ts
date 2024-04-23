@@ -1,4 +1,5 @@
 import { useContextApi } from '@/api/ApiContext';
+import { safeNumber } from '@/api/utils/numbers';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { Fare, Order, PayableWith, WithId } from '@appjusto/types';
 import { useEffect, useState } from 'react';
@@ -7,7 +8,7 @@ export const useOrderFares = (
   order: WithId<Order> | null | undefined,
   defaultPaymentMethod: PayableWith | null | undefined,
   fleetsIds: string[] | undefined,
-  findersFee: number,
+  findersFee: string,
   enabled = false
 ) => {
   // context
@@ -42,7 +43,7 @@ export const useOrderFares = (
     setLoading(true);
     api
       .orders()
-      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', findersFee, fleetsIds)
+      .getOrderQuotes(orderId, defaultPaymentMethod ?? 'pix', safeNumber(findersFee), fleetsIds)
       .then((fares) => {
         setFares(fares);
         const fare = fares[0];
