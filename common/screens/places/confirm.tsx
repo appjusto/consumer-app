@@ -59,7 +59,6 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
   }, [api, showToast, description]);
   // handlers
   const googleReverseGeocode = (value: LatLng) => {
-    setLocation(null);
     api
       .maps()
       .googleReverseGeocode(value)
@@ -103,23 +102,6 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
   if (location === null) return null; // TODO: handle it
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      {/* <Stack.Screen
-        options={{
-          header: () =>
-            temporaryPlace.address ? (
-              <View
-                style={{ ...screens.headless, flex: 0, padding: paddings.lg, alignItems: 'center' }}
-              >
-                <DefaultText size="md" color="black">
-                  {temporaryPlace.address.main}
-                </DefaultText>
-                <DefaultText style={{ marginTop: paddings.xs }} size="sm" color="neutral700">
-                  {temporaryPlace.address.secondary}
-                </DefaultText>
-              </View>
-            ) : null,
-        }}
-      /> */}
       <Stack.Screen options={{ title: 'Confirmar endereço' }} />
       <View style={{ padding: paddings.lg, alignItems: 'center' }}>
         <DefaultText size="md" color="black">
