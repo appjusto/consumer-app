@@ -2,6 +2,7 @@ import {
   useContextOrder,
   useContextOrderBusiness,
   useContextOrderFares,
+  useContextOrderOptions,
 } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -9,7 +10,7 @@ import { HR } from '@/common/components/views/HR';
 import { Loading } from '@/common/components/views/Loading';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, ViewProps } from 'react-native';
 import { OrderCourierSelector } from './order-courier-selector';
 import { OrderFleetSelector } from './order-fleet-selector';
@@ -21,8 +22,14 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
   const order = useContextOrder();
   const { fares } = useContextOrderFares();
   const business = useContextOrderBusiness();
+  const { courier } = useContextOrderOptions() ?? {};
   // state
   const [selectedIndex, setSelectedIndex] = useState(0);
+  // side effects
+  useEffect(() => {
+    if (!courier) return;
+    setSelectedIndex(1);
+  }, [courier]);
   // UI
   if (order?.fulfillment !== 'delivery') return null;
   const businessLogistics = order.type === 'food' && !business?.logistics;
