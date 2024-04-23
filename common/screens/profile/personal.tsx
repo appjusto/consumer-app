@@ -13,11 +13,11 @@ import { handleErrorMessage } from '@/common/firebase/errors';
 import { isProfileValid } from '@/common/profile/isProfileValid';
 import paddings from '@/common/styles/paddings';
 import { ProfileChange, UserProfile } from '@appjusto/types';
+import * as cpfutils from '@fnando/cpf';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { isEmpty, omit } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, TextInput, View } from 'react-native';
-
 interface Props {
   onUpdateProfile?: () => void;
 }
@@ -181,6 +181,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
           value={cpf}
           onChangeText={setCpf}
           onSubmitEditing={() => birthdayRef.current?.focus()}
+          error={cpf?.length === 11 && !cpfutils.isValid(cpf)}
         />
       </View>
       <SafeAreaView>
@@ -206,7 +207,7 @@ export default function ProfilePersonalData({ onUpdateProfile }: Props) {
         <DefaultButton
           style={{ marginTop: paddings.lg, marginBottom: paddings.xl }}
           title={profileValid ? (editing ? 'Salvar' : 'Atualizar dados') : 'Salvar e avançar'}
-          disabled={isLoading || hasPendingChange}
+          disabled={isLoading || hasPendingChange || !isProfileValid(updatedUser)}
           onPress={updateProfileHandler}
         />
       </SafeAreaView>

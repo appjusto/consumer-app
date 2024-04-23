@@ -17,7 +17,7 @@ export const AdreessBar = ({ style, ...props }: Props) => {
   // handlers
   const placesHandler = () =>
     isAnonymous
-      ? router.navigate({ pathname: '/places/new' })
+      ? router.navigate({ pathname: '/sign-in' })
       : router.navigate({ pathname: '/places' });
   const newPlaceHandler = () => router.navigate({ pathname: '/places/new' });
   // UI
@@ -46,7 +46,7 @@ export const AdreessBar = ({ style, ...props }: Props) => {
         ) : (
           <Pressable onPress={newPlaceHandler}>
             <MessageBox variant="warning">
-              Usando sua localização aproximada. Faça login ou clique para definir o endereço de
+              Usando sua localização aproximada. Clique para fazer login e definir seu endereço de
               entrega
             </MessageBox>
           </Pressable>

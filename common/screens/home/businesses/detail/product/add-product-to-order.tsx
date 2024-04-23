@@ -68,7 +68,7 @@ export const AddProductToOrder = ({
         </View>
       ) : (
         <View style={{ padding: paddings.lg }}>
-          <DefaultButton title="Faça login para comprar" onPress={() => router.push('/sign-in')} />
+          <DefaultButton title="Faça login para pedir" onPress={() => router.push('/sign-in')} />
         </View>
       )}
     </View>
