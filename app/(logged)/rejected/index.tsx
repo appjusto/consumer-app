@@ -12,28 +12,24 @@ import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router } from 'expo-router';
+import { Stack, router, useGlobalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 export default function SubmittedIndex() {
+  // params
+  const params = useGlobalSearchParams<{ uploaded: string }>();
+  const uploaded = params.uploaded === 'true';
   // context
   const api = useContextApi();
   const showToast = useShowToast();
   const profile = useContextProfile();
-  let issues = (profile?.profileIssues ?? []).map((value) =>
-    typeof value === 'string' ? value : value.title
-  );
-  const rejectedDuePrevious = Boolean(
-    profile?.profileIssues?.find(
-      (issue) =>
-        typeof issue === 'object' && issue.id === 'courier-profile-invalid-phone-already-in-use'
-    )
-  );
-  if (profile?.profileIssuesMessage) issues = [...issues, profile.profileIssuesMessage];
-  if (!issues?.length) issues = ['Entre em contato com nosso suporte'];
   // state
   // track
-  useTrackScreenView('Cadastro reprovado', { issues }, profile?.situation === 'rejected');
+  useTrackScreenView(
+    'Cadastro reprovado',
+    { consumerId: profile?.id },
+    profile?.situation === 'rejected'
+  );
   // handlers
   const fixProfile = () => {
     api
@@ -43,7 +39,7 @@ export default function SubmittedIndex() {
         console.error(error);
         if (error instanceof Error) crashlytics().recordError(error);
         showToast(
-          'Não foi possível alterar seu cadastro. Entre em contato com nosso suporte.',
+          'Não foi possível submeter seu cadastro. Entre em contato com nosso suporte.',
           'error'
         );
       });
@@ -53,7 +49,15 @@ export default function SubmittedIndex() {
     <View style={{ ...screens.default }}>
       <Stack.Screen options={{ title: 'Cadastro', headerBackVisible: false }} />
       <DefaultScrollView>
-        <FeedbackHeader title="Seu cadastro precisa de correções" text={issues} variant="error" />
+        <FeedbackHeader
+          title="Confirmação de identidade"
+          text={
+            uploaded
+              ? ['Pronto! Agora basta confirmar e aguardar a validação']
+              : ['Para garantir uma compra segura, precisamos confirmar sua identidade']
+          }
+          variant={uploaded ? 'success' : 'error'}
+        />
         <View
           style={{
             flex: 1,
@@ -62,30 +66,29 @@ export default function SubmittedIndex() {
             backgroundColor: colors.neutral50,
           }}
         >
-          <DefaultText size="lg">Bora tentar de novo?</DefaultText>
+          <DefaultText size="lg">O que aconteceu?</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm, ...lineHeight.md }} size="md">
-            {!rejectedDuePrevious
-              ? 'Você pode resolver as pendências, fazer alterações neste mesmo cadastro, reenviá-lo e então ele será novamente analisado. '
-              : 'Para você acessar seu cadastro anterior associado a esse telefone, será preciso refazer o login.'}
+            Nossos pedidos passam por uma triagem para garantir a segurança da plataforma. Para
+            continuar, precisamos que você confirme sua identidade enviando a foto do seu RG e uma
+            selfie sua.
           </DefaultText>
           <DefaultText style={{ marginTop: paddings.lg, ...lineHeight.md }} size="md">
             Se você tiver dúvidas, nosso time de atendimento está aqui pra te ajudar!
           </DefaultText>
 
           <View style={{ flex: 1 }} />
-          {!rejectedDuePrevious ? (
-            <DefaultButton
-              style={{ marginTop: paddings.lg }}
-              title="Alterar cadastro"
-              onPress={fixProfile}
-            />
-          ) : (
-            <DefaultButton
-              style={{ marginTop: paddings.lg }}
-              title="Refazer login"
-              onPress={() => router.replace('/welcome/')}
-            />
-          )}
+          <DefaultButton
+            style={{ marginTop: paddings.lg }}
+            title={uploaded ? 'Confirmar' : 'Enviar fotos'}
+            onPress={() => {
+              if (uploaded) fixProfile();
+              else
+                router.replace({
+                  pathname: '/(logged)/rejected/images',
+                });
+            }}
+          />
+
           <DefaultButton
             style={{ marginTop: paddings.md }}
             variant="outline"

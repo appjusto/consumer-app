@@ -31,12 +31,16 @@ export const P2POrder = ({ order, style, ...props }: Props) => {
     api
       .orders()
       .createP2POrder({
-        ...pick(order, ['origin', 'destination']),
+        ...pick(order, ['origin']),
+      })
+      .then(async (orderId) => {
+        await api.orders().updateOrder(orderId, { destination: order.destination });
+        return orderId;
       })
       .then((orderId) => {
         showToast('Pedido criado com sucesso!', 'success');
         router.navigate({
-          pathname: '/(logged)/checkout/[orderId]/',
+          pathname: '/(logged)/(tabs)/encomendas/new',
           params: { orderId },
         });
       })

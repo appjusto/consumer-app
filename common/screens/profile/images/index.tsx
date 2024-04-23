@@ -32,26 +32,24 @@ export default function ProfilePersonalImages({ onUpdateProfile }: Props) {
   const api = useContextApi();
   const showToast = useShowToast();
   const profile = useContextProfile();
-  const courierId = profile?.id;
-  const approved = profile?.situation === 'approved';
-  const canUploadImages = !approved;
+  const consumerId = profile?.id;
   const { showActionSheetWithOptions } = useActionSheet();
   // state
   const [cameraPermissionStatus, requestCameraPermission] = useCameraPermissions();
   const [mediaPermissionStatus, requestMediaPermission] = useMediaLibraryPermissions();
-  const size = approved ? '1024' : undefined;
+  const size = '1024';
   const [selfieBase64, setSelfieBase64] = useState('');
   const [documentBase64, setDocumentBase64] = useState('');
   const {
     downloadURL: selfieUrl,
     loading: loadingSelfie,
     upload: uploadSelfie,
-  } = useStorageFile(courierId ? api.profile().getSelfiePath(size) : undefined);
+  } = useStorageFile(consumerId ? api.profile().getSelfiePath(size) : undefined);
   const {
     downloadURL: documentUrl,
     loading: loadingDocument,
     upload: uploadDocument,
-  } = useStorageFile(courierId ? api.profile().getDocumentPath(size) : undefined);
+  } = useStorageFile(consumerId ? api.profile().getDocumentPath(size) : undefined);
   // helpers
 
   // const canUploadImages = getEnv() !== 'live' || courier?.situation !== 'approved';
@@ -62,7 +60,7 @@ export default function ProfilePersonalImages({ onUpdateProfile }: Props) {
     showToast(message, 'error');
   };
   const pickAndUpload = async (from: PickImageFrom, type: ImageType, aspect: [number, number]) => {
-    if (!courierId) return;
+    if (!consumerId) return;
     try {
       if (onSimulator()) {
         if (!mediaPermissionStatus?.granted) {
@@ -99,7 +97,6 @@ export default function ProfilePersonalImages({ onUpdateProfile }: Props) {
     }
   };
   const actionSheetHandler = (type: ImageType, aspect: [number, number]) => {
-    if (!canUploadImages) return;
     showActionSheetWithOptions(
       {
         options: ['Tirar uma foto', 'Escolher da galeria', 'Cancelar'],
@@ -153,16 +150,14 @@ export default function ProfilePersonalImages({ onUpdateProfile }: Props) {
       </View>
 
       <View style={{ flex: 1 }} />
-      {canUploadImages ? (
-        <DefaultButton
-          style={{ marginTop: paddings.lg, marginBottom: paddings.xl }}
-          title="Salvar e avançar"
-          disabled={!selfieUrl || !documentUrl}
-          onPress={() => {
-            if (onUpdateProfile) onUpdateProfile();
-          }}
-        />
-      ) : null}
+      <DefaultButton
+        style={{ marginTop: paddings.lg, marginBottom: paddings.xl }}
+        title="Salvar e avançar"
+        disabled={!selfieUrl || !documentUrl}
+        onPress={() => {
+          if (onUpdateProfile) onUpdateProfile();
+        }}
+      />
     </DefaultScrollView>
   );
 }

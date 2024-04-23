@@ -31,6 +31,7 @@ export const AuthProvider = (props: Props) => {
   useEffect(() => {
     if (!userId) return;
     if (isAnonymous) {
+      console.log('isAnonymous', userId);
       setProfile(null);
       return;
     }
