@@ -120,6 +120,7 @@ export default function BusinessDetailScreen() {
       />
       <CartButton
         order={quote}
+        title="Ver sacola"
         variant="total-products"
         disabled={!quote}
         onPress={checkoutHandler}
