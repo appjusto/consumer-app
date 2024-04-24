@@ -53,12 +53,33 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     intentFilters: [
       {
         action: 'VIEW',
-        autoVerify: true,
         data: [
           {
             scheme: 'https',
             host: domain,
-            pathPrefix: '/',
+            pathPrefix: '/r',
+          },
+        ],
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+      {
+        action: 'VIEW',
+        data: [
+          {
+            scheme: 'https',
+            host: domain,
+            pathPrefix: '/search',
+          },
+        ],
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
+      {
+        action: 'VIEW',
+        data: [
+          {
+            scheme: 'https',
+            host: domain,
+            pathPrefix: '/profile',
           },
         ],
         category: ['BROWSABLE', 'DEFAULT'],
