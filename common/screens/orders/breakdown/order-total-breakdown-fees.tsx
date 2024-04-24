@@ -142,7 +142,7 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
               </View>
             ) : null}
             {/* credits */}
-            {credits ? (
+            {/* {credits ? (
               <View style={{ marginTop: paddings.lg }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <DefaultText size="md" color="primary900">
@@ -159,7 +159,7 @@ export const OrderTotalBreakdownFees = ({ order, style, ...props }: Props) => {
                   estamos trabalhando pra que isso aconteça cada vez menos!
                 </DefaultText>
               </View>
-            ) : null}
+            ) : null} */}
           </View>
         ) : null}
       </Pressable>

@@ -61,7 +61,7 @@ export default function OrderCompletedScreen() {
       .updateOrder(order.id, { status: 'quote' })
       .then(() => {
         router.navigate({
-          pathname: '/(logged)/checkout/[orderId]/',
+          pathname: '/(logged)/checkout/[orderId]/payment',
           params: { orderId: order.id },
         });
       });

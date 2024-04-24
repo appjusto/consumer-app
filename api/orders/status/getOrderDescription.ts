@@ -13,7 +13,9 @@ export const getOrderDescription = (order: Order) => {
   }
   if (status === 'ready') {
     if (fulfillment === 'delivery') {
-      if (dispatchingStatus === 'outsourced') {
+      if (fare?.courier?.payee === 'business') {
+        return 'Sua estrega será feita pelo próprio restaurante';
+      } else if (dispatchingStatus === 'outsourced') {
         return 'Sua estrega será feita por uma empresa parceira. Lembre-se que seu pedido já foi pago 💰';
       } else if (dispatchingState && dispatchingState !== 'idle') {
         const person = order.courier?.name ? `${order.courier?.name},` : 'A pessoa';
@@ -21,8 +23,6 @@ export const getOrderDescription = (order: Order) => {
           type,
           dispatchingState
         ).toLocaleLowerCase()}`;
-      } else if (fare?.courier?.payee === 'business') {
-        return 'Sua estrega será feita pelo próprio restaurante';
       }
       return 'Estamos procurando uma pessoa para fazer a sua entrega';
     } else {
@@ -30,7 +30,9 @@ export const getOrderDescription = (order: Order) => {
     }
   }
   if (status === 'dispatching') {
-    if (dispatchingStatus === 'outsourced') {
+    if (fare?.courier?.payee === 'business') {
+      return 'Sua estrega está sendo feita pelo próprio restaurante';
+    } else if (dispatchingStatus === 'outsourced') {
       return 'Sua estrega está sendo feita por uma empresa parceira. Lembre-se que seu pedido já foi pago 💰';
     } else if (dispatchingState && dispatchingState !== 'idle') {
       const person = order.courier?.name ? `${order.courier?.name}` : 'A pessoa';
@@ -38,8 +40,6 @@ export const getOrderDescription = (order: Order) => {
         type,
         dispatchingState
       ).toLocaleLowerCase()}`;
-    } else if (fare?.courier?.payee === 'business') {
-      return 'Sua estrega está sendo feita pelo próprio restaurante';
     }
   }
   if (status === 'confirmed') {

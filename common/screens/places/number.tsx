@@ -12,7 +12,7 @@ import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useGlobalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
@@ -38,7 +38,7 @@ export const NewPlaceNumber = ({ basePathname }: Props) => {
     secondary,
     googlePlaceId = '',
     key = '',
-  } = useGlobalSearchParams<Params>();
+  } = useLocalSearchParams<Params>();
   // context
   const api = useContextApi();
   const showToast = useShowToast();

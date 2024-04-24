@@ -9,7 +9,7 @@ import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { LatLng } from '@appjusto/types';
-import { Stack, router, useGlobalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -27,7 +27,7 @@ interface Props {
 
 export const NewPlaceConfirm = ({ basePathname }: Props) => {
   // params
-  const params = useGlobalSearchParams<Params>();
+  const params = useLocalSearchParams<Params>();
   // context
   const api = useContextApi();
   const showToast = useShowToast();
