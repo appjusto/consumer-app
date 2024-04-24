@@ -10,9 +10,10 @@ interface Props extends ViewProps {
 }
 
 export const ProductImage = ({ url, size, recyclingKey, style, ...props }: Props) => {
+  if (url === null) return null;
   return (
     <View style={[{ borderRadius: 8, overflow: 'hidden' }, style]} {...props}>
-      <Skeleton.Group show={!url}>
+      <Skeleton.Group show={url === undefined}>
         <Skeleton colors={[colors.neutral50, colors.neutral100]} width={size} height={size}>
           <View>
             {url ? (

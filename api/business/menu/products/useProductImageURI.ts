@@ -13,7 +13,7 @@ export const useProductImageURI = (
   const api = useContextApi();
   // state
   const [productId, setProductId] = useState<string>();
-  const [productURL, setProductURL] = useState<string>();
+  const [productURL, setProductURL] = useState<string | null>();
   // side effects
   useEffect(() => {
     if (!product) return;
@@ -37,8 +37,9 @@ export const useProductImageURI = (
       .getDownloadURL()
       .then((url) => {
         if (url) setProductURL(url);
+        else setProductURL(null);
       })
-      .catch(() => null);
+      .catch(() => setProductURL(null));
   }, [api, businessId, productId, type]);
   // result
   return productURL;
