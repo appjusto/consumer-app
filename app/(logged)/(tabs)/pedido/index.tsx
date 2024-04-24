@@ -1,5 +1,4 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { getOrderPath } from '@/api/orders/navigation/getOrderPath';
 import { useObserveOrdersFromPeriod } from '@/api/orders/useObserveOrdersFromPeriod';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -38,14 +37,11 @@ export default function OrdersIndex() {
     [from, to]
   );
   const handleClick = (order: WithId<Order>) => {
-    const { status, type, paymentMethod } = order;
-    const pathname = getOrderPath(status, type, paymentMethod);
-    if (pathname) {
-      router.navigate({
-        pathname,
-        params: { orderId: order.id },
-      });
-    }
+    // console.log('handleClick', order.id);
+    router.navigate({
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/',
+      params: { orderId: order.id },
+    });
   };
   const title = 'Meus pedidos';
   if (!orders) return <Loading title={title} />;

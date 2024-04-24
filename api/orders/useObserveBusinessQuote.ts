@@ -9,7 +9,7 @@ export const useObserveBusinessQuote = (enabled = true) => {
   const { businessId } = useGlobalSearchParams<{ businessId: string }>();
   const api = useContextApi();
   // refs
-  const optionsRef = useRef<ObserveOrdersOptions>({ statuses: ['quote'], limit: 1 });
+  const optionsRef = useRef<ObserveOrdersOptions>({ statuses: ['quote', 'declined'], limit: 1 });
   const options = optionsRef.current;
   // state
   const [orders, setOrders] = useState<WithId<Order>[]>();

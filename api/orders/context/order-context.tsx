@@ -34,6 +34,7 @@ export const OrderProvider = ({ children }: Props) => {
   // params
   const params = useGlobalSearchParams<{ orderId: string }>();
   const orderId = params.orderId;
+  console.log('OrderProvider', orderId);
   // state
   const orderWithId = useObserveOrder(orderId);
   const businessQuote = useObserveBusinessQuote();

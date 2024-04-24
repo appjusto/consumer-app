@@ -5,7 +5,6 @@ import { useContextOrder } from '@/api/orders/context/order-context';
 import { FailedOrdersStatuses } from '@/api/orders/status';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';

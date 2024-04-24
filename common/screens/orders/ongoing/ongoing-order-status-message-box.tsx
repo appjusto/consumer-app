@@ -17,6 +17,7 @@ interface Props extends ViewProps {
 
 export const OngoingOrderStatusMessageBox = ({ order, style, ...props }: Props) => {
   const { status, type, dispatchingState } = order;
+  if (status === 'quote') return null;
   // UI
   // if (!isOrderOngoing(status)) return null;
   const variant = (() => {

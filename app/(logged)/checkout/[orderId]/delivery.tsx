@@ -17,6 +17,7 @@ import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Fulfillment } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
+import { useIsFocused } from '@react-navigation/native';
 import { Stack, router } from 'expo-router';
 import { isEqual } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
@@ -29,6 +30,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const business = useContextOrderBusiness();
   const api = useContextApi();
   const showToast = useShowToast();
+  const focused = useIsFocused();
   // state
   const issues = useCheckoutIssues(true, false);
   const [acceptedFulfillments, setAcceptedFulfillments] = useState<Fulfillment[]>([]);
@@ -54,6 +56,7 @@ export default function OrderCheckoutDeliveryScreen() {
   );
   // side effects
   useEffect(() => {
+    if (!focused) return;
     if (!quote) return;
     let accepted = acceptedFulfillments;
     if (!business?.fulfillment?.length) {
@@ -65,12 +68,12 @@ export default function OrderCheckoutDeliveryScreen() {
       }
     }
     if (!isEqual(acceptedFulfillments, accepted)) setAcceptedFulfillments(accepted);
-  }, [quote, business, acceptedFulfillments, updateFulfillment]);
+  }, [focused, quote, business, acceptedFulfillments, updateFulfillment]);
   // handlers
   const checkoutHandler = () => {
     if (!quote) return;
     router.navigate({
-      pathname: '/(logged)/checkout/[orderId]/payment',
+      pathname: '/checkout/[orderId]/payment',
       params: { orderId: quote.id },
     });
   };

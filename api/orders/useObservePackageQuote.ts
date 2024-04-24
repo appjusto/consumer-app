@@ -10,7 +10,11 @@ export const useObservePackageQuote = () => {
   const pathname = usePathname();
   const enabled = pathname.startsWith('/encomendas');
   // refs
-  const optionsRef = useRef<ObserveOrdersOptions>({ statuses: ['quote'], type: 'p2p', limit: 1 });
+  const optionsRef = useRef<ObserveOrdersOptions>({
+    statuses: ['quote', 'declined'],
+    type: 'p2p',
+    limit: 1,
+  });
   const options = optionsRef.current;
   // state
   const [orders, setOrders] = useState<WithId<Order>[]>();

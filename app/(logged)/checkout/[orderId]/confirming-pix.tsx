@@ -2,7 +2,7 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { OrderConfirmingPix } from '@/common/screens/orders/confirming/confirming-pix';
 
-export default function OrderDetailConfirmingPixScreen() {
+export default function OrderCheckoutConfirmingPixScreen() {
   // context
   const order = useContextOrder();
   const orderId = order?.id;

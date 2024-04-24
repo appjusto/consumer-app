@@ -43,78 +43,81 @@ export const CancelOrderModal = ({
   useTrackScreenView('Cancelar pedido', { issueType }, visible);
   // UI
   if (!visible) return null;
-  if (!issues || costs === undefined) return <Loading />;
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
-      <Pressable style={{ flex: 1 }} onPress={onDismiss}>
-        {() => (
-          <DefaultScrollView style={{ ...screens.default }}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                backgroundColor: 'rgba(0, 0, 0, 0.45)',
-              }}
-            >
-              <View style={{ flex: 0.8, padding: paddings.lg, backgroundColor: colors.white }}>
-                <ModalHandle style={{ marginTop: paddings.xl }} />
-                {costs > 0 ? (
-                  <MessageBox
-                    style={{ marginTop: paddings.xl }}
-                    variant="warning"
-                  >{`Como o seu pedido já foi iniciado, o valor de ${formatCurrency(
-                    costs
-                  )} não será reembolsado.`}</MessageBox>
-                ) : null}
-                <DefaultText style={{ marginTop: paddings.xl }} size="lg">
-                  {title}
-                </DefaultText>
-                {/* issues */}
-                <View style={{ marginTop: paddings.lg }}>
-                  {issues.map((issue) => (
-                    <Pressable key={issue.id}>
-                      <View style={{ marginTop: paddings.xl }}>
-                        <RadioButton
-                          // @ts-ignore
-                          textStyle={{ ...typography.sm }}
-                          title={issue.title}
-                          checked={selectedIssue?.id === issue.id}
-                          onPress={() => {
-                            setSelectedIssue(issue);
-                          }}
-                        />
-                      </View>
-                    </Pressable>
-                  ))}
-                </View>
-                {/* comment */}
-                <View style={{ marginTop: paddings.lg }}>
-                  <DefaultText style={{ marginTop: paddings.lg }} color="black">
-                    Quer acrescentar algum comentário?
+      {issues && costs !== undefined ? (
+        <Pressable style={{ flex: 1 }} onPress={onDismiss}>
+          {() => (
+            <DefaultScrollView style={{ ...screens.default }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                }}
+              >
+                <View style={{ flex: 0.8, padding: paddings.lg, backgroundColor: colors.white }}>
+                  <ModalHandle style={{ marginTop: paddings.xl }} />
+                  {costs > 0 ? (
+                    <MessageBox
+                      style={{ marginTop: paddings.xl }}
+                      variant="warning"
+                    >{`Como o seu pedido já foi iniciado, o valor de ${formatCurrency(
+                      costs
+                    )} não será reembolsado.`}</MessageBox>
+                  ) : null}
+                  <DefaultText style={{ marginTop: paddings.xl }} size="lg">
+                    {title}
                   </DefaultText>
-                  <DefaultInput
-                    inputStyle={{ textAlignVertical: 'top', minHeight: 70 }}
-                    placeholder="Escreva sua mensagem"
-                    value={comment}
-                    multiline
-                    onChangeText={setComment}
+                  {/* issues */}
+                  <View style={{ marginTop: paddings.lg }}>
+                    {issues.map((issue) => (
+                      <Pressable key={issue.id}>
+                        <View style={{ marginTop: paddings.xl }}>
+                          <RadioButton
+                            // @ts-ignore
+                            textStyle={{ ...typography.sm }}
+                            title={issue.title}
+                            checked={selectedIssue?.id === issue.id}
+                            onPress={() => {
+                              setSelectedIssue(issue);
+                            }}
+                          />
+                        </View>
+                      </Pressable>
+                    ))}
+                  </View>
+                  {/* comment */}
+                  <View style={{ marginTop: paddings.lg }}>
+                    <DefaultText style={{ marginTop: paddings.lg }} color="black">
+                      Quer acrescentar algum comentário?
+                    </DefaultText>
+                    <DefaultInput
+                      inputStyle={{ textAlignVertical: 'top', minHeight: 70 }}
+                      placeholder="Escreva sua mensagem"
+                      value={comment}
+                      multiline
+                      onChangeText={setComment}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }} />
+                  <DefaultButton
+                    style={{ marginVertical: paddings.lg }}
+                    title="Enviar"
+                    disabled={!selectedIssue || loading}
+                    loading={loading}
+                    onPress={() => {
+                      if (selectedIssue) onConfirm(costs, selectedIssue, comment);
+                    }}
                   />
                 </View>
-                <View style={{ flex: 1 }} />
-                <DefaultButton
-                  style={{ marginVertical: paddings.lg }}
-                  title="Enviar"
-                  disabled={!selectedIssue || loading}
-                  loading={loading}
-                  onPress={() => {
-                    if (selectedIssue) onConfirm(costs, selectedIssue, comment);
-                  }}
-                />
               </View>
-            </View>
-          </DefaultScrollView>
-        )}
-      </Pressable>
+            </DefaultScrollView>
+          )}
+        </Pressable>
+      ) : (
+        <Loading />
+      )}
     </Modal>
   );
 };

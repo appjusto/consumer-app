@@ -47,6 +47,7 @@ export default function OrderCheckoutScreen() {
     }
   };
   // logs
+  // console.log(coupon);
   console.log('checkout/[orderId]/index', typeof order, order?.id);
   // UI
   if (!order || isOrderEmpty(order)) return <EmptyCart />;
@@ -64,7 +65,6 @@ export default function OrderCheckoutScreen() {
     }
     return 'Adicione um cupom ao pedido';
   })();
-  console.log(coupon);
   return (
     <View style={{ ...screens.default }}>
       <DefaultScrollView>

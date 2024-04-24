@@ -17,18 +17,16 @@ import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confirmation/order-selected-destination';
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
-import { useBackWhenOrderExpires } from '@/common/screens/orders/checkout/useBackWhenOrderExpires';
 import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useNavigation } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
   // context
-  const navigation = useNavigation();
   const api = useContextApi();
   const showToast = useShowToast();
   const quote = useContextOrder();
@@ -43,39 +41,38 @@ export default function OrderCheckoutDeliveryScreen() {
     businessId: quote?.business?.id,
     orderId: quote?.id,
   });
-  useBackWhenOrderExpires(!loading);
+  // useBackWhenOrderExpires(!loading);
   // handlers
   const canPlaceOrder = Boolean(placeOptions) && !issues.length;
-  const placeOrder = () => {
+  const paidWithPix = placeOptions?.payment.payableWith === 'pix';
+  const placeOrder = async () => {
     if (!placeOptions) return;
+    console.log(placeOptions);
     setLoading(true);
-    api
-      .orders()
-      .placeOrder(placeOptions)
-      .then(() => {
-        trackEvent('Pedido feito');
-        console.log(placeOptions);
-        if (quote?.type === 'food') {
-          router.navigate('/(logged)/(tabs)/(home)/');
-        } else {
-          router.navigate('/(logged)/(tabs)/encomendas');
-        }
-        // @ts-ignore
-        navigation.navigate('pedido', {
-          screen:
-            '[orderId]/confirming' + (placeOptions.payment.payableWith === 'pix' ? '-pix' : ''),
+    if (quote?.status === 'declined') {
+      await api.orders().updateOrder(quote.id, { status: 'quote' });
+    }
+    try {
+      await api.orders().placeOrder(placeOptions);
+      trackEvent('Pedido feito');
+      if (paidWithPix) {
+        router.navigate({
+          pathname: '/checkout/[orderId]/confirming-pix',
           params: { orderId: placeOptions.orderId },
-          initial: false,
         });
-      })
-      .catch((error) => {
-        setLoading(false);
-        if (error instanceof Error) {
-          showToast(error.message, 'error');
-          crashlytics().recordError(error);
-        } else {
-        }
-      });
+      } else {
+        router.navigate({
+          pathname: '/checkout/[orderId]/confirming',
+          params: { orderId: placeOptions.orderId },
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        showToast(error.message, 'error');
+        crashlytics().recordError(error);
+      }
+    }
+    setLoading(false);
   };
   const completeProfileHandler = () => {
     if (!quote) return;
@@ -86,7 +83,7 @@ export default function OrderCheckoutDeliveryScreen() {
   };
   // logs
   console.log('checkout/[orderId]/confirmation', typeof quote, quote?.id);
-  console.log(placeOptions);
+  // console.log(placeOptions);
   // UI
   if (!quote) return null;
   const deliveryOrTakeAway = quote.fulfillment === 'delivery' ? 'Entrega' : 'Retirada';
@@ -126,13 +123,20 @@ export default function OrderCheckoutDeliveryScreen() {
             </View>
           ) : null}
         </DefaultView>
+
+        <View style={{ flex: 1 }} />
+        {issues.length ? (
+          <MessageBox variant="warning" style={{ margin: paddings.lg, marginTop: 0 }}>
+            {issues[0].description}
+          </MessageBox>
+        ) : null}
+        {quote.status === 'declined' ? (
+          <MessageBox variant="error" style={{ margin: paddings.lg, marginTop: 0 }}>
+            {quote.issue ??
+              'Transação não autorizada. Tente novamente com outra forma de pagamento.'}
+          </MessageBox>
+        ) : null}
       </DefaultScrollView>
-      <View style={{ flex: 1 }} />
-      {issues.length ? (
-        <MessageBox variant="warning" style={{ margin: paddings.lg, marginTop: 0 }}>
-          {issues[0].description}
-        </MessageBox>
-      ) : null}
       <View>
         <HRShadow />
         <View

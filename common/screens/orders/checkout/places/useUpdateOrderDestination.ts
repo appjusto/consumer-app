@@ -2,7 +2,7 @@ import { useContextApi } from '@/api/ApiContext';
 import { useFetchPlace } from '@/api/consumer/places/useFetchPlace';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 
 export const useUpdateOrderDestination = () => {
@@ -20,6 +20,7 @@ export const useUpdateOrderDestination = () => {
     // console.log('useUpdateOrderDestination', orderId, place);
     if (!orderId) return;
     if (!place) return;
+    router.setParams({ placeId: '' });
     api
       .orders()
       .updateOrder(orderId, { destination: place })

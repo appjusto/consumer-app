@@ -1,6 +1,6 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
-import { useOrderRoute } from '@/api/orders/navigation/useOrderRoute';
+import { isOrderOngoing } from '@/api/orders/status';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { Loading } from '@/common/components/views/Loading';
 import { OngoingOrderCourier } from '@/common/screens/orders/ongoing/ongoing-order-courier';
@@ -8,7 +8,9 @@ import { OngoingOrderPickupAddress } from '@/common/screens/orders/ongoing/ongoi
 import { OngoingOrderShareLink } from '@/common/screens/orders/ongoing/ongoing-order-share-link';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Stack } from 'expo-router';
+import { useIsFocused } from '@react-navigation/native';
+import { Stack, router } from 'expo-router';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import { OngoingOrderDeliveryAddress } from '../../../../../common/screens/orders/ongoing/ongoing-order-delivery-address';
 import { OngoingOrderEstimate } from '../../../../../common/screens/orders/ongoing/ongoing-order-delivery-estimate';
@@ -21,10 +23,21 @@ export default function OngoingOrderScreen() {
   const order = useContextOrder();
   const orderId = order?.id;
   const status = order?.status;
+  // state
+  const isFocused = useIsFocused();
   // tracking
   useTrackScreenView('Pedido em andamento', { orderId, status });
   // side effects
-  useOrderRoute('ongoing');
+  useEffect(() => {
+    if (!orderId) return;
+    if (!status) return;
+    if (!isFocused) return;
+    if (isOrderOngoing(status)) return;
+    router.replace({
+      pathname: '/(logged)/(tabs)/pedido/[orderId]/completed',
+      params: { orderId },
+    });
+  }, [orderId, status, isFocused]);
   // UI
   if (!order) return <Loading title="" />;
   return (
