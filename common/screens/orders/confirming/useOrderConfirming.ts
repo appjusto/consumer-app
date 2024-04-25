@@ -8,7 +8,7 @@ export const useOrderConfirming = () => {
   // context
   const order = useContextOrder();
   const orderId = order?.id;
-  const { status, type } = order ?? {};
+  const { status, type, paymentMethod } = order ?? {};
   const navigation = useNavigation();
   const segments = useSegments();
   const ordersTab = segments.some((value) => value === 'pedido');
@@ -19,7 +19,21 @@ export const useOrderConfirming = () => {
     if (!status) return;
     if (!isFocused) return;
     if (isOrderBeforeConfirmed(status)) return;
-    if (status === 'confirmed' && type === 'food') return;
+    if (status === 'confirmed') {
+      if (paymentMethod === 'pix') {
+        if (!ordersTab) {
+          router.replace({
+            pathname: '/(logged)/checkout/[orderId]/confirming',
+            params: { orderId },
+          });
+        } else {
+          router.replace({
+            pathname: '/(logged)/(tabs)/pedido/[orderId]/confirming',
+            params: { orderId },
+          });
+        }
+      } else if (type === 'food') return;
+    }
     if (status === 'declined') {
       if (!ordersTab) {
         router.back();
@@ -32,5 +46,5 @@ export const useOrderConfirming = () => {
       params: { orderId },
       initial: true,
     });
-  }, [orderId, status, isFocused, type, ordersTab, navigation]);
+  }, [navigation, ordersTab, isFocused, orderId, status, type, paymentMethod]);
 };

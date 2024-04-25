@@ -17,7 +17,7 @@ import screens from '@/common/styles/screens';
 import { IuguPayment } from '@appjusto/types';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
-import { Stack } from 'expo-router';
+import { Stack, useSegments } from 'expo-router';
 import { Copy } from 'lucide-react-native';
 import { ActivityIndicator, View } from 'react-native';
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
@@ -36,6 +36,8 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
   const showToast = useShowToast();
   const order = useContextOrder();
   const orderId = order?.id;
+  const segments = useSegments();
+  const ordersTab = segments.some((value) => value === 'pedido');
   // state
   const pendingPayment = useObservePendingPayment(orderId);
   const pix = pendingPayment?.processor === 'iugu' ? (pendingPayment as IuguPayment).pix : null;
@@ -50,15 +52,21 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
   };
   // tracking
   useTrackScreenView('Checkout: confirmando pix', { orderId });
-  if (!order) return null;
+  if (!order) {
+    return (
+      <View>
+        <Stack.Screen options={{ title: 'Criando pedido', headerShown: ordersTab }} />
+      </View>
+    );
+  }
   const value = pendingPayment?.value ?? getOrderTotalCost(order);
   // UI
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'PIX' }} />
+      <Stack.Screen options={{ title: 'PIX', headerShown: ordersTab }} />
       <DefaultScrollView style={{ flex: 1 }}>
         <DefaultView style={{ padding: paddings.lg }}>
-          <DefaultText style={{ marginTop: paddings.xl }} size="lg">
+          <DefaultText style={{ marginTop: paddings.xl, textAlign: 'center' }} size="lg">
             Pagamento com PIX
           </DefaultText>
           {/* steps */}
@@ -102,7 +110,12 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
       <View>
         <HRShadow />
         <View
-          style={{ padding: paddings.lg, flexDirection: 'row', justifyContent: 'space-between' }}
+          style={{
+            padding: paddings.lg,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: paddings.xl,
+          }}
         >
           <DefaultText size="md" color="black">
             Aguardando pagamento
