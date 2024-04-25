@@ -32,66 +32,61 @@ export const PaymentCardModal = ({
   if (!type) return null;
   return (
     <Modal transparent animationType="slide" {...props}>
-      <Pressable style={{ flex: 1 }} onPress={onDismiss}>
-        {() => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
-            }}
-          >
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: paddings.lg,
-                backgroundColor: colors.white,
-              }}
-            >
-              <ModalHandle />
-              <DefaultText style={{ marginTop: paddings['2xl'] }} size="md" color="black">
-                {`${cardType.getTypeInfo(type as string).niceType}  ••••  ${getCardLastDigits(
-                  card
-                )}`}
-              </DefaultText>
-              <View style={{ marginTop: paddings['2xl'], flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <DefaultButton
-                    title="Excluir"
-                    variant="outline"
-                    leftView={
-                      <Trash2 style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
-                    }
-                    disabled={loading}
-                    loading={loading}
-                    onPress={onDelete}
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: paddings.lg }}>
-                  <DefaultButton
-                    title="Editar"
-                    variant="outline"
-                    leftView={
-                      <Pencil style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
-                    }
-                    disabled={loading}
-                    onPress={onView}
-                  />
-                </View>
-              </View>
-              <LinkButton
-                style={{ marginVertical: paddings['2xl'] }}
-                variant="destructive"
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        }}
+      >
+        <Pressable style={{ flex: 1 }} onPress={onDismiss} />
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: paddings.lg,
+            backgroundColor: colors.white,
+          }}
+        >
+          <ModalHandle />
+          <DefaultText style={{ marginTop: paddings['2xl'] }} size="md" color="black">
+            {`${cardType.getTypeInfo(type as string).niceType}  ••••  ${getCardLastDigits(card)}`}
+          </DefaultText>
+          <View style={{ marginTop: paddings['2xl'], flexDirection: 'row' }}>
+            <View style={{ flex: 1 }}>
+              <DefaultButton
+                title="Excluir"
+                variant="outline"
+                leftView={
+                  <Trash2 style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
+                }
                 disabled={loading}
-                onPress={onDismiss}
-              >
-                Cancelar
-              </LinkButton>
+                loading={loading}
+                onPress={onDelete}
+              />
+            </View>
+            <View style={{ flex: 1, marginLeft: paddings.lg }}>
+              <DefaultButton
+                title="Editar"
+                variant="outline"
+                leftView={
+                  <Pencil style={{ marginRight: paddings.sm }} size={20} color={colors.black} />
+                }
+                disabled={loading}
+                onPress={onView}
+              />
             </View>
           </View>
-        )}
-      </Pressable>
+          <LinkButton
+            style={{ marginVertical: paddings['2xl'] }}
+            variant="destructive"
+            disabled={loading}
+            onPress={onDismiss}
+          >
+            Cancelar
+          </LinkButton>
+        </View>
+      </View>
     </Modal>
   );
 };

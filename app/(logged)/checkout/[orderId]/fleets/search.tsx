@@ -28,7 +28,7 @@ export default function FleetsSearch() {
   if (!fleets) return <ScreenTitle title="Frotas disponíveis" loading />;
   return (
     <View style={{ ...screens.default, padding: paddings.lg }}>
-      <ScreenTitle title="Frotas disponíveis" />;
+      <ScreenTitle title="Frotas disponíveis" />
       <DefaultText size="lg">Frotas disponíveis</DefaultText>
       <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
         Você pode escolher a frota que vai fazer a sua entrega.{' '}

@@ -151,11 +151,15 @@ export default function ProductDetailScreen() {
           </MessageBox>
         ) : null}
       </DefaultKeyboardAwareScrollView>
-      {!currentPlace ? (
+      {isAnonymous || !currentPlace ? (
         <DefaultButton
           style={{ margin: paddings.lg }}
-          title="Definir local de entrega"
-          onPress={() => router.navigate({ pathname: '/places/new' })}
+          title={isAnonymous ? 'Fazer login para pedir' : 'Definir local de entrega'}
+          onPress={() =>
+            isAnonymous
+              ? router.navigate('/(home)/sign-in')
+              : router.navigate({ pathname: '/places/new' })
+          }
         />
       ) : (
         <AddProductToOrder

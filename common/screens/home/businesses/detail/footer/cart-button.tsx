@@ -1,4 +1,3 @@
-import { getOrderDiscounts } from '@/api/orders/total/getOrderDiscounts';
 import { getOrderItemsTotal } from '@/api/orders/total/getOrderItemsTotal';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
@@ -31,7 +30,7 @@ export const CartButton = ({
   if (!order) return null;
   const total =
     variant === 'total-products'
-      ? getOrderItemsTotal(order, true) - getOrderDiscounts(order)
+      ? getOrderItemsTotal(order, true)
       : variant === 'total-order'
       ? getOrderTotalCost(order)
       : 0;

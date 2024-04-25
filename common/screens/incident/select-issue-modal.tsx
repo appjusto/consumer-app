@@ -2,14 +2,13 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useIssues } from '@/api/platform/issues/useIssues';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { RadioButton } from '@/common/components/buttons/radio/radio-button';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import screens from '@/common/styles/screens';
 import typography from '@/common/styles/typography';
 import { Issue, IssueType } from '@appjusto/types';
 import { useState } from 'react';
@@ -42,7 +41,7 @@ export const SelectIssueModal = ({
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
       {issues ? (
-        <DefaultScrollView style={{ ...screens.default }}>
+        <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
           <View
             style={{
               flex: 1,
@@ -99,7 +98,7 @@ export const SelectIssueModal = ({
               />
             </View>
           </View>
-        </DefaultScrollView>
+        </DefaultKeyboardAwareScrollView>
       ) : (
         <Loading />
       )}

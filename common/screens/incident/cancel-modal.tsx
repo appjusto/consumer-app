@@ -3,7 +3,7 @@ import { useGetCancellationInfo } from '@/api/orders/cancellation/useGetCancella
 import { useIssues } from '@/api/platform/issues/useIssues';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { RadioButton } from '@/common/components/buttons/radio/radio-button';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -12,7 +12,6 @@ import { MessageBox } from '@/common/components/views/MessageBox';
 import { formatCurrency } from '@/common/formatters/currency';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import screens from '@/common/styles/screens';
 import typography from '@/common/styles/typography';
 import { Issue, IssueType } from '@appjusto/types';
 import { useState } from 'react';
@@ -46,7 +45,7 @@ export const CancelOrderModal = ({
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
       {issues && costs !== undefined ? (
-        <DefaultScrollView style={{ ...screens.default }}>
+        <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
           <View
             style={{
               flex: 1,
@@ -111,7 +110,7 @@ export const CancelOrderModal = ({
               />
             </View>
           </View>
-        </DefaultScrollView>
+        </DefaultKeyboardAwareScrollView>
       ) : (
         <Loading />
       )}

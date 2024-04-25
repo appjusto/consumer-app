@@ -182,7 +182,7 @@ export default function OrderCheckoutDeliveryScreen() {
               variant="outline"
               onPress={() =>
                 router.navigate({
-                  pathname: '/(logged)/checkout/[orderId]/delivery',
+                  pathname: '/(logged)/checkout/[orderId]/',
                   params: { orderId: quote.id },
                 })
               }

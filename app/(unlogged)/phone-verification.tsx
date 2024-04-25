@@ -18,7 +18,7 @@ import { useTimer } from '@/common/timer/useTimer';
 import analytics from '@react-native-firebase/analytics';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, TextInput, View } from 'react-native';
 
@@ -88,6 +88,7 @@ export default function PhoneVerification() {
       .then((result) => {
         trackEvent('Código confirmado', { phone });
         analytics().logLogin({ method: 'Firebase Phone' }).catch(console.error);
+        router.replace('/(logged)/(tabs)/(home)/');
       })
       .catch((error) => {
         setLoading(false);
