@@ -23,7 +23,6 @@ export const CheckButton = ({
             style={[
               {
                 flexDirection: 'row',
-                alignItems: 'center',
               },
               style,
             ]}

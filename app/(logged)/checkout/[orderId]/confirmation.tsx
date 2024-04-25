@@ -3,10 +3,11 @@ import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { checkoutHasIssue } from '@/api/orders/checkout/checkoutHasIssue';
 import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
-import { useContextOrder } from '@/api/orders/context/order-context';
+import { useContextOrder, useContextOrderOptions } from '@/api/orders/context/order-context';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { usePlaceOrderOptions } from '@/api/orders/payment/usePlaceOrderOptions';
 import { getOrderTotalCost } from '@/api/orders/total/getOrderTotalCost';
+import { CheckButton } from '@/common/components/buttons/check/CheckButton';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
@@ -18,6 +19,7 @@ import { OrderSelectedDestination } from '@/common/screens/orders/checkout/confi
 import { OrderSelectedPayment } from '@/common/screens/orders/checkout/confirmation/order-selected-payment';
 import { OrderSelectedSchedule } from '@/common/screens/orders/checkout/confirmation/order-selected-schedule';
 import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
+import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -31,6 +33,7 @@ export default function OrderCheckoutDeliveryScreen() {
   const showToast = useShowToast();
   const quote = useContextOrder();
   const { paymentMethod, selectedCard } = useContextPayments();
+  const { wantToShareData, setWantToShareData } = useContextOrderOptions() ?? {};
   // state
   const issues = useCheckoutIssues(true, true);
   const placeOptions = usePlaceOrderOptions();
@@ -129,8 +132,6 @@ export default function OrderCheckoutDeliveryScreen() {
             </View>
           ) : null}
         </DefaultView>
-
-        <View style={{ flex: 1 }} />
         {issues.length ? (
           <MessageBox variant="warning" style={{ margin: paddings.lg, marginTop: 0 }}>
             {issues[0].description}
@@ -142,7 +143,30 @@ export default function OrderCheckoutDeliveryScreen() {
               'Transação não autorizada. Tente novamente com outra forma de pagamento.'}
           </MessageBox>
         ) : null}
+        {quote.type === 'food' ? (
+          <View
+            style={{
+              marginHorizontal: paddings.lg,
+              paddingHorizontal: paddings.lg,
+              paddingVertical: paddings.lgg,
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: colors.neutral200,
+              backgroundColor: colors.neutral50,
+            }}
+          >
+            <CheckButton
+              title="Aceito compartilhar meu nome, telefone e e-mail, com o restaurante, para eventuais
+              promoções."
+              checked={wantToShareData ?? false}
+              onPress={() => {
+                if (setWantToShareData) setWantToShareData(!wantToShareData);
+              }}
+            />
+          </View>
+        ) : null}
       </DefaultScrollView>
+      <View style={{ flex: 1 }} />
       <View>
         <HRShadow />
         <View
