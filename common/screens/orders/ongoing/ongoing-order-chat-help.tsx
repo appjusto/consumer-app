@@ -28,7 +28,7 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
   );
   const hasUnreadMessages = hasUnreadMessagesFromCourier || hasUnreadMessagesFromBusiness;
   // UI
-  if (!order) return <Loading title="Pedido em andamento" />;
+  if (!order) return <Loading />;
   return (
     <View style={[{ flexDirection: 'row' }, style]} {...props}>
       <DefaultButton

@@ -8,7 +8,7 @@ export default function OrdersLayout() {
   return (
     <Stack
       screenOptions={({ route }) => {
-        return { headerShown: route.name !== 'index' };
+        return { headerShown: route.name !== 'index', headerBackTitleVisible: false };
       }}
     ></Stack>
   );

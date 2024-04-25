@@ -50,60 +50,57 @@ export const CouponModal = ({ order, visible, onCancel, ...props }: Props) => {
   // UI
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
-      <Pressable style={{ flex: 1 }} onPress={onCancel}>
-        {() => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
-            }}
-          >
-            <View
-              style={{
-                padding: paddings.lg,
-                backgroundColor: colors.white,
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        }}
+      >
+        <Pressable style={{ flex: 1 }} onPress={onCancel} />
+        <View
+          style={{
+            padding: paddings.lg,
+            backgroundColor: colors.white,
+          }}
+        >
+          <ModalHandle style={{ marginTop: paddings.xl }} />
+          <DefaultText style={{ marginTop: paddings.xl, alignSelf: 'center' }} size="lg">
+            Cupom ou código de indicação
+          </DefaultText>
+          <View style={{ marginVertical: paddings['2xl'] }}>
+            <DefaultText style={{ marginTop: paddings.lg }} color="black">
+              Código do cupom
+            </DefaultText>
+            <PatternInput
+              inputStyle={{ textAlignVertical: 'top' }}
+              placeholder="Digite o código do cupom"
+              pattern="coupon"
+              value={code}
+              maxLength={14}
+              error={feedback !== DefaultFeedback}
+              onChangeText={(value) => {
+                setCode(value);
+                setFeedback(DefaultFeedback);
               }}
+              onBlur={() => setCode((value) => value.toUpperCase())}
+            />
+            <DefaultText
+              style={{ marginTop: paddings.xs }}
+              color={feedback !== DefaultFeedback ? 'error500' : 'neutral800'}
             >
-              <ModalHandle style={{ marginTop: paddings.xl }} />
-              <DefaultText style={{ marginTop: paddings.xl, alignSelf: 'center' }} size="lg">
-                Cupom ou código de indicação
-              </DefaultText>
-              <View style={{ marginVertical: paddings['2xl'] }}>
-                <DefaultText style={{ marginTop: paddings.lg }} color="black">
-                  Código do cupom
-                </DefaultText>
-                <PatternInput
-                  inputStyle={{ textAlignVertical: 'top' }}
-                  placeholder="Digite o código do cupom"
-                  pattern="coupon"
-                  value={code}
-                  maxLength={14}
-                  error={feedback !== DefaultFeedback}
-                  onChangeText={(value) => {
-                    setCode(value);
-                    setFeedback(DefaultFeedback);
-                  }}
-                  onBlur={() => setCode((value) => value.toUpperCase())}
-                />
-                <DefaultText
-                  style={{ marginTop: paddings.xs }}
-                  color={feedback !== DefaultFeedback ? 'error500' : 'neutral800'}
-                >
-                  {feedback}
-                </DefaultText>
-              </View>
-              <DefaultButton
-                style={{ marginVertical: paddings.lg }}
-                title="Aplicar cupom"
-                disabled={code.length < 5}
-                loading={loading}
-                onPress={updateCupomHandler}
-              />
-            </View>
+              {feedback}
+            </DefaultText>
           </View>
-        )}
-      </Pressable>
+          <DefaultButton
+            style={{ marginVertical: paddings.lg }}
+            title="Aplicar cupom"
+            disabled={code.length < 5}
+            loading={loading}
+            onPress={updateCupomHandler}
+          />
+        </View>
+      </View>
     </Modal>
   );
 };

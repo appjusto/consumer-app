@@ -9,7 +9,7 @@ export default function HomeLayout() {
     <Stack
       screenOptions={({ route }) => {
         // console.log(route);
-        return { headerShown: route.name !== 'index' };
+        return { headerShown: route.name !== 'index', headerBackTitleVisible: false };
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Restaurantes' }} />

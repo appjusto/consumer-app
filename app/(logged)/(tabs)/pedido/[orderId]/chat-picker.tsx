@@ -3,9 +3,10 @@ import { CircledView } from '@/common/components/containers/CircledView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon, IconName } from '@/common/components/views/cards/icon';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
@@ -75,7 +76,7 @@ export default function ChatPickerScreen() {
         backgroundColor: colors.neutral50,
       }}
     >
-      <Stack.Screen options={{ title: 'Chat' }} />
+      <ScreenTitle title="Chat" />
       {businessId ? (
         <Pressable onPress={() => openChat(businessId)}>
           {() => (

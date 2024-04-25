@@ -7,9 +7,9 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { RoundedText } from '@/common/components/texts/RoundedText';
-import { Loading } from '@/common/components/views/Loading';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { FleetDetail } from '@/common/screens/fleets/fleet-detail';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -40,7 +40,7 @@ export default function FleetDetailScreen() {
       });
   };
   // UI
-  if (!fleet) return <Loading />;
+  if (!fleet) return <ScreenTitle title="Detalhes da frota" loading />;
   const usingFleet = false;
 
   return (
@@ -48,7 +48,7 @@ export default function FleetDetailScreen() {
       <Stack.Screen
         options={{
           title: `Frota ${fleet.name}`,
-          headerRight: (props) => (
+          headerRight: () => (
             <Pressable onPress={() => shareFleet(fleet.id, fleet.name)}>
               {() => <Share2 size={16} color={colors.neutral900} />}
             </Pressable>

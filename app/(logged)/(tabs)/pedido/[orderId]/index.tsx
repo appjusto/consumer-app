@@ -1,7 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { routeOrder } from '@/api/orders/navigation/routeOrder';
-import { Loading } from '@/common/components/views/Loading';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import { useEffect } from 'react';
 
 export default function OrderDetailScreen() {
@@ -18,5 +18,5 @@ export default function OrderDetailScreen() {
     routeOrder(orderId, status, type, paymentMethod);
   }, [orderId, paymentMethod, status, type]);
   // UI
-  return <Loading title="Carregando..." />;
+  return <ScreenTitle title="Carregando..." loading />;
 }

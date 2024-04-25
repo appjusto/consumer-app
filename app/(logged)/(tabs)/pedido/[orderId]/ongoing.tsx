@@ -2,14 +2,14 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { isOrderOngoing } from '@/api/orders/status';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
-import { Loading } from '@/common/components/views/Loading';
 import { OngoingOrderCourier } from '@/common/screens/orders/ongoing/ongoing-order-courier';
 import { OngoingOrderPickupAddress } from '@/common/screens/orders/ongoing/ongoing-order-pickup-address';
 import { OngoingOrderShareLink } from '@/common/screens/orders/ongoing/ongoing-order-share-link';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { useIsFocused } from '@react-navigation/native';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import { OngoingOrderDeliveryAddress } from '../../../../../common/screens/orders/ongoing/ongoing-order-delivery-address';
@@ -39,10 +39,11 @@ export default function OngoingOrderScreen() {
     });
   }, [orderId, status, isFocused]);
   // UI
-  if (!order) return <Loading title="" />;
+  if (!order) return <ScreenTitle title="Pedido em andamento" loading />;
+  const { code } = order;
   return (
     <DefaultScrollView style={[{ flex: 1, backgroundColor: colors.neutral50 }]}>
-      <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
+      <ScreenTitle title={`Pedido #${code}`} />
       <OngoingOrderEstimate order={order} />
       <OngoingOrderMapInfo order={order} />
       <View style={{ padding: paddings.lg, marginBottom: paddings.xl, borderWidth: 0 }}>

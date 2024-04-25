@@ -3,10 +3,11 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { PlacesList } from '@/common/screens/places/list/places-list';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place, WithId } from '@appjusto/types';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 
 export default function P2PPlaceSelect() {
@@ -49,7 +50,7 @@ export default function P2PPlaceSelect() {
   // UI
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title }} />
+      <ScreenTitle title={title} />
       <DefaultScrollView>
         <DefaultView style={{ padding: paddings.lg }}>
           <PlacesList onSelect={selectPlaceHandler} />

@@ -5,11 +5,11 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { CodeInput } from '@/common/components/inputs/code-input/CodeInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { handleErrorMessage } from '@/common/firebase/errors';
 import { phoneFormatter } from '@/common/formatters/phone';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import { RequestCodeModal } from '@/common/screens/unlogged/sign-in/request-code-modal';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
@@ -18,7 +18,7 @@ import { useTimer } from '@/common/timer/useTimer';
 import analytics from '@react-native-firebase/analytics';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, TextInput, View } from 'react-native';
 
@@ -141,7 +141,7 @@ export default function PhoneVerification() {
       });
   };
   // UI
-  if (!state) return <Loading />;
+  if (!state) return <ScreenTitle title="Confirmação de número" loading />;
   const canSubmit = code.trim().length === 6;
   return (
     <DefaultKeyboardAwareScrollView>
@@ -151,7 +151,7 @@ export default function PhoneVerification() {
           padding: paddings.lg,
         }}
       >
-        <Stack.Screen options={{ title: 'Confirmação de número' }} />
+        <ScreenTitle title="Confirmação de número" />;
         <RequestCodeModal
           visible={requestCodeModalShown}
           timer={timer}
@@ -172,7 +172,6 @@ export default function PhoneVerification() {
           length={6}
           style={{ marginVertical: paddings.xl }}
         />
-
         <MessageBox style={{ marginVertical: paddings.lg }} variant={error ? 'error' : 'info'}>
           {error
             ? error

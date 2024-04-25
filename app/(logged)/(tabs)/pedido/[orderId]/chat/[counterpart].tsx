@@ -9,11 +9,11 @@ import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/D
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { Time, formatTimestamp } from '@/common/formatters/timestamp';
 import { useUniqState } from '@/common/react/useUniqState';
 import ProfileImage from '@/common/screens/profile/images/profile-image';
 import Selfie from '@/common/screens/profile/images/selfie';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -91,11 +91,11 @@ export default function ChatScreen() {
       })
       .catch(console.error);
   };
-  if (!order) return <Loading title="Chat" />;
+  if (!order) return <ScreenTitle title="Chat" loading />;
   // console.log(JSON.stringify(chat));
   // UI
   return (
-    <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+    <DefaultKeyboardAwareScrollView>
       <DefaultView
         style={{
           flex: 1,

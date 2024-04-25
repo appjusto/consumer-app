@@ -7,8 +7,18 @@ export const unstable_settings = {
 export default function LoggedLayout() {
   // UI
   return (
-    <Stack>
+    <Stack
+      screenOptions={({ route }) => {
+        // console.log(route);
+        return { headerShown: route.name !== 'index', headerBackTitleVisible: false };
+      }}
+    >
       <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
+      <Stack.Screen name="places/index" options={{ title: 'Seus endereços' }} />
+      <Stack.Screen name="places/new" options={{ title: 'Novo endereço' }} />
+      <Stack.Screen name="places/confirm" options={{ title: 'Confirmar endereço' }} />
+      <Stack.Screen name="places/number" options={{ title: 'Número' }} />
+      <Stack.Screen name="places/complement" options={{ title: 'Complemento' }} />
     </Stack>
   );
 }

@@ -7,12 +7,12 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 export default function NotFoundScreen() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
+      <Stack.Screen options={{ title: 'Tela não encontrada' }} />
       <DefaultView style={styles.container}>
-        <DefaultText style={styles.title}>This screen doesn't exist.</DefaultText>
+        <DefaultText style={styles.title}>Tela não encontrada.</DefaultText>
 
-        <Link href="/" style={styles.link}>
-          <DefaultText style={styles.linkText}>Go to home screen!</DefaultText>
+        <Link href="/(unlogged)/welcome" style={styles.link}>
+          <DefaultText style={styles.linkText}>Voltar para o início</DefaultText>
         </Link>
       </DefaultView>
     </>

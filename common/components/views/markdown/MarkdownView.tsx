@@ -1,4 +1,4 @@
-import { Loading } from '@/common/components/views/Loading';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import WebView from 'react-native-webview';
@@ -20,7 +20,7 @@ const fontUrl = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk&display
 export function MarkdownView({ url, fallback, title }: Props) {
   // state
   const markdown = useMarkdown(url, fallback);
-  if (!markdown) return <Loading title={title} />;
+  if (!markdown) return <ScreenTitle title={title} loading />;
   // helpers
   const html = `
   <html>

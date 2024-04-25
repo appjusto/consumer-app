@@ -2,20 +2,19 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useAlgoliaSearch } from '@/api/externals/algolia/useAlgoliaSearch';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { FleetCard } from '@/common/screens/fleets/fleet-card';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Fleet } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
-import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 export default function FleetsSearch() {
   // state
   const [fleetName, setFleetName] = useState('');
-  const { results: fleets, isLoading } = useAlgoliaSearch<Fleet>(
+  const { results: fleets } = useAlgoliaSearch<Fleet>(
     true,
     'fleet',
     'distance',
@@ -26,11 +25,10 @@ export default function FleetsSearch() {
   // tracking
   useTrackScreenView('Frotas disponíveis');
   // UI
-  const title = 'Frotas disponíveis';
-  if (!fleets) return <Loading title={title} />;
+  if (!fleets) return <ScreenTitle title="Frotas disponíveis" loading />;
   return (
     <View style={{ ...screens.default, padding: paddings.lg }}>
-      <Stack.Screen options={{ title }} />
+      <ScreenTitle title="Frotas disponíveis" />;
       <DefaultText size="lg">Frotas disponíveis</DefaultText>
       <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
         Você pode escolher a frota que vai fazer a sua entrega.{' '}

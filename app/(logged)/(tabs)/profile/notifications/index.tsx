@@ -4,13 +4,12 @@ import { useContextProfile } from '@/common/auth/AuthContext';
 import { CheckButton } from '@/common/components/buttons/check/CheckButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { optionalChannels } from '@/common/notifications/channels';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { NotificationChannel } from '@appjusto/types';
-import { Stack } from 'expo-router';
 import { without } from 'lodash';
 import { View } from 'react-native';
 
@@ -37,11 +36,10 @@ export default function ProfileNotifications() {
       });
   };
   // UI
-  const title = 'Notificações';
-  if (!profile) return <Loading title={title} />;
+  if (!profile) return <ScreenTitle title="Notificações" loading />;
   return (
     <DefaultScrollView style={{ ...screens.default, padding: paddings.lg }}>
-      <Stack.Screen options={{ title }} />
+      <ScreenTitle title="Notificações" />;
       <DefaultText size="lg">Configure suas notificações</DefaultText>
       <DefaultText style={{ marginTop: paddings.lg, ...lineHeight.sm }} color="neutral700">
         Para garantia de qualidade da operação, as notificações relacionadas aos pedidos sempre vão

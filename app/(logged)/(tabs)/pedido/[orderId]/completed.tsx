@@ -8,7 +8,6 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
@@ -17,11 +16,12 @@ import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportUR
 import { OngoingOrderFoodOverview } from '@/common/screens/orders/ongoing/ongoing-order-food-overview';
 import { OngoingOrderStatusMessageBox } from '@/common/screens/orders/ongoing/ongoing-order-status-message-box';
 import { OrderDetailReview } from '@/common/screens/orders/review/order-detail-review';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Order, Place, WithId } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 import { pick } from 'lodash';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -111,11 +111,11 @@ export default function OrderCompletedScreen() {
   // console.log('cancellation', cancellation);
   // console.log('productsRefunded', productsRefunded);
   // UI
-  if (!order) return <Loading title="Detalhe do pedido" />;
+  if (!order) return <ScreenTitle title="Detalhe do pedido" loading />;
   const { code } = order;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: `Pedido #${code}` }} />
+      <ScreenTitle title={`Pedido #${code}`} />
       <DefaultView style={{ padding: paddings.lg }}>
         <OngoingOrderStatusMessageBox order={order} />
         {refundText ? (

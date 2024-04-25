@@ -13,7 +13,7 @@ import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Address } from '@appjusto/types';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { MapPin } from 'lucide-react-native';
 import { nanoid } from 'nanoid/non-secure';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -81,7 +81,6 @@ export const NewPlace = ({ basePathname }: Props) => {
   // UI
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Novo endereço' }} />
       <DefaultView style={{ padding: paddings.lg }}>
         <DefaultText size="xl">De onde você está pedindo?</DefaultText>
         <DefaultInput

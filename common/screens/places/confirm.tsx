@@ -9,9 +9,10 @@ import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { LatLng } from '@appjusto/types';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { ScreenTitle } from '../title/screen-title';
 
 type Params = {
   main: string;
@@ -40,6 +41,11 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
   // tracking
   useTrackScreenView('Novo endereço: confirmar');
   // side effects
+  useFocusEffect(
+    useCallback(() => {
+      if (location === null) router.back();
+    }, [location])
+  );
   useEffect(() => {
     if (!description) {
       showToast('Não foi possível validar seu endereço. Tente novamente.', 'error');
@@ -97,12 +103,9 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
   };
   // console.log('location', location);
   // UI
-
-  if (location === undefined) return null;
-  if (location === null) return null; // TODO: handle it
+  if (!location) return <ScreenTitle title="Confirmar endereço" />;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Confirmar endereço' }} />
       <View style={{ padding: paddings.lg, alignItems: 'center' }}>
         <DefaultText size="md" color="black">
           {main}

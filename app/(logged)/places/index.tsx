@@ -8,7 +8,7 @@ import { PlacesList } from '@/common/screens/places/list/places-list';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place, WithId } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 import { View } from 'react-native';
 
 export default function PlacesScreen() {
@@ -29,7 +29,6 @@ export default function PlacesScreen() {
   // UI
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Seus endereços' }} />
       <DefaultScrollView>
         <DefaultView style={{ padding: paddings.lg }}>
           <PlacesList onSelect={selectPlaceHandler} />

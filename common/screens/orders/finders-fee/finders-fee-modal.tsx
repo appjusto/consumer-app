@@ -24,53 +24,50 @@ export const FindersFeeModal = ({ order, visible, onDismiss, ...props }: Props) 
   // UI
   return (
     <Modal transparent animationType="slide" visible={visible} {...props}>
-      <Pressable style={{ flex: 1 }} onPress={onDismiss}>
-        {() => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
-            }}
-          >
-            <View
-              style={{
-                padding: paddings.lg,
-                backgroundColor: colors.white,
-              }}
-            >
-              <ModalHandle style={{ marginTop: paddings.xl }} />
-              <DefaultText style={{ marginTop: paddings.xl, alignSelf: 'center' }} size="lg">
-                Comissão
-              </DefaultText>
-              <View style={{ marginVertical: paddings['2xl'] }}>
-                <DefaultText style={{ marginTop: paddings.lg }} color="black">
-                  Sua comissão estará inclusa no valor do pedido
-                </DefaultText>
-                <PatternInput
-                  inputStyle={{ textAlignVertical: 'top' }}
-                  placeholder="Digite sua comissão"
-                  pattern="currency"
-                  value={fee}
-                  maxLength={8}
-                  onChangeText={setFee}
-                />
-              </View>
-              <DefaultButton
-                style={{ marginVertical: paddings.lg }}
-                title="Confirmar"
-                disabled={value <= 0}
-                onPress={() => {
-                  if (setFindersFee) {
-                    setFindersFee(fee);
-                  }
-                  onDismiss();
-                }}
-              />
-            </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+        }}
+      >
+        <Pressable style={{ flex: 1 }} onPress={onDismiss} />
+        <View
+          style={{
+            padding: paddings.lg,
+            backgroundColor: colors.white,
+          }}
+        >
+          <ModalHandle style={{ marginTop: paddings.xl }} />
+          <DefaultText style={{ marginTop: paddings.xl, alignSelf: 'center' }} size="lg">
+            Comissão
+          </DefaultText>
+          <View style={{ marginVertical: paddings['2xl'] }}>
+            <DefaultText style={{ marginTop: paddings.lg }} color="black">
+              Sua comissão estará inclusa no valor do pedido
+            </DefaultText>
+            <PatternInput
+              inputStyle={{ textAlignVertical: 'top' }}
+              placeholder="Digite sua comissão"
+              pattern="currency"
+              value={fee}
+              maxLength={8}
+              onChangeText={setFee}
+            />
           </View>
-        )}
-      </Pressable>
+          <DefaultButton
+            style={{ marginVertical: paddings.lg }}
+            title="Confirmar"
+            disabled={value <= 0}
+            onPress={() => {
+              if (setFindersFee) {
+                setFindersFee(fee);
+              }
+              onDismiss();
+            }}
+          />
+        </View>
+      </View>
     </Modal>
   );
 };

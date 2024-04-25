@@ -7,9 +7,10 @@ import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import { PlaceDetail } from '@/common/screens/places/complement/place-detail';
 import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
-import { Stack, router, useGlobalSearchParams } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
 import { isEmpty, trim } from 'lodash';
 import { useState } from 'react';
+import { ScreenTitle } from '../../title/screen-title';
 
 type Params = {
   main: string;
@@ -81,10 +82,9 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
     }
   };
   // UI
-  if (!place) return null;
+  if (!place) return <ScreenTitle title="Complemento" />;
   return (
     <DefaultKeyboardAwareScrollView contentContainerStyle={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Complemento' }} />
       <PlaceDetail place={place} onSave={saveHandler} />
     </DefaultKeyboardAwareScrollView>
   );

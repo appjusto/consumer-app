@@ -4,13 +4,13 @@ import { useCards } from '@/api/consumer/cards/useCards';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
-import { Loading } from '@/common/components/views/Loading';
 import { PaymentCard } from '@/common/screens/orders/checkout/payment/cards/payment-card';
 import { PaymentCardModal } from '@/common/screens/orders/checkout/payment/cards/payment-card-modal';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Card, WithId } from '@appjusto/types';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
@@ -43,10 +43,10 @@ export default function ProfileCardListScreen() {
       });
   };
   // UI
-  if (!cards) return <Loading />;
+  if (!cards) return <ScreenTitle title="Seus cartões" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Seus cartões' }} />
+      <ScreenTitle title="Seus cartões" />;
       <PaymentCardModal
         card={optionsCard}
         visible={Boolean(optionsCard)}

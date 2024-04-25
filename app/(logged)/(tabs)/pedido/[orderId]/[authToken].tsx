@@ -1,8 +1,9 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { getAppjustoURL } from '@/common/constants/urls';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Stack, useGlobalSearchParams } from 'expo-router';
+import { useGlobalSearchParams } from 'expo-router';
 import WebView from 'react-native-webview';
 
 export default function OrderAuthTokenScreen() {
@@ -14,7 +15,7 @@ export default function OrderAuthTokenScreen() {
   // UI
   return (
     <>
-      <Stack.Screen options={{ title: 'Rastreio de pedido' }} />
+      <ScreenTitle title="Rastreio de pedido" />
       <WebView
         originWhitelist={['*']}
         source={{ uri: getAppjustoURL(`/pedido/${orderId}/${authToken}`) }}

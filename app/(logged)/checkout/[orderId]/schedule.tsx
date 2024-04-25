@@ -13,13 +13,13 @@ import {
   HorizontalSelectorItem,
 } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { timestampWithETA } from '@/common/formatters/timestamp';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Dayjs } from '@appjusto/dates';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { capitalize } from 'lodash';
 import { Clock3 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -91,11 +91,11 @@ export default function OrderCheckoutScheduleScreen() {
       });
   };
   // UI
-  if (!quote || !daySelectorData) return <Loading title="Agendamento" />;
+  if (!quote || !daySelectorData) return <ScreenTitle title="Agendamento" loading />;
   const scheduledTo = quote.scheduledTo ? quote.scheduledTo.toDate() : null;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Agendamento' }} />
+      <ScreenTitle title="Agendamento" />;
       <DefaultView style={{ padding: paddings.lg }}>
         <HorizontalSelector
           data={daySelectorData}

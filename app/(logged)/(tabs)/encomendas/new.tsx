@@ -16,11 +16,12 @@ import { FindersFeeModal } from '@/common/screens/orders/finders-fee/finders-fee
 import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
 import { getPlaceTitle } from '@/common/screens/orders/places/label';
 import { PlaceKey } from '@/common/screens/orders/places/types';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { useIsFocused } from '@react-navigation/native';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { isEmpty, toNumber } from 'lodash';
 import { CircleDollarSign } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
@@ -207,8 +208,8 @@ export default function NewPackageOrderScreen() {
   const missingInstructions = !originInstructions || !destinationInstructions;
   const disabled = !quote?.destination || missingInstructions;
   return (
-    <DefaultKeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
-      <Stack.Screen options={{ title: 'Entrega' }} />
+    <DefaultKeyboardAwareScrollView>
+      <ScreenTitle title="Entrega de encomenda" />
       <FindersFeeModal
         order={quote}
         visible={findersFeeModalVisible}

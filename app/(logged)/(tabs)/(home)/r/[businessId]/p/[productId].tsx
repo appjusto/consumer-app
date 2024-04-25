@@ -14,7 +14,7 @@ import { useAddOrderItem } from '@/api/orders/items/useAddOrderItem';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { useContextIsUserAnonymous, useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { Loading } from '@/common/components/views/Loading';
@@ -96,7 +96,7 @@ export default function ProductDetailScreen() {
   return (
     <View style={{ ...screens.default }}>
       <Stack.Screen options={{ title: product.name }} />
-      <DefaultScrollView>
+      <DefaultKeyboardAwareScrollView>
         {/* image */}
         <Skeleton.Group show={!url}>
           <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
@@ -150,7 +150,7 @@ export default function ProductDetailScreen() {
             {issues[0].description}
           </MessageBox>
         ) : null}
-      </DefaultScrollView>
+      </DefaultKeyboardAwareScrollView>
       {!currentPlace ? (
         <DefaultButton
           style={{ margin: paddings.lg }}

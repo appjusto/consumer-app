@@ -7,15 +7,15 @@ import {
 import { useContextBusinessQuote } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { BusinessHeader } from '@/common/screens/home/businesses/detail/header/business-header';
 import { ProductListItem } from '@/common/screens/home/businesses/detail/product-list-item';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Product, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -65,10 +65,10 @@ export default function BusinessDetailScreen() {
     if (item) ref.current?.scrollToItem({ item, animated: true });
   };
   // UI
-  if (!business || !products || !businessId) return <Loading />;
+  if (!business || !products || !businessId) return <ScreenTitle title="Restaurante" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: business.name }} />
+      <ScreenTitle title={business.name} />
       {headerHidden && categories?.length && categories.length > 1 ? (
         <HorizontalSelector
           style={{ margin: paddings.lg }}

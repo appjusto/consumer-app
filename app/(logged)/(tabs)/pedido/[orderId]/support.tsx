@@ -5,16 +5,16 @@ import { useObserveOrder } from '@/api/orders/useObserveOrder';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { SelectIssueModal } from '@/common/components/modals/issues/select-issue-modal';
 import { useOngoingIssueType } from '@/common/components/modals/issues/useOngoingIssueType';
-import { Loading } from '@/common/components/views/Loading';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { openWhatsAppSupportURL } from '@/common/constants/openWhatsAppSupportURL';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Issue } from '@appjusto/types';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -49,11 +49,10 @@ export default function OrderSupportScreen() {
       });
   };
   // UI
-  if (!order) return <Loading title="Ajuda com a corrida" />;
+  if (!order) return <ScreenTitle title="Ajuda com a corrida" loading />;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Ajuda com a corrida' }} />
-      {/* modals */}
+      <ScreenTitle title="Ajuda com a corrida" />;{/* modals */}
       <SelectIssueModal
         title="Qual o problema que você quer relatar?"
         issueType={issueType}

@@ -12,7 +12,7 @@ import { safeRouteParams } from '@/common/routes/safeRouteParam';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
@@ -100,7 +100,6 @@ export const NewPlaceNumber = ({ basePathname }: Props) => {
   const confirmEnabled = main && (withoutNumber || number);
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: 'Número' }} />
       <DefaultView style={{ padding: paddings.lg }}>
         <DefaultText size="lg">Informe o número do endereço</DefaultText>
         <DefaultInput

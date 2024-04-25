@@ -3,16 +3,16 @@ import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
-import { Loading } from '@/common/components/views/Loading';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { TipControl } from '@/common/screens/orders/delivered/tip/tip-control';
 import { OrderReviewView } from '@/common/screens/orders/review/order-review-view';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { OrderReview, ReviewType } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router } from 'expo-router';
+import { router } from 'expo-router';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -79,10 +79,11 @@ export default function OrderDeliveredScreen() {
   };
 
   // UI
-  if (!order) return <Loading title="Pedido entregue!" />;
+  if (!order) return <ScreenTitle title="Pedido entregue" loading />;
+  const { code } = order;
   return (
     <DefaultScrollView style={{ ...screens.default, backgroundColor: colors.neutral50 }}>
-      <Stack.Screen options={{ title: `Pedido #${order.code}` }} />
+      <ScreenTitle title={`Pedido #${code}`} />
 
       <View
         style={{
