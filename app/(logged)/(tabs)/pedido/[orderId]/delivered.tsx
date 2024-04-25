@@ -84,7 +84,6 @@ export default function OrderDeliveredScreen() {
   return (
     <DefaultScrollView style={{ ...screens.default, backgroundColor: colors.neutral50 }}>
       <ScreenTitle title={`Pedido #${code}`} />
-
       <View
         style={{
           flex: 1,

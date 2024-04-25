@@ -21,7 +21,7 @@ export const getExpoPushToken = (retries: number): Promise<string | null> => {
           finalStatus = status;
         }
         if (finalStatus === 'granted') {
-          resolve((await getExpoPushTokenAsync({ projectId: extra.eas.projectId })).data);
+          resolve((await getExpoPushTokenAsync()).data);
         } else {
           reject(new Error(finalStatus));
         }

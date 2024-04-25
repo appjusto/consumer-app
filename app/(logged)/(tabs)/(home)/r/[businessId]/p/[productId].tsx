@@ -17,17 +17,17 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { Loading } from '@/common/components/views/Loading';
 import { MessageBox } from '@/common/components/views/MessageBox';
 import { ProductComplements } from '@/common/screens/home/businesses/detail/complement/product-complements';
 import { AddProductToOrder } from '@/common/screens/home/businesses/detail/product/add-product-to-order';
+import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
 import { Image } from 'expo-image';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View } from 'react-native';
 
@@ -92,10 +92,10 @@ export default function ProductDetailScreen() {
   // UI
   // console.log('product', product);
   // console.log('quote', quote);
-  if (!product || quote === undefined) return <Loading />;
+  if (!product || quote === undefined) return <ScreenTitle title="Produto" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <Stack.Screen options={{ title: product.name }} />
+      <ScreenTitle title={product.name} />
       <DefaultKeyboardAwareScrollView>
         {/* image */}
         <Skeleton.Group show={!url}>

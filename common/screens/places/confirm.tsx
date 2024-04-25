@@ -106,6 +106,7 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
   if (!location) return <ScreenTitle title="Confirmar endereço" />;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
+      <ScreenTitle title="Confirmar endereço" />
       <View style={{ padding: paddings.lg, alignItems: 'center' }}>
         <DefaultText size="md" color="black">
           {main}

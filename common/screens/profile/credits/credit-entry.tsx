@@ -19,7 +19,8 @@ export const CreditEntry = ({ entry, style, ...props }: Props) => {
     if (operation === 'marketing-credit') return 'Crédito de indicação';
     if (operation === 'refund-credit') return 'Reembolso';
     if (operation === 'delivery-credit') return 'Reembolso de entrega';
-    return '';
+    if (operation === 'finders-fee') return 'Comissão';
+    return 'Crédito';
   })();
   return (
     <View
@@ -54,10 +55,12 @@ export const CreditEntry = ({ entry, style, ...props }: Props) => {
             {Dayjs(createdOn.toDate()).add(30, 'days').format('DD/MM/YY')}
           </DefaultText>
         </View>
-        <View>
-          <DefaultText color="neutral700">Pedido</DefaultText>
-          <DefaultText size="md">{orderCode}</DefaultText>
-        </View>
+        {orderCode ? (
+          <View>
+            <DefaultText color="neutral700">Pedido</DefaultText>
+            <DefaultText size="md">{orderCode}</DefaultText>
+          </View>
+        ) : null}
       </View>
     </View>
   );

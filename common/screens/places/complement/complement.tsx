@@ -85,6 +85,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   if (!place) return <ScreenTitle title="Complemento" />;
   return (
     <DefaultKeyboardAwareScrollView contentContainerStyle={{ ...screens.default }}>
+      <ScreenTitle title="Complemento" />
       <PlaceDetail place={place} onSave={saveHandler} />
     </DefaultKeyboardAwareScrollView>
   );

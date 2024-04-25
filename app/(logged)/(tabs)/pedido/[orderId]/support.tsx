@@ -52,7 +52,8 @@ export default function OrderSupportScreen() {
   if (!order) return <ScreenTitle title="Ajuda com a corrida" loading />;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <ScreenTitle title="Ajuda com a corrida" />;{/* modals */}
+      <ScreenTitle title="Ajuda com a corrida" />
+      {/* modals */}
       <SelectIssueModal
         title="Qual o problema que você quer relatar?"
         issueType={issueType}

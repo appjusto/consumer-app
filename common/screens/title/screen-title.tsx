@@ -1,5 +1,6 @@
 import { Loading } from '@/common/components/views/Loading';
 import { Stack } from 'expo-router';
+import { View } from 'react-native';
 
 export const ScreenTitle = ({
   title = '',
@@ -7,9 +8,13 @@ export const ScreenTitle = ({
 }: {
   title?: string;
   loading?: boolean;
-}) => (
-  <>
-    <Stack.Screen options={{ title }} />
-    {loading ? <Loading /> : null}
-  </>
-);
+}) => {
+  if (loading) return <Loading />;
+  if (title)
+    return (
+      <View>
+        <Stack.Screen options={{ title }} />
+      </View>
+    );
+  return null;
+};

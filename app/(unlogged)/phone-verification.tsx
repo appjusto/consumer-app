@@ -18,7 +18,7 @@ import { useTimer } from '@/common/timer/useTimer';
 import analytics from '@react-native-firebase/analytics';
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, TextInput, View } from 'react-native';
 
@@ -151,7 +151,7 @@ export default function PhoneVerification() {
           padding: paddings.lg,
         }}
       >
-        <ScreenTitle title="Confirmação de número" />;
+        <Stack.Screen options={{ title: 'Confirmação de número' }} />
         <RequestCodeModal
           visible={requestCodeModalShown}
           timer={timer}
@@ -172,6 +172,7 @@ export default function PhoneVerification() {
           length={6}
           style={{ marginVertical: paddings.xl }}
         />
+
         <MessageBox style={{ marginVertical: paddings.lg }} variant={error ? 'error' : 'info'}>
           {error
             ? error

@@ -62,13 +62,13 @@ export default function ProfileScreen() {
             subtitles={['Seu nome, e-mail, CPF, celular e data de nascimento']}
             leftView={<User2 size={20} color={colors.black} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/personal')}
+            onPress={() => router.navigate('/profile/personal')}
           />
           <DefaultListItem
             title="Seus cartões"
             leftView={<BookMinus size={20} color={colors.black} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/cards/list')}
+            onPress={() => router.navigate('/profile/cards/list')}
           />
           <DefaultListItem
             title="Seus créditos"
@@ -91,7 +91,7 @@ export default function ProfileScreen() {
                 />
               </View>
             }
-            onPress={() => router.push('/profile/credits')}
+            onPress={() => router.navigate('/profile/credits')}
           />
 
           <View style={{ flex: 1 }} />
@@ -99,19 +99,19 @@ export default function ProfileScreen() {
             title="Suporte"
             leftView={<HelpCircle color={colors.neutral700} size={20} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/help/')}
+            onPress={() => router.navigate('/profile/help/')}
           />
           <SingleListItem
             title="Configurações"
             leftView={<Settings color={colors.neutral700} size={20} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/settings/')}
+            onPress={() => router.navigate('/profile/settings/')}
           />
           <SingleListItem
             title="Sobre o AppJusto"
             leftView={<FileText color={colors.neutral700} size={20} />}
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.push('/profile/about/')}
+            onPress={() => router.navigate('/profile/about/')}
           />
 
           <Pressable onPress={() => setLogoutModalVisible(true)}>

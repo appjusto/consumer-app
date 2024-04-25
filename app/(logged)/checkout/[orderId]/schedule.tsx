@@ -95,7 +95,7 @@ export default function OrderCheckoutScheduleScreen() {
   const scheduledTo = quote.scheduledTo ? quote.scheduledTo.toDate() : null;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
-      <ScreenTitle title="Agendamento" />;
+      <ScreenTitle title="Agendamento" />
       <DefaultView style={{ padding: paddings.lg }}>
         <HorizontalSelector
           data={daySelectorData}

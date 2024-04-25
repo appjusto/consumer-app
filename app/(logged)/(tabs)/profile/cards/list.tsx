@@ -46,7 +46,7 @@ export default function ProfileCardListScreen() {
   if (!cards) return <ScreenTitle title="Seus cartões" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <ScreenTitle title="Seus cartões" />;
+      <ScreenTitle title="Seus cartões" />
       <PaymentCardModal
         card={optionsCard}
         visible={Boolean(optionsCard)}

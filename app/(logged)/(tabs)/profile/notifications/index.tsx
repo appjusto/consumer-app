@@ -39,7 +39,7 @@ export default function ProfileNotifications() {
   if (!profile) return <ScreenTitle title="Notificações" loading />;
   return (
     <DefaultScrollView style={{ ...screens.default, padding: paddings.lg }}>
-      <ScreenTitle title="Notificações" />;
+      <ScreenTitle title="Notificações" />
       <DefaultText size="lg">Configure suas notificações</DefaultText>
       <DefaultText style={{ marginTop: paddings.lg, ...lineHeight.sm }} color="neutral700">
         Para garantia de qualidade da operação, as notificações relacionadas aos pedidos sempre vão
