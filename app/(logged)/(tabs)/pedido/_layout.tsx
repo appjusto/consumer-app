@@ -10,8 +10,6 @@ export default function OrdersLayout() {
       screenOptions={({ route }) => {
         return { headerShown: route.name !== 'index' };
       }}
-    >
-      <Stack.Screen name="index" options={{ title: 'Pedidos' }} />
-    </Stack>
+    ></Stack>
   );
 }

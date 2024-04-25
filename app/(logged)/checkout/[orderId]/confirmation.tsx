@@ -21,8 +21,8 @@ import { ReviewP2POrder } from '@/common/screens/orders/p2p/review-p2p-order';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { Stack, router } from 'expo-router';
-import { useState } from 'react';
+import { Stack, router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { View } from 'react-native';
 
 export default function OrderCheckoutDeliveryScreen() {
@@ -41,6 +41,13 @@ export default function OrderCheckoutDeliveryScreen() {
     businessId: quote?.business?.id,
     orderId: quote?.id,
   });
+  // side effects
+  useFocusEffect(
+    useCallback(() => {
+      console.log('useFocusEffect');
+      setLoading(false);
+    }, [])
+  );
   // useBackWhenOrderExpires(!loading);
   // handlers
   const canPlaceOrder = Boolean(placeOptions) && !issues.length;
@@ -72,7 +79,6 @@ export default function OrderCheckoutDeliveryScreen() {
         crashlytics().recordError(error);
       }
     }
-    setLoading(false);
   };
   const completeProfileHandler = () => {
     if (!quote) return;

@@ -16,9 +16,7 @@ export const AdreessBar = ({ style, ...props }: Props) => {
   const isAnonymous = useContextIsUserAnonymous();
   // handlers
   const placesHandler = () =>
-    isAnonymous
-      ? router.navigate({ pathname: '/sign-in' })
-      : router.navigate({ pathname: '/places' });
+    isAnonymous ? router.navigate('/(logged)/(tabs)/(home)/sign-in') : router.navigate('/places');
   // UI
   return (
     <Pressable onPress={placesHandler}>

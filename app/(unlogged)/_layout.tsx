@@ -8,7 +8,6 @@ export default function UnloggedLayout() {
   // UI
   return (
     <Stack>
-      <Stack.Screen name="sign-in" options={{ headerShown: false }} />
       <Stack.Screen
         name="phone-verification"
         options={{ presentation: 'modal', title: 'Verificação' }}

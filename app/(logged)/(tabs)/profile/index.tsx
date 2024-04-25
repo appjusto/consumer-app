@@ -11,7 +11,7 @@ import ProfileHeader from '@/common/screens/profile/header/header';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import {
   BookMinus,
   ChevronRight,
@@ -22,7 +22,7 @@ import {
   User2,
   Wallet,
 } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 export default function ProfileScreen() {
@@ -34,9 +34,11 @@ export default function ProfileScreen() {
   // state
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   // side effects
-  useEffect(() => {
-    if (profile === null) router.replace('/sign-in');
-  }, [profile]);
+  useFocusEffect(
+    useCallback(() => {
+      if (profile === null) router.navigate('/profile/sign-in');
+    }, [profile])
+  );
   // UI
   if (profile === null) return null;
   return (

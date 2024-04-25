@@ -43,7 +43,8 @@ export const getOrderDescription = (order: Order) => {
     }
   }
   if (status === 'confirmed') {
-    if (type === 'p2p') return 'Procurando uma pessoa para realizar a sua entrega.';
+    if (type === 'p2p') return 'Procurando uma pessoa para realizar a sua entrega';
+    if (type === 'food') return 'Está demorando? Entre em contato com o restaurante';
   }
   if (status === 'delivered') {
     return 'Seu pedido foi finalizado com sucesso!';
@@ -52,7 +53,7 @@ export const getOrderDescription = (order: Order) => {
     return 'Seu pedido foi cancelado';
   }
   if (status === 'declined') {
-    return 'Tivemos um problema ao processar o seu pagamento.';
+    return 'Tivemos um problema ao processar o seu pagamento';
   }
   return '';
 };

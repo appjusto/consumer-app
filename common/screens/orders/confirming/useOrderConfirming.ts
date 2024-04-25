@@ -30,7 +30,7 @@ export const useOrderConfirming = () => {
     navigation.navigate('pedido', {
       screen: '[orderId]/ongoing',
       params: { orderId },
-      initial: false,
+      initial: true,
     });
   }, [orderId, status, isFocused, type, ordersTab, navigation]);
 };
