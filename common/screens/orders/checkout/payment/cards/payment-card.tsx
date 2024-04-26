@@ -1,4 +1,5 @@
 import { cardType } from '@/api/consumer/cards/card-type';
+import { getCardHolderName } from '@/api/consumer/cards/card-type/getCardHolderName';
 import { getCardLastDigits } from '@/api/consumer/cards/card-type/getCardLastDigits';
 import { getCardType } from '@/api/consumer/cards/card-type/getCardType';
 import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
@@ -33,6 +34,9 @@ export const PaymentCard = ({
 }: Props) => {
   const type = getCardType(card);
   if (!type) return null;
+  const niceType = cardType.getTypeInfo(type as string)?.niceType ?? 'Crédito';
+  const holderName = getCardHolderName(card);
+  const lastDigits = getCardLastDigits(card);
   // UI
   return (
     <View style={[{}, style]} {...props}>
@@ -45,12 +49,16 @@ export const PaymentCard = ({
           {/* logo */}
           <CardIcon type={type} />
           {/* details */}
-          <View style={{ marginLeft: paddings.lg, borderWidth: 0 }}>
+          <View style={{ marginLeft: paddings.lg, maxWidth: '75%' }}>
             <DefaultText size="md" color="black">
               {card.processor === 'iugu' ? 'Crédito' : 'VR'}
             </DefaultText>
-            <DefaultText style={{ marginTop: paddings.xs }} size="md" color="neutral800">
-              {`${cardType.getTypeInfo(type as string).niceType}  ••••  ${getCardLastDigits(card)}`}
+            <DefaultText
+              style={{ marginTop: paddings.xs, flexWrap: 'wrap' }}
+              size="md"
+              color="neutral800"
+            >
+              {`${holderName} •••• ${lastDigits}`}
             </DefaultText>
           </View>
           <View style={{ flex: 1 }} />

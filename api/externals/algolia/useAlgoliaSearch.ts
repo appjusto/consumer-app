@@ -3,6 +3,7 @@ import { useUniqState } from '@/common/react/useUniqState';
 import { SearchResponse } from '@algolia/client-search';
 import { LatLng, WithId } from '@appjusto/types';
 import crashlytics from '@react-native-firebase/crashlytics';
+import { isEmpty } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { useContextApi } from '../../ApiContext';
 import { SearchFilter, SearchKind, SearchOrder } from './types';
@@ -45,13 +46,20 @@ export const useAlgoliaSearch = <T extends object>(
     },
     [api, aroundLatLng, kind, order, filterArray]
   );
+  const clearSearch = useCallback(
+    (input: string) => {
+      setResults(undefined);
+      search(input);
+    },
+    [search]
+  );
   // side effects
   // clearing cache
   useEffect(() => {
     api.algolia().clearCache();
   }, [api]);
   // debounced search
-  useDebounce(query, search, enabled);
+  useDebounce(query, clearSearch, enabled, isEmpty(query) ? 0 : undefined);
   // update responseByPage
   useEffect(() => {
     if (!lastResponse) {

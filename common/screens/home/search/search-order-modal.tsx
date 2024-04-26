@@ -1,9 +1,10 @@
 import { SearchKind, SearchOrder } from '@/api/externals/algolia/types';
+import { DefaultModal } from '@/common/components/modals/default-modal';
 import { ModalHandle } from '@/common/components/modals/modal-handle';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Modal, ModalProps, Pressable, View } from 'react-native';
+import { ModalProps, Pressable, View } from 'react-native';
 
 const BusinessSearchOrdering = [
   {
@@ -45,51 +46,31 @@ export const SearchOrderModal = ({
   const items = kind === 'restaurant' ? BusinessSearchOrdering : ProductSearchOrdering;
   // UI
   return (
-    <Modal transparent animationType="slide" visible={visible} {...props}>
+    <DefaultModal onDismiss={onDismiss} visible={visible} {...props}>
       <View
         style={{
-          flex: 1,
-          justifyContent: 'flex-end',
-          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+          padding: paddings.lg,
+          backgroundColor: colors.white,
         }}
       >
-        <Pressable
-          style={{
-            flex: 1,
-          }}
-          onPress={onDismiss}
-        >
-          <View
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-            }}
-          ></View>
-        </Pressable>
-        <View
-          style={{
-            padding: paddings.lg,
-            backgroundColor: colors.white,
-          }}
-        >
-          <ModalHandle style={{ marginTop: paddings.xl }} />
-          <DefaultText style={{ marginVertical: paddings['2xl'], textAlign: 'center' }} size="lg">
-            Ordenação
-          </DefaultText>
-          <View style={{ marginVertical: paddings['2xl'], justifyContent: 'flex-end' }}>
-            {items.map((item) => (
-              <Pressable key={item.order} onPress={() => onUpdateOrder(item.order)}>
-                <DefaultText
-                  style={{ marginBottom: paddings['2xl'], textAlign: 'center' }}
-                  size="md"
-                  color={item.order === order ? 'primary900' : 'neutral800'}
-                >
-                  {item.title}
-                </DefaultText>
-              </Pressable>
-            ))}
-          </View>
+        <ModalHandle style={{ marginTop: paddings.xl }} />
+        <DefaultText style={{ marginVertical: paddings['2xl'], textAlign: 'center' }} size="lg">
+          Ordenação
+        </DefaultText>
+        <View style={{ marginVertical: paddings['2xl'], justifyContent: 'flex-end' }}>
+          {items.map((item) => (
+            <Pressable key={item.order} onPress={() => onUpdateOrder(item.order)}>
+              <DefaultText
+                style={{ marginBottom: paddings['2xl'], textAlign: 'center' }}
+                size="md"
+                color={item.order === order ? 'primary900' : 'neutral800'}
+              >
+                {item.title}
+              </DefaultText>
+            </Pressable>
+          ))}
         </View>
       </View>
-    </Modal>
+    </DefaultModal>
   );
 };

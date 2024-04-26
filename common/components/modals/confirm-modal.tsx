@@ -2,7 +2,8 @@ import { DefaultButton } from '@/common/components/buttons/default/DefaultButton
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import { Modal, ModalProps, Pressable, View } from 'react-native';
+import { ModalProps, View } from 'react-native';
+import { DefaultModal } from './default-modal';
 
 interface Props extends ModalProps {
   text: string;
@@ -20,34 +21,19 @@ export const ConfirmModal = ({
   ...props
 }: Props) => {
   return (
-    <Modal transparent animationType="slide" {...props}>
-      <Pressable style={{ flex: 1 }} onPress={onCancel}>
-        {() => (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
-            }}
-          >
-            <View style={{ padding: paddings.lg, backgroundColor: colors.white }}>
-              <DefaultText
-                style={{ marginVertical: paddings['2xl'], textAlign: 'center' }}
-                size="lg"
-              >
-                {text}
-              </DefaultText>
-              <DefaultButton variant="destructive" title={confirmButtonLabel} onPress={onConfirm} />
-              <DefaultButton
-                style={{ marginVertical: paddings.md }}
-                variant="outline"
-                title={cancelButtonLabel}
-                onPress={onCancel}
-              />
-            </View>
-          </View>
-        )}
-      </Pressable>
-    </Modal>
+    <DefaultModal onDismiss={onCancel} {...props}>
+      <View style={{ padding: paddings.lg, backgroundColor: colors.white }}>
+        <DefaultText style={{ marginVertical: paddings['2xl'], textAlign: 'center' }} size="lg">
+          {text}
+        </DefaultText>
+        <DefaultButton variant="destructive" title={confirmButtonLabel} onPress={onConfirm} />
+        <DefaultButton
+          style={{ marginVertical: paddings.md }}
+          variant="outline"
+          title={cancelButtonLabel}
+          onPress={onCancel}
+        />
+      </View>
+    </DefaultModal>
   );
 };

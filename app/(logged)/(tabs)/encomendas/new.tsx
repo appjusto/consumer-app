@@ -208,76 +208,78 @@ export default function NewPackageOrderScreen() {
   const missingInstructions = !originInstructions || !destinationInstructions;
   const disabled = !quote?.destination || missingInstructions;
   return (
-    <DefaultKeyboardAwareScrollView>
-      <ScreenTitle title="Entrega de encomenda" />
-      <FindersFeeModal
-        order={quote}
-        visible={findersFeeModalVisible}
-        onDismiss={() => setFindersFeeModalVisible(false)}
-      />
-      <DefaultView style={{ ...screens.default, padding: paddings.lg }}>
-        <ReviewP2POrder
-          quote={quote}
-          originInstructions={originInstructions ?? ''}
-          setOriginInstructions={setOriginInstructions}
-          destinationInstructions={destinationInstructions ?? ''}
-          setDestinationInstructions={setDestinationInstructions}
-          onEditPlace={editPlaceHandler}
+    <DefaultView style={{ ...screens.default }}>
+      <DefaultKeyboardAwareScrollView>
+        <ScreenTitle title="Entrega de encomenda" />
+        <FindersFeeModal
+          order={quote}
+          visible={findersFeeModalVisible}
+          onDismiss={() => setFindersFeeModalVisible(false)}
         />
-        {quote?.destination && missingInstructions ? (
-          <MessageBox style={{ marginVertical: paddings.lg }} variant="warning">
-            Escreva as instruções para coleta e entrega da encomenda.
-          </MessageBox>
-        ) : null}
-        {/* courier finders fee */}
-        {quote && courier ? (
-          <Pressable onPress={() => setFindersFeeModalVisible(true)}>
-            <View
-              style={{
-                marginTop: paddings.lg,
-                borderRadius: 8,
-                borderColor: findersFee ? colors.primary900 : colors.neutral100,
-                backgroundColor: findersFee ? colors.primary100 : colors.neutral100,
-              }}
-            >
+        <View style={{ padding: paddings.lg }}>
+          <ReviewP2POrder
+            quote={quote}
+            originInstructions={originInstructions ?? ''}
+            setOriginInstructions={setOriginInstructions}
+            destinationInstructions={destinationInstructions ?? ''}
+            setDestinationInstructions={setDestinationInstructions}
+            onEditPlace={editPlaceHandler}
+          />
+          {quote?.destination && missingInstructions ? (
+            <MessageBox style={{ marginVertical: paddings.lg }} variant="warning">
+              Escreva as instruções para coleta e entrega da encomenda.
+            </MessageBox>
+          ) : null}
+          {/* courier finders fee */}
+          {quote && courier ? (
+            <Pressable onPress={() => setFindersFeeModalVisible(true)}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  paddingVertical: paddings.lgg,
-                  paddingHorizontal: paddings.lg,
+                  marginTop: paddings.lg,
+                  borderRadius: 8,
+                  borderColor: findersFee ? colors.primary900 : colors.neutral100,
+                  backgroundColor: findersFee ? colors.primary100 : colors.neutral100,
                 }}
               >
                 <View
                   style={{
                     flexDirection: 'row',
-                    // justifyContent: 'space-between',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
+                    paddingVertical: paddings.lgg,
+                    paddingHorizontal: paddings.lg,
                   }}
                 >
-                  <CircleDollarSign color={colors.black} size={16} />
-                  <View style={{ marginLeft: paddings.lg }}>
-                    <DefaultText size="md">Comissão</DefaultText>
-                    <DefaultText style={{}} size="sm">
-                      {isEmpty(findersFee)
-                        ? 'Adicione uma comissão'
-                        : `Comissão adicionada: ${formatCurrency(toNumber(findersFee))}`}
-                    </DefaultText>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      // justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <CircleDollarSign color={colors.black} size={16} />
+                    <View style={{ marginLeft: paddings.lg }}>
+                      <DefaultText size="md">Comissão</DefaultText>
+                      <DefaultText style={{}} size="sm">
+                        {isEmpty(findersFee)
+                          ? 'Adicione uma comissão'
+                          : `Comissão adicionada: ${formatCurrency(toNumber(findersFee))}`}
+                      </DefaultText>
+                    </View>
+                  </View>
+                  <View>
+                    <LinkButton variant="ghost" onPress={() => setFindersFeeModalVisible(true)}>
+                      {findersFee ? 'Alterar' : 'Adicionar'}
+                    </LinkButton>
                   </View>
                 </View>
-                <View>
-                  <LinkButton variant="ghost" onPress={() => setFindersFeeModalVisible(true)}>
-                    {findersFee ? 'Alterar' : 'Adicionar'}
-                  </LinkButton>
-                </View>
               </View>
-            </View>
-          </Pressable>
-        ) : null}
-        <View style={{ flex: 1 }} />
-        <CartButton order={quote} variant="none" disabled={disabled} onPress={checkoutHandler} />
-      </DefaultView>
-    </DefaultKeyboardAwareScrollView>
+            </Pressable>
+          ) : null}
+        </View>
+      </DefaultKeyboardAwareScrollView>
+      <View style={{ flex: 1 }} />
+      <CartButton order={quote} variant="none" disabled={disabled} onPress={checkoutHandler} />
+    </DefaultView>
   );
 }

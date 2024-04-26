@@ -66,10 +66,11 @@ export default function ProfileCardListScreen() {
                 card={card}
                 key={card.id}
                 onPress={() =>
-                  router.navigate({
-                    pathname: '/(logged)/(tabs)/profile/cards/[id]',
-                    params: { id: card.id },
-                  })
+                  // router.navigate({
+                  //   pathname: '/(logged)/(tabs)/profile/cards/[id]',
+                  //   params: { id: card.id },
+                  // })
+                  setOptionsCard(card)
                 }
                 onSelectOptions={() => setOptionsCard(card)}
               />

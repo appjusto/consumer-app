@@ -5,11 +5,11 @@ import { useObserveBusiness } from '@/api/business/useObserveBusiness';
 import { issueTypeForOrder } from '@/api/incidents/issueTypeForOrder';
 import { useContextOrder } from '@/api/orders/context/order-context';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
+import { SelectIssueModal } from '@/common/components/modals/issues/select-issue-modal';
 import DefaultCard from '@/common/components/views/cards/DefaultCard';
 import { DefaultCardIcon } from '@/common/components/views/cards/icon';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { CancelOrderModal } from '@/common/screens/incident/cancel-modal';
-import { SelectIssueModal } from '@/common/screens/incident/select-issue-modal';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
@@ -58,7 +58,7 @@ export const HelpScreen = ({ style, ...props }: Props) => {
   };
   const cancelHandler = (acknowledgedCosts: number, issue: Issue, comment: string) => {
     if (!orderId) return;
-    trackEvent('Relatou problema');
+    trackEvent('Cancelou pedido');
     setLoading(true);
     api
       .orders()

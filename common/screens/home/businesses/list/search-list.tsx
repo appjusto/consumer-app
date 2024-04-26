@@ -4,7 +4,9 @@ import { SearchFilter, SearchKind, SearchOrder } from '@/api/externals/algolia/t
 import { useAlgoliaSearch } from '@/api/externals/algolia/useAlgoliaSearch';
 import { useContextCurrentLocation } from '@/api/preferences/context/PreferencesContext';
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
+import { Loading } from '@/common/components/views/Loading';
 import { useInitialState } from '@/common/react/useInitialState';
+import paddings from '@/common/styles/paddings';
 import { BusinessAlgolia, ProductAlgolia } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -14,6 +16,7 @@ import { SearchFiltersModal } from '../../search/search-filters-modal';
 import { SearchOrderModal } from '../../search/search-order-modal';
 import { SearchBusinessListItem } from './business-list-item/search-business-list-item';
 import { SearchGroupedProductsListItem } from './business-list-item/search-grouped-products-list-item';
+import { EmptyList } from './empty-list';
 import { SearchListHeader, SearchListMode } from './search-list-header';
 
 interface Props extends ViewProps {
@@ -122,6 +125,15 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           onEndReached={() => {
             if (!isAnonymous) fetchNextPage();
           }}
+          ListEmptyComponent={
+            results ? (
+              <EmptyList />
+            ) : (
+              <View style={{ marginTop: paddings.lg }}>
+                <Loading />
+              </View>
+            )
+          }
         />
       ) : null}
       {kind === 'product' ? (
@@ -162,6 +174,15 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
             // if (!isAnonymous) fetchNextPage();
             // fetchNextPage();
           }}
+          ListEmptyComponent={
+            results ? (
+              <EmptyList />
+            ) : (
+              <View style={{ marginTop: paddings.lg }}>
+                <Loading />
+              </View>
+            )
+          }
         />
       ) : null}
     </View>
