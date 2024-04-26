@@ -1,55 +1,44 @@
-import { useContextApi } from '@/api/ApiContext';
-import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { shareFleet } from '@/api/fleets/shareFleet';
 import { useObserveFleet } from '@/api/fleets/useObserveFleet';
-import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
-import { RoundedText } from '@/common/components/texts/RoundedText';
 import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { getAppjustoDomain } from '@/common/constants/urls';
 import { FleetDetail } from '@/common/screens/fleets/fleet-detail';
 import { ScreenTitle } from '@/common/screens/title/screen-title';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { Stack, router, useLocalSearchParams } from 'expo-router';
+import * as Clipboard from 'expo-clipboard';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import { Share2 } from 'lucide-react-native';
 import { Pressable, View } from 'react-native';
 
 export default function FleetDetailScreen() {
   // params
-  const params = useLocalSearchParams<{ id: string }>();
+  const params = useLocalSearchParams<{ fleetId: string }>();
   // context
-  const api = useContextApi();
   const showToast = useShowToast();
   // state
-  const fleet = useObserveFleet(params.id);
+  const fleet = useObserveFleet(params.fleetId);
   // tracking
   useTrackScreenView('Frota', { fleetName: fleet?.name }, Boolean(fleet));
   // handlers
-  const joinFleet = () => {
+  const copyToClipboard = () => {
     if (!fleet) return;
-    trackEvent('Entrou na frota', { fleetId: fleet.id });
-    api
-      .fleets()
-      .joinFleet(fleet.id)
-      .then(() => {
-        showToast(`Você agora faz parte da frota ${fleet.name}!`, 'success');
-        router.back();
-      });
+    Clipboard.setStringAsync(`https://${getAppjustoDomain()}/fleets/${fleet.id}`).then(() => {
+      showToast('Link da frota copiado!', 'success');
+    });
   };
   // UI
-  if (!fleet) return <ScreenTitle title="Detalhes da frota" loading />;
-  const usingFleet = false;
-
+  if (!fleet) return <ScreenTitle title="Detalhe da frota" loading />;
   return (
     <DefaultScrollView style={{ ...screens.default }}>
       <Stack.Screen
         options={{
           title: `Frota ${fleet.name}`,
-          headerRight: () => (
-            <Pressable onPress={() => shareFleet(fleet.id, fleet.name)}>
+          headerRight: (props) => (
+            <Pressable onPress={copyToClipboard}>
               {() => <Share2 size={16} color={colors.neutral900} />}
             </Pressable>
           ),
@@ -67,15 +56,6 @@ export default function FleetDetailScreen() {
               style={{ marginTop: paddings.xs }}
             >{`${fleet.participantsOnline} participantes online`}</DefaultText>
           </View>
-          {usingFleet ? (
-            <RoundedText
-              style={{ backgroundColor: colors.primary100 }}
-              size="xs"
-              color="primary900"
-            >
-              Você faz parte desta frota!
-            </RoundedText>
-          ) : null}
         </View>
 
         {/* description */}
@@ -84,12 +64,6 @@ export default function FleetDetailScreen() {
         </DefaultText>
       </View>
       <FleetDetail fleet={fleet} />
-
-      {!usingFleet ? (
-        <View style={{ padding: paddings.lg, backgroundColor: colors.white }}>
-          <DefaultButton title="Participar dessa frota" onPress={joinFleet} />
-        </View>
-      ) : null}
     </DefaultScrollView>
   );
 }

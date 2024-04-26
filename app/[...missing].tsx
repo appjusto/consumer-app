@@ -1,5 +1,5 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { Stack, router } from 'expo-router';
+import { Pressable, StyleSheet } from 'react-native';
 
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { DefaultText } from '@/common/components/texts/DefaultText';
@@ -11,9 +11,9 @@ export default function NotFoundScreen() {
       <DefaultView style={styles.container}>
         <DefaultText style={styles.title}>Tela não encontrada.</DefaultText>
 
-        <Link href="/(unlogged)/welcome" style={styles.link}>
-          <DefaultText style={styles.linkText}>Voltar para o início</DefaultText>
-        </Link>
+        <Pressable onPress={() => router.back()}>
+          <DefaultText style={styles.linkText}>Voltar</DefaultText>
+        </Pressable>
       </DefaultView>
     </>
   );

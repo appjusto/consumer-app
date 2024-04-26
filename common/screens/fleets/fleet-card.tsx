@@ -1,15 +1,17 @@
+import { trackEvent } from '@/api/analytics/track';
+import { useContextOrder, useContextOrderOptions } from '@/api/orders/context/order-context';
+import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
+import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { getAppjustoDomain } from '@/common/constants/urls';
 import { formatCurrency } from '@/common/formatters/currency';
 import { formatDistance } from '@/common/formatters/distance';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import { Fleet, WithId } from '@appjusto/types';
-
-import { trackEvent } from '@/api/analytics/track';
-import { useContextOrderOptions } from '@/api/orders/context/order-context';
-import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
-import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton';
+import * as Clipboard from 'expo-clipboard';
 import { router } from 'expo-router';
 import { Share2 } from 'lucide-react-native';
 import { View } from 'react-native';
@@ -21,12 +23,28 @@ interface Props extends ViewProps {
 
 export const FleetCard = ({ fleet, style, ...props }: Props) => {
   // context
+  const quote = useContextOrder();
+  const showToast = useShowToast();
   const { setFleetsIds } = useContextOrderOptions()!;
   // handlers
   const selectFleet = () => {
     trackEvent('Escolheu frota', { fleetId: fleet.id });
     setFleetsIds([fleet.id]);
     router.back();
+  };
+  const fleetDetailsHandler = () => {
+    if (!quote) return;
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/fleets/[fleetId]',
+      params: { orderId: quote.id, fleetId: fleet.id },
+    });
+  };
+  // handlers
+  const copyToClipboard = () => {
+    if (!fleet) return;
+    Clipboard.setStringAsync(`https://${getAppjustoDomain()}/fleets/${fleet.id}`).then(() => {
+      showToast('Link da frota copiado!', 'success');
+    });
   };
   // UI
   const minimumFee = formatCurrency(fleet.minimumFee);
@@ -53,7 +71,7 @@ export const FleetCard = ({ fleet, style, ...props }: Props) => {
           <OnlyIconButton
             icon={<Share2 size={16} color={colors.neutral900} />}
             variant="circle"
-            onPress={() => null}
+            onPress={copyToClipboard}
           />
         </View>
         {/* description */}
@@ -103,9 +121,7 @@ export const FleetCard = ({ fleet, style, ...props }: Props) => {
           style={{ flex: 1 }}
           title="Ver detalhes"
           variant="outline"
-          onPress={() =>
-            router.navigate({ pathname: '/(logged)/fleets/[id]', params: { id: fleet.id } })
-          }
+          onPress={fleetDetailsHandler}
         />
         <DefaultButton
           style={{ flex: 1, marginLeft: paddings.lg }}

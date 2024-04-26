@@ -34,7 +34,19 @@ export const OrderFleetSelector = ({ businessLogistics, style, ...props }: Props
         showToast('Não foi possível atualizar a forma de entrega. Tente novamente.', 'error');
       });
   };
-  const selectFleet = () => {
+  const selectFareHandler = (fare: Fare) => {
+    if (!order) return;
+    if (!fare.fleet?.id) return;
+    if (fare.fleet.id !== order.fare?.fleet?.id) {
+      updateFare(fare);
+    } else {
+      router.navigate({
+        pathname: '/(logged)/checkout/[orderId]/fleets/[fleetId]',
+        params: { orderId: order.id, fleetId: fare.fleet.id },
+      });
+    }
+  };
+  const searchFleetHandler = () => {
     if (!order) return;
     router.navigate({
       pathname: '/(logged)/checkout/[orderId]/fleets/search',
@@ -55,12 +67,10 @@ export const OrderFleetSelector = ({ businessLogistics, style, ...props }: Props
       {fares.map((fare) => {
         if (!fare.fleet?.id) return null;
         const value = Math.max(0, (fare.courier?.value ?? 0) - (fare.courier?.discount ?? 0));
+        const checked = fare.fleet?.id === order.fare?.fleet?.id;
         return (
           <View key={fare.fleet?.id} style={{ flex: 1, marginTop: paddings.lg }}>
-            <RadioCardButton
-              onPress={() => updateFare(fare)}
-              checked={fare.fleet?.id === order.fare?.fleet?.id}
-            >
+            <RadioCardButton onPress={() => selectFareHandler(fare)} checked={checked}>
               <View
                 style={{
                   flex: 1,
@@ -75,9 +85,11 @@ export const OrderFleetSelector = ({ businessLogistics, style, ...props }: Props
                   <DefaultText size="md" color="black">
                     {fare.fleet?.name}
                   </DefaultText>
-                  <DefaultText style={{ marginTop: paddings.xs }}>
-                    Ver detalhes da frota
-                  </DefaultText>
+                  {checked ? (
+                    <View style={{ marginTop: paddings.xs }}>
+                      <DefaultText>Ver detalhes da frota</DefaultText>
+                    </View>
+                  ) : null}
                 </View>
                 <DefaultText size="md" color="black">
                   {value ? formatCurrency(value) : 'Grátis'}
@@ -92,7 +104,7 @@ export const OrderFleetSelector = ({ businessLogistics, style, ...props }: Props
           style={{ marginTop: paddings.lg }}
           title="Escolher outra frota"
           variant="outline"
-          onPress={selectFleet}
+          onPress={searchFleetHandler}
         />
       ) : null}
     </View>
