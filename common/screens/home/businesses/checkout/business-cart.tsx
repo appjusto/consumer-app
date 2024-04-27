@@ -42,7 +42,7 @@ export const BusinessCart = ({ order, editable = true, style, ...props }: Props)
         business={order.business}
         editable={editable}
       />
-      <View style={{ paddingHorizontal: paddings.lg }}>
+      <View style={{ marginHorizontal: paddings.lg }}>
         {(order.items ?? []).map((item) => (
           <BusinessCartItem
             style={{ marginTop: paddings.xl }}

@@ -55,7 +55,7 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
         >
           <View>
             <ProductImage url={url} size={48} />
-            {editable ? (
+            {editable && url ? (
               <OnlyIconButton
                 style={{ position: 'absolute', right: -14, top: -14 }}
                 icon={<Pencil size={14} color={colors.black} />}
@@ -66,7 +66,7 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
             ) : null}
           </View>
         </Pressable>
-        <View style={{ flex: 1, marginLeft: paddings.xl }}>
+        <View style={{ flex: 1, marginLeft: url ? paddings.xl : 0 }}>
           {/* name */}
           <DefaultText size="md">{item.product.name}</DefaultText>
           {/* notes */}
