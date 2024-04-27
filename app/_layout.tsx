@@ -7,14 +7,12 @@ import { PlatformProvider } from '@/api/platform/context/platform-context';
 import { PreferencesProvider } from '@/api/preferences/context/PreferencesContext';
 import { AuthProvider } from '@/common/auth/AuthContext';
 import { useSplashScreen } from '@/common/components/splashscreen/useSplashScreen';
-import { ShowToast } from '@/common/components/toast/Toast';
 import { Loading } from '@/common/components/views/Loading';
 import { ToastProvider } from '@/common/components/views/toast/ToastContext';
 import '@/common/errors/ignore';
 import { NotificationProvider } from '@/common/notifications/context/NotificationContext';
 import { setupNotifications } from '@/common/notifications/setup';
 import { RoutesProvider } from '@/common/routes/RoutesContext';
-import { getAppVersion } from '@/common/version';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -32,7 +30,7 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-// setup notification channels and background notification task
+// setup notification channels
 setupNotifications().then(null).catch(console.error);
 // setup background location task
 
@@ -62,7 +60,7 @@ export default function RootLayout() {
   useEffect(() => {
     // version toast
     // if (!isLive()) {
-    ShowToast('++' + getAppVersion());
+    // ShowToast(getAppVersion());
     // }
     // in-app messaging config
     // inAppMessaging()
