@@ -62,7 +62,7 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
   const value = pendingPayment?.value ?? getOrderTotalCost(order);
   // UI
   return (
-    <View style={{ ...screens.default }}>
+    <View style={{ ...screens.headless }}>
       <Stack.Screen options={{ title: 'PIX', headerShown: ordersTab }} />
       <DefaultScrollView style={{ flex: 1 }}>
         <DefaultView style={{ padding: paddings.lg }}>
