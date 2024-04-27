@@ -43,24 +43,25 @@ export const SearchHeader = ({
   return (
     <View style={[{}, style]} {...props}>
       {searchMode === 'in-place' && setQuery ? (
-        <DefaultInput placeholder="Pesquisa" value={query} onChangeText={setQuery} />
+        <>
+          <DefaultInput placeholder="Pesquisa" value={query} onChangeText={setQuery} />
+          <HorizontalSelector
+            style={{ marginVertical: paddings.lg }}
+            data={AboutSections}
+            selectedIndex={AboutSections.findIndex((item) => kind === item.kind)}
+            onSelect={(index) => {
+              if (!setKind) return;
+              setKind(AboutSections[index].kind);
+            }}
+          />
+        </>
       ) : (
         <DefaultText size="lg">Restaurantes</DefaultText>
       )}
-      {searchMode === 'in-place' ? (
-        <HorizontalSelector
-          style={{ marginVertical: paddings.lg }}
-          data={AboutSections}
-          selectedIndex={AboutSections.findIndex((item) => kind === item.kind)}
-          onSelect={(index) => {
-            if (!setKind) return;
-            setKind(AboutSections[index].kind);
-          }}
-        />
-      ) : null}
       <View
         style={{
-          marginVertical: searchMode === 'stub' ? paddings.sm : paddings.lg,
+          marginTop: searchMode === 'stub' ? paddings.sm : paddings.lg,
+          marginBottom: paddings.lg,
         }}
       >
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

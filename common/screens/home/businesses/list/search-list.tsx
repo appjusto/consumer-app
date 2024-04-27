@@ -128,11 +128,11 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           ListEmptyComponent={
             results ? (
               <EmptyList />
-            ) : (
+            ) : enabled ? (
               <View style={{ marginTop: paddings.lg }}>
                 <Loading />
               </View>
-            )
+            ) : null
           }
         />
       ) : null}
@@ -177,11 +177,11 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           ListEmptyComponent={
             results ? (
               <EmptyList />
-            ) : (
+            ) : enabled ? (
               <View style={{ marginTop: paddings.lg }}>
                 <Loading />
               </View>
-            )
+            ) : null
           }
         />
       ) : null}

@@ -53,6 +53,7 @@ export const CuisineListItem = ({ style, item, recyclingKey, ...props }: Props) 
             bottom: 0,
             borderBottomStartRadius: 8,
             borderBottomEndRadius: 8,
+            overflow: 'hidden',
           }}
         >
           <DefaultText
