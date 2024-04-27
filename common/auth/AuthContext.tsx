@@ -38,6 +38,7 @@ export const AuthProvider = (props: Props) => {
     // inAppMessaging()
     //   .setMessagesDisplaySuppressed(false)
     //   .then(() => null);
+    api.profile().updateProfile({});
     return api.profile().observeProfile(userId, setProfile);
   }, [api, userId, isAnonymous]);
   useEffect(() => {

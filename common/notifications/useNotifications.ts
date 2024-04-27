@@ -12,17 +12,19 @@ export const useNotifications = () => {
   const showToast = useShowToast();
   const api = useContextApi();
   const profile = useContextProfile();
+  const logged = Boolean(profile);
   const currentNotificationToken = profile?.notificationToken;
   // state
   const [notificationToken, setNotificationToken] = useState<string | null>();
   // side effects
   useEffect(() => {
-    getExpoPushToken(5)
+    // if (!logged) return;
+    getExpoPushToken(1)
       .then(setNotificationToken)
       .catch((error: unknown) => {
         console.error(error);
         showToast(
-          'Não foi configurar o App para receber notificações. Verifique as permissões.',
+          'Não foi possível configurar o App para receber notificações. Verifique as permissões.',
           'error'
         );
       });
@@ -30,11 +32,12 @@ export const useNotifications = () => {
   // update profile with token
   useEffect(() => {
     if (!Device.isDevice) return;
+    if (!logged) return;
     if (notificationToken === undefined) return;
     if (notificationToken === currentNotificationToken) return;
     api
       .profile()
       .updateProfile({ notificationToken, updatedOn: serverTimestamp() })
       .catch(console.error);
-  }, [api, currentNotificationToken, notificationToken]);
+  }, [api, currentNotificationToken, notificationToken, logged]);
 };

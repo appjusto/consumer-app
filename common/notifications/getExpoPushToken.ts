@@ -21,7 +21,7 @@ export const getExpoPushToken = (retries: number): Promise<string | null> => {
           finalStatus = status;
         }
         if (finalStatus === 'granted') {
-          resolve((await getExpoPushTokenAsync()).data);
+          resolve((await getExpoPushTokenAsync({ projectId: extra.eas.projectId })).data);
         } else {
           reject(new Error(finalStatus));
         }
@@ -31,8 +31,10 @@ export const getExpoPushToken = (retries: number): Promise<string | null> => {
     } catch (error: unknown) {
       if (retries > 0) setTimeout(async () => resolve(await getExpoPushToken(retries - 1)), 1000);
       else {
-        ShowToast('et:' + (error instanceof Error ? error.message : JSON.stringify(error)));
-        if (error instanceof Error) crashlytics().recordError(error);
+        if (error instanceof Error) {
+          ShowToast(error.message.substring(30));
+          crashlytics().recordError(error);
+        }
         reject(error);
       }
     }
