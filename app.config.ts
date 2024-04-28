@@ -52,6 +52,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     intentFilters: [
       {
+        autoVerify: true,
         action: 'VIEW',
         data: [
           {
@@ -63,6 +64,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         category: ['BROWSABLE', 'DEFAULT'],
       },
       {
+        autoVerify: true,
         action: 'VIEW',
         data: [
           {
@@ -74,6 +76,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         category: ['BROWSABLE', 'DEFAULT'],
       },
       {
+        autoVerify: true,
         action: 'VIEW',
         data: [
           {
