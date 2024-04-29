@@ -3,6 +3,7 @@ import { useContextPlatformParams } from '@/api/platform/context/platform-contex
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { Card, PayableWith, PublicBusiness, VRCard, WithId } from '@appjusto/types';
 import React, { useEffect, useState } from 'react';
+import { PaymentsOnlyOnFoodOrders } from '..';
 
 const PaymentsContext = React.createContext<Value>({});
 
@@ -66,7 +67,7 @@ export const PaymentsProvider = ({ children }: Props) => {
     if (!acceptedByPlatform) return;
     let accepted = acceptedByPlatform;
     if (!business) {
-      accepted = accepted.filter((value) => value !== 'vr-alimentação' && value !== 'vr-refeição');
+      accepted = accepted.filter((value) => !PaymentsOnlyOnFoodOrders.includes(value));
     } else {
       accepted = accepted.filter((value) => business.acceptedPaymentMethods?.includes(value));
     }
