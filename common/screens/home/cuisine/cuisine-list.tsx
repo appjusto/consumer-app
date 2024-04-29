@@ -24,7 +24,7 @@ export const CuisineList = ({ style, ...props }: Props) => {
         data={cuisines}
         renderItem={({ item, index }) => {
           return (
-            <Pressable onPress={() => router.navigate(`/search?cuisine=${item?.name}`)}>
+            <Pressable onPress={() => router.navigate(`/busca?cuisine=${item?.name}`)}>
               {() => {
                 return (
                   <View style={{ marginLeft: index > 0 ? paddings.lg : 0 }}>

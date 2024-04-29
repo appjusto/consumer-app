@@ -70,7 +70,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           {
             scheme: 'https',
             host: domain,
-            pathPrefix: '/search',
+            pathPrefix: '/busca',
           },
         ],
         category: ['BROWSABLE', 'DEFAULT'],

@@ -1,4 +1,6 @@
+import { trackEvent } from '@/api/analytics/track';
 import { useBanners } from '@/api/banners/useBanners';
+import { processURL } from '@/common/deeplink/processURL';
 import paddings from '@/common/styles/paddings';
 import { Banner, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
@@ -27,8 +29,10 @@ export const BannerList = ({ style, ...props }: Props) => {
             <Pressable
               onPress={() => {
                 if (!item?.link) return;
-                if (item.link.startsWith('https://')) Linking.openURL(item.link);
-                else router.navigate(item.link);
+                trackEvent('Clicou no banner', { url: item.link });
+                const deeplink = processURL(item.link);
+                if (deeplink) router.navigate(deeplink);
+                else Linking.openURL(item.link);
               }}
             >
               {() => (

@@ -7,15 +7,20 @@ import {
 import { useContextBusinessQuote } from '@/api/orders/context/order-context';
 import { HorizontalSelector } from '@/common/components/containers/horizontal-selector/horizontal-selector';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { getAppjustoDomain } from '@/common/constants/urls';
 import { CartButton } from '@/common/screens/home/businesses/detail/footer/cart-button';
 import { BusinessHeader } from '@/common/screens/home/businesses/detail/header/business-header';
 import { ProductListItem } from '@/common/screens/home/businesses/detail/product-list-item';
 import { ScreenTitle } from '@/common/screens/title/screen-title';
+import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Product, WithId } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
-import { router, useLocalSearchParams } from 'expo-router';
+import * as Clipboard from 'expo-clipboard';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Share2 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -24,6 +29,7 @@ export default function BusinessDetailScreen() {
   const params = useLocalSearchParams<{ businessId: string }>();
   const businessId = params.businessId;
   // context
+  const showToast = useShowToast();
   const business = useContextBusiness();
   const categories = useContextBusinessCategories();
   const products = useContextBusinessProducts();
@@ -34,7 +40,7 @@ export default function BusinessDetailScreen() {
   // state
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [nextCategoryIndex, setNextCategoryIndex] = useState(0);
-  const [headerHidden, setHeaderHidden] = useState(false);
+  const [headerHidden] = useState(false);
   // tracking
   useTrackScreenView('Restaurante', { businessId });
   // handlers
@@ -64,11 +70,28 @@ export default function BusinessDetailScreen() {
     setCategoryIndex(index);
     if (item) ref.current?.scrollToItem({ item, animated: true });
   };
+  const copyToClipboard = () => {
+    if (!business) return;
+    Clipboard.setStringAsync(
+      `https://${getAppjustoDomain()}/r/${business.slug ?? business.id}`
+    ).then(() => {
+      showToast('Link do restaurante copiado!', 'success');
+    });
+  };
   // UI
   if (!business || !products || !businessId) return <ScreenTitle title="Restaurante" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <ScreenTitle title={business.name} />
+      <Stack.Screen
+        options={{
+          title: business.name,
+          headerRight: (props) => (
+            <Pressable onPress={copyToClipboard}>
+              {() => <Share2 size={16} color={colors.neutral900} />}
+            </Pressable>
+          ),
+        }}
+      />
       {headerHidden && categories?.length && categories.length > 1 ? (
         <HorizontalSelector
           style={{ margin: paddings.lg }}

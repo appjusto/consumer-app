@@ -18,6 +18,8 @@ import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/D
 import { DefaultInput } from '@/common/components/inputs/default/DefaultInput';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { MessageBox } from '@/common/components/views/MessageBox';
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
+import { getAppjustoDomain } from '@/common/constants/urls';
 import { ProductComplements } from '@/common/screens/home/businesses/detail/complement/product-complements';
 import { AddProductToOrder } from '@/common/screens/home/businesses/detail/product/add-product-to-order';
 import { ScreenTitle } from '@/common/screens/title/screen-title';
@@ -26,10 +28,12 @@ import lineHeight from '@/common/styles/lineHeight';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
+import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
-import { router, useLocalSearchParams } from 'expo-router';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { Share2 } from 'lucide-react-native';
 import { Skeleton } from 'moti/skeleton';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Pressable, View } from 'react-native';
 
 const HEIGHT = 200;
 const WIDTH = Dimensions.get('screen').width;
@@ -41,6 +45,7 @@ export default function ProductDetailScreen() {
   const productId = params.productId;
   const itemId = params.itemId;
   // context
+  const showToast = useShowToast();
   const api = useContextApi();
   const isAnonymous = useContextIsUserAnonymous();
   const profile = useContextProfile();
@@ -86,25 +91,45 @@ export default function ProductDetailScreen() {
     }
     router.back();
   };
+  const copyToClipboard = () => {
+    if (!business) return;
+    Clipboard.setStringAsync(
+      `https://${getAppjustoDomain()}/r/${business.slug ?? business.id}`
+      // `https://${getAppjustoDomain()}/r/${business.slug ?? business.id}/p/${productId}`
+    ).then(() => {
+      showToast('Link do restaurante copiado!', 'success');
+    });
+  };
+  // UI
   const addToOrderDisabled =
     issues.length > 0 || !profile || !currentPlace || !business || !orderItem || !canAddItem;
   // console.log(!profile, !currentPlace, !business, !orderItem, !canAddItem);
-  // UI
   // console.log('product', product);
   // console.log('quote', quote);
   if (!product || quote === undefined) return <ScreenTitle title="Produto" loading />;
   return (
     <View style={{ ...screens.default }}>
-      <ScreenTitle title={product.name} />
+      <Stack.Screen
+        options={{
+          title: product.name,
+          headerRight: (props) => (
+            <Pressable onPress={copyToClipboard}>
+              {() => <Share2 size={16} color={colors.neutral900} />}
+            </Pressable>
+          ),
+        }}
+      />
       <DefaultKeyboardAwareScrollView>
         {/* image */}
-        <Skeleton.Group show={!url}>
-          <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
-            {url ? (
-              <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: url }} />
-            ) : null}
-          </Skeleton>
-        </Skeleton.Group>
+        {url !== null ? (
+          <Skeleton.Group show={!url}>
+            <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
+              {url ? (
+                <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: url }} />
+              ) : null}
+            </Skeleton>
+          </Skeleton.Group>
+        ) : null}
         {/* name / description */}
         <View style={{ paddingVertical: paddings.xl, paddingHorizontal: paddings.lg }}>
           <DefaultText size="lg">{product.name}</DefaultText>

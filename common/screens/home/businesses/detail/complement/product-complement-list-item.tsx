@@ -35,7 +35,7 @@ export const ProductComplementListItem = ({
   // const imageUrl = useComplementImageURI(businessId, complement);
   // UI
   const { name, description, maximum = 1, price } = complement;
-  const multipleChoices = maximum > 1;
+  const multipleChoices = maximum > 1 || group.maximum > 1;
   const quantity = getComplementQuantity(complement.id);
   const canAdd = quantity < maximum && canAddComplement(group);
   const added = quantity > 0;

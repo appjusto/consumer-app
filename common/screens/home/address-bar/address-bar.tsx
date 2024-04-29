@@ -40,13 +40,13 @@ export const AdreessBar = ({ style, ...props }: Props) => {
             </DefaultText>
             <ChevronDown style={{ marginLeft: paddings.sm }} color={colors.black} size={16} />
           </>
-        ) : (
+        ) : currentPlace === null ? (
           <MessageBox variant="warning">
             {`Usando sua localização aproximada. Clique para ${
               isAnonymous ? 'fazer login e ' : ''
             }definir seu endereço de entrega`}
           </MessageBox>
-        )}
+        ) : null}
       </View>
     </Pressable>
   );
