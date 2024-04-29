@@ -72,7 +72,9 @@ export default function BusinessDetailScreen() {
   };
   const copyToClipboard = () => {
     if (!business) return;
-    Clipboard.setStringAsync(`https://${getAppjustoDomain()}/r/${business.id}`).then(() => {
+    Clipboard.setStringAsync(
+      `https://${getAppjustoDomain()}/r/${business.slug ?? business.id}`
+    ).then(() => {
       showToast('Link do restaurante copiado!', 'success');
     });
   };
