@@ -98,13 +98,15 @@ export default function ProductDetailScreen() {
       <ScreenTitle title={product.name} />
       <DefaultKeyboardAwareScrollView>
         {/* image */}
-        <Skeleton.Group show={!url}>
-          <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
-            {url ? (
-              <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: url }} />
-            ) : null}
-          </Skeleton>
-        </Skeleton.Group>
+        {url !== null ? (
+          <Skeleton.Group show={!url}>
+            <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
+              {url ? (
+                <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: url }} />
+              ) : null}
+            </Skeleton>
+          </Skeleton.Group>
+        ) : null}
         {/* name / description */}
         <View style={{ paddingVertical: paddings.xl, paddingHorizontal: paddings.lg }}>
           <DefaultText size="lg">{product.name}</DefaultText>
