@@ -33,7 +33,11 @@ export const OngoingOrderCourier = ({ order, style, ...props }: Props) => {
   if (courier?.id) {
     return (
       <CourierCard
-        style={{ backgroundColor: colors.white, marginBottom: paddings.lg }}
+        style={{
+          backgroundColor: colors.white,
+          marginBottom: paddings.lg,
+          paddingBottom: 0,
+        }}
         courier={courierProfile}
         title="Sua entrega está sendo feita por"
       >
