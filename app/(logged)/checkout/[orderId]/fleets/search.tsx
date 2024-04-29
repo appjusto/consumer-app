@@ -14,7 +14,7 @@ import { Pressable, View } from 'react-native';
 export default function FleetsSearch() {
   // state
   const [fleetName, setFleetName] = useState('');
-  const { results: fleets } = useAlgoliaSearch<Fleet>(
+  const { results: fleets, fetchNextPage } = useAlgoliaSearch<Fleet>(
     true,
     'fleet',
     'distance',
@@ -63,6 +63,7 @@ export default function FleetsSearch() {
         keyExtractor={(item) => item.id}
         estimatedItemSize={460}
         ListFooterComponent={<View style={{ height: paddings.lg }} />}
+        onEndReached={fetchNextPage}
       />
     </View>
   );
