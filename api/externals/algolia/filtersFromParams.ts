@@ -1,10 +1,11 @@
-// https://appjusto.com.br/search/?acceptedPaymentMethods=vr-alimentação
+// https://appjusto.com.br/busca/?acceptedPaymentMethods=vr-alimentação
 
 import { pick } from 'lodash';
 import { SearchFilter, SearchFilterType } from './types';
 
 export const filtersFromParams = (params: { [key: string]: string }) => {
   const filters: SearchFilter[] = [];
+  if (params.method) params.acceptedPaymentMethods = params.method;
   for (const k in pick(params, [
     'acceptedPaymentMethods',
     'tags',

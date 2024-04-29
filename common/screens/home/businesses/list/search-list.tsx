@@ -58,7 +58,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   }, [results, kind]);
   // handlers
   const searchHandler = () => {
-    router.navigate('/(logged)/(tabs)/(home)/search');
+    router.navigate('/(logged)/(tabs)/(home)/busca');
   };
   // logs
   // console.log(query);
