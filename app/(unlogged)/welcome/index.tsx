@@ -63,7 +63,7 @@ export default function Welcome() {
           header={['A melhor plataforma para quem entrega']}
           text={[
             'No appjusto o valor mínimo por corrida é R$ 10 e é liberado em no máximo 1 dia após a entrega.',
-            'Através das frotas, as pessoas quem entregam podem se juntar e definir suas condições de trabalho, inclusive o valor que vão receber pela entrega!',
+            'Através das frotas, as pessoas que entregam podem se juntar e definir suas condições de trabalho, inclusive o valor que vão receber pela entrega!',
           ]}
           key="2"
         />

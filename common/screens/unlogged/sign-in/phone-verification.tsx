@@ -1,6 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
 import { trackEvent } from '@/api/analytics/track';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultKeyboardAwareScrollView } from '@/common/components/containers/DefaultKeyboardAwareScrollView';
 import { CodeInput } from '@/common/components/inputs/code-input/CodeInput';
@@ -28,6 +29,7 @@ export const PhoneVerificationScreen = () => {
   // context
   const api = useContextApi();
   const showToast = useShowToast();
+  const profile = useContextProfile();
   // params
   const search = useLocalSearchParams<{ countryCode: string; phone: string }>();
   const countryCode = search.countryCode ?? '55';
@@ -75,6 +77,10 @@ export const PhoneVerificationScreen = () => {
   useEffect(() => {
     signInWithPhoneNumber();
   }, [signInWithPhoneNumber]);
+  useEffect(() => {
+    if (!profile) return;
+    router.replace('/(logged)/(tabs)/(home)/');
+  }, [profile]);
   // phone verification
   useEffect(() => {
     if (confirmation?.verificationId) codeRef?.current?.focus();
@@ -88,7 +94,6 @@ export const PhoneVerificationScreen = () => {
       .then((result) => {
         trackEvent('Código confirmado', { phone });
         analytics().logLogin({ method: 'Firebase Phone' }).catch(console.error);
-        router.replace('/(logged)/(tabs)/(home)/');
       })
       .catch((error) => {
         setLoading(false);
