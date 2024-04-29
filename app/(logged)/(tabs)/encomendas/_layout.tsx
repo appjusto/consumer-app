@@ -11,7 +11,7 @@ export default function OrdersLayout() {
         return { headerShown: route.name !== 'index' };
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Encomendas' }} />
+      <Stack.Screen name="index" options={{ title: 'Entregas' }} />
       <Stack.Screen
         name="places/index"
         options={{ title: 'Local de coleta', presentation: 'modal' }}

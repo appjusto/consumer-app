@@ -43,7 +43,7 @@ export default function P2PIndex() {
       <DefaultView style={{ ...screens.headless, padding: paddings.lg }}>
         {/* header */}
         <View>
-          <DefaultText size="xl">Enviar encomendas</DefaultText>
+          <DefaultText size="xl">Entregas rápidas</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm }} size="md" color="neutral800">
             Entregas imediatas ou agendadas
           </DefaultText>
