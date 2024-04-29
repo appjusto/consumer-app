@@ -1,3 +1,4 @@
+import { trackEvent } from '@/api/analytics/track';
 import { useBanners } from '@/api/banners/useBanners';
 import { processURL } from '@/common/deeplink/processURL';
 import paddings from '@/common/styles/paddings';
@@ -28,6 +29,7 @@ export const BannerList = ({ style, ...props }: Props) => {
             <Pressable
               onPress={() => {
                 if (!item?.link) return;
+                trackEvent('Clicou no banner', { url: item.link });
                 const deeplink = processURL(item.link);
                 if (deeplink) router.navigate(deeplink);
                 else Linking.openURL(item.link);

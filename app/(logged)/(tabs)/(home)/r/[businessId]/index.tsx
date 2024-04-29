@@ -40,7 +40,7 @@ export default function BusinessDetailScreen() {
   // state
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [nextCategoryIndex, setNextCategoryIndex] = useState(0);
-  const [headerHidden, setHeaderHidden] = useState(false);
+  const [headerHidden] = useState(false);
   // tracking
   useTrackScreenView('Restaurante', { businessId });
   // handlers

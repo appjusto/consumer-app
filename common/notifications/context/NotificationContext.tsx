@@ -1,3 +1,4 @@
+import { trackEvent } from '@/api/analytics/track';
 import { processURL } from '@/common/deeplink/processURL';
 import { PushMessageData } from '@appjusto/types';
 import * as Linking from 'expo-linking';
@@ -25,11 +26,17 @@ export const NotificationProvider = (props: Props) => {
   useEffect(() => {
     if (!message) return;
     if (message.action === 'navigate' || message.action === 'order-request') {
-      setDeeplink(message.url);
+      trackEvent('Clicou no push', { url: message.url });
+      const result = processURL(message.url);
+      if (result) setDeeplink(result);
     }
   }, [message]);
   useEffect(() => {
-    if (url) setDeeplink(processURL(url));
+    if (url) {
+      trackEvent('Abriu deeplink', { url });
+      const result = processURL(url);
+      if (result) setDeeplink(result);
+    }
   }, [url]);
   // result
   return (

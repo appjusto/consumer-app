@@ -12,6 +12,7 @@ const regexps = [
 
 export const processURL = (url: string) => {
   if (!url) return;
+  if (!url.includes('://')) return url;
   let result: string | undefined = undefined;
   regexps.some((regexp) => {
     const match = url.match(regexp);
