@@ -37,7 +37,7 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
   const order = useContextOrder();
   const orderId = order?.id;
   const segments = useSegments();
-  const ordersTab = segments.some((value) => value === 'pedido');
+  const ordersTab = segments.some((value) => value === 'order');
   // state
   const pendingPayment = useObservePendingPayment(orderId);
   const pix = pendingPayment?.processor === 'iugu' ? (pendingPayment as IuguPayment).pix : null;

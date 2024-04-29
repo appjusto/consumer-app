@@ -104,7 +104,7 @@ export default function OrderCompletedScreen() {
   const supportHandler = () => openWhatsAppSupportURL('Pedido entregue');
   const complaintHandler = () =>
     router.navigate({
-      pathname: '/(logged)/(tabs)/pedido/[orderId]/complaint',
+      pathname: '/(logged)/(tabs)/order/[orderId]/complaint',
       params: { orderId },
     });
   // logs
