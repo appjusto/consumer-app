@@ -1,5 +1,4 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { SearchList } from '@/common/screens/home/businesses/list/search-list';
 import paddings from '@/common/styles/paddings';
@@ -11,11 +10,11 @@ export default function SearchScreen() {
   useTrackScreenView('Pesquisa');
   // UI
   return (
-    <DefaultScrollView style={{ ...screens.default }}>
+    <DefaultView style={{ ...screens.default }}>
       <Stack.Screen options={{ title: 'Pesquisa' }} />
-      <DefaultView style={{ padding: paddings.lg }}>
+      <DefaultView style={{ flex: 1, padding: paddings.lg }}>
         <SearchList mode="search" />
       </DefaultView>
-    </DefaultScrollView>
+    </DefaultView>
   );
 }

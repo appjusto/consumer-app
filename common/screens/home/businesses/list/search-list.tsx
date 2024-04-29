@@ -67,7 +67,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
   // console.log('results.length', results?.length);
   // UI
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[{ flex: 1 }]}>
       <SearchFiltersModal
         initialFilters={filters}
         visible={filtersModalShown}
@@ -124,8 +124,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           estimatedItemSize={60}
           onEndReached={() => {
             console.log('onEndReach');
-            // if (!isAnonymous) fetchNextPage();
-            // fetchNextPage();
+            if (!isAnonymous) fetchNextPage();
           }}
           ListEmptyComponent={
             results ? (
@@ -173,8 +172,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           estimatedItemSize={150}
           onEndReached={() => {
             console.log('onEndReached');
-            // if (!isAnonymous) fetchNextPage();
-            // fetchNextPage();
+            if (!isAnonymous) fetchNextPage();
           }}
           ListEmptyComponent={
             results ? (
