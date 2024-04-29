@@ -66,7 +66,7 @@ export default function ComplaintScreen() {
         });
         trackEvent('Realizou denúncia');
         router.replace({
-          pathname: '/(logged)/(tabs)/pedido/[orderId]/complaint/feedback',
+          pathname: '/(logged)/(tabs)/order/[orderId]/complaint/feedback',
           params: { orderId },
         });
       } catch (error) {

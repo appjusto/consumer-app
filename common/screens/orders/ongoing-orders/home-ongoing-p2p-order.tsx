@@ -38,7 +38,7 @@ export const HomeOngoingP2POrder = ({ order, style, ...props }: Props) => {
       <Pressable
         onPress={() => {
           // @ts-ignore
-          navigation.navigate('pedido', {
+          navigation.navigate('order', {
             screen: '[orderId]/ongoing',
             params: { orderId: order.id },
             initial: false,

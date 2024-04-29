@@ -34,7 +34,7 @@ export default function OngoingOrderScreen() {
     if (!isFocused) return;
     if (isOrderOngoing(status)) return;
     router.replace({
-      pathname: '/(logged)/(tabs)/pedido/[orderId]/completed',
+      pathname: '/(logged)/(tabs)/order/[orderId]/completed',
       params: { orderId },
     });
   }, [orderId, status, isFocused]);

@@ -11,7 +11,7 @@ export const useOrderConfirming = () => {
   const { status, type, paymentMethod } = order ?? {};
   const navigation = useNavigation();
   const segments = useSegments();
-  const ordersTab = segments.some((value) => value === 'pedido');
+  const ordersTab = segments.some((value) => value === 'order');
   const isFocused = useIsFocused();
   // side effects
   useEffect(() => {
@@ -28,7 +28,7 @@ export const useOrderConfirming = () => {
           });
         } else {
           router.replace({
-            pathname: '/(logged)/(tabs)/pedido/[orderId]/confirming',
+            pathname: '/(logged)/(tabs)/order/[orderId]/confirming',
             params: { orderId },
           });
         }
@@ -41,7 +41,7 @@ export const useOrderConfirming = () => {
       }
     }
     // @ts-ignore
-    navigation.navigate('pedido', {
+    navigation.navigate('order', {
       screen: '[orderId]/ongoing',
       params: { orderId },
       initial: true,

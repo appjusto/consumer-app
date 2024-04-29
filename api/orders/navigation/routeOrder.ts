@@ -11,35 +11,35 @@ export const routeOrder = (
   if (isOrderBeforeConfirmed(status)) {
     if (paymentMethod === 'pix') {
       router.navigate({
-        pathname: '/(logged)/(tabs)/pedido/[orderId]/confirming-pix',
+        pathname: '/(logged)/(tabs)/order/[orderId]/confirming-pix',
         params: { orderId },
       });
     } else {
       router.navigate({
-        pathname: '/(logged)/(tabs)/pedido/[orderId]/confirming',
+        pathname: '/(logged)/(tabs)/order/[orderId]/confirming',
         params: { orderId },
       });
     }
   } else if (status === 'confirmed') {
     if (type === 'food') {
       router.navigate({
-        pathname: '/(logged)/(tabs)/pedido/[orderId]/confirming',
+        pathname: '/(logged)/(tabs)/order/[orderId]/confirming',
         params: { orderId },
       });
     } else {
       router.navigate({
-        pathname: '/(logged)/(tabs)/pedido/[orderId]/ongoing',
+        pathname: '/(logged)/(tabs)/order/[orderId]/ongoing',
         params: { orderId },
       });
     }
   } else if (isOrderOngoing(status)) {
     router.navigate({
-      pathname: '/(logged)/(tabs)/pedido/[orderId]/ongoing',
+      pathname: '/(logged)/(tabs)/order/[orderId]/ongoing',
       params: { orderId },
     });
   } else {
     router.navigate({
-      pathname: '/(logged)/(tabs)/pedido/[orderId]/completed',
+      pathname: '/(logged)/(tabs)/order/[orderId]/completed',
       params: { orderId },
     });
   }

@@ -86,7 +86,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="pedido"
+        name="order"
         options={{
           title: 'Pedidos',
           headerShown: false,

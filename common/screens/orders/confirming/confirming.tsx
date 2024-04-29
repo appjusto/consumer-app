@@ -27,7 +27,7 @@ export const OrderConfirming = ({ order, style, ...props }: Props) => {
   const orderId = order?.id;
   const waitingAcceptance = type === 'food' && status === 'confirmed';
   const segments = useSegments();
-  const ordersTab = segments.some((value) => value === 'pedido');
+  const ordersTab = segments.some((value) => value === 'order');
   // state
   const business = useObserveBusiness(order?.business?.id);
   const businessPhone = business?.phone;
@@ -48,7 +48,7 @@ export const OrderConfirming = ({ order, style, ...props }: Props) => {
   const problemHandler = () => {
     if (!orderId) return;
     router.navigate({
-      pathname: '/(logged)/(tabs)/pedido/[orderId]/help',
+      pathname: '/(logged)/(tabs)/order/[orderId]/help',
       params: { orderId },
     });
   };

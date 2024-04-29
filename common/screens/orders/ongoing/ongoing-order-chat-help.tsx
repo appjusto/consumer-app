@@ -62,7 +62,7 @@ export const OngoingOrderChatHelp = ({ order, style, ...props }: Props) => {
         variant="destructive"
         onPress={() =>
           router.navigate({
-            pathname: '/(logged)/(tabs)/pedido/[orderId]/help',
+            pathname: '/(logged)/(tabs)/order/[orderId]/help',
             params: { orderId: order.id },
           })
         }
