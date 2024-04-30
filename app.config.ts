@@ -143,7 +143,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   updates: {
     url: `https://u.expo.dev/${projectId}`,
-    fallbackToCacheTimeout: 1000 * 50,
+    fallbackToCacheTimeout: 1000 * 3,
   },
   runtimeVersion: {
     policy: 'sdkVersion',
