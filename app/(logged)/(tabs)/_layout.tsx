@@ -1,28 +1,30 @@
 import { Link, Tabs } from 'expo-router';
-import { Pressable, View, ViewProps, useColorScheme } from 'react-native';
+import { Dimensions, Pressable, View, ViewProps, useColorScheme } from 'react-native';
 
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
-import { isLargeScreen } from '@/common/version/device';
 import { Home, InfoIcon, Package, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
   focused?: boolean;
 }
 
+const HEIGHT = Dimensions.get('screen').width * Dimensions.get('screen').scale * 0.075;
+
 const TabIcon = ({ focused, children, ...props }: TabIconProps) => (
   <View
     style={{
-      width: 64,
+      width: 62,
+      height: 36,
       ...borders.default,
       borderColor: focused ? colors.neutral100 : colors.white,
       backgroundColor: focused ? colors.neutral100 : colors.white,
       alignItems: 'center',
-      padding: paddings.xs,
-      // marginTop: 20,
+      justifyContent: 'center',
+      marginTop: paddings.sm,
     }}
     {...props}
   >
@@ -37,15 +39,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { height: isLargeScreen() ? 90 : 70 },
+        tabBarStyle: { height: HEIGHT },
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
-        tabBarItemStyle: {
-          // paddingVertical: paddings.lg,
-          // marginBottom: paddings.lg,
-        },
-        // tabBarShowLabel: false,
-        tabBarLabel: ({ children }) => <DefaultText size="xs">{children}</DefaultText>,
+        tabBarLabel: ({ children }) => (
+          <DefaultText style={{ marginBottom: paddings.sm }} size="xs">
+            {children}
+          </DefaultText>
+        ),
       }}
     >
       <Tabs.Screen

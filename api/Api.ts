@@ -49,6 +49,7 @@ export default class Api {
 
   constructor() {
     auth().languageCode = 'pt';
+    // firestore().settings({ cacheSizeBytes: 1024 * 1024 * 10 });
     if (!onSimulator()) {
       const provider = appCheck().newReactNativeFirebaseAppCheckProvider();
       provider.configure({
