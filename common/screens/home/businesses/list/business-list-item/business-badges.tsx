@@ -37,7 +37,7 @@ export const BusinessBadges = ({ business, style, ...props }: Props) => {
         </SimpleBadge>
       ) : null}
       {business.averageDiscount ? (
-        <SimpleBadge variant="primary">{`${business.averageDiscount}% de desconto`}</SimpleBadge>
+        <SimpleBadge variant="primary">{`${business.averageDiscount}% mais barato`}</SimpleBadge>
       ) : appjustoOnly ? (
         <SimpleBadge variant="primary">Só no appjusto</SimpleBadge>
       ) : null}

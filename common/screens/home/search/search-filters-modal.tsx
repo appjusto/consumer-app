@@ -100,19 +100,19 @@ export const SearchFiltersModal = ({
                   />
                   <RoundedToggleButton
                     style={{ marginTop: paddings.sm, marginRight: paddings.sm }}
-                    title="10% de desconto"
+                    title="10% mais barato"
                     onPress={() => setFilters((current) => toggleDiscount(current, '10'))}
                     toggled={discountAdded(filters, '10')}
                   />
                   <RoundedToggleButton
                     style={{ marginTop: paddings.sm, marginRight: paddings.sm }}
-                    title="15% de desconto"
+                    title="15% mais barato"
                     onPress={() => setFilters((current) => toggleDiscount(current, '15'))}
                     toggled={discountAdded(filters, '15')}
                   />
                   <RoundedToggleButton
                     style={{ marginTop: paddings.sm, marginRight: paddings.sm }}
-                    title="20% de desconto"
+                    title="20% mais barato"
                     onPress={() => setFilters((current) => toggleDiscount(current, '20'))}
                     toggled={discountAdded(filters, '20')}
                   />

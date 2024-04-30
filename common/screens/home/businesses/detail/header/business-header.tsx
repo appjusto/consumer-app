@@ -12,6 +12,7 @@ import { router } from 'expo-router';
 import { Skeleton } from 'moti/skeleton';
 import { Dimensions, View, ViewProps } from 'react-native';
 import { AppJustoOnlyIcon } from '../../icons/appjusto-only-icon';
+import { DiscountIcon } from '../../icons/discount-icon';
 import { BusinessBadges } from '../../list/business-list-item/business-badges';
 import { BusinessItemInfo } from '../../list/business-list-item/business-info';
 import { BusinessLogo } from '../../logo/business-logo';
@@ -37,6 +38,7 @@ export const BusinessHeader = ({
 }: Props) => {
   // state
   const appjustoOnly = business.tags?.includes('appjusto-only');
+  const discount = business.averageDiscount ?? 0;
   const coverUrl = useImageURL(getBusinessCoverStoragePath(business.id));
 
   // handlers
@@ -50,7 +52,7 @@ export const BusinessHeader = ({
   if (hidden) return null;
   return (
     <View style={[{}, style]} {...props}>
-      {appjustoOnly ? (
+      {appjustoOnly || discount ? (
         <View
           style={{
             flexDirection: 'row',
@@ -59,10 +61,12 @@ export const BusinessHeader = ({
             paddingVertical: paddings.md,
           }}
         >
-          <AppJustoOnlyIcon />
+          {appjustoOnly ? <AppJustoOnlyIcon /> : <DiscountIcon />}
           <DefaultText style={{ marginHorizontal: paddings.md }} size="xs" color="neutral700">
-            Por acreditar em um delivery mais justo, esse restaurante optou por estar apenas no
-            appjusto.
+            {appjustoOnly
+              ? 'Por acreditar em um delivery mais justo, esse restaurante optou por estar apenas no appjusto'
+              : `Este restaurante cobra em média ${discount}% mais barato no appjusto comparado com outros apps`}
+            .
           </DefaultText>
         </View>
       ) : null}
