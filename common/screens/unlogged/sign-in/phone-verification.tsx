@@ -94,6 +94,7 @@ export const PhoneVerificationScreen = () => {
       .then((result) => {
         trackEvent('Código confirmado', { phone });
         analytics().logLogin({ method: 'Firebase Phone' }).catch(console.error);
+        // router.push('/(logged)/(tabs)/(home)');
       })
       .catch((error) => {
         setLoading(false);
@@ -138,6 +139,7 @@ export const PhoneVerificationScreen = () => {
             setLoading(false);
             showToast('Código inválido. Tente novamente.', 'error');
           });
+        // router.push('/(logged)/(tabs)/(home)');
       })
       .catch((error) => {
         console.error(error);

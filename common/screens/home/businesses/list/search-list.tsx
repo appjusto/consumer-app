@@ -9,6 +9,7 @@ import { useInitialState } from '@/common/react/useInitialState';
 import paddings from '@/common/styles/paddings';
 import { BusinessAlgolia, ProductAlgolia } from '@appjusto/types';
 import { FlashList } from '@shopify/flash-list';
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { View, ViewProps } from 'react-native';
@@ -95,9 +96,11 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           data={results}
           onRefresh={() => {
             setRefreshing(true);
-            refetch()?.then(() => {
-              setRefreshing(false);
-            });
+            Image.clearDiskCache()
+              .then(refetch)
+              .finally(() => {
+                setRefreshing(false);
+              });
           }}
           ListHeaderComponent={
             <SearchListHeader

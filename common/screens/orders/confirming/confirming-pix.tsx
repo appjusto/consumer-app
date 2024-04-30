@@ -86,7 +86,11 @@ export const OrderConfirmingPix = ({ style, ...props }: Props) => {
             {pix?.qrcode ? (
               <View>
                 <View style={{ padding: paddings.lg }}>
-                  <Image source={{ uri: pix.qrcode }} style={{ height: 150, width: 150 }} />
+                  <Image
+                    source={{ uri: pix.qrcode }}
+                    style={{ height: 150, width: 150 }}
+                    cachePolicy="none"
+                  />
                 </View>
                 <DefaultButton
                   title="Copiar código Pix"

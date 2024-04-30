@@ -58,7 +58,7 @@ export const HelpScreen = ({ style, ...props }: Props) => {
   };
   const cancelHandler = (acknowledgedCosts: number, issue: Issue, comment: string) => {
     if (!orderId) return;
-    trackEvent('Cancelou pedido');
+    trackEvent('Cancelou pedido', { orderId });
     setLoading(true);
     api
       .orders()

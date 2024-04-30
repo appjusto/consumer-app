@@ -22,6 +22,7 @@ export const ProductImage = ({ url, size, recyclingKey, style, ...props }: Props
                 style={{ width: size, height: size, borderRadius: 8 }}
                 contentFit="cover"
                 source={{ uri: url }}
+                cachePolicy="none"
               />
             ) : null}
           </View>

@@ -70,7 +70,12 @@ export const BusinessHeader = ({
         <View>
           <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
             {coverUrl ? (
-              <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: coverUrl }} />
+              <Image
+                style={{ height: HEIGHT }}
+                contentFit="cover"
+                source={{ uri: coverUrl }}
+                cachePolicy="none"
+              />
             ) : null}
           </Skeleton>
           <BusinessLogo

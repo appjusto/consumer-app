@@ -1,4 +1,5 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
+import { useContextProfile } from '@/common/auth/AuthContext';
 import { CheckButton } from '@/common/components/buttons/check/CheckButton';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
@@ -8,34 +9,42 @@ import { DefaultText } from '@/common/components/texts/DefaultText';
 import { SignInIcon } from '@/common/screens/unlogged/sign-in/icon';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
-import screens from '@/common/styles/screens';
 import { isPhoneValid } from '@/common/validators/phone';
-import { Stack, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { SafeAreaView, View, ViewProps } from 'react-native';
+import { Stack, router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { Platform, SafeAreaView, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {}
 
 export const SignIn = ({ style, ...props }: Props) => {
   // context
-  const router = useRouter();
+  const profile = useContextProfile();
+  const situation = profile?.situation;
   // state
   const [phone, setPhone] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const canSubmit = termsAccepted && isPhoneValid(phone);
+  // side effects
+  useFocusEffect(
+    useCallback(() => {
+      if (situation === 'approved') {
+        router.back();
+      }
+    }, [situation])
+  );
   // track
   useTrackScreenView('Login');
   // UI
   return (
-    <DefaultKeyboardAwareScrollView>
-      <View style={{ ...screens.headless, flex: 1, backgroundColor: colors.white }}>
+    <DefaultKeyboardAwareScrollView contentContainerStyle={Platform.select({ ios: { flex: 1 } })}>
+      <View style={{ flex: 1, backgroundColor: colors.white }}>
         <Stack.Screen options={{ title: 'Entrar' }} />
         <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: colors.neutral50,
-            padding: paddings.xl,
+            padding: 50,
           }}
         >
           <SignInIcon />
@@ -81,8 +90,8 @@ export const SignIn = ({ style, ...props }: Props) => {
               disabled={!canSubmit}
               style={{ marginBottom: paddings.xl }}
               onPress={() => {
-                router.navigate({
-                  pathname: `./phone-verification`,
+                router.push({
+                  pathname: '/(logged)/(tabs)/(home)/phone-verification',
                   params: { phone, countryCode: 55 },
                 });
               }}

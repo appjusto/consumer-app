@@ -12,6 +12,7 @@ export default function HomeLayout() {
         return { headerShown: route.name !== 'index', headerBackTitleVisible: false };
       }}
     >
+      <Stack.Screen name="phone-verification" options={{ title: 'Verificação' }} />
       <Stack.Screen name="index" options={{ title: 'Restaurantes' }} />
       <Stack.Screen name="r/[businessId]/index" options={{ title: 'Detalhes' }} />
       <Stack.Screen

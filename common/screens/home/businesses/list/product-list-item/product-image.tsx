@@ -34,6 +34,7 @@ export const BusinessLogo = ({
                 style={{ width: size, height: size }}
                 contentFit="cover"
                 source={{ uri: url }}
+                cachePolicy="none"
               />
             ) : null}
           </View>

@@ -125,7 +125,12 @@ export default function ProductDetailScreen() {
           <Skeleton.Group show={!url}>
             <Skeleton colors={[colors.neutral50, colors.neutral100]} width={WIDTH} height={HEIGHT}>
               {url ? (
-                <Image style={{ height: HEIGHT }} contentFit="cover" source={{ uri: url }} />
+                <Image
+                  style={{ height: HEIGHT }}
+                  contentFit="cover"
+                  source={{ uri: url }}
+                  cachePolicy="none"
+                />
               ) : null}
             </Skeleton>
           </Skeleton.Group>
