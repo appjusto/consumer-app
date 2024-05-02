@@ -40,6 +40,7 @@ export const OrderProvider = ({ children }: Props) => {
   const businessQuote = useObserveBusinessQuote();
   const businessId = orderWithId?.business?.id ?? businessQuote?.business?.id;
   const business = useObserveBusiness(businessId);
+  // console.log('business', business);
   const p2pQuote = useObservePackageQuote();
   const options = useOrderOptions();
   const faresEnabled =

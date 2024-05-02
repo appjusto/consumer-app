@@ -50,7 +50,8 @@ export default function OrderCheckoutScreen() {
   // console.log(coupon);
   console.log('checkout/[orderId]/index', typeof order, order?.id);
   // UI
-  if (!order || isOrderEmpty(order)) return <EmptyCart />;
+  if (order === undefined) return null;
+  else if (!order || isOrderEmpty(order)) return <EmptyCart />;
   const coupon = order.coupon;
   const couponLabel = (() => {
     if (coupon?.type === 'delivery-free') return `Entrega grátis`;

@@ -37,8 +37,15 @@ export const SearchBusinessListItem = ({ style, business, recyclingKey, ...props
           <BusinessLogo businessId={business.objectID} />
           <View style={{ marginLeft: paddings.md }}>
             {/* first line */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <DefaultText>{business.name}</DefaultText>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                maxWidth: '95%',
+                // borderWidth: 1,
+              }}
+            >
+              <DefaultText style={{ flexWrap: 'wrap' }}>{`${business.name}`}</DefaultText>
               {appjustoOnly ? <AppJustoOnlyIcon style={{ marginLeft: paddings.sm }} /> : null}
             </View>
             {/* second line */}

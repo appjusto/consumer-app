@@ -32,12 +32,13 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
   }, [courier]);
   // UI
   if (order?.fulfillment !== 'delivery') return null;
-  const businessLogistics = order.type === 'food' && !business?.logistics;
+  const logisticsByBusiness = order.type === 'food' && !business?.logistics;
+  // console.log('businessLogistics', order.type, business?.logistics, logisticsByBusiness);
   // console.log('fares', fares);
   return (
     <View style={[{}, style]} {...props}>
       <HR style={{ marginBottom: paddings.xl }} />
-      {!businessLogistics ? (
+      {!logisticsByBusiness ? (
         <HorizontalSelector
           data={[{ title: 'Escolher Frota' }, { title: 'Escolher entregador(a)' }]}
           selectedIndex={selectedIndex}
@@ -47,7 +48,7 @@ export const OrderFleetCourierSelector = ({ style, ...props }: Props) => {
         <DefaultText size="lg">Entrega</DefaultText>
       )}
       {selectedIndex === 0 ? (
-        <OrderFleetSelector businessLogistics={businessLogistics} />
+        <OrderFleetSelector businessLogistics={logisticsByBusiness} />
       ) : (
         <OrderCourierSelector />
       )}

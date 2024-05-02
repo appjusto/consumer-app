@@ -1,4 +1,3 @@
-import { cardType } from '@/api/consumer/cards/card-type';
 import { getCardHolderName } from '@/api/consumer/cards/card-type/getCardHolderName';
 import { getCardLastDigits } from '@/api/consumer/cards/card-type/getCardLastDigits';
 import { getCardType } from '@/api/consumer/cards/card-type/getCardType';
@@ -34,7 +33,6 @@ export const PaymentCard = ({
 }: Props) => {
   const type = getCardType(card);
   if (!type) return null;
-  const niceType = cardType.getTypeInfo(type as string)?.niceType ?? 'Crédito';
   const holderName = getCardHolderName(card);
   const lastDigits = getCardLastDigits(card);
   // UI
@@ -49,7 +47,7 @@ export const PaymentCard = ({
           {/* logo */}
           <CardIcon type={type} />
           {/* details */}
-          <View style={{ marginLeft: paddings.lg, maxWidth: '75%' }}>
+          <View style={{ marginLeft: paddings.lg, maxWidth: '60%' }}>
             <DefaultText size="md" color="black">
               {card.processor === 'iugu' ? 'Crédito' : 'VR'}
             </DefaultText>

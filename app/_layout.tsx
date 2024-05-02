@@ -32,7 +32,6 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 // setup notification channels
 setupNotifications().then(null).catch(console.error);
-// setup background location task
 
 export default function RootLayout() {
   // state

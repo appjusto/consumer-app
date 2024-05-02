@@ -48,7 +48,7 @@ export const useAlgoliaSearch = <T extends object>(
   );
   const clearSearch = useCallback(
     (input: string) => {
-      setResults(undefined);
+      setLastResponse(undefined);
       search(input);
     },
     [search]
@@ -59,6 +59,7 @@ export const useAlgoliaSearch = <T extends object>(
     api.algolia().clearCache();
   }, [api]);
   // debounced search
+  // console.log('useAlgoliaSearch', query, clearSearch, enabled);
   useDebounce(query, clearSearch, enabled, isEmpty(query) ? 0 : undefined);
   // update responseByPage
   useEffect(() => {

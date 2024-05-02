@@ -21,10 +21,10 @@ export const BusinessCartHeader = ({ business, editable = true, style, ...props 
           alignItems: 'center',
         }}
       >
-        <View>
+        <View style={{ maxWidth: '80%' }}>
           <DefaultText color="neutral700">Seu pedido em</DefaultText>
-          <DefaultText style={{ marginTop: paddings.xs }} size="lg">
-            {business.name}
+          <DefaultText style={{ marginTop: paddings.xs, flexWrap: 'wrap' }} size="lg">
+            {`${business.name}`}
           </DefaultText>
         </View>
         {editable ? (
