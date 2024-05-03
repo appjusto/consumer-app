@@ -126,7 +126,7 @@ export const SearchList = ({ style, mode, children, ...props }: Props) => {
           )}
           estimatedItemSize={60}
           onEndReached={() => {
-            console.log('onEndReach');
+            // console.log('onEndReach');
             if (!isAnonymous) fetchNextPage();
           }}
           ListEmptyComponent={

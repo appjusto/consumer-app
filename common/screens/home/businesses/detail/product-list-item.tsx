@@ -1,3 +1,4 @@
+import { useContextBusinessProduct } from '@/api/business/context/business-context';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
@@ -17,6 +18,10 @@ interface Props extends ViewProps {
 export const ProductListItem = ({ businessId, item, recyclingKey, style, ...props }: Props) => {
   // state
   const url = useProductImageURI(businessId, item);
+  const product = useContextBusinessProduct(item.id);
+  const price = product?.minimumPrice ?? product?.price ?? 0;
+  const pricePrefix = price !== product?.price ? 'A partir de ' : '';
+  // console.log('ProductListItem', p?.minimumPrice, p?.price);
   // UI
   return (
     <View style={[{ borderWidth: 0 }, style]}>
@@ -40,7 +45,7 @@ export const ProductListItem = ({ businessId, item, recyclingKey, style, ...prop
               {item.description}
             </DefaultText>
           </View>
-          <DefaultText color="primary900">{formatCurrency(item.price)}</DefaultText>
+          <DefaultText color="primary900">{`${pricePrefix}${formatCurrency(price)}`}</DefaultText>
         </View>
         {/* image */}
         <ProductImage

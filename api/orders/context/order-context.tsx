@@ -34,7 +34,6 @@ export const OrderProvider = ({ children }: Props) => {
   // params
   const params = useGlobalSearchParams<{ orderId: string }>();
   const orderId = params.orderId;
-  console.log('OrderProvider', orderId);
   // state
   const orderWithId = useObserveOrder(orderId);
   const businessQuote = useObserveBusinessQuote();
@@ -59,6 +58,8 @@ export const OrderProvider = ({ children }: Props) => {
   useEffect(() => {
     if (setBusiness) setBusiness(business);
   }, [business, setBusiness]);
+  // logs
+  if (orderId) console.log('OrderProvider', orderId);
   // result
   return (
     <OrderContext.Provider

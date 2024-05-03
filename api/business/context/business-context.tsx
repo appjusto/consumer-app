@@ -1,7 +1,7 @@
 import { Category, Product, PublicBusiness, WithId } from '@appjusto/types';
 import { useGlobalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
+import { productWithMinimumPrice, useObserveBusinessMenu } from '../menu/useObserveBusinessMenu';
 import { useObserveBusiness } from '../useObserveBusiness';
 
 const BusinessContext = React.createContext<Value>({});
@@ -54,12 +54,13 @@ export const BusinessProvider = ({ children }: Props) => {
     if (typeof product !== 'object') return undefined;
     if (!product.complementsEnabled) return product;
     if (!product.complementsGroupsIds) return product;
-    return {
+    const productWithComplements = {
       ...product,
       complementsGroups: groupsWithComplements.filter(
         ({ id }) => product.complementsGroupsIds?.includes(id)
       ),
     } as WithId<Product>;
+    return productWithMinimumPrice(productWithComplements);
   };
   // logs
   // console.log('typeof products', typeof products);
