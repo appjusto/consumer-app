@@ -43,8 +43,10 @@ export const getNextDateSlots = (
         }
         n = n.clone().add(interval, 'minute');
       }
-      return [...r, ...r2];
+      if (r2.length) return [...r, ...r2];
+      return r;
     }, [] as Date[]);
-    return [...result, dates];
+    if (dates.length) return [...result, dates];
+    return result;
   }, []);
 };
