@@ -20,7 +20,6 @@ export default function ProfilePersonalDataScreen() {
   });
   // handlers
   const nextHandler = () => {
-    router.back();
     if (!quote?.id) return;
     router.navigate({
       pathname: '/(logged)/checkout/[orderId]/delivery',

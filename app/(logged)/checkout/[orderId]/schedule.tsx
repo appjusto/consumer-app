@@ -46,7 +46,7 @@ export default function OrderCheckoutScheduleScreen() {
   // define slots
   useEffect(() => {
     if (nextDateSlots) return;
-    if (business) setNextDateSlots(getNextDateSlots(business, getServerTime(), 60, 4));
+    if (business) setNextDateSlots(getNextDateSlots(business, getServerTime(), 60, 2));
     else if (business === null) setNextDateSlots(getP2PNextDateSlots(getServerTime(), 30));
   }, [business, getServerTime, nextDateSlots]);
   useEffect(() => {
@@ -82,6 +82,7 @@ export default function OrderCheckoutScheduleScreen() {
   }, [selectedIndex, selectedDate, daySelectorData]);
   // handlers
   const scheduleOrder = (date: Date) => {
+    // console.log(date);
     if (!quote) return;
     api
       .orders()
