@@ -9,7 +9,9 @@ import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { isEmpty, trim } from 'lodash';
+import { View } from 'lucide-react-native';
 import { useState } from 'react';
+import { Platform } from 'react-native';
 import { ScreenTitle } from '../../title/screen-title';
 
 type Params = {
@@ -83,10 +85,13 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   };
   // UI
   if (!place) return <ScreenTitle title="Complemento" />;
+
   return (
-    <DefaultKeyboardAwareScrollView contentContainerStyle={{ ...screens.default }}>
-      <ScreenTitle title="Complemento" />
-      <PlaceDetail place={place} onSave={saveHandler} />
+    <DefaultKeyboardAwareScrollView contentContainerStyle={Platform.select({ ios: { flex: 1 } })}>
+      <View style={{ ...screens.default }}>
+        <ScreenTitle title="Complemento" />
+        <PlaceDetail place={place} onSave={saveHandler} />
+      </View>
     </DefaultKeyboardAwareScrollView>
   );
 };

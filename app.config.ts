@@ -87,6 +87,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
         category: ['BROWSABLE', 'DEFAULT'],
       },
+      {
+        autoVerify: true,
+        action: 'VIEW',
+        data: [
+          {
+            scheme: 'https',
+            host: domain,
+            pathPrefix: '/encomendas',
+          },
+        ],
+        category: ['BROWSABLE', 'DEFAULT'],
+      },
     ],
   },
   plugins: [

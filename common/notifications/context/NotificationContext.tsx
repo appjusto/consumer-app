@@ -2,6 +2,7 @@ import { trackEvent } from '@/api/analytics/track';
 import { processURL } from '@/common/deeplink/processURL';
 import { PushMessageData } from '@appjusto/types';
 import React, { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
 import { useNotificationHandler } from '../useNotificationHandler';
 
 interface Props {
@@ -31,6 +32,7 @@ export const NotificationProvider = (props: Props) => {
       trackEvent('Clicou no push', { url: message.url });
       const result = processURL(message.url);
       if (result) setDeeplink(result);
+      else Linking.openURL(message.url).catch(console.error);
     }
   }, [message]);
   // result

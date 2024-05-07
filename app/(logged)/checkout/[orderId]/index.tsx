@@ -1,6 +1,7 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
 import { useContextOrder, useContextOrderOptions } from '@/api/orders/context/order-context';
 import { isOrderEmpty } from '@/api/orders/total/isOrderEmpty';
+import { useReferral } from '@/api/referral/useReferral';
 import { useContextProfile } from '@/common/auth/AuthContext';
 import { LinkButton } from '@/common/components/buttons/link/LinkButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
@@ -30,6 +31,7 @@ export default function OrderCheckoutScreen() {
   // tracking
   useTrackScreenView('Checkout: sacola', { businessId: order?.business?.id, orderId: order?.id });
   // side effects
+  useReferral();
   // useBackWhenOrderExpires();
   // handlers
   const nextHandler = () => {

@@ -27,6 +27,14 @@ export const ProfileCode = ({ style, ...props }: Props) => {
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   // handlers
+  const copyCode = () => {
+    if (!profile?.code) return;
+    Clipboard.setStringAsync(
+      `Ganhe R$ 5 na sua primeira compra no appjusto utilizando meu código de cupom: ${profile.code}\nSe você já tiver o app baixado, é só clicar aqui: https://appjusto.com.br/profile?referral=${profile.code}`
+    ).then(() => {
+      showToast('Código copiado!', 'success');
+    });
+  };
   const editHandler = () => {
     if (editing || loading) return;
     setEditing(true);
@@ -75,13 +83,7 @@ export const ProfileCode = ({ style, ...props }: Props) => {
           <View style={{ flex: 1 }}>
             <DefaultText size="xs">Seu código</DefaultText>
             {!editing ? (
-              <Pressable
-                onPress={() =>
-                  Clipboard.setStringAsync(profile.code).then(() => {
-                    showToast('Código copiado!', 'success');
-                  })
-                }
-              >
+              <Pressable onPress={copyCode}>
                 <DefaultText size="md" color="black">
                   {profile.code}
                 </DefaultText>

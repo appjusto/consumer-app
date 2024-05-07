@@ -144,12 +144,9 @@ export const empty2 = (): Ordering => ({
 
 export const productWithMinimumPrice = (product: WithId<Product>): WithId<Product> => {
   let minimumPrice = product.price;
-  // console.log('productWithMinimumPrice', minimumPrice);
   product.complementsGroups?.forEach((group) => {
-    console.log(group.name, group.required, group.items?.length);
     if (!group.required) return;
     const cheaper = (group.items ?? []).sort((a, b) => a.price - b.price).find(() => true);
-    console.log('cheaper', cheaper?.price);
     if (cheaper?.price) minimumPrice += cheaper.price * group.minimum;
   });
   return { ...product, minimumPrice };
