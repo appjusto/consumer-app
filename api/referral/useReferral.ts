@@ -1,3 +1,4 @@
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useGlobalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -41,6 +42,7 @@ export const useReferral = () => {
   const api = useContextApi();
   const order = useContextOrder();
   const orderId = order?.id;
+  const showToast = useShowToast();
   // state
   const [referral, setReferral] = useState<string | null>();
   // side effects;
@@ -65,9 +67,11 @@ export const useReferral = () => {
       .orders()
       .updateCoupon(orderId, referral.toUpperCase())
       .then(() => console.log('Aplicado com sucesso'))
-      .catch(() => {
-        console.log('Não foi possível aplicar. Removendo referral');
-        return remove();
+      .catch((error: unknown) => {
+        const message =
+          error instanceof Error ? error.message : 'Erro ao aplicar o cupom. Tente novamente.';
+        showToast(message, 'warning');
+        if (message.includes('Você não alcançou os critérios')) return remove();
       });
-  }, [api, orderId, referral]);
+  }, [api, showToast, orderId, referral]);
 };
