@@ -1,5 +1,7 @@
 import { useContextApi } from '@/api/ApiContext';
+import { useProductAvailability } from '@/api/business/menu/products/useProductAvailability';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
+import { useObserveBusinessProduct } from '@/api/business/menu/useObserveBusinessProduct';
 import { getItemTotal } from '@/api/orders/items/getItemTotal';
 import { removeItemFromOrder } from '@/api/orders/items/removeItemFromOrder';
 import { updateOrderItemQuantity } from '@/api/orders/items/updateOrderItemQuantity';
@@ -7,6 +9,7 @@ import { OnlyIconButton } from '@/common/components/buttons/icon/OnlyIconButton'
 import { QuantityButton } from '@/common/components/buttons/quantity/quantity-button';
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import { HR } from '@/common/components/views/HR';
+import { MessageBox } from '@/common/components/views/MessageBox';
 import { formatCurrency } from '@/common/formatters/currency';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -26,9 +29,11 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
   // context
   const api = useContextApi();
   const businessId = order?.business?.id as string;
+  const product = useObserveBusinessProduct(order.business?.id, item.product.id);
   // state
   const url = useProductImageURI(order?.business?.id, item);
-  // side effects
+  const availabilityWarning = useProductAvailability(product, order);
+  // handlers
   const updateQuantity = (delta: number) => {
     if (!order) return;
     const quantity = item.quantity + delta;
@@ -108,6 +113,11 @@ export const BusinessCartItem = ({ item, order, editable = true, style, ...props
           />
         ) : null}
       </View>
+      {availabilityWarning ? (
+        <MessageBox variant="warning" style={{ margin: paddings.lg }}>
+          {availabilityWarning}
+        </MessageBox>
+      ) : null}
       <HR style={{ marginTop: paddings.lg }} />
     </View>
   );

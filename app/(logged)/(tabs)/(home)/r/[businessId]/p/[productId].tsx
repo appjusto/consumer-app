@@ -4,6 +4,7 @@ import {
   useContextBusiness,
   useContextBusinessProduct,
 } from '@/api/business/context/business-context';
+import { useProductAvailability } from '@/api/business/menu/products/useProductAvailability';
 import { useProductImageURI } from '@/api/business/menu/products/useProductImageURI';
 import { useCheckoutIssues } from '@/api/orders/checkout/useCheckoutIssues';
 import { useContextBusinessQuote } from '@/api/orders/context/order-context';
@@ -44,6 +45,7 @@ export default function ProductDetailScreen() {
   const businessId = params.businessId;
   const productId = params.productId;
   const itemId = params.itemId;
+  const path = `/r/${businessId}/p/${productId}`;
   // context
   const showToast = useShowToast();
   const api = useContextApi();
@@ -70,6 +72,7 @@ export default function ProductDetailScreen() {
   const url = useProductImageURI(businessId, product);
   const orderItem = getOrderItem();
   const issues = useCheckoutIssues(false, false);
+  const availabilityWarning = useProductAvailability(product, quote);
   // tracking
   useTrackScreenView('Produto', { businessId, productId });
   // handlers
@@ -105,7 +108,7 @@ export default function ProductDetailScreen() {
     issues.length > 0 || !profile || !currentPlace || !business || !orderItem || !canAddItem;
   // console.log(!profile, !currentPlace, !business, !orderItem, !canAddItem);
   // console.log('product', product);
-  // console.log('quote', quote);
+  console.log(path);
   if (!product || quote === undefined) return <ScreenTitle title="Produto" loading />;
   return (
     <View style={{ ...screens.default }}>
@@ -161,6 +164,11 @@ export default function ProductDetailScreen() {
             toggleComplement(group, complement, added)
           }
         />
+        {availabilityWarning ? (
+          <MessageBox variant="warning" style={{ margin: paddings.lg }}>
+            {availabilityWarning}
+          </MessageBox>
+        ) : null}
         {!isAnonymous ? (
           <DefaultInput
             inputStyle={{ minHeight: 60 }}
@@ -188,7 +196,7 @@ export default function ProductDetailScreen() {
           onPress={() =>
             isAnonymous
               ? router.navigate('/(home)/sign-in')
-              : router.navigate({ pathname: '/places/new' })
+              : router.navigate({ pathname: '/places/new', params: { returnScreen: path } })
           }
         />
       ) : (
