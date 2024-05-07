@@ -102,13 +102,7 @@ export const ProfileCode = ({ style, ...props }: Props) => {
           {loading ? <ActivityIndicator size={24} color={colors.neutral900} /> : null}
           {!loading && !editing ? (
             <View style={{ flexDirection: 'row' }}>
-              <Pressable
-                onPress={() =>
-                  Clipboard.setStringAsync(profile.code).then(() => {
-                    showToast('Código copiado!', 'success');
-                  })
-                }
-              >
+              <Pressable onPress={copyCode}>
                 <Copy size={24} color={colors.neutral900} />
               </Pressable>
               <Pressable onPress={editHandler}>
