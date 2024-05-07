@@ -7,6 +7,7 @@ export const isProfileValid = (profile: Partial<UserProfile> | null | undefined)
   if (
     !profile.name?.length ||
     !profile.surname?.length ||
+    !profile.email?.length ||
     !cpfutils.isValid(profile.cpf ?? '') ||
     !isPhoneValid(profile.phone ?? '')
   ) {
