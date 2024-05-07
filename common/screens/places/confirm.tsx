@@ -20,6 +20,7 @@ type Params = {
   description: string;
   googlePlaceId?: string;
   key?: string;
+  returnScreen?: string;
 };
 
 interface Props {
@@ -92,12 +93,13 @@ export const NewPlaceConfirm = ({ basePathname }: Props) => {
     router.navigate({
       pathname: `${basePathname}/places/complement`,
       params: safeRouteParams({
-        key: params.key ?? '',
         description,
         main,
         secondary,
         googlePlaceId: googlePlaceId ?? '',
         location: `${location.latitude},${location.longitude}`,
+        key: params.key ?? '',
+        returnScreen: params.returnScreen ?? '',
       }),
     });
   };

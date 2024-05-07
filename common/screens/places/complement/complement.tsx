@@ -20,6 +20,7 @@ type Params = {
   googlePlaceId?: string;
   location: string;
   key?: string;
+  returnScreen?: string;
 };
 
 interface Props {

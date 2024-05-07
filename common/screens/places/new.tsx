@@ -25,7 +25,10 @@ interface Props {
 
 export const NewPlace = ({ basePathname }: Props) => {
   // params
-  const { key } = useLocalSearchParams<{ key: string }>();
+  const { key = '', returnScreen = '' } = useLocalSearchParams<{
+    key?: string;
+    returnScreen?: string;
+  }>();
   // context
   const api = useContextApi();
   // refs
@@ -64,11 +67,11 @@ export const NewPlace = ({ basePathname }: Props) => {
   const selectHandler = (address: Address) => {
     Keyboard.dismiss();
     const nextScreen = addressHasNumber(address) ? 'confirm' : 'number';
-    console.log('returnScreen', `${basePathname}/places/${nextScreen}`);
     router.navigate({
       pathname: `${basePathname}/places/${nextScreen}`,
       params: safeRouteParams({
-        key: key ?? '',
+        key,
+        returnScreen,
         sessionToken,
         ...address,
       }),
