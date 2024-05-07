@@ -1,12 +1,14 @@
 import { useContextApi } from '@/api/ApiContext';
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextProfile } from '@/common/auth/AuthContext';
+import { useReferral } from '@/api/referral/useReferral';
+import { useContextIsUserAnonymous, useContextProfile } from '@/common/auth/AuthContext';
 import { DefaultBadge } from '@/common/components/badges/DefaultBadge';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultListItem } from '@/common/components/lists/DefaultListItem';
 import { SingleListItem } from '@/common/components/lists/SingleListItem';
 import { ConfirmModal } from '@/common/components/modals/confirm-modal';
 import { DefaultText } from '@/common/components/texts/DefaultText';
+import { isProfileValid } from '@/common/profile/isProfileValid';
 import ProfileHeader from '@/common/screens/profile/header/header';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
@@ -29,11 +31,13 @@ export default function ProfileScreen() {
   // context
   const api = useContextApi();
   const profile = useContextProfile();
+  const isAnonymous = useContextIsUserAnonymous();
   // tracking
   useTrackScreenView('Sua conta');
   // state
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   // side effects
+  useReferral();
   useFocusEffect(
     useCallback(() => {
       if (profile === null) router.navigate('/profile/sign-in');
@@ -41,6 +45,7 @@ export default function ProfileScreen() {
   );
   // UI
   if (profile === null) return null;
+  const showCards = !isAnonymous && isProfileValid(profile);
   return (
     <DefaultScrollView style={{ ...screens.default }}>
       <View style={{ ...screens.headless, padding: paddings.lg }}>
@@ -64,12 +69,14 @@ export default function ProfileScreen() {
             rightView={<ChevronRight size={16} color={colors.neutral800} />}
             onPress={() => router.navigate('/profile/personal')}
           />
-          <DefaultListItem
-            title="Seus cartões"
-            leftView={<BookMinus size={20} color={colors.black} />}
-            rightView={<ChevronRight size={16} color={colors.neutral800} />}
-            onPress={() => router.navigate('/profile/cards/list')}
-          />
+          {showCards ? (
+            <DefaultListItem
+              title="Seus cartões"
+              leftView={<BookMinus size={20} color={colors.black} />}
+              rightView={<ChevronRight size={16} color={colors.neutral800} />}
+              onPress={() => router.navigate('/profile/cards/list')}
+            />
+          ) : null}
           <DefaultListItem
             title="Seus créditos"
             subtitles={[
