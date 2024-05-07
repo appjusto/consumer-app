@@ -9,7 +9,6 @@ import screens from '@/common/styles/screens';
 import { Place } from '@appjusto/types';
 import { router, useGlobalSearchParams } from 'expo-router';
 import { isEmpty, trim } from 'lodash';
-import { View } from 'lucide-react-native';
 import { useState } from 'react';
 import { Platform } from 'react-native';
 import { ScreenTitle } from '../../title/screen-title';
@@ -31,7 +30,7 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   // params
   const params = useGlobalSearchParams<Params>();
   const { description, main, secondary, googlePlaceId = '', location } = params;
-  console.log(params);
+  // console.log(params);
   // context
   const api = useContextApi();
   const isAnonymous = useContextIsUserAnonymous();
@@ -85,13 +84,12 @@ export const NewPlaceComplement = ({ returnScreen }: Props) => {
   };
   // UI
   if (!place) return <ScreenTitle title="Complemento" />;
-
   return (
-    <DefaultKeyboardAwareScrollView contentContainerStyle={Platform.select({ ios: { flex: 1 } })}>
-      <View style={{ ...screens.default }}>
-        <ScreenTitle title="Complemento" />
-        <PlaceDetail place={place} onSave={saveHandler} />
-      </View>
+    <DefaultKeyboardAwareScrollView
+      contentContainerStyle={Platform.select({ ios: { ...screens.default } })}
+    >
+      <ScreenTitle title="Complemento" />
+      <PlaceDetail place={place} onSave={saveHandler} />
     </DefaultKeyboardAwareScrollView>
   );
 };
