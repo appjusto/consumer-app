@@ -1,7 +1,7 @@
 {
   "name": "consumer-app",
   "main": "expo-router/entry",
-  "version": "13.2.58",
+  "version": "13.2.59",
   "scripts": {
     "start": "env-cmd -f .env.${ENV:-dev}.local expo start --dev-client",
     "start:dev": "ENV=dev npm run start",
