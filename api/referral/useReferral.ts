@@ -42,6 +42,7 @@ export const useReferral = () => {
   const api = useContextApi();
   const order = useContextOrder();
   const orderId = order?.id;
+  const coupon = Boolean(order?.coupon?.code);
   const showToast = useShowToast();
   // state
   const [referral, setReferral] = useState<string | null>();
@@ -63,6 +64,7 @@ export const useReferral = () => {
   useEffect(() => {
     if (!orderId) return;
     if (!referral) return;
+    if (coupon) return;
     api
       .orders()
       .updateCoupon(orderId, referral.toUpperCase())
@@ -73,5 +75,5 @@ export const useReferral = () => {
         showToast(message, 'warning');
         if (message.includes('Você não alcançou os critérios')) return remove();
       });
-  }, [api, showToast, orderId, referral]);
+  }, [api, showToast, orderId, referral, coupon]);
 };
