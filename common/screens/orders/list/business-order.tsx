@@ -28,9 +28,19 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
   const showToast = useShowToast();
   const currentPlace = useContextCurrentPlace();
   // handlers
+  const navigateToOrder = (orderId: string) => {
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/',
+      params: { orderId },
+    });
+  };
   const createOrderHandler = () => {
     // console.log(business);
     if (!business) return;
+    if (status === 'quote') {
+      navigateToOrder(order.id);
+      return;
+    }
     api
       .business()
       .fetchBusinessById(business.id)
@@ -43,15 +53,15 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
       })
       .then((orderId) => {
         showToast('Pedido criado com sucesso!', 'success');
-        router.navigate({
-          pathname: '/(logged)/checkout/[orderId]/',
-          params: { orderId },
-        });
+        navigateToOrder(orderId);
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : 'Não foi possível criar o pedido';
         showToast(message, 'error');
       });
+  };
+  const deleterderHandler = () => {
+    api.orders().deleteOrder(order.id);
   };
   // UI
   return (
@@ -72,9 +82,11 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
       {/* header */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View>
-          <DefaultText size="xs" color="neutral700">
-            {`#${code}`}
-          </DefaultText>
+          {code ? (
+            <DefaultText size="xs" color="neutral700">
+              {`#${code}`}
+            </DefaultText>
+          ) : null}
           <DefaultText style={{ marginTop: paddings.xs }} size="md" color="neutral900">
             {business?.name}
           </DefaultText>
@@ -113,7 +125,7 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
       {/* controls */}
       <View
         style={{
-          // flex: 1,
+          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: paddings.md,
@@ -121,8 +133,17 @@ export const BusinessOrder = ({ order, style, ...props }: Props) => {
         }}
       >
         <LinkButton variant="ghost" onPress={createOrderHandler}>
-          Pedir novamente
+          {status === 'quote' ? 'Continuar' : 'Refazer'}
         </LinkButton>
+        {status === 'quote' ? (
+          <LinkButton
+            style={{ marginLeft: paddings.lg }}
+            variant="destructive"
+            onPress={deleterderHandler}
+          >
+            Excluir
+          </LinkButton>
+        ) : null}
       </View>
     </View>
   );

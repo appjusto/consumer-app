@@ -23,8 +23,8 @@ export const OrderList = ({
   ...props
 }: Props) => {
   // UI
-  const ongoingOrders = orders.filter(({ status }) => isOrderOngoing(status));
-  const pastOrders = orders.filter(({ status }) => !isOrderOngoing(status));
+  const ongoingOrders = orders.filter(({ status }) => status === 'quote' || isOrderOngoing(status));
+  const pastOrders = orders.filter(({ status }) => status !== 'quote' && !isOrderOngoing(status));
   if (!ongoingOrders.length && !pastOrders.length) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

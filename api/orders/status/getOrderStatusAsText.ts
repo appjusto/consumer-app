@@ -16,6 +16,6 @@ export const getOrderStatusAsText = (type: OrderType, status: OrderStatus) => {
   if (status === 'delivered') return 'Entregue';
   if (status === 'dispatching') return 'A caminho';
   if (status === 'canceled') return 'Cancelado';
-  if (status === 'expired') return 'Expirado';
+  if (status === 'expired') return 'Não realizado';
   return '';
 };
