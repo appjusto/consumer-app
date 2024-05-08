@@ -8,7 +8,12 @@ export const routeOrder = (
   type?: OrderType,
   paymentMethod?: PayableWith
 ) => {
-  if (isOrderBeforeConfirmed(status)) {
+  if (status === 'quote') {
+    router.navigate({
+      pathname: '/(logged)/checkout/[orderId]/',
+      params: { orderId },
+    });
+  } else if (isOrderBeforeConfirmed(status)) {
     if (paymentMethod === 'pix') {
       router.navigate({
         pathname: '/(logged)/(tabs)/order/[orderId]/confirming-pix',
