@@ -77,6 +77,7 @@ export default function OrderCheckoutDeliveryScreen() {
         });
       }
     } catch (error) {
+      setLoading(false);
       if (error instanceof Error) {
         showToast(error.message, 'error');
         crashlytics().recordError(error);
