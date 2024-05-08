@@ -8,7 +8,7 @@ import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import * as Clipboard from 'expo-clipboard';
-import { Copy, FilePen } from 'lucide-react-native';
+import { FilePen, Share2 } from 'lucide-react-native';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, View, ViewProps } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -103,10 +103,10 @@ export const ProfileCode = ({ style, ...props }: Props) => {
           {!loading && !editing ? (
             <View style={{ flexDirection: 'row' }}>
               <Pressable onPress={copyCode}>
-                <Copy size={24} color={colors.neutral900} />
+                <Share2 size={24} color={colors.neutral900} />
               </Pressable>
               <Pressable onPress={editHandler}>
-                <FilePen style={{ marginLeft: paddings.sm }} size={24} color={colors.neutral900} />
+                <FilePen style={{ marginLeft: paddings.lg }} size={24} color={colors.neutral900} />
               </Pressable>
             </View>
           ) : null}
