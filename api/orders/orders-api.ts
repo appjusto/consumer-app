@@ -188,13 +188,11 @@ export default class OrdersApi {
 
   async placeOrder(options: PlaceOrderOptions) {
     console.log('placeOrder', options);
-    await placeOrder({
+    const response = await placeOrder({
       ...options,
-      // payment: {
-      //   payableWith: 'cash',
-      // },
       meta: { version: getAppVersion() },
     });
+    if ('error' in response.data) throw new Error(response.data.error);
   }
 
   async completeDelivery(orderId: string) {

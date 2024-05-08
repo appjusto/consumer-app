@@ -186,6 +186,7 @@ export default function OrderCheckoutDeliveryScreen() {
                   params: { orderId: quote.id },
                 })
               }
+              disabled={loading}
             />
           </View>
           <View style={{ flex: 1, marginLeft: paddings.lg }}>
