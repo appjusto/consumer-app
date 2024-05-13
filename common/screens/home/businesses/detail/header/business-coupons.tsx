@@ -17,7 +17,7 @@ interface Props extends ViewProps {
 const getCouponDescription = (coupon: Coupon) => {
   let description = '';
   if (coupon.type === 'delivery-free') {
-    description = 'Entrega grátis';
+    description = 'Entrega grátis.';
   } else {
     description = 'Desconto';
     if (coupon.discount) description += ` de ${formatCurrency(coupon.discount)}`;
@@ -26,7 +26,14 @@ const getCouponDescription = (coupon: Coupon) => {
     }
   }
   if (coupon.minOrderValue) {
-    description += ` nas compras acima de ${formatCurrency(coupon.minOrderValue)}`;
+    description += ` em compras acima de ${formatCurrency(coupon.minOrderValue)}.`;
+  } else {
+    description += '.';
+  }
+  if (coupon.usagePolicy === 'new-customers') {
+    description += ' Válido apenas na primeira compra na loja.';
+  } else if (coupon.usagePolicy === 'once' || coupon.usagePolicy === 'renewable') {
+    description += ' Válido apenas uma vez.';
   }
   return description;
 };
