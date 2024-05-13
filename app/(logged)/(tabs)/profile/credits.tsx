@@ -26,9 +26,13 @@ export default function ProfileCreditsScreen() {
         <DefaultText size="xl" style={{ marginVertical: 0 }}>
           Meus créditos
         </DefaultText>
-        <DefaultText size="md" style={{ marginTop: paddings.sm }}>
+        {/* <DefaultText size="md" style={{ marginTop: paddings.sm }}>
           Compartilhe seu código e ganhe R$ 5 para cada pessoa que fizer um pedido pela primeira vez
           no appjusto.
+        </DefaultText> */}
+        <DefaultText size="md" style={{ marginTop: paddings.sm }}>
+          Compartilhe seu código para que você e a pessoa que usá-lo em um primeiro pedido ganhem R$
+          5 cada um.
         </DefaultText>
         <ProfileCode />
         <CreditsApprovedSummary style={{ marginTop: paddings.lg }} total={total} />

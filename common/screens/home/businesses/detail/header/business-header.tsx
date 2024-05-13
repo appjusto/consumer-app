@@ -16,6 +16,7 @@ import { DiscountIcon } from '../../icons/discount-icon';
 import { BusinessBadges } from '../../list/business-list-item/business-badges';
 import { BusinessItemInfo } from '../../list/business-list-item/business-info';
 import { BusinessLogo } from '../../logo/business-logo';
+import { BusinessCoupons } from './business-coupons';
 interface Props extends ViewProps {
   business: WithId<PublicBusiness>;
   hidden: boolean;
@@ -117,6 +118,7 @@ export const BusinessHeader = ({
           </View>
           <BusinessItemInfo business={business} />
           <BusinessBadges business={business} style={{ marginTop: paddings.xs }} />
+          <BusinessCoupons style={{ marginVertical: paddings.sm }} business={business} />
           {business.description ? (
             <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
               {business.description}

@@ -4,6 +4,7 @@ import {
   Category,
   Complement,
   ComplementGroup,
+  Coupon,
   Ordering,
   Product,
   PublicBusiness,
@@ -31,7 +32,7 @@ const businessMenuRef = (businessId: string) => businessRef(businessId).collecti
 const businessMenuOrderRef = (businessId: string, menuId: string = 'default') =>
   businessMenuRef(businessId).doc(menuId);
 const businessMenuMessageRef = (businessId: string) => businessMenuRef(businessId).doc('message');
-
+const couponsRef = () => firestore().collection('coupons');
 // storage
 const getBusinessStoragePath = (businessId: string) => `businesses/${businessId}`;
 export const getBusinessLogoStoragePath = (businessId: string) =>
@@ -136,6 +137,22 @@ export default class BusinessApi {
         crashlytics().recordError(error);
       }
     );
+  }
+
+  observeCoupons(businessId: string, resultHandler: (products: WithId<Coupon>[]) => void) {
+    return couponsRef()
+      .where('createdBy.id', '==', businessId)
+      .where('enabled', '==', true)
+      .onSnapshot(
+        (snapshot) => {
+          if (snapshot.empty) return resultHandler([]);
+          else resultHandler(documentsAs<Coupon>(snapshot.docs));
+        },
+        (error) => {
+          console.error(error);
+          crashlytics().recordError(error);
+        }
+      );
   }
 
   observeComplementsGroups(

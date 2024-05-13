@@ -5,11 +5,18 @@ import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesCon
 import { SimpleBadge } from '@/common/components/badges/simple-badge';
 import paddings from '@/common/styles/paddings';
 import { BusinessAlgolia, PublicBusiness } from '@appjusto/types';
-import { View, ViewProps } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   business: BusinessAlgolia | PublicBusiness;
 }
+
+const defaultStyle = StyleSheet.create({
+  badge: {
+    marginRight: paddings.sm,
+    marginBottom: paddings.sm,
+  },
+});
 
 export const BusinessBadges = ({ business, style, ...props }: Props) => {
   // context
@@ -22,24 +29,32 @@ export const BusinessBadges = ({ business, style, ...props }: Props) => {
     distance !== undefined && business.deliveryRange && distance > business.deliveryRange;
   const availability = getBusinessAvailability(business, getServerTime());
   return (
-    <View style={[{ flexDirection: 'row' }, style]} {...props}>
+    <View style={[{ flexDirection: 'row', flexWrap: 'wrap' }, style]} {...props}>
       {isOutOfRange ? (
-        <SimpleBadge style={{ marginRight: paddings.sm }} variant="neutral">
+        <SimpleBadge style={defaultStyle.badge} variant="neutral">
           Fora do raio de entrega
         </SimpleBadge>
       ) : availability === 'schedule-required' ? (
-        <SimpleBadge style={{ marginRight: paddings.sm }} variant="info">
+        <SimpleBadge style={defaultStyle.badge} variant="info">
           Só agendados
         </SimpleBadge>
       ) : availability === 'closed' ? (
-        <SimpleBadge style={{ marginRight: paddings.sm }} variant="info">
+        <SimpleBadge style={defaultStyle.badge} variant="info">
           Fechado
         </SimpleBadge>
       ) : null}
-      {business.averageDiscount ? (
-        <SimpleBadge variant="primary">{`${business.averageDiscount}% mais barato`}</SimpleBadge>
-      ) : appjustoOnly ? (
-        <SimpleBadge variant="primary">Só no appjusto</SimpleBadge>
+      {appjustoOnly ? (
+        <SimpleBadge variant="primary" style={defaultStyle.badge}>
+          Só no appjusto
+        </SimpleBadge>
+      ) : business.averageDiscount ? (
+        <SimpleBadge
+          variant="primary"
+          style={defaultStyle.badge}
+        >{`${business.averageDiscount}% mais barato`}</SimpleBadge>
+      ) : null}
+      {'coupons' in business && business.coupons ? (
+        <SimpleBadge variant="primary">Cupom disponível</SimpleBadge>
       ) : null}
     </View>
   );

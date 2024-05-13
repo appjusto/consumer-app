@@ -4,6 +4,7 @@ import { useCards } from '@/api/consumer/cards/useCards';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
+import { useShowToast } from '@/common/components/views/toast/ToastContext';
 import { PaymentCard } from '@/common/screens/orders/checkout/payment/cards/payment-card';
 import { PaymentCardModal } from '@/common/screens/orders/checkout/payment/cards/payment-card-modal';
 import { ScreenTitle } from '@/common/screens/title/screen-title';
@@ -17,6 +18,7 @@ import { View } from 'react-native';
 export default function ProfileCardListScreen() {
   // context
   const api = useContextApi();
+  const showToast = useShowToast();
   // state
   const cards = useCards();
   const [optionsCard, setOptionsCard] = useState<WithId<Card>>();
@@ -38,8 +40,13 @@ export default function ProfileCardListScreen() {
         setLoading(false);
         setOptionsCard(undefined);
       })
-      .catch(() => {
+      .catch((error: unknown) => {
         setLoading(false);
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'Não foi possível remover seu cartão. Tente novamente';
+        showToast(message, 'error');
       });
   };
   // UI

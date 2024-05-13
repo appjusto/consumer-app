@@ -15,10 +15,12 @@ import { ChevronDown, Trash2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { ModalProps, View } from 'react-native';
 import {
+  couponAdded,
   cuisineAdded,
   discountAdded,
   paymentAdded,
   tagAdded,
+  toggleCoupon,
   toggleCuisine,
   toggleDiscount,
   togglePayment,
@@ -97,6 +99,12 @@ export const SearchFiltersModal = ({
                     title="Só no appjusto"
                     onPress={() => setFilters((current) => toggleTag(current, 'appjusto-only'))}
                     toggled={tagAdded(filters, 'appjusto-only')}
+                  />
+                  <RoundedToggleButton
+                    style={{ marginTop: paddings.sm, marginRight: paddings.sm }}
+                    title="Com cupons ativos"
+                    onPress={() => setFilters((current) => toggleCoupon(current))}
+                    toggled={couponAdded(filters)}
                   />
                   <RoundedToggleButton
                     style={{ marginTop: paddings.sm, marginRight: paddings.sm }}

@@ -154,9 +154,10 @@ export default class ConsumersApi {
     throw new Error('Não foi possível identificar a bandeira.');
   }
   async deleteCard(id: string) {
-    await deleteCard({
+    const result = await deleteCard({
       id,
       meta: { version: getAppVersion() },
     });
+    if ('error' in result.data) throw new Error(result.data.error);
   }
 }

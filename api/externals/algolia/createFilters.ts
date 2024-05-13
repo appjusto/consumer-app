@@ -13,6 +13,7 @@ const createBusinessesFilters = (filters: SearchFilter[] = []) => {
   result += reduce(filters, 'tags');
   result += reduce(filters, 'cuisine');
   result += reduce(filters, 'fulfillment');
+  result += reduce(filters, 'coupons');
   const discount = filters.find((filter) => filter.type === 'discount');
   if (discount) result += ` AND averageDiscount>=${discount.value}`;
   console.log(result);

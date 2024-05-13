@@ -28,6 +28,7 @@ export const SimpleBadge = ({ variant, style, ...props }: Props) => {
           paddingHorizontal: paddings.sm,
           paddingVertical: paddings.xs,
           borderRadius: 4,
+          alignSelf: 'flex-start',
         },
         style,
       ]}

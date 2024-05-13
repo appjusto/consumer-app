@@ -14,6 +14,7 @@ export const filtersFromParams = (params: { [key: string]: string }) => {
     'discount',
     'fulfillment',
     'cuisine',
+    'coupons',
   ] as SearchFilterType[])) {
     params[k].split(';').forEach((value) => {
       filters.push({ type: k as SearchFilterType, value });

@@ -13,7 +13,8 @@ export type SearchFilterType =
   | 'preparationModes'
   | 'acceptedPaymentMethods'
   | 'fulfillment'
-  | 'discount';
+  | 'discount'
+  | 'coupons';
 
 export type SearchFilter = {
   type: SearchFilterType;

@@ -7,7 +7,10 @@ export const tagAdded = (filters: SearchFilter[], value: BusinessTag) =>
 export const toggleTag = (filters: SearchFilter[], value: BusinessTag) =>
   filters
     .filter((filter) => filter.type !== 'tags' || filter.value !== value)
-    .filter((filter) => value !== 'appjusto-only' || filter.type !== 'discount')
+    .filter(
+      (filter) =>
+        value !== 'appjusto-only' || (filter.type !== 'discount' && filter.type !== 'coupons')
+    )
     .concat(tagAdded(filters, value) ? [] : [{ type: 'tags', value }]);
 
 export const discountAdded = (filters: SearchFilter[], value: string) =>
@@ -17,7 +20,10 @@ export const toggleDiscount = (filters: SearchFilter[], value: string) =>
   filters
     .filter(
       (filter) =>
-        filter.type !== 'discount' && filter.type !== 'tags' && filter.value !== 'appjusto-only'
+        filter.type !== 'coupons' &&
+        filter.type !== 'discount' &&
+        filter.type !== 'tags' &&
+        filter.value !== 'appjusto-only'
     )
     .concat(discountAdded(filters, value) ? [] : [{ type: 'discount', value }]);
 
@@ -36,3 +42,17 @@ export const togglePayment = (filters: SearchFilter[], value: PayableWith) =>
   filters
     .filter((filter) => filter.type !== 'acceptedPaymentMethods' || filter.value !== value)
     .concat(paymentAdded(filters, value) ? [] : [{ type: 'acceptedPaymentMethods', value }]);
+
+export const couponAdded = (filters: SearchFilter[]) =>
+  filters.some((filter) => filter.type === 'coupons');
+
+export const toggleCoupon = (filters: SearchFilter[]) =>
+  filters
+    .filter(
+      (filter) =>
+        filter.type !== 'coupons' &&
+        filter.type !== 'discount' &&
+        filter.type !== 'tags' &&
+        filter.value !== 'appjusto-only'
+    )
+    .concat(couponAdded(filters) ? [] : [{ type: 'coupons', value: 'true' }]);
