@@ -86,8 +86,8 @@ export const SearchFiltersModal = ({
             onSelect={setSelectedIndex}
           />
         </View>
-        <DefaultScrollView>
-          <View style={{ marginTop: paddings['2xl'] }}>
+        <View style={{ marginTop: paddings['2xl'] }}>
+          <DefaultScrollView>
             {/* basic */}
             {selectedIndex === 0 ? (
               <View>
@@ -205,9 +205,9 @@ export const SearchFiltersModal = ({
                 </View>
               </View>
             ) : null}
-          </View>
-        </DefaultScrollView>
-        <View style={{ flex: 1 }} />
+          </DefaultScrollView>
+        </View>
+        {/* <View style={{ flex: 1 }} /> */}
         <DefaultButton
           style={{ marginVertical: paddings['2xl'] }}
           title="Aplicar filtros"
