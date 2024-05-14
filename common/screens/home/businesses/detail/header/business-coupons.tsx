@@ -17,7 +17,7 @@ interface Props extends ViewProps {
 const getCouponDescription = (coupon: Coupon) => {
   let description = '';
   if (coupon.type === 'delivery-free') {
-    description = 'Entrega grátis.';
+    description = 'Entrega grátis';
   } else {
     description = 'Desconto';
     if (coupon.discount) description += ` de ${formatCurrency(coupon.discount)}`;
@@ -31,7 +31,7 @@ const getCouponDescription = (coupon: Coupon) => {
     description += '.';
   }
   if (coupon.usagePolicy === 'new-customers') {
-    description += ' Válido apenas na primeira compra na loja.';
+    description += ' Válido apenas na sua primeira compra na loja.';
   } else if (coupon.usagePolicy === 'once' || coupon.usagePolicy === 'renewable') {
     description += ' Válido apenas uma vez.';
   }
@@ -46,7 +46,6 @@ export const BusinessCoupons = ({ business, style, ...props }: Props) => {
   if (!coupons?.length) return null;
   return (
     <View style={[{}, style]} {...props}>
-      <DefaultText>Cupons disponíveis:</DefaultText>
       <DefaultModal visible={!!selectedCoupon} onDismiss={() => setSelectedCoupons(undefined)}>
         {selectedCoupon ? (
           <View
@@ -72,10 +71,14 @@ export const BusinessCoupons = ({ business, style, ...props }: Props) => {
           </View>
         ) : null}
       </DefaultModal>
-      <View style={{ flexDirection: 'row', marginTop: paddings.sm }}>
+      <DefaultText>Cupons disponíveis:</DefaultText>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: paddings.sm }}>
         {coupons.map((coupon) => (
           <Pressable key={coupon.id} onPress={() => setSelectedCoupons(coupon)}>
-            <SimpleBadge style={{ marginRight: paddings.sm }} variant="primary">
+            <SimpleBadge
+              style={{ marginRight: paddings.sm, marginBottom: paddings.sm }}
+              variant="primary"
+            >
               {coupon.code}
             </SimpleBadge>
           </Pressable>

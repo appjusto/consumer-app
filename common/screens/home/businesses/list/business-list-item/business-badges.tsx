@@ -29,7 +29,18 @@ export const BusinessBadges = ({ business, style, ...props }: Props) => {
     distance !== undefined && business.deliveryRange && distance > business.deliveryRange;
   const availability = getBusinessAvailability(business, getServerTime());
   return (
-    <View style={[{ flexDirection: 'row', flexWrap: 'wrap' }, style]} {...props}>
+    <View
+      style={[
+        {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          maxWidth: '90%',
+          // borderWidth: 1,
+        },
+        style,
+      ]}
+      {...props}
+    >
       {isOutOfRange ? (
         <SimpleBadge style={defaultStyle.badge} variant="neutral">
           Fora do raio de entrega

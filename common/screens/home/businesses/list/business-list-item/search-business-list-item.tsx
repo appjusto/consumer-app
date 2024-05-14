@@ -25,36 +25,38 @@ export const SearchBusinessListItem = ({ style, business, recyclingKey, ...props
         })
       }
     >
-      {({ pressed }) => (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: paddings.sm,
-            borderWidth: 0,
-          }}
-        >
-          <BusinessLogo businessId={business.objectID} />
-          <View style={{ marginLeft: paddings.md }}>
-            {/* first line */}
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                maxWidth: '95%',
-                // borderWidth: 1,
-              }}
-            >
-              <DefaultText style={{ flexWrap: 'wrap' }}>{`${business.name}`}</DefaultText>
-              {appjustoOnly ? <AppJustoOnlyIcon style={{ marginLeft: paddings.sm }} /> : null}
-            </View>
-            {/* second line */}
-            <BusinessItemInfo style={{ marginTop: paddings.xs }} business={business} />
-            {/* third line */}
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: paddings.sm,
+          // borderWidth: 1,
+        }}
+      >
+        <BusinessLogo businessId={business.objectID} />
+        <View style={{ marginLeft: paddings.md, width: '100%' }}>
+          {/* first line */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              maxWidth: '95%',
+              // borderWidth: 1,
+            }}
+          >
+            <DefaultText
+              style={{ flexWrap: 'wrap', maxWidth: '80%' }}
+            >{`${business.name}`}</DefaultText>
+            {appjustoOnly ? <AppJustoOnlyIcon style={{ marginLeft: paddings.sm }} /> : null}
+          </View>
+          {/* second line */}
+          <BusinessItemInfo style={{ marginTop: paddings.xs }} business={business} />
+          {/* third line */}
+          <View style={{ maxWidth: '85%' }}>
             <BusinessBadges business={business} style={{ marginTop: paddings.xs }} />
           </View>
         </View>
-      )}
+      </View>
     </Pressable>
   );
 };

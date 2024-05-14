@@ -118,7 +118,7 @@ export const BusinessHeader = ({
           </View>
           <BusinessItemInfo business={business} />
           <BusinessBadges business={business} style={{ marginTop: paddings.xs }} />
-          <BusinessCoupons style={{ marginVertical: paddings.sm }} business={business} />
+          <BusinessCoupons style={{ marginTop: paddings.sm }} business={business} />
           {business.description ? (
             <DefaultText style={{ marginTop: paddings.lg }} color="neutral700">
               {business.description}
