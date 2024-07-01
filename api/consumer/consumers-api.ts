@@ -2,7 +2,14 @@ import { documentAs, documentsAs } from '@/common/firebase/documentAs';
 import { serverTimestamp } from '@/common/firebase/serverTimestamp';
 import { getAppVersion } from '@/common/version';
 import { getFirebaseRegion, getManifestExtra } from '@/extra';
-import { Card, Place, SaveIuguCardPayload, SaveVRCardPayload, WithId } from '@appjusto/types';
+import {
+  Card,
+  GetTicketBalanceResult,
+  Place,
+  SaveIuguCardPayload,
+  SaveVRCardPayload,
+  WithId,
+} from '@appjusto/types';
 import firebase from '@react-native-firebase/app';
 import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
@@ -20,6 +27,7 @@ const extra = getManifestExtra();
 const region = getFirebaseRegion();
 const saveCard = firebase.app().functions(region).httpsCallable('saveCard');
 const deleteCard = firebase.app().functions(region).httpsCallable('deleteCard');
+const fetchTicketBalance = firebase.app().functions(region).httpsCallable('fetchTicketBalance');
 
 // firestore
 const placesRef = () => firestore().collection('places');
@@ -159,5 +167,11 @@ export default class ConsumersApi {
       meta: { version: getAppVersion() },
     });
     if ('error' in result.data) throw new Error(result.data.error);
+  }
+  async fetchTicketBalance() {
+    const result = await fetchTicketBalance({
+      meta: { version: getAppVersion() },
+    });
+    return result.data as GetTicketBalanceResult;
   }
 }
