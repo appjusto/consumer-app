@@ -16,7 +16,7 @@ export const usePlaceOrderOptions = () => {
   const options = useContextOrderOptions();
   // state
   const [payment, setPayment] = useState<PlaceOrderPayloadPayment>();
-  const [placeOptions, setOptions] = useState<PlaceOrderOptions>();
+  const [placeOptions, setPlaceOptions] = useState<PlaceOrderOptions>();
   // side effects
   useEffect(() => {
     // if (!quote) return;
@@ -44,9 +44,14 @@ export const usePlaceOrderOptions = () => {
         useCredits: true,
         cardId: selectedCard.id,
       });
+    } else if (paymentMethod === 'ticket-refeição') {
+      setPayment({
+        payableWith: 'ticket-refeição',
+        useCredits: true,
+      });
     }
   }, [paymentMethod, selectedCard]);
-  // console.log('payment', payment);
+  console.log('payment', payment);
   useEffect(() => {
     if (!quote) return;
     if (!payment) return;
@@ -55,7 +60,7 @@ export const usePlaceOrderOptions = () => {
       ? `Troco para ${formatCurrency(toNumber(options.change))}. `
       : '';
     if (options.additionalInfo) additionalInfo += options.additionalInfo;
-    setOptions({
+    setPlaceOptions({
       orderId: quote.id,
       payment,
       fleetId: quote.fare?.fleet?.id,

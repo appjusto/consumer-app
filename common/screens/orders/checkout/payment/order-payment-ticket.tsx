@@ -1,18 +1,8 @@
-import { formatCurrency } from '@/common/formatters/currency';
 import { IconTicketLogo } from './icons/ticket-logo';
 import { PaymentMethod, PaymentMethodProps } from './payment-method';
 
-interface Props extends PaymentMethodProps {
-  balance?: number;
-}
+interface Props extends PaymentMethodProps {}
 
-export const OrderPaymentTicket = ({ balance, ...props }: Props) => {
-  return (
-    <PaymentMethod
-      title="Ticket Refeição"
-      subtitle={balance ? `Saldo atual: ${formatCurrency(balance)}` : undefined}
-      icon={<IconTicketLogo />}
-      {...props}
-    />
-  );
+export const OrderPaymentTicket = ({ ...props }: Props) => {
+  return <PaymentMethod title="Ticket Refeição" icon={<IconTicketLogo />} {...props} />;
 };

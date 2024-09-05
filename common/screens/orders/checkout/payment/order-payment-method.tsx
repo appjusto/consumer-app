@@ -3,6 +3,7 @@ import { PaymentsHandledByBusiness } from '@/api/orders/payment';
 import { useContextPayments } from '@/api/orders/payment/context/payments-context';
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
+import { formatCurrency } from '@/common/formatters/currency';
 import paddings from '@/common/styles/paddings';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
@@ -48,7 +49,7 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
       Linking.openURL(ticketAuthUrl).catch((error) => {
         if (error) console.error(error);
       });
-    } else if (setPaymentMethod) {
+    } else if (ticketBalance.product === 'TRE' && setPaymentMethod) {
       setPaymentMethod('ticket-refeição');
     }
   };
@@ -65,7 +66,6 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   const acceptsOfflinePayment = PaymentsHandledByBusiness.some(
     (value) => acceptedOnOrder?.includes(value)
   );
-  const ticketBalanceValue = ticketBalance?.balance;
   const acceptsTicket = acceptedOnOrder?.includes('ticket-refeição');
   const offlinePaymentSelected = PaymentsHandledByBusiness.some((value) => value === paymentMethod);
   return (
@@ -81,7 +81,11 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
         <OrderPaymentTicket
           style={{ marginTop: paddings.lg }}
           checked={paymentMethod === 'ticket-refeição'}
-          balance={ticketBalanceValue}
+          subtitle={
+            !ticketBalance?.account
+              ? 'Clique para configurar sua conta'
+              : `Saldo atual: ${formatCurrency(ticketBalance.balance)}`
+          }
           onPress={() => ticketPaymentHandler()}
         />
       ) : null}

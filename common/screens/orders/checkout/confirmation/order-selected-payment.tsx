@@ -4,6 +4,7 @@ import { ViewProps } from 'react-native';
 import { PaymentCard } from '../payment/cards/payment-card';
 import { OfflinePaymentMethod } from '../payment/order-payment-business';
 import { OrderPaymentPix } from '../payment/order-payment-pix';
+import { OrderPaymentTicket } from '../payment/order-payment-ticket';
 
 interface Props extends ViewProps {
   paymentMethod: PayableWith | null | undefined;
@@ -19,6 +20,8 @@ export const OrderSelectedPayment = ({ paymentMethod, card, style, ...props }: P
     return <OrderPaymentPix style={style} {...props} />;
   } else if (offlinePaymentSelected) {
     return <OfflinePaymentMethod style={style} {...props} />;
+  } else if (paymentMethod === 'ticket-refeição') {
+    return <OrderPaymentTicket style={style} {...props} />;
   } else if (card) {
     return <PaymentCard style={style} card={card} {...props} />;
   }
