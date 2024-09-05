@@ -1,55 +1,62 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
-import { CircledView } from '@/common/components/containers/CircledView';
-import { DefaultScrollView } from '@/common/components/containers/DefaultScrollView';
 import { DefaultView } from '@/common/components/containers/DefaultView';
-import { DefaultText } from '@/common/components/texts/DefaultText';
-import { MessageBox } from '@/common/components/views/MessageBox';
-import { OngoingOrders } from '@/common/screens/orders/ongoing-orders/home-ongoing-orders';
-import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import screens from '@/common/styles/screens';
-import { router, useFocusEffect } from 'expo-router';
-import { MapPin, XCircle } from 'lucide-react-native';
-import { useCallback } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import WebView from 'react-native-webview';
 
-const restrictions = [
-  'Dinheiro, cheques e objetos de valor',
-  'Objetos e substâncias ilícitas',
-  'Armas de fogo e munição',
-  'Materiais inflamáveis',
-];
+// const restrictions = [
+//   'Dinheiro, cheques e objetos de valor',
+//   'Objetos e substâncias ilícitas',
+//   'Armas de fogo e munição',
+//   'Materiais inflamáveis',
+// ];
 
 export default function P2PIndex() {
   // context
-  const isAnonymous = useContextIsUserAnonymous();
+  // const isAnonymous = useContextIsUserAnonymous();
   // tracking
   useTrackScreenView('Encomendas');
   // side effects
-  useFocusEffect(
-    useCallback(() => {
-      if (isAnonymous) router.navigate('/encomendas/sign-in');
-    }, [isAnonymous])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (isAnonymous) router.navigate('/encomendas/sign-in');
+  //   }, [isAnonymous])
+  // );
   // handlers
-  const newOrderHandler = () => {
-    router.navigate({ pathname: '/encomendas/new' });
-  };
+  // const newOrderHandler = () => {
+  //   router.navigate({ pathname: '/encomendas/new' });
+  // };
   // UI
   return (
-    <DefaultScrollView style={{ ...screens.default }}>
-      <DefaultView style={{ ...screens.headless, padding: paddings.lg }}>
-        {/* header */}
-        <View>
+    <View style={{ ...screens.default }}>
+      <DefaultView style={screens.headless}>
+        <WebView
+          originWhitelist={['*']}
+          source={{ uri: 'https://app-justo-staging.firebaseapp.com/' }}
+          containerStyle={{
+            backgroundColor: colors.white,
+            paddingHorizontal: paddings.lg,
+            paddingBottom: 20,
+          }}
+          style={{}}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        />
+      </DefaultView>
+
+      {/*<DefaultScrollView style={{ ...screens.default }}>*/}
+      {/* <DefaultView style={{ ...screens.headless, padding: paddings.lg }}> */}
+      {/* header */}
+      {/* <View>
           <DefaultText size="xl">Entregas rápidas</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm }} size="md" color="neutral800">
             Entregas imediatas ou agendadas
           </DefaultText>
-        </View>
-        {/* origin */}
-        <Pressable onPress={newOrderHandler}>
+        </View> */}
+      {/* origin */}
+      {/* <Pressable onPress={newOrderHandler}>
           <View
             style={{
               flexDirection: 'row',
@@ -68,15 +75,15 @@ export default function P2PIndex() {
               De onde você quer enviar?
             </DefaultText>
           </View>
-        </Pressable>
-        {/* ongoing */}
-        <OngoingOrders style={{ marginBottom: paddings.sm }} type="p2p" />
-        {/* restrictions */}
-        <MessageBox style={{}}>
+        </Pressable> */}
+      {/* ongoing */}
+      {/* <OngoingOrders style={{ marginBottom: paddings.sm }} type="p2p" /> */}
+      {/* restrictions */}
+      {/* <MessageBox style={{}}>
           As medidas do pacote devem respeitar as dimensões e pesos máximos: 36cm de altura, 44cm de
           largura, 42cm de comprimento e 20kg de peso.
-        </MessageBox>
-        <View style={{ marginTop: paddings.xl }}>
+        </MessageBox> */}
+      {/* <View style={{ marginTop: paddings.xl }}>
           <DefaultText size="lg">Saiba o que não pode ser transportado</DefaultText>
           <DefaultText style={{ marginTop: paddings.sm }} size="md" color="neutral800">
             A pessoa que fará sua entrega pode levar o que couber no baú com a tampa fechada. Porém,
@@ -120,8 +127,9 @@ export default function P2PIndex() {
               </View>
             ))}
           </ScrollView>
-        </View>
-      </DefaultView>
-    </DefaultScrollView>
+        </View> */}
+      {/* </DefaultView> */}
+      {/* </DefaultScrollView> */}
+    </View>
   );
 }

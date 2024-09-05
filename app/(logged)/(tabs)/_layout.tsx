@@ -1,12 +1,12 @@
-import { Link, Tabs } from 'expo-router';
-import { Dimensions, Pressable, View, ViewProps, useColorScheme } from 'react-native';
+import { Tabs } from 'expo-router';
+import { Dimensions, View, ViewProps, useColorScheme } from 'react-native';
 
 import { DefaultText } from '@/common/components/texts/DefaultText';
 import borders from '@/common/styles/borders';
 import colors from '@/common/styles/colors';
 import paddings from '@/common/styles/paddings';
 import Colors from '@/common/styles/themes';
-import { Home, InfoIcon, Package, Receipt, Users2 } from 'lucide-react-native';
+import { Home, Package, Receipt, Users2 } from 'lucide-react-native';
 
 interface TabIconProps extends ViewProps {
   focused?: boolean;
@@ -58,19 +58,6 @@ export default function TabLayout() {
             <TabIcon focused={focused}>
               <Home size={24} color={focused ? activeColor : inactiveColor} />
             </TabIcon>
-          ),
-          headerRight: () => (
-            <Link href="/matching" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <InfoIcon
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
           ),
         }}
       />
