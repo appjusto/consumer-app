@@ -11,11 +11,11 @@ import { Linking, Pressable, View } from 'react-native';
 export default function ProfileHeader() {
   // context
   const profile = useContextProfile();
-  const getTicketAuthUrl = useTicketAuthURL();
+  const ticketAuthUrl = useTicketAuthURL();
   // handlers
   const openTicketAuthUrl = () => {
-    console.log(getTicketAuthUrl());
-    Linking.openURL(getTicketAuthUrl()).catch((error) => {
+    if (!ticketAuthUrl) return;
+    Linking.openURL(ticketAuthUrl).catch((error) => {
       if (error) console.error(error);
     });
   };

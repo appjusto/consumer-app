@@ -1,8 +1,17 @@
 import { useCards } from '@/api/consumer/cards/useCards';
+import { useTicketAuthURL } from '@/api/externals/ticket/useTicketAuthURL';
+import { useTicketBalance } from '@/api/externals/ticket/useTicketBalance';
 import { useContextPlatformParams } from '@/api/platform/context/platform-context';
 import { useContextProfile } from '@/common/auth/AuthContext';
-import { Card, PayableWith, PublicBusiness, VRCard, WithId } from '@appjusto/types';
-import React, { useEffect, useState } from 'react';
+import {
+  Card,
+  GetTicketBalanceResult,
+  PayableWith,
+  PublicBusiness,
+  VRCard,
+  WithId,
+} from '@appjusto/types';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PaymentsOnlyOnFoodOrders } from '..';
 
 const PaymentsContext = React.createContext<Value>({});
@@ -19,6 +28,9 @@ interface Value {
   selectedCard?: WithId<Card>;
   defaultPaymentMethod?: PayableWith | null;
   defaultPaymentMethodId?: string | null;
+  ticketAuthUrl?: string;
+  ticketBalance?: GetTicketBalanceResult;
+  refreshTicketBalance?: () => void;
   paymentMethod?: PayableWith | null;
   setPaymentMethod?: (value: PayableWith) => void;
   paymentMethodId?: string | null;
@@ -40,6 +52,9 @@ export const PaymentsProvider = ({ children }: Props) => {
   const [acceptedCardsOnOrder, setAcceptedCardsOnOrder] = useState<WithId<Card>[]>();
   const [paymentMethod, setPaymentMethod] = useState<PayableWith | null>();
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>();
+  const [ticketBalanceNonce, setTicketBalanceNonce] = useState('');
+  const ticketAuthUrl = useTicketAuthURL();
+  const ticketBalance = useTicketBalance(ticketBalanceNonce);
   const selectedCard =
     paymentMethod === 'credit_card' ||
     paymentMethod === 'vr-alimentação' ||
@@ -73,7 +88,11 @@ export const PaymentsProvider = ({ children }: Props) => {
     }
     if (profile?.tags?.includes('unsafe')) {
       accepted = accepted.filter(
-        (value) => value !== 'credit_card' && value !== 'vr-alimentação' && value !== 'vr-refeição'
+        (value) =>
+          value !== 'credit_card' &&
+          value !== 'vr-alimentação' &&
+          value !== 'vr-refeição' &&
+          value !== 'ticket-refeição'
       );
     }
     setAcceptedOnOrder(accepted);
@@ -101,6 +120,10 @@ export const PaymentsProvider = ({ children }: Props) => {
     acceptedOnOrder?.includes('credit_card') ||
     acceptedOnOrder?.includes('vr-alimentação') ||
     acceptedOnOrder?.includes('vr-refeição');
+  const refreshTicketBalance = useCallback(() => {
+    console.log('refreshTicketBalance');
+    setTicketBalanceNonce(String(Date.now()));
+  }, []);
   return (
     <PaymentsContext.Provider
       value={{
@@ -111,6 +134,9 @@ export const PaymentsProvider = ({ children }: Props) => {
         selectedCard,
         defaultPaymentMethod,
         defaultPaymentMethodId,
+        ticketAuthUrl,
+        ticketBalance,
+        refreshTicketBalance,
         paymentMethod,
         setPaymentMethod,
         paymentMethodId,

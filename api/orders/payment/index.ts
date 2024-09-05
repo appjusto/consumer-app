@@ -9,4 +9,5 @@ export const PaymentsHandledByBusiness: PayableWith[] = [
 export const PaymentsOnlyOnFoodOrders = PaymentsHandledByBusiness.concat([
   'vr-alimentação',
   'vr-refeição',
+  'ticket-refeição',
 ]);

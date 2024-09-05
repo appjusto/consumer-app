@@ -169,6 +169,7 @@ export default class ConsumersApi {
     if ('error' in result.data) throw new Error(result.data.error);
   }
   async fetchTicketBalance() {
+    console.log('fetchTicketBalance');
     const result = await fetchTicketBalance({
       meta: { version: getAppVersion() },
     });

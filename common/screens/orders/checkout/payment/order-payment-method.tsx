@@ -4,11 +4,13 @@ import { useContextPayments } from '@/api/orders/payment/context/payments-contex
 import { useContextIsUserAnonymous } from '@/common/auth/AuthContext';
 import { DefaultButton } from '@/common/components/buttons/default/DefaultButton';
 import paddings from '@/common/styles/paddings';
-import { router } from 'expo-router';
-import { View, ViewProps } from 'react-native';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
+import { Linking, View, ViewProps } from 'react-native';
 import { PaymentCard } from './cards/payment-card';
 import { OfflinePaymentMethod } from './order-payment-business';
 import { OrderPaymentPix } from './order-payment-pix';
+import { OrderPaymentTicket } from './order-payment-ticket';
 
 interface Props extends ViewProps {
   onAddCard: () => void;
@@ -23,12 +25,33 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
     acceptedOnOrder,
     acceptsCards,
     acceptedCardsOnOrder = [],
+    ticketAuthUrl,
+    ticketBalance,
+    refreshTicketBalance,
     paymentMethod,
     paymentMethodId,
     setPaymentMethod,
     setPaymentMethodId,
   } = useContextPayments();
+  // side effects
+  useFocusEffect(
+    useCallback(() => {
+      console.log('useFocusEffect: OrderPaymentMethod');
+      if (refreshTicketBalance) refreshTicketBalance();
+    }, [refreshTicketBalance])
+  );
   // handlers
+  const ticketPaymentHandler = () => {
+    if (!ticketBalance) return;
+    if (!ticketAuthUrl) return;
+    if (ticketBalance.account === null) {
+      Linking.openURL(ticketAuthUrl).catch((error) => {
+        if (error) console.error(error);
+      });
+    } else if (setPaymentMethod) {
+      setPaymentMethod('ticket-refeição');
+    }
+  };
   const offlinePaymentHandler = () =>
     router.navigate({
       pathname: '/(logged)/checkout/[orderId]/offline-payment',
@@ -42,6 +65,8 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
   const acceptsOfflinePayment = PaymentsHandledByBusiness.some(
     (value) => acceptedOnOrder?.includes(value)
   );
+  const ticketBalanceValue = ticketBalance?.balance;
+  const acceptsTicket = acceptedOnOrder?.includes('ticket-refeição');
   const offlinePaymentSelected = PaymentsHandledByBusiness.some((value) => value === paymentMethod);
   return (
     <View style={[{}, style]} {...props}>
@@ -50,6 +75,14 @@ export const OrderPaymentMethod = ({ onAddCard, style, ...props }: Props) => {
           style={{ marginTop: paddings.lg }}
           checked={paymentMethod === 'pix'}
           onPress={() => setPaymentMethod('pix')}
+        />
+      ) : null}
+      {acceptsTicket ? (
+        <OrderPaymentTicket
+          style={{ marginTop: paddings.lg }}
+          checked={paymentMethod === 'ticket-refeição'}
+          balance={ticketBalanceValue}
+          onPress={() => ticketPaymentHandler()}
         />
       ) : null}
       {acceptsOfflinePayment ? (

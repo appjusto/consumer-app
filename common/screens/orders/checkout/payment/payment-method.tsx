@@ -7,6 +7,7 @@ import { View, ViewProps } from 'react-native';
 export interface PaymentMethodProps extends ViewProps {
   icon?: React.ReactNode;
   title?: string;
+  subtitle?: string;
   checked?: boolean;
   variant?: 'default' | 'ongoing';
   value?: number;
@@ -16,6 +17,7 @@ export interface PaymentMethodProps extends ViewProps {
 export const PaymentMethod = ({
   icon,
   title,
+  subtitle,
   checked,
   variant,
   value,
@@ -39,10 +41,15 @@ export const PaymentMethod = ({
             <DefaultText size="md" color="black">
               {title}
             </DefaultText>
+            {subtitle ? (
+              <DefaultText size="sm" color="black">
+                {subtitle}
+              </DefaultText>
+            ) : null}
           </View>
           <View style={{ flex: 1 }} />
           {value ? (
-            <DefaultText size="md" color="black">
+            <DefaultText style={{ marginRight: paddings.lg }} size="md" color="black">
               {formatCurrency(value)}
             </DefaultText>
           ) : null}

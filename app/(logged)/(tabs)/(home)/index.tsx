@@ -1,5 +1,4 @@
 import { useTrackScreenView } from '@/api/analytics/useTrackScreenView';
-import { useTicketBalance } from '@/api/externals/ticket/useTicketBalance';
 import { useContextCurrentPlace } from '@/api/preferences/context/PreferencesContext';
 import { DefaultView } from '@/common/components/containers/DefaultView';
 import { AdreessBar } from '@/common/screens/home/address-bar/address-bar';
@@ -16,9 +15,6 @@ export default function HomeScreen() {
   const orderId = params.orderId;
   // context
   const currentPlace = useContextCurrentPlace();
-  // state
-  const balance = useTicketBalance();
-  // side effects
   // tracking
   useTrackScreenView('Início');
   // side effects
@@ -39,7 +35,6 @@ export default function HomeScreen() {
   }, [orderId]);
   // logs
   // console.log('currentPlace', currentPlace);
-  console.log('balance', balance);
   // UI
   return (
     <View style={{ ...screens.default }}>

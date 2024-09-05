@@ -22,7 +22,7 @@ export default function OrderCheckoutDeliveryScreen() {
   // context
   const quote = useContextOrder();
   const orderId = quote?.id;
-  const { paymentMethod, paymentMethodId } = useContextPayments();
+  const { paymentMethod, paymentMethodId, ticketBalance } = useContextPayments();
   // state
   const issues = useCheckoutIssues(false, true);
   // tracking
@@ -46,6 +46,8 @@ export default function OrderCheckoutDeliveryScreen() {
     !quote.fare ||
     !paymentMethod ||
     (paymentMethod === 'credit_card' && !paymentMethodId) ||
+    (paymentMethod === 'ticket-refeição' &&
+      (ticketBalance?.balance ?? 0) < (quote.fare?.total ?? 0)) ||
     checkoutHasIssue(issues, 'profile-incomplete');
   return (
     <View style={{ ...screens.default }}>
